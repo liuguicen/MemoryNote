@@ -12,8 +12,8 @@ import com.lgc.memorynote.base.BaseView;
  * <pre>
  */
 
-public class WoldListContract {
-    interface View extends BaseView<WordListPresenter> {
+public class WordListContract {
+    interface View extends BaseView<Presenter> {
         /**
          * 进入界面，并且获取到图片信息之后开始显示
          */
@@ -28,7 +28,7 @@ public class WoldListContract {
          */
         void refreshPicList();
     }
-    interface WordListPresenter extends BasePresenter {
+    interface Presenter extends BasePresenter {
 
     }
 }

@@ -117,6 +117,27 @@ public final class Logcat {
         }
     }
 
+    public static void d(int msg) {
+        d(msg + "");
+    }
+
+    public static void d(long msg) {
+        d(msg + "");
+    }
+
+    public static void d(float msg) {
+        d(msg + "");
+    }
+
+    public static void d(double msg) {
+        d(msg + "");
+    }
+
+    public static void d(boolean msg) {
+        d(msg + "");
+    }
+
+
     public static void d(String TAG, String msg) {
         if (LOG_PRINT_FLAG) {
             StackTraceElement[] elements = Thread.currentThread().getStackTrace();

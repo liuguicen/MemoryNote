@@ -29,15 +29,22 @@ public class Word {
 
     public String word;
     public List<WordMeaning> meaningList = new ArrayList<>();
-    public int strangeDegree;
+    public int strangeDegree = 0;
     public List<String> similarWordList;
-    public long lastRememberTime;
+    public long lastRememberTime = 0;
 
     /**
      * 用户输入的原始数据，用户用户再次编辑时使用
      */
     public String inputMeaning;
     public String inputSimilarWords;
+
+    public static int compareDictionary(String w1, String w2) {
+        if (w1 == null && w2 == null) return 0;
+        else if (w1 == null) return 1;
+        else if (w2 == null) return -1;
+        return w1.compareTo(w2);
+    }
 
     public static class WordMeaning {
 
@@ -98,6 +105,32 @@ public class Word {
         if (obj == null || this.getClass() != obj.getClass()) return false;
         return this == obj || TextUtils.equals(this.word, ((Word) obj).word);
     }
+
+    public static int compareStrangeDegree(int s1, int s2) {
+        return s2 - s1; // 大的在前面，倒序
+    }
+
+    public static int compareRememberTime(long r1, long r2) {
+        long re = r2 - r1;
+        if (re < 0) return -1;
+        if (re > 0) return 1;
+        return 0;
+    }
+
+    public static int compareSimilarNumber(List<String> w1, List<String> w2) {
+        int s1 = 0, s2 = 0;
+        if (w1 != null) s1 = w1.size();
+        if (w2 != null) s2 = w2.size();
+        return s2 - s1;
+    }
+
+    public static int compareLength(String w1, String w2) {
+        int l1 =  0, l2 = 0;
+        if (w1 != null) l1 = w1.length();
+        if (w2 != null) l2 = w2.length();
+        return l2 - l1;
+    }
+
 
     public void setWord(String word) {
         this.word = word;
