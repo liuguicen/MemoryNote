@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.lgc.memorynote.R;
 
-import a.baozouptu.common.util.Util;
+import java.util.List;
 
 public class WordDetailActivity extends AppCompatActivity implements WordDetailContract.View{
 
@@ -96,14 +96,23 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     @Override
-    public void showWordMeaning(String wordMeaning) {
-        // 解析词义，特殊的词意采用特殊的颜色
-        mTvWordMeaning.setText(wordMeaning);
+    public void showWordMeaning(List<Word.WordMeaning> wordMeaningList) {
+
     }
 
     @Override
-    public void showSimilarWords(String similarWords) {
-        mTvSimilarWord.setText(similarWords);
+    public void showInputMeaning(String inputMeaning) {
+
+    }
+
+    @Override
+    public void showSimilarWords(List<String> similarWordList) {
+
+    }
+
+    @Override
+    public void showInputSimilarWords(String inputSimilarWords) {
+
     }
 
     @Override
@@ -113,7 +122,6 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     @Override
     public void showLastRememberTime(long lastRememberTime) {
-        String time = Util.long2Date("yyyy年MM月dd HH时MM分", lastRememberTime);
         mTvLastRememberTime.setText(time);
     }
 

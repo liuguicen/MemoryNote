@@ -6,9 +6,6 @@ import android.content.Intent;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.lgc.memorynote.WordDetailActivity.INTENT_EXTRA_IS_ADD;
-import static com.lgc.memorynote.WordDetailActivity.INTENT_EXTRA_WORD_NAME;
-
 /**
  * Created by LiuGuicen on 2017/1/5 0005.
  */
@@ -30,14 +27,14 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
 
     @Override
     public void initDate(Intent intent) {
-        mIsAdd = intent.getBooleanExtra(INTENT_EXTRA_IS_ADD, false);
+        mIsAdd = intent.getBooleanExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, false);
         if (mIsAdd) {
             mWord = new Word();
             if (!mIsInEdit) {
                 switchEdit();
             }
         } else {
-            String wordName = intent.getStringExtra(INTENT_EXTRA_WORD_NAME);
+            String wordName = intent.getStringExtra(WordDetailActivity.INTENT_EXTRA_WORD_NAME);
             mWord = mDataSource.getWordByName(wordName);
             showData(false);
         }
@@ -69,7 +66,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     private void showData(boolean isSwitchEdit) {
         if (mIsInEdit) {
             mView.showInputSimilarWords(mWord.getInputSimilarWords());
-            mView.showInputMeanig(mWord.getInputMeaning());
+            mView.showInputMeaning(mWord.getInputMeaning());
         } else {
             mView.showWordMeaning(mWord.getMeaningList());
             mView.showSimilarWords(mWord.getSimilarWordList());

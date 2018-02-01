@@ -1,7 +1,8 @@
 package com.lgc.memorynote.wordList;
 
-import com.lgc.baselibrary.common.BasePresenter;
-import com.lgc.baselibrary.common.BaseView;
+
+import com.lgc.memorynote.base.BasePresenter;
+import com.lgc.memorynote.base.BaseView;
 
 /**
  * <pre>

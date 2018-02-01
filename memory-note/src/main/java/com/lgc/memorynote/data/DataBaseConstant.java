@@ -10,9 +10,7 @@ package com.lgc.memorynote.data;
  */
 
 public class DataBaseConstant {
-    public static final String parent_id = "parent_id";
-    public static final String left = "left";
-    public static final String right = "right";
-    public static final String content = "content";
-    public static final String id = "id";
+    public static final String word = "word";
+    public static final String data = "data";
+    public static final String table_word = "table_word";
 }

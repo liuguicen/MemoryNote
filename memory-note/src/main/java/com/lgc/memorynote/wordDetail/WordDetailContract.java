@@ -2,10 +2,10 @@ package com.lgc.memorynote.wordDetail;
 
 import android.content.Intent;
 
-import java.util.List;
+import com.lgc.memorynote.base.BasePresenter;
+import com.lgc.memorynote.base.BaseView;
 
-import a.baozouptu.BasePresenter;
-import a.baozouptu.BaseView;
+import java.util.List;
 
 /**
  * Created by LiuGuicen on 2017/1/5 0005.
@@ -18,7 +18,7 @@ public interface WordDetailContract {
 
         void showWordMeaning(List<Word.WordMeaning> wordMeaningList);
 
-        void showInputMeanig(String inputMeaning);
+        void showInputMeaning(String inputMeaning);
 
         void showSimilarWords(List<String> similarWordList);
 
