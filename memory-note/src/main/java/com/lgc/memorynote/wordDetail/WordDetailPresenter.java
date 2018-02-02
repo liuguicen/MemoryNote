@@ -2,6 +2,8 @@ package com.lgc.memorynote.wordDetail;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
+import android.view.TextureView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +28,14 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     }
 
     @Override
-    public void initDate(Intent intent) {
+    public void initAndShowData(Intent intent) {
         mIsAdd = intent.getBooleanExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, false);
         if (mIsAdd) {
             mWord = new Word();
             if (!mIsInEdit) {
                 switchEdit();
             }
+            setLastRememberTime();
         } else {
             String wordName = intent.getStringExtra(WordDetailActivity.INTENT_EXTRA_WORD_NAME);
             mWord = mDataSource.getWordByName(wordName);
@@ -41,6 +44,16 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     }
 
     public void saveWordDate() {
+        String inputName = mView.getInputWordName();
+        String inputMeaings = mView.getInputWordMeaning();
+        String inputSimilars = mView.getInputSimilarWords();
+        if (!TextUtils.equals(inputMeaings, mWord.getInputMeaning())) {
+            mWord.setInputMeaning(inputMeaings);
+        }
+        if (!TextUtils.equals(inputSimilars, mWord.getInputSimilarWords())) {
+            mWord.setInputSimilarWords(inputSimilars);
+        }
+
         if (mIsAdd) {
             mDataSource.addWord(mWord);
         } else {
@@ -81,12 +94,14 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
 
     @Override
     public boolean addStrangeDegree() {
+        mWord.strangeDegree ++;
         mView.showStrangeDegree(mWord.strangeDegree);
         return false;
     }
 
     @Override
     public boolean reduceStrangeDegree() {
+        mWord.strangeDegree --;
         mView.showStrangeDegree(mWord.strangeDegree);
         return false;
     }
@@ -115,6 +130,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     @Override
     public void setLastRememberTime() {
         mWord.lastRememberTime = System.currentTimeMillis();
+        mView.showLastRememberTime(mWord.lastRememberTime);
     }
 
     @Override

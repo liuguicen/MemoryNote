@@ -69,6 +69,8 @@
             style="@style/StrangeDegreeItem"
             android:layout_marginStart="40dp"
             android:text="-"
+            android:minWidth="40dp"
+            android:gravity="center"
             app:layout_constraintStart_toEndOf="@+id/strange_degree_name"
             app:layout_constraintTop_toBottomOf="@+id/similar_word_layout" />
 
@@ -94,6 +96,8 @@
 
         <TextView
             android:id="@+id/last_remember_time"
-            style="@style/WordDetailEditItem" />
+            style="@style/WordDetailEditItem"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/last_remember_time_name"/>
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

@@ -37,7 +37,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         mPresenter = new WordDetailPresenter(
                 new WordDetailDataSourceImpl(this.getApplicationContext()), this);
         initView();
-        mPresenter.initDate(getIntent()); // 要在View初始化之后调用
+        mPresenter.initAndShowData(getIntent()); // 要在View初始化之后调用
     }
 
     private void initView() {
@@ -47,6 +47,9 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         mTvStrangeDegree     = (TextView) findViewById(R.id.value_strange_degree);
         mTvLastRememberTime  = (TextView) findViewById(R.id.last_remember_time);
         mBtnEdit             = (Button) findViewById(R.id.btn_word_detail_edit);
+        mBtnEdit.setOnClickListener(this);
+        findViewById(R.id.add_strange_degree).setOnClickListener(this);
+        findViewById(R.id.reduce_strange_degree).setOnClickListener(this);
 
         mTvWordName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -86,10 +89,25 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         mTvWordMeaning.setFocusable(isInEdit);
         mTvSimilarWord.setFocusable(isInEdit);
         if (isInEdit) {
-            mBtnEdit.setText(getString(R.string.edit));
-        } else {
             mBtnEdit.setText(getString(R.string.edit_finish));
+        } else {
+            mBtnEdit.setText(getString(R.string.edit));
         }
+    }
+
+    @Override
+    public String getInputWordName() {
+        return mTvWordName.getText().toString();
+    }
+
+    @Override
+    public String getInputWordMeaning() {
+        return mTvWordMeaning.getText().toString();
+    }
+
+    @Override
+    public String getInputSimilarWords() {
+        return mTvSimilarWord.getText().toString();
     }
 
     @Override

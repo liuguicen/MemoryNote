@@ -30,12 +30,15 @@ public class WordListPresenter implements WordListContract.Presenter {
     public void start() {
         mCurShowWordList = GlobalData.getInstance().getAllWord();
         mView.showWordList(mCurShowWordList);
+        reorderWordList();
     }
 
     @Override
     public void addOneCommand(String command) {
-        mInputCommandList.add(command);
-        mView.showAddOneCommand(command);
+        if (!mInputCommandList.contains(command)) {
+            mInputCommandList.add(command);
+            mView.showAddOneCommand(command);
+        }
     }
 
     /**

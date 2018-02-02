@@ -29,6 +29,10 @@ public interface WordDetailContract {
         void showLastRememberTime(long lastRememberTime);
 
         void switchEdit(boolean mIsInEdit);
+
+        String getInputWordName();
+        String getInputWordMeaning();
+        String getInputSimilarWords();
     }
 
     interface Presenter extends BasePresenter {
@@ -58,7 +62,7 @@ public interface WordDetailContract {
 
         void setLastRememberTime();
 
-        void initDate(Intent intent);
+        void initAndShowData(Intent intent);
     }
 
 }

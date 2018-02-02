@@ -69,7 +69,7 @@ public class Command {
      */
     public static List<Word> orderByCommand(List<String> commandList, List<Word> wordList) {
         List<Word> resultList = new ArrayList<>(wordList.size());
-        Collections.copy(resultList, wordList);
+        resultList.addAll(wordList);
 
         // 第一步，如果是搜索，搜索出满足条件的
         for (int i = commandList.size() - 1; i >= 0; i--) {

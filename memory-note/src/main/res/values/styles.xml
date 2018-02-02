@@ -25,6 +25,8 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">40sp</item>
+        <item name="android:minWidth">40dp</item>
+        <item name="android:gravity">center</item>
         <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">@dimen/strange_degree_item_margin</item>
         <item name="android:layout_marginEnd" tools:targetApi="jelly_bean_mr1">@dimen/strange_degree_item_margin</item>
     </style>

@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.lgc.memorynote.R;
+import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.wordDetail.Word;
 import com.lgc.memorynote.wordDetail.WordDetailActivity;
 
@@ -59,6 +60,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                 } else {
                     mTvCommand.setMaxLines(1);
                 }
+                mTvCommand.requestLayout();
             }
         });
 
@@ -88,11 +90,12 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
     @Override
     public void updateCommandText(List<String> commandList) {
+        Logcat.d();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < commandList.size(); i++) {
             sb.append(commandList.get(i));
             if (i < commandList.size() -1) {
-                sb.append("|");
+                sb.append(" | ");
             }
         }
         String commandString = sb.toString();

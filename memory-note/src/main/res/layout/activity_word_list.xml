@@ -8,7 +8,7 @@
     android:layout_marginEnd="4dp"
     tools:layout_editor_absoluteY="4dp">
 
-    <TextView
+    <EditText
         android:id="@+id/tv_input_command"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -17,16 +17,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/add_word"
         android:textSize="30sp" />
 
-    <TextView
-        android:id="@+id/tv_command"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tv_input_command"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/btn_expand_command_list"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toStartOf="@+id/btn_expand_command_list"
-       />
 
     <TextView
         android:id="@+id/btn_expand_command_list"
@@ -37,7 +27,6 @@
         android:textColor="@android:color/holo_green_light"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:maxLines="1"
         />
     <Button
         android:id="@+id/add_word"
@@ -61,4 +50,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_expand_command_list" />
 
+    <TextView
+        android:id="@+id/tv_command"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_input_command"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btn_expand_command_list"
+        android:textSize="25sp"
+        android:maxLines="1"
+        app:layout_constraintEnd_toStartOf="@+id/btn_expand_command_list"
+        />
 </android.support.constraint.ConstraintLayout>
