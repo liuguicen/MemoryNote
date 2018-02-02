@@ -1,8 +1,9 @@
 package com.lgc.memorynote;
 
 import com.google.gson.Gson;
-import com.lgc.memorynote.Word;
-import com.lgc.memorynote.WordAnalyzer;
+import com.lgc.memorynote.wordDetail.Word;
+import com.lgc.memorynote.wordDetail.WordAnalyzer;
+import com.lgc.memorynote.wordDetail.Phrase;
 
 import org.junit.Test;
 
@@ -24,10 +25,11 @@ public class ExampleUnitTest {
         String similarWord = " credit parliament parliamentary  pre-cise accuracy virtue virtuosity distract rational ";
         List<String> similarWorList = new ArrayList<>();
         WordAnalyzer.analyzeSimilarWordsFromUser(similarWord, similarWorList);
-        Word word = new Word();
-        word.setInputSimilarWords(similarWord);
-        word.setSimilarWordList(similarWorList);
-        System.out.println(new Gson().toJson(word.getSimilarWordList()));
+        Phrase phrase = new Phrase();
+        phrase.setInputSimilarWords(similarWord);
+        phrase.setSimilarWordList(similarWorList);
+        phrase.setPhrase("I am a phrase");
+        System.out.println(new Gson().toJson(phrase));
     }
 
 

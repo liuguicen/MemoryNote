@@ -50,13 +50,11 @@ public class WordAnalyzer {
             while (tagMather.find()) {
                 String tag = tagMather.group(0).trim();
                 if (tag.isEmpty()) continue;
-                tag = tag.substring(1, tag.length());
-                if(Word.WordMeaning.TAG_GUAI.equals(tag)) {
-                    oneMeaning.setGuai(true);
-                } if (Word.WordMeaning.TAG_SHENG.equals(tag)) {
-                    oneMeaning.setSheng(true);
+                tag = tag.substring(1, tag.length()).trim();
+                if(oneMeaning.putTag(tag)) {
+                   // empty
                 } else if (tag.length() > 1){
-                    boolean isValid = oneMeaning.setCiXing(tag.substring(1, tag.length()).trim());
+                    boolean isValid = oneMeaning.setCiXing(tag);
                     if (!isValid) {
                         resultCode = WordAnalyzer.TAG_FORMAT_ERROR;
                     }

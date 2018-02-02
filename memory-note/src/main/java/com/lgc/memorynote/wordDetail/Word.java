@@ -106,6 +106,24 @@ public class Word {
         public String  getCiXing() {
             return ciXing;
         }
+
+        public boolean hasTag(String tag) {
+            return TAG_SHENG.equals(tag)
+                    || TAG_GUAI.equals(tag);
+        }
+
+        /**
+         * @return is the tag is valid
+         */
+        public boolean putTag(String tag) {
+            if (TAG_SHENG.equals(tag)) {
+                setSheng(true);
+                return true;
+            } else if (TAG_GUAI.equals(tag)) {
+                setGuai(true);
+                return true;
+            } else return false;
+        }
     }
 
     @Override

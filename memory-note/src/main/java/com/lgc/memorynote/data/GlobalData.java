@@ -1,9 +1,14 @@
 package com.lgc.memorynote.data;
 
-import org.json.JSONArray;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lgc.memorynote.base.Logcat;
+import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.wordDetail.Word;
+import com.lgc.memorynote.wordList.Command;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,10 +22,13 @@ import java.util.List;
  * <pre>
  */
 
-public class GlobalWordData {
+public class GlobalData {
     private static List<Word> mAllWord = new ArrayList<>();
-    private static GlobalWordData mInstance = new GlobalWordData();
-    private GlobalWordData() {
+    private static GlobalData mInstance = new GlobalData();
+    private List<String> mCommandList;
+    private static final String SP_COMMAND_LIST = "command_string";
+
+    private GlobalData() {
         Logcat.d(System.currentTimeMillis());
         MyDatabase database = MyDatabase.getInstance();
         List<String>  jasonList = new ArrayList<>();
@@ -35,11 +43,14 @@ public class GlobalWordData {
         for (String oneJsonWord : jasonList) {
             mAllWord.add(gson.fromJson(oneJsonWord, Word.class));
         }
+
+        getCommandList();
+
         Logcat.d(System.currentTimeMillis());
     }
-    public static GlobalWordData getInstance() {
+    public static GlobalData getInstance() {
         if (mInstance == null) {
-            mInstance = new GlobalWordData();
+            mInstance = new GlobalData();
         }
         return mInstance;
     }
@@ -66,5 +77,28 @@ public class GlobalWordData {
         } finally {
             MyDatabase.getInstance().close();
         }
+    }
+
+    public List<String> getCommandList() {
+        if (mCommandList == null) {
+            SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences("user_habit", Context.MODE_PRIVATE);
+            String jsonCommand = sp.getString(SP_COMMAND_LIST, "");
+            if (jsonCommand.isEmpty()) {
+                mCommandList = Command.commadList;
+            } else {
+                mCommandList = new Gson().fromJson(jsonCommand,  new TypeToken<List<String>>(){}.getType());
+            }
+        }
+        return mCommandList;
+    }
+
+    public void updateCommandSort(List<String> inputCommands) {
+        mCommandList.removeAll(inputCommands);
+        mCommandList.addAll(0, inputCommands);
+    }
+
+    public void saveCommandList() {
+        SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences("user_habit", Context.MODE_PRIVATE);
+        sp.edit().putString(SP_COMMAND_LIST, new Gson().toJson(mCommandList));
     }
 }

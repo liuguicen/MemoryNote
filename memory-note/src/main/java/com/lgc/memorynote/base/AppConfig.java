@@ -25,9 +25,9 @@ public class AppConfig {
     private static PackageInfo pi;
 
     static {
-        PackageManager pm = WordListApplication.appContext.getPackageManager();
+        PackageManager pm = MemoryNoteApplication.appContext.getPackageManager();
         try {
-            pi = pm.getPackageInfo(WordListApplication.appContext.getPackageName(), PackageManager.GET_ACTIVITIES);
+            pi = pm.getPackageInfo(MemoryNoteApplication.appContext.getPackageName(), PackageManager.GET_ACTIVITIES);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -86,7 +86,7 @@ public class AppConfig {
         spEditor.remove("usu_pic_use");
         spEditor.remove("isNewInstall");
         if (!spEditor.commit()) {
-            Log.e(WordListApplication.appContext.getResources().getText(R.string.app_name).toString(), "移除1.0版本Config信息失败");
+            Log.e(MemoryNoteApplication.appContext.getResources().getText(R.string.app_name).toString(), "移除1.0版本Config信息失败");
         }
     }
 

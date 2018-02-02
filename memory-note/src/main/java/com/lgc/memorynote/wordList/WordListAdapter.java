@@ -3,6 +3,7 @@ package com.lgc.memorynote.wordList;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -60,6 +61,7 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void setWordList(List<Word> WordList) {
         this.mWordList = WordList;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -89,7 +91,11 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mWordList.size();
+        int count = 0;
+        if (mWordList != null) {
+            count = mWordList.size();
+        }
+        return count;
     }
 
     public static class ItemHolder extends RecyclerView.ViewHolder {

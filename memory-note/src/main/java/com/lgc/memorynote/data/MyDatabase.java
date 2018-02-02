@@ -7,6 +7,7 @@ import android.util.Pair;
 
 import com.lgc.memorynote.base.AppConfig;
 import com.lgc.memorynote.base.Logcat;
+import com.lgc.memorynote.base.MemoryNoteApplication;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class MyDatabase {
 
     public static MyDatabase getInstance() {
         if (myDatabase == null || dbHelper == null || db == null)
-            myDatabase = new MyDatabase(MyApplication.appContext);
+            myDatabase = new MyDatabase(MemoryNoteApplication.appContext);
         return myDatabase;
     }
 

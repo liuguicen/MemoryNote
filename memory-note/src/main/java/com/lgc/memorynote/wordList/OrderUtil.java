@@ -29,8 +29,7 @@ public class OrderUtil {
     public static final String DEFAULT_ORDER_COMMAND = STRANGE_DEGREE;
 
     public static String getHingString() {
-        return "请输入排序方式：" + STRANGE_DEGREE + "|" +  LAST_REMEMBER_TIME + "|" +
-                SIMILAR_NUMBER + "|" +DICTIONARY + "|" + LENGTH  + "|" + MEANING_NUMBER;
+        return "请输入命令";
     }
 
     public static List<String> parseOrderCommand(String command) {
