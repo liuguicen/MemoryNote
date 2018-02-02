@@ -3,6 +3,7 @@ package com.lgc.memorynote.data;
 import org.json.JSONArray;
 import com.google.gson.Gson;
 import com.lgc.memorynote.base.Logcat;
+import com.lgc.memorynote.wordDetail.Word;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class GlobalWordData {
     private static GlobalWordData mInstance = new GlobalWordData();
     private GlobalWordData() {
         Logcat.d(System.currentTimeMillis());
-        MyDatabase database = MyDatabase.getInstance( MyApplication.appContext);
+        MyDatabase database = MyDatabase.getInstance();
         List<String>  jasonList = new ArrayList<>();
         try {
             database.queryAllWord(jasonList);
@@ -45,5 +46,25 @@ public class GlobalWordData {
 
     public List<Word> getAllWord() {
         return mAllWord;
+    }
+
+    public void updateWord(com.lgc.memorynote.wordDetail.Word word) {
+        try {
+            MyDatabase.getInstance().insertWord(word.getWord(), new Gson().toJson(word));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            MyDatabase.getInstance().close();
+        }
+    }
+
+    public void deleteWord(Word word) {
+        try {
+            MyDatabase.getInstance().deleteWord(word.getWord());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            MyDatabase.getInstance().close();
+        }
     }
 }

@@ -3,9 +3,6 @@ package com.lgc.memorynote.wordList;
 import android.content.Context;
 
 import com.lgc.memorynote.data.GlobalWordData;
-import com.lgc.memorynote.data.MyDatabase;
-import com.lgc.memorynote.data.MySQLiteOpenHandler;
-import com.lgc.memorynote.data.Word;
 
 /**
  * <pre>

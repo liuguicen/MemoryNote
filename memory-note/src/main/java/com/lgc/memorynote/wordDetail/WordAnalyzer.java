@@ -1,5 +1,8 @@
 package com.lgc.memorynote.wordDetail;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,6 +30,7 @@ public class WordAnalyzer {
 
     /**
      * 解析用户输入的单词的意思的数据
+     * 最后会按词性排序
      * @return 解析结果状态码
      */
     public static int analyzeMeaningFromUser(String originalMeaning, List<Word.WordMeaning> meaningList) {
@@ -45,9 +49,11 @@ public class WordAnalyzer {
             Matcher tagMather = Pattern.compile("@[^@#]*", Pattern.DOTALL).matcher(matcher.group(1));
             while (tagMather.find()) {
                 String tag = tagMather.group(0).trim();
-                if(Word.WordMeaning.MEANING_GUAI.equals(tag)) {
+                if (tag.isEmpty()) continue;
+                tag = tag.substring(1, tag.length());
+                if(Word.WordMeaning.TAG_GUAI.equals(tag)) {
                     oneMeaning.setGuai(true);
-                } if (Word.WordMeaning.MEANING_SHENG.equals(tag)) {
+                } if (Word.WordMeaning.TAG_SHENG.equals(tag)) {
                     oneMeaning.setSheng(true);
                 } else if (tag.length() > 1){
                     boolean isValid = oneMeaning.setCiXing(tag.substring(1, tag.length()).trim());
@@ -76,6 +82,19 @@ public class WordAnalyzer {
         }
         if (meaningList.size() == 0) { // 没有获取到有效的词义，不设置数据
             resultCode = WordAnalyzer.NO_VALID_MEANING;
+        } else {
+            Collections.sort(meaningList, new Comparator<Word.WordMeaning>() {
+                @Override
+                public int compare(Word.WordMeaning o1, Word.WordMeaning o2) {
+                    if (o1 == null && o2 == null) return 0;
+                    if (o1 == null) return 1;
+                    if (o2 == null) return -1;
+                    int x1 = Word.WordMeaning.getCiXingImportance(o1.getCiXing());
+                    int x2 = Word.WordMeaning.getCiXingImportance(o2.getCiXing());
+                    //  值越小，越重要，故直接从小到大排
+                    return x1 - x2;
+                }
+            });
         }
         return resultCode;
     }

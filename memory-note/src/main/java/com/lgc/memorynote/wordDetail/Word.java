@@ -10,9 +10,9 @@ import java.util.List;
  * 1、词义
  * 目前的词义保存在一个String中，词义分为标签，意思两部分
  * 标签以@xxx开头，
- * {@link WordMeaning#MEANING_GUAI}   表怪的词义，
- * {@link WordMeaning#MEANING_SHENG}  表示陌生的词义
- * {@link WordMeaning#MEANING_V} 等表示词性
+ * {@link WordMeaning#TAG_GUAI}   表怪的词义，
+ * {@link WordMeaning#TAG_SHENG}  表示陌生的词义
+ * {@link WordMeaning#CIXING_V} 等表示词性
  * 然后词义的内容用#xxxx#表示，即#xxx# 中间的内容
  * 等表示词性 括号中的为词性
  * 2、相似词，形近词
@@ -48,12 +48,12 @@ public class Word {
 
     public static class WordMeaning {
 
-        public static final String MEANING_GUAI = "@guai"; // 词义比较怪
-        public static final String MEANING_SHENG = "@sheng"; // 词义比较生
-        public static final String MEANING_N = "n";
-        public static final String MEANING_V = "v";
-        public static final String MEANING_ADJ = "adj";
-        public static final String MEANING_ADV = "adv";
+        public static final String TAG_GUAI = "guai";
+        public static final String TAG_SHENG = "sheng";
+        public static final String CIXING_N = "n";
+        public static final String CIXING_V = "v";
+        public static final String CIXIN_ADJ = "adj";
+        public static final String CIXING_ADV = "adv";
         private boolean isGuai = false;
         private boolean isSheng = false;
         private String ciXing = "null";
@@ -73,14 +73,22 @@ public class Word {
         }
 
         public boolean setCiXing(String ciXing) {
-            if (WordMeaning.MEANING_N.equals(ciXing)
-                    | WordMeaning.MEANING_V.equals(ciXing)
-                    | WordMeaning.MEANING_ADJ.equals(ciXing)
-                    | WordMeaning.MEANING_ADV.equals(ciXing)) {
+            if (WordMeaning.CIXING_N.equals(ciXing)
+                    | WordMeaning.CIXING_V.equals(ciXing)
+                    | WordMeaning.CIXIN_ADJ.equals(ciXing)
+                    | WordMeaning.CIXING_ADV.equals(ciXing)) {
                 this.ciXing =ciXing;
                 return true;
             }
             return false;
+        }
+
+        public static int getCiXingImportance(String ciXing) {
+            if (WordMeaning.CIXING_N.equals(ciXing)) return 1;
+            if (WordMeaning.CIXING_V.equals(ciXing)) return 2;
+            if (WordMeaning.CIXIN_ADJ.equals(ciXing)) return 3;
+            if(WordMeaning.CIXING_ADV.equals(ciXing)) return 4;
+            return 10000;
         }
 
         public boolean isGuai() {
@@ -95,7 +103,7 @@ public class Word {
             return meaning;
         }
 
-        public String getCiXing() {
+        public String  getCiXing() {
             return ciXing;
         }
     }

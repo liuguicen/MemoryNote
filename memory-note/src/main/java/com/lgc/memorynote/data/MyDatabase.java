@@ -27,9 +27,9 @@ public class MyDatabase {
         db = dbHelper.getWritableDatabase();
     }
 
-    public static MyDatabase getInstance(Context context) {
+    public static MyDatabase getInstance() {
         if (myDatabase == null || dbHelper == null || db == null)
-            myDatabase = new MyDatabase(context);
+            myDatabase = new MyDatabase(MyApplication.appContext);
         return myDatabase;
     }
 

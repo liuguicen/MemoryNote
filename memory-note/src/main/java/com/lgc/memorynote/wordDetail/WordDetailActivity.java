@@ -1,6 +1,8 @@
 package com.lgc.memorynote.wordDetail;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -122,7 +124,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     @Override
     public void showLastRememberTime(long lastRememberTime) {
-        mTvLastRememberTime.setText(time);
+        mTvLastRememberTime.setText(lastRememberTime + "");
     }
 
     @Override
@@ -135,5 +137,10 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     @Override
     public void setPresenter(WordDetailContract.Presenter presenter) {
 
+    }
+
+    public static Intent getStartIntent(Context context) {
+        Intent intent = new Intent(context, WordDetailActivity.class);
+        return intent;
     }
 }
