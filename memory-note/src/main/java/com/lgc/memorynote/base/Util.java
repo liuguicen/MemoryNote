@@ -161,4 +161,10 @@ public class Util {
        Date date = new Date(millSec);
        return sdf.format(date);
    }
+
+   public static String long2DateDefult(long millSec) {
+       SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分");
+       Date date = new Date(millSec);
+       return sdf.format(date);
+   }
 }

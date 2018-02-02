@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.lgc.memorynote.R;
+import com.lgc.memorynote.base.Util;
 
 import java.util.List;
 
@@ -142,7 +143,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     @Override
     public void showLastRememberTime(long lastRememberTime) {
-        mTvLastRememberTime.setText(lastRememberTime + "");
+        mTvLastRememberTime.setText(Util.long2DateDefult(lastRememberTime));
     }
 
     @Override

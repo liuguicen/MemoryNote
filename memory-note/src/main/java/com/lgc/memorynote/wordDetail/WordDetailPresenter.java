@@ -3,7 +3,6 @@ package com.lgc.memorynote.wordDetail;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.view.TextureView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +35,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                 switchEdit();
             }
             setLastRememberTime();
+            setStrangeDegree(10);
         } else {
             String wordName = intent.getStringExtra(WordDetailActivity.INTENT_EXTRA_WORD_NAME);
             mWord = mDataSource.getWordByName(wordName);
@@ -136,5 +136,10 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     @Override
     public void start() {
 
+    }
+
+    public void setStrangeDegree(int strangeDegree) {
+        mWord.strangeDegree = strangeDegree;
+        mView.showStrangeDegree(mWord.strangeDegree);
     }
 }
