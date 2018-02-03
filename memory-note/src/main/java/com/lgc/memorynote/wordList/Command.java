@@ -1,5 +1,7 @@
 package com.lgc.memorynote.wordList;
 
+import android.widget.TextView;
+
 import com.lgc.memorynote.data.SearchUtil;
 import com.lgc.memorynote.wordDetail.Word;
 
@@ -66,25 +68,6 @@ public class Command {
 
     }};
 
-
-    /**
-     * 解析输入的命令
-     */
-    public static List<String> analysisCommandInput(String inputCommand) {
-        List<String> commandList = new ArrayList<>();
-        if (inputCommand == null) return commandList;
-        inputCommand = inputCommand.trim();
-        if (inputCommand.isEmpty()) return commandList;
-        String[] temp = inputCommand.split(" ");
-        for (String one : temp) {
-            one = one.trim();
-            if (!one.isEmpty()) {
-
-            }
-        }
-        return commandList;
-    }
-
     /**
      * 排序，会生成一个新的列表，不改变原来的数据
      * @param commandList 必须是标准的命令才有效
@@ -120,21 +103,5 @@ public class Command {
         // 第三步，进行排序操作
         Collections.sort(wordList, SortUtil.getComparator(commandList));
         return wordList;
-    }
-
-
-    public void showWordMeaning(List<Word.WordMeaning> wordMeaningList) {
-        // 解析词义，特殊的词意采用特殊的颜色
-        String lastCixing = Word.WordMeaning.CIXING_N;
-        for (Word.WordMeaning oneMeaning : wordMeaningList) {
-            if (!lastCixing.equals(oneMeaning.getCiXing())) {
-                lastCixing = oneMeaning.getCiXing();
-            }
-            if (oneMeaning.isGuai() && oneMeaning.isSheng()) {
-//                mTvWordMeaning.setText(wordMeaningList);
-            } else if (oneMeaning.isGuai() || oneMeaning.isSheng()) {
-
-            }
-        }
     }
 }

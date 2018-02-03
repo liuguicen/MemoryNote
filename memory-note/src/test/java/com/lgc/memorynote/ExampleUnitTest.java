@@ -19,7 +19,7 @@ public class ExampleUnitTest {
 //    private void testAnalyzeSimilarWord() {
 //        String similarWord = " credit parliament parliamentary  pre-cise accuracy virtue virtuosity distract rational ";
 //        List<String> similarWorList = new ArrayList<>();
-//        WordAnalyzer.analyzeSimilarWordsFromUser(similarWord, similarWorList);
+//        InputAnalyzerUtil.analyzeSimilarWordsFromUser(similarWord, similarWorList);
 //        Phrase phrase = new Phrase();
 //        phrase.setInputSimilarWords(similarWord);
 //        phrase.setSimilarWordList(similarWorList);

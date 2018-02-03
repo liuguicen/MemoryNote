@@ -36,6 +36,8 @@ public interface WordDetailContract {
         String getInputSimilarWords();
 
         void showSaveFailed(int state);
+
+        void showAnalyzeFailed(int resultCode);
     }
 
     interface Presenter extends BasePresenter {
@@ -52,11 +54,6 @@ public interface WordDetailContract {
         boolean reduceStrangeDegree();
 
         void setSimilarFormatWords(String similarFormatWords);
-
-        /**
-         * 设置单词的意思
-         */
-        void setWordMeaning(String wordMeaning);
 
         /**
          * @return 加入的单词是否是有效单词

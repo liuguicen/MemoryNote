@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.data.AppConstant;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SearchUtil;
@@ -49,8 +50,8 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     }
 
     public void saveWordDate() {
-        String inputMeaings = mView.getInputWordMeaning();
-        String inputSimilars = mView.getInputSimilarWords();
+        String inputMeaings = mView.getInputWordMeaning().trim();
+        String inputSimilars = mView.getInputSimilarWords().trim();
         if (mIsAdd) {
             String inputName = mView.getInputWordName();
             inputName = inputName.trim();
@@ -64,9 +65,19 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         }
         if (!TextUtils.equals(inputMeaings, mWord.getInputMeaning())) {
             mWord.setInputMeaning(inputMeaings);
+            List<Word.WordMeaning> meaningList = new ArrayList<>();
+            int resultCode = InputAnalyzerUtil.analyzeMeaningFromUser(inputMeaings, meaningList);
+            if (resultCode != InputAnalyzerUtil.SUCCESS) {
+                mView.showAnalyzeFailed(resultCode);
+            } else {
+                mWord.setMeaningList(meaningList);
+            }
         }
         if (!TextUtils.equals(inputSimilars, mWord.getInputSimilarWords())) {
             mWord.setInputSimilarWords(inputSimilars);
+            List<String> similarList = new ArrayList<>();
+            InputAnalyzerUtil.analyzeSimilarWordsFromUser(inputSimilars, similarList);
+            mWord.setSimilarWordList(similarList);
         }
 
         if (mIsAdd) {
@@ -124,17 +135,9 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     @Override
     public void setSimilarFormatWords(String inputSimilarWord) {
         List<String> similarWordList = new ArrayList<>();
-        WordAnalyzer.analyzeSimilarWordsFromUser(inputSimilarWord, similarWordList);
+        InputAnalyzerUtil.analyzeSimilarWordsFromUser(inputSimilarWord, similarWordList);
         mWord.setInputSimilarWords(inputSimilarWord);
         mWord.setSimilarWordList(similarWordList);
-    }
-
-    @Override
-    public void setWordMeaning(String inputMeaning) {
-        List<Word.WordMeaning> meaningList = new ArrayList<>();
-        WordAnalyzer.analyzeMeaningFromUser(inputMeaning, meaningList);
-        mWord.setMeaningList(meaningList);
-        mWord.setInputMeaning(inputMeaning);
     }
 
     @Override

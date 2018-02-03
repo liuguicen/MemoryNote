@@ -25,7 +25,7 @@ public class MeaningUtil {
         List<Integer> redList = new ArrayList<>();
         String lastCixing = Word.WordMeaning.CIXING_N;
         for (Word.WordMeaning oneMeaning : meaningList) {
-            if (!TextUtils.isEmpty(oneMeaning.getCiXing()) && !lastCixing.equals(oneMeaning.getCiXing())) {
+            if (!lastCixing.equals(oneMeaning.getCiXing())) {
                 sb.append("\t");
                 greenList.add(sb.length());
                 sb.append(oneMeaning.getCiXing());

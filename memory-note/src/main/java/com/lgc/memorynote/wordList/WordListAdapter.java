@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.lgc.memorynote.R;
-import com.lgc.memorynote.wordDetail.MeaningUtil;
+import com.lgc.memorynote.base.UIUtil;
 import com.lgc.memorynote.wordDetail.Word;
 
 import java.util.List;
@@ -87,7 +87,7 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Word word = mWordList.get(position);
         itemHolder.tvName.setText(word.getName());
         itemHolder.tvStrange.setText(word.getStrangeDegree() + "");
-        MeaningUtil.showMeaningList(((ItemHolder)holder).tvMeaning, mWordList.get(position).getMeaningList());
+        UIUtil.showMeaningList(((ItemHolder)holder).tvMeaning, mWordList.get(position).getMeaningList());
     }
 
     @Override

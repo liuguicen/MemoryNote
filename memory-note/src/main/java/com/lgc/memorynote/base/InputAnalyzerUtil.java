@@ -1,6 +1,8 @@
-package com.lgc.memorynote.wordDetail;
+package com.lgc.memorynote.base;
 
-import java.util.Collection;
+import com.lgc.memorynote.wordDetail.Word;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * 单词数据的解析器
  */
-public class WordAnalyzer {
+public class InputAnalyzerUtil {
     /**
      * 解析成功
      */
@@ -34,10 +36,10 @@ public class WordAnalyzer {
      * @return 解析结果状态码
      */
     public static int analyzeMeaningFromUser(String originalMeaning, List<Word.WordMeaning> meaningList) {
-        if (originalMeaning == null || meaningList == null) return WordAnalyzer.IS_NULL;
+        if (originalMeaning == null || meaningList == null) return InputAnalyzerUtil.IS_NULL;
         originalMeaning = originalMeaning.trim();
         if (originalMeaning.isEmpty()) return IS_NULL;
-        int resultCode = WordAnalyzer.SUCCESS;
+        int resultCode = InputAnalyzerUtil.SUCCESS;
         /**
          * 惰性匹配，并且匹配换行
          */
@@ -56,7 +58,7 @@ public class WordAnalyzer {
                 } else if (tag.length() > 1){
                     boolean isValid = oneMeaning.setCiXing(tag);
                     if (!isValid) {
-                        resultCode = WordAnalyzer.TAG_FORMAT_ERROR;
+                        resultCode = InputAnalyzerUtil.TAG_FORMAT_ERROR;
                     }
                 }
             }
@@ -73,13 +75,13 @@ public class WordAnalyzer {
             meaningList.add(oneMeaning);
         }
         // 对于没加任何标签的，直接解析，简化用户输入
-        if (!originalMeaning.isEmpty() && !originalMeaning.contains("#") && !originalMeaning.contains("@")) {
+        if (!originalMeaning.isEmpty() && meaningList.isEmpty()) {
             Word.WordMeaning oneMeaning = new Word.WordMeaning();
             oneMeaning.setMeaning(originalMeaning);
             meaningList.add(oneMeaning);
         }
         if (meaningList.size() == 0) { // 没有获取到有效的词义，不设置数据
-            resultCode = WordAnalyzer.NO_VALID_MEANING;
+            resultCode = InputAnalyzerUtil.NO_VALID_MEANING;
         } else {
             Collections.sort(meaningList, new Comparator<Word.WordMeaning>() {
                 @Override
@@ -115,6 +117,26 @@ public class WordAnalyzer {
             }
         }
         return SUCCESS;
+    }
+
+
+
+    /**
+     * 解析输入的命令
+     */
+    public static List<String> analysisCommandInput(String inputCommand) {
+        List<String> commandList = new ArrayList<>();
+        if (inputCommand == null) return commandList;
+        inputCommand = inputCommand.trim();
+        if (inputCommand.isEmpty()) return commandList;
+        String[] temp = inputCommand.split(" ");
+        for (String one : temp) {
+            one = one.trim();
+            if (!one.isEmpty()) {
+
+            }
+        }
+        return commandList;
     }
 
 }

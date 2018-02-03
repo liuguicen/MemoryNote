@@ -1,5 +1,7 @@
 package com.lgc.memorynote.wordList;
 
+import com.lgc.memorynote.R;
+import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.wordDetail.Word;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ public class SortUtil {
     public static final String DEFAULT_SORT_COMMAND = Command._stra;
 
     public static String getHingString() {
-        return "请输入命令";
+        return MemoryNoteApplication.appContext.getString(R.string.caommand_hint);
     }
 
     @Deprecated

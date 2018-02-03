@@ -49,14 +49,18 @@ public class Word {
     public static class WordMeaning {
 
         public static final String TAG_GUAI = "guai";
+        public static final String TAG_GUAI_UI = "@怪";
+
         public static final String TAG_SHENG = "sheng";
+        public static final String TAG_SHENG_UI = "@生";
+
         public static final String CIXING_N = "n";
         public static final String CIXING_V = "v";
         public static final String CIXIN_ADJ = "adj";
         public static final String CIXING_ADV = "adv";
         private boolean isGuai = false;
         private boolean isSheng = false;
-        private String ciXing = "null";
+        private String ciXing;
         private String meaning;
 
 

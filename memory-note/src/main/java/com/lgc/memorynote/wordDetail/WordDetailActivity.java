@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lgc.memorynote.R;
+import com.lgc.memorynote.base.InputAnalyzerUtil;
+import com.lgc.memorynote.base.UIUtil;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.data.AppConstant;
 
@@ -33,7 +35,6 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     private TextView mTvStrangeDegree;
     private TextView mTvLastRememberTime;
     private Button mBtnEdit;
-    private Drawable mDefaultEditBack;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,8 +52,10 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         mTvStrangeDegree     = (TextView) findViewById(R.id.value_strange_degree);
         mTvLastRememberTime  = (TextView) findViewById(R.id.last_remember_time);
         mBtnEdit             = (Button) findViewById(R.id.btn_word_detail_edit);
-        mDefaultEditBack = mTvWordName.getBackground();
         mBtnEdit.setOnClickListener(this);
+        mTvWordName.setTag(mTvWordName.getTag());
+        mTvWordMeaning.setTag(mTvWordMeaning.getTag());
+        mTvSimilarWord.setTag(mTvSimilarWord.getTag());
         findViewById(R.id.add_strange_degree).setOnClickListener(this);
         findViewById(R.id.reduce_strange_degree).setOnClickListener(this);
 
@@ -93,7 +96,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         switchTvEditStyle(mTvWordName, isInEdit);
         switchTvEditStyle(mTvWordMeaning, isInEdit);
         switchTvEditStyle(mTvSimilarWord, isInEdit);
-        if (isInEdit && mTvSimilarWord.getText().toString().isEmpty()) {
+        if (!isInEdit && mTvSimilarWord.getText().toString().isEmpty()) {
             mTvSimilarWord.setVisibility(View.GONE);
         } else {
             mTvSimilarWord.setVisibility(View.VISIBLE);
@@ -108,7 +111,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     private void switchTvEditStyle(EditText tv, boolean isInEdit) {
         tv.setFocusable(isInEdit);
         if (isInEdit) {
-            tv.setBackground(mDefaultEditBack);
+            tv.setBackground(((Drawable) tv.getTag()));
         } else {
             tv.setBackground(null);
             tv.setHint("");
@@ -137,7 +140,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     @Override
     public void showWordMeaning(List<Word.WordMeaning> wordMeaningList) {
-
+        UIUtil.showMeaningList(mTvWordMeaning, wordMeaningList);
     }
 
 
@@ -194,6 +197,21 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
             case AppConstant.REPETITIVE_WORD:
                 msg = getString(R.string.word_repetitive);
 
+        }
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showAnalyzeFailed(int resultCode) {
+        String msg = null;
+        switch (resultCode) {
+            case InputAnalyzerUtil.NO_VALID_MEANING:
+                msg = "输入的词义无效";
+                break;
+            case InputAnalyzerUtil.IS_NULL:
+                return;
+            case InputAnalyzerUtil.TAG_FORMAT_ERROR:
+                return;
         }
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
