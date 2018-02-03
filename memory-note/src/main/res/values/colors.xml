@@ -6,4 +6,8 @@
     <color name="white">#ffffff</color>
     <color name="command_not_choosed">@android:color/holo_green_dark</color>
     <color name="command_chosen">@android:color/holo_red_light</color>
+    <color name="color_strange">#e84e40</color>
+    <color name="color_add_strange">#f69988</color>
+    <color name="color_word">#455ede</color>
+
 </resources>

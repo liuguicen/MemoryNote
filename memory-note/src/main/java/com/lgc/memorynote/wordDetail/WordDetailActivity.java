@@ -39,8 +39,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_detail);
-        mPresenter = new WordDetailPresenter(
-                new WordDetailDataSourceImpl(this.getApplicationContext()), this);
+        mPresenter = new WordDetailPresenter(this);
         initView();
         mPresenter.initAndShowData(getIntent()); // 要在View初始化之后调用
     }
