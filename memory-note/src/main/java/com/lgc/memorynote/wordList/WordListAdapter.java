@@ -86,7 +86,7 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ItemHolder itemHolder = ((ItemHolder) holder);
         Word word = mWordList.get(position);
         itemHolder.tvName.setText(word.getName());
-        itemHolder.tvStrange.setText(word.getStrangeDegree());
+        itemHolder.tvStrange.setText(word.getStrangeDegree() + "");
         MeaningUtil.showMeaningList(((ItemHolder)holder).tvMeaning, mWordList.get(position).getMeaningList());
     }
 

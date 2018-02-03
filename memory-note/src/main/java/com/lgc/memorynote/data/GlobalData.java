@@ -33,24 +33,28 @@ public class GlobalData {
 
     private GlobalData() {
         Logcat.d(System.currentTimeMillis());
+        queryAllWord();
+        getCommandList();
+
+        Logcat.d(System.currentTimeMillis());
+    }
+
+    private void queryAllWord() {
         MyDatabase database = MyDatabase.getInstance();
         List<String>  jasonList = new ArrayList<>();
         try {
             database.queryAllWord(jasonList);
+            Gson gson = new Gson();
+            for (String oneJsonWord : jasonList) {
+                mAllWord.add(gson.fromJson(oneJsonWord, Word.class));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             database.close();
         }
-        Gson gson = new Gson();
-        for (String oneJsonWord : jasonList) {
-            mAllWord.add(gson.fromJson(oneJsonWord, Word.class));
-        }
-
-        getCommandList();
-
-        Logcat.d(System.currentTimeMillis());
     }
+
     public static GlobalData getInstance() {
         if (mInstance == null) {
             mInstance = new GlobalData();
@@ -59,6 +63,9 @@ public class GlobalData {
     }
 
     public List<Word> getAllWord() {
+        if (mAllWord == null) {
+            queryAllWord();
+        }
         return mAllWord;
     }
 

@@ -54,7 +54,7 @@ public class SearchUtil {
      * @param wordList
      * @return
      */
-    public static List<Word> searchWord(String search, List<Word> wordList) {
+    public static List<Word> searchWordOrMeaning(String search, List<Word> wordList) {
         // 含有非单词字符，搜索词义
         if (Pattern.compile("[^a-zA-Z\\-]").matcher(search).find()) {
             for (int i = wordList.size() -1; i >= 0; i--) {
@@ -97,6 +97,20 @@ public class SearchUtil {
         }
         return wordList;
     }
+
+    /**
+     * @param name name传入合法的最好
+     */
+    public Word searchWordByName(List<Word> wordList, String name) {
+        if (wordList == null || name == null) return null;
+        for (Word w : wordList) {
+            if (name.equals(w.getName())) {
+                return w;
+            }
+        }
+        return null;
+    }
+
 
     public static Word getOneWordByName(List<Word> wordList, String name) {
         if (wordList != null) {

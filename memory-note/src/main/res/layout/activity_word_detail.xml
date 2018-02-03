@@ -37,7 +37,8 @@
         <EditText
             android:id="@+id/word_detail_meaning"
             style="@style/WordDetailEditItem"
-            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/word_detail_meaning_name" />
 
         <TextView
@@ -46,17 +47,14 @@
             android:text="@string/similar_form_word"
             app:layout_constraintTop_toBottomOf="@+id/word_detail_meaning" />
 
-        <LinearLayout
-            android:id="@+id/similar_word_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <EditText
+            android:id="@+id/similar_word"
+            style="@style/WordDetailEditItem"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/similar_form_word_name">
 
-            <EditText
-                android:id="@+id/similar_form_word"
-                style="@style/WordDetailEditItem" />
-        </LinearLayout>
+        </EditText>
 
         <TextView
             android:id="@+id/strange_degree_name"
@@ -64,7 +62,7 @@
             android:text="@string/strange_degree"
             app:layout_constraintBottom_toBottomOf="@+id/value_strange_degree"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/similar_word_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/similar_word" />
 
         <TextView
             android:id="@+id/reduce_strange_degree"
@@ -74,21 +72,21 @@
             android:minWidth="40dp"
             android:gravity="center"
             app:layout_constraintStart_toEndOf="@+id/strange_degree_name"
-            app:layout_constraintTop_toBottomOf="@+id/similar_word_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/similar_word" />
 
         <TextView
             android:id="@+id/value_strange_degree"
             style="@style/StrangeDegreeItem"
             android:text="0"
             app:layout_constraintStart_toEndOf="@+id/reduce_strange_degree"
-            app:layout_constraintTop_toBottomOf="@+id/similar_word_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/similar_word" />
 
         <TextView
             android:id="@+id/add_strange_degree"
             style="@style/StrangeDegreeItem"
             android:text="+"
             app:layout_constraintStart_toEndOf="@+id/value_strange_degree"
-            app:layout_constraintTop_toBottomOf="@+id/similar_word_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/similar_word" />
 
         <TextView
             android:id="@+id/last_remember_time_name"

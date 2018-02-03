@@ -7,5 +7,6 @@
     <string name="last_remember_time">上次记忆时间</string>
     <string name="edit">编辑</string>
     <string name="edit_save">保存</string>
-    <string name="word_format_erorr">\"单词或短语格式错误，保存失败\"</string>
+    <string name="word_format_erorr">单词或短语格式错误，保存失败</string>
+    <string name="word_repetitive">单词重复，保存失败"</string>
 </resources>

@@ -2,13 +2,8 @@ package com.lgc.memorynote;
 
 import com.google.gson.Gson;
 import com.lgc.memorynote.wordDetail.Word;
-import com.lgc.memorynote.wordDetail.WordAnalyzer;
-import com.lgc.memorynote.wordDetail.Phrase;
 
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -18,19 +13,19 @@ import java.util.List;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-        testAnalyzeSimilarWord();
+//        testAnalyzeSimilarWord();
     }
 
-    private void testAnalyzeSimilarWord() {
-        String similarWord = " credit parliament parliamentary  pre-cise accuracy virtue virtuosity distract rational ";
-        List<String> similarWorList = new ArrayList<>();
-        WordAnalyzer.analyzeSimilarWordsFromUser(similarWord, similarWorList);
-        Phrase phrase = new Phrase();
-        phrase.setInputSimilarWords(similarWord);
-        phrase.setSimilarWordList(similarWorList);
-        phrase.setPhrase("I am a phrase");
-        System.out.println(new Gson().toJson(phrase));
-    }
+//    private void testAnalyzeSimilarWord() {
+//        String similarWord = " credit parliament parliamentary  pre-cise accuracy virtue virtuosity distract rational ";
+//        List<String> similarWorList = new ArrayList<>();
+//        WordAnalyzer.analyzeSimilarWordsFromUser(similarWord, similarWorList);
+//        Phrase phrase = new Phrase();
+//        phrase.setInputSimilarWords(similarWord);
+//        phrase.setSimilarWordList(similarWorList);
+//        phrase.setPhrase("I am a phrase");
+//        System.out.println(new Gson().toJson(phrase));
+//    }
 
 
     void testAnalazeFromJson() {

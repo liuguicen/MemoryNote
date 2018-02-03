@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.lgc.memorynote.data.AppConstant;
+import com.lgc.memorynote.data.GlobalData;
+import com.lgc.memorynote.data.SearchUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,8 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         } else {
             String wordName = intent.getStringExtra(WordDetailActivity.INTENT_EXTRA_WORD_NAME);
             mWord = mDataSource.getWordByName(wordName);
+            if (mWord == null)
+                mWord = new Word();
             showData(false);
         }
     }
@@ -55,6 +59,8 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             while(Pattern.compile("[^a-zA-z- ]").matcher(inputName).find()) {
                 mView.showSaveFailed(AppConstant.WORD_FORMAT_ERROR);
                 return;
+            } if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), mWord.getName()) != null) {
+                mView.showSaveFailed(AppConstant.REPETITIVE_WORD);
             }
             mWord.setName(inputName);
         }

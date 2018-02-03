@@ -48,7 +48,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     private void initView() {
         mTvWordName          = (EditText) findViewById(R.id.word_detail_word);
         mTvWordMeaning       = (EditText) findViewById(R.id.word_detail_meaning);
-        mTvSimilarWord       = (EditText) findViewById(R.id.similar_form_word);
+        mTvSimilarWord       = (EditText) findViewById(R.id.similar_word);
         mTvStrangeDegree     = (TextView) findViewById(R.id.value_strange_degree);
         mTvLastRememberTime  = (TextView) findViewById(R.id.last_remember_time);
         mBtnEdit             = (Button) findViewById(R.id.btn_word_detail_edit);
@@ -187,11 +187,16 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     @Override
     public void showSaveFailed(int state) {
+        String msg = null;
         switch (state) {
             case AppConstant.WORD_FORMAT_ERROR:
-                Toast.makeText(this, R.string.word_format_erorr,Toast.LENGTH_LONG).show();
+                msg = getString(R.string.word_format_erorr);
                 break;
+            case AppConstant.REPETITIVE_WORD:
+                msg = getString(R.string.word_repetitive);
+
         }
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
     public static Intent getStartIntent(Context context) {

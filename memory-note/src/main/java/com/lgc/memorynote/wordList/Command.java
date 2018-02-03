@@ -97,7 +97,7 @@ public class Command {
         for (int i = commandList.size() - 1; i >= 0; i--) {
             String search = commandList.get(i);
             if (!search.startsWith(COMMAND_START)) {
-                SearchUtil.searchWord(search, resultList);
+                SearchUtil.searchWordOrMeaning(search, resultList);
                 commandList.remove(i);
             }
         }
