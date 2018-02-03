@@ -34,13 +34,13 @@ public class ExampleUnitTest {
 
 
     void testAnalazeFromJson() {
-        String jasonWord = "{\"word\":\"credit\",\"strangeDegree\":10,\"lastRememberTime\":1517469814369," +
+        String jasonWord = "{\"name\":\"credit\",\"strangeDegree\":10,\"lastRememberTime\":1517469814369," +
                 "\"meaningList\":" +
                 "[{\"ciXing\":\"v\",\"isGuai\":false,\"isSheng\":true,\"meaning\":\"相信，信任\"}," +
                 "{\"isGuai\":true, sdfs\"isSheng\":true,\"meaning\":\"赞颂，把...归功于\",\"ciXing\":\"v\"}," +
                 "{\"isGuai\":false,\"isSheng\":false,\"meaning\":\"信任，学分，声望\",\"ciXing\":\"n\"}]}\n";
         Word word1 = new Gson().fromJson(jasonWord, Word.class);
-        System.out.println(word1.getWord() + "\n" + new Gson().toJson(word1.getMeaningList()) + "\n"
+        System.out.println(word1.getName() + "\n" + new Gson().toJson(word1.getMeaningList()) + "\n"
                 + word1.getStrangeDegree() + "\n" + word1.getLastRememberTime());
     }
 

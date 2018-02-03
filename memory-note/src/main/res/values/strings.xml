@@ -6,5 +6,6 @@
     <string name="strange_degree">不熟悉度</string>
     <string name="last_remember_time">上次记忆时间</string>
     <string name="edit">编辑</string>
-    <string name="edit_finish">完成</string>
+    <string name="edit_save">保存</string>
+    <string name="word_format_erorr">\"单词或短语格式错误，保存失败\"</string>
 </resources>

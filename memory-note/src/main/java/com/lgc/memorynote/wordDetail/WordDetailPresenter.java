@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.lgc.memorynote.data.AppConstant;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by LiuGuicen on 2017/1/5 0005.
@@ -44,9 +47,17 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     }
 
     public void saveWordDate() {
-        String inputName = mView.getInputWordName();
         String inputMeaings = mView.getInputWordMeaning();
         String inputSimilars = mView.getInputSimilarWords();
+        if (mIsAdd) {
+            String inputName = mView.getInputWordName();
+            inputName = inputName.trim();
+            while(Pattern.compile("[^a-zA-z- ]").matcher(inputName).find()) {
+                mView.showSaveFailed(AppConstant.WORD_FORMAT_ERROR);
+                return;
+            }
+            mWord.setName(inputName);
+        }
         if (!TextUtils.equals(inputMeaings, mWord.getInputMeaning())) {
             mWord.setInputMeaning(inputMeaings);
         }
@@ -85,7 +96,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mView.showSimilarWords(mWord.getSimilarWordList());
         }
         if (!isSwitchEdit) { // 切换编辑的过程中，这些视图的数据不用变
-            mView.showWord(mWord.getWord());
+            mView.showWord(mWord.getName());
             mView.showStrangeDegree(mWord.getStrangeDegree());
             mView.showLastRememberTime(mWord.getLastRememberTime());
         }

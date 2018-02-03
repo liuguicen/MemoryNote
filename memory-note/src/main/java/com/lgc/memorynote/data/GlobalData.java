@@ -64,7 +64,7 @@ public class GlobalData {
 
     public void updateWord(com.lgc.memorynote.wordDetail.Word word) {
         try {
-            MyDatabase.getInstance().insertWord(word.getWord(), new Gson().toJson(word));
+            MyDatabase.getInstance().insertWord(word.getName(), new Gson().toJson(word));
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -74,7 +74,7 @@ public class GlobalData {
 
     public void deleteWord(Word word) {
         try {
-            MyDatabase.getInstance().deleteWord(word.getWord());
+            MyDatabase.getInstance().deleteWord(word.getName());
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

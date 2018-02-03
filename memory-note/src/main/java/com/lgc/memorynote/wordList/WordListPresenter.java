@@ -57,6 +57,6 @@ public class WordListPresenter implements WordListContract.Presenter {
 
     @Override
     public String getWordName(int adapterPosition) {
-        return mCurShowWordList.get(adapterPosition).getWord();
+        return mCurShowWordList.get(adapterPosition).getName();
     }
 }

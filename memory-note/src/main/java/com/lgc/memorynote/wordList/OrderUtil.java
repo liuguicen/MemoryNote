@@ -73,9 +73,9 @@ public class OrderUtil {
                     } else if (SIMILAR_NUMBER.contains(order)) {
                         re = Word.compareSimilarNumber(o1.getSimilarWordList(), o2.getSimilarWordList());
                     } else if (DICTIONARY.contains(order)) {
-                        re = Word.compareDictionary(o1.getWord(), o2.getWord());
+                        re = Word.compareDictionary(o1.getName(), o2.getName());
                     } else if (LENGTH.contains(order)) {
-                        re = Word.compareLength(o1.getWord(), o2.getWord());
+                        re = Word.compareLength(o1.getName(), o2.getName());
                     }
                     if (re != 0) return re;
                 }

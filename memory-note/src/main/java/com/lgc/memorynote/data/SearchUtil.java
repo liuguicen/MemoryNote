@@ -84,7 +84,7 @@ public class SearchUtil {
         } else {
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
-                String name = word.getWord();
+                String name = word.getName();
                 if (name != null && name.contains(search)) {
                     if (name.equals(search)) {
                         wordList.remove(i);
@@ -101,7 +101,7 @@ public class SearchUtil {
     public static Word getOneWordByName(List<Word> wordList, String name) {
         if (wordList != null) {
             for (Word word : wordList) {
-                if (TextUtils.equals(word.getWord(), name))
+                if (TextUtils.equals(word.getName(), name))
                     return word;
             }
         }

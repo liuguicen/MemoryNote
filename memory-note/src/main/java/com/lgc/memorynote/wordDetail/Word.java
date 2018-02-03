@@ -27,7 +27,7 @@ import java.util.List;
  * **********************************/
 public class Word {
 
-    public String word;
+    public String name;
     public List<WordMeaning> meaningList = new ArrayList<>();
     public int strangeDegree = 0;
     public List<String> similarWordList;
@@ -129,7 +129,7 @@ public class Word {
     @Override
     public boolean equals(Object obj) {
         if (obj == null || this.getClass() != obj.getClass()) return false;
-        return this == obj || TextUtils.equals(this.word, ((Word) obj).word);
+        return this == obj || TextUtils.equals(this.name, ((Word) obj).name);
     }
 
     public static int compareStrangeDegree(int s1, int s2) {
@@ -158,8 +158,8 @@ public class Word {
     }
 
 
-    public void setWord(String word) {
-        this.word = word;
+    public void setName(String word) {
+        this.name = word;
     }
 
     public void setStrangeDegree(int strangeDegree) {
@@ -186,8 +186,8 @@ public class Word {
         this.inputSimilarWords = inputSimilarWords;
     }
 
-    public String getWord() {
-        return word;
+    public String getName() {
+        return name;
     }
 
     public int getStrangeDegree() {

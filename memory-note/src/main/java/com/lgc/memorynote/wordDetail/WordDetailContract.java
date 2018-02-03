@@ -14,6 +14,7 @@ import java.util.List;
 
 public interface WordDetailContract {
     interface View extends BaseView<Presenter>, android.view.View.OnClickListener {
+
         void showWord(String word);
 
         void showWordMeaning(List<Word.WordMeaning> wordMeaningList);
@@ -33,6 +34,8 @@ public interface WordDetailContract {
         String getInputWordName();
         String getInputWordMeaning();
         String getInputSimilarWords();
+
+        void showSaveFailed(int state);
     }
 
     interface Presenter extends BasePresenter {

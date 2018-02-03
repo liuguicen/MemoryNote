@@ -13,9 +13,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lgc.memorynote.R;
 import com.lgc.memorynote.base.Util;
+import com.lgc.memorynote.data.AppConstant;
 
 import java.util.List;
 
@@ -98,7 +100,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
             mTvSimilarWord.setVisibility(View.VISIBLE);
         }
         if (isInEdit) {
-            mBtnEdit.setText(getString(R.string.edit_finish));
+            mBtnEdit.setText(getString(R.string.edit_save));
         } else {
             mBtnEdit.setText(getString(R.string.edit));
         }
@@ -181,6 +183,15 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     @Override
     public void setPresenter(WordDetailContract.Presenter presenter) {
 
+    }
+
+    @Override
+    public void showSaveFailed(int state) {
+        switch (state) {
+            case AppConstant.WORD_FORMAT_ERROR:
+                Toast.makeText(this, R.string.word_format_erorr,Toast.LENGTH_LONG).show();
+                break;
+        }
     }
 
     public static Intent getStartIntent(Context context) {

@@ -36,7 +36,7 @@ public class Command {
 
     /*********************** 过滤相关 *******************************/
     /** 只显示单词 */
-    public static final String _word   = "-word";
+    public static final String _word   = "-name";
     public static final String _word_ui   = "单词";
     /** 只显示短语 */
     public static final String _phr    = "-phr";
