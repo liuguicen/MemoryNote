@@ -12,7 +12,9 @@ import com.lgc.memorynote.wordList.Command;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -26,6 +28,7 @@ public class GlobalData {
     private static List<Word> mAllWord = new ArrayList<>();
     private static GlobalData mInstance = new GlobalData();
     private List<String> mCommandList;
+    private Map<String, String> mUIComandMap = new HashMap<>();
     private static final String SP_COMMAND_LIST = "command_string";
 
     private GlobalData() {
@@ -88,8 +91,13 @@ public class GlobalData {
             } else {
                 mCommandList = new Gson().fromJson(jsonCommand,  new TypeToken<List<String>>(){}.getType());
             }
+
         }
         return mCommandList;
+    }
+
+    public Map<String, String> getUIComandMap() {
+        return Command.UICommandMap;
     }
 
     public void updateCommandSort(List<String> inputCommands) {

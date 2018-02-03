@@ -5,8 +5,9 @@ import com.lgc.memorynote.wordDetail.Word;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 小命令行系统中的命令
@@ -17,33 +18,47 @@ public class Command {
     /************************* 排序相关的命令***************************/
     /** 按不熟悉度 */
     public static final String _stra  = "-stra";
+    public static final String _stra_ui  = "不熟";
     /** 按最后记忆时间 */
     public static final String _last  = "-last";
+    public static final String _last_ui  = "时间";
     /** 按字典序 */
     public static final String _dict  = "-dict";
+    public static final String _dict_ui  = "字母";
     /** 按长度 */
     public static final String _len   = "-len";
-
+    public static final String _len_ui   = "长度";
 
     /** 反向排序 */
     public static final String _rev   = "-rev";
-
+    public static final String _rev_ui   = "反向";
 
 
     /*********************** 过滤相关 *******************************/
     /** 只显示单词 */
     public static final String _word   = "-word";
+    public static final String _word_ui   = "单词";
     /** 只显示短语 */
     public static final String _phr    = "-phr";
+    public static final String _phr_ui    = "短语";
     /** 只显示生的单词 */
-    public static final String _sheng =  "-" + Word.WordMeaning.TAG_SHENG;
+    public static final String _sheng  =  "-" + Word.WordMeaning.TAG_SHENG;
+    public static final String _sheng_ui  =  "生的";
     /** 只显示词义怪的词 */
     public static final String _guai   =  "-" + Word.WordMeaning.TAG_GUAI;
+    public static final String _guai_ui   =  "怪的";
     /** 把近似的词放到一起 */
     public static final String _sim    = "-sim";
-    private List<Word> resultList;
+    public static final String _sim_ui    =  "相似";
 
-    public static List<String> commadList = Arrays.asList(_stra, _last, _dict, _len, _rev, _word, _phr, _sheng, _guai, _sim);
+    public static final List<String> commadList = Arrays.asList(_stra, _last, _dict, _len, _rev, _word, _phr, _sheng, _guai, _sim);
+    public static final Map<String, String> UICommandMap = new HashMap<String, String>(){{
+            put(_stra, _stra_ui);  put(_last, _last_ui);  put(_dict, _dict_ui);  put(_len ,_len_ui);
+            put(_rev, _rev_ui);    put(_word, _word_ui);  put(_phr, _phr_ui);    put(_sheng, _sheng_ui);
+            put(_guai, _guai_ui);  put(_sim, _sim_ui);
+
+    }};
+
 
     /**
      * 解析输入的命令

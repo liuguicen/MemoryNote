@@ -33,12 +33,10 @@ public class WordListContract {
          */
         void refreshWordList(List<Word> resultList);
 
-        void showAddOneCommand(String command);
-
         /**
          * 命令优先级改变了，重新显示
          */
-        void updateCommandText(List<String> commandList);
+        void updateCommandText(List<String> commandList, List<String> chosenList);
     }
     interface Presenter extends BasePresenter {
         /**

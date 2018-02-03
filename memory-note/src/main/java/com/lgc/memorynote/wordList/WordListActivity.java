@@ -1,24 +1,24 @@
 package com.lgc.memorynote.wordList;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextUtils;
+import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
 
 import com.lgc.memorynote.R;
-import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.wordDetail.Word;
 import com.lgc.memorynote.wordDetail.WordDetailActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WordListActivity extends AppCompatActivity implements WordListContract.View{
@@ -98,24 +98,42 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     }
 
     @Override
-    public void updateCommandText(List<String> commandList) {
-        Logcat.d();
+    public void updateCommandText(List<String> commandList, List<String> chosenList) {
+        // 转话层UI上的字符串
+        List<Pair<String, String>> UICommandList = new ArrayList<>();
+        for (String one : commandList) {
+            UICommandList.add(
+                    new Pair<>(Command.UICommandMap.get(one), one));
+        }
+
+        // 构造出所有命令的字符串
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < commandList.size(); i++) {
-            sb.append(commandList.get(i));
-            if (i < commandList.size() -1) {
-                sb.append("   |   ");
+        sb.append("  ");
+        for (int i = 0; i < UICommandList.size(); i++) {
+            sb.append(UICommandList.get(i).first);
+            if (i < UICommandList.size() -1) {
+                if (i % 4 == 3) {
+                    sb.append("\n  ");
+                } else {
+                    sb.append("     ");
+                }
             }
         }
         String commandString = sb.toString();
+
+        // 用Spanable装饰
         SpannableString ss = new SpannableString(commandString);
-        for (int i = 0; i < commandList.size(); i++) {
-            String command = commandList.get(i);
-            String UIComa
+        for (int i = 0; i < UICommandList.size(); i++) {
+            Pair<String, String> pair = UICommandList.get(i);
+            String UICommand = pair.first;
+            String command = pair.second;
             // i 对应于commanList中的
-            int startId = commandString.indexOf(command);
-            int endId = startId + command.length();
-            ss.setSpan(new clickSpan(command), startId, endId, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            int startId = commandString.indexOf(UICommand);
+            int endId = startId + UICommand.length();
+            if (startId >= 0 && endId <= commandString.length()) {
+                ss.setSpan(new clickSpan(command, chosenList.contains(command)),
+                        startId, endId, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            }
         }
         mTvCommand.setMovementMethod(LinkMovementMethod.getInstance());
         mTvCommand.setText(ss);
@@ -157,24 +175,28 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         mWordListAdapter.setWordList(resultList);
     }
 
-    @SuppressLint("SetTextI18n")
-    @Override
-    public void showAddOneCommand(String command) {
-        String lastCommand = mTvInputCommand.getText().toString().trim();
-        if (!TextUtils.isEmpty(lastCommand))
-            lastCommand += " ";
-        mTvInputCommand.setText(lastCommand + command);
-    }
+    public class clickSpan extends ClickableSpan {
+        private final String mCommand;
+        private final boolean mIsChosen;
 
-    public class clickSpan extends ClickableSpan{
-        private String mCommand;
-        public clickSpan(String command) {
+        public clickSpan(String command, boolean isChosen) {
             this.mCommand = command;
+            mIsChosen = isChosen;
         }
 
         @Override
         public void onClick(View widget) {
             mPresenter.addOneCommand(mCommand);
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            ds.setUnderlineText(false); //去掉下划线
+            if (mIsChosen) {
+                ds.setColor(getColor(R.color.command_chosen));
+            } else {
+                ds.setColor(getColor(R.color.command_not_choosed));
+            }
         }
     }
 }

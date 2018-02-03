@@ -34,11 +34,13 @@ public class WordListPresenter implements WordListContract.Presenter {
     }
 
     @Override
-    public void addOneCommand(String command) {
-        if (!mInputCommandList.contains(command)) {
-            mInputCommandList.add(command);
-            mView.showAddOneCommand(command);
+    public void addOneCommand(String UICommand) {
+        if (!mInputCommandList.contains(UICommand)) {
+            mInputCommandList.add(UICommand);
+        } else {
+            mInputCommandList.remove(UICommand);
         }
+        mView.updateCommandText(GlobalData.getInstance().getCommandList(), mInputCommandList);
     }
 
     /**
@@ -50,7 +52,7 @@ public class WordListPresenter implements WordListContract.Presenter {
         mView.refreshWordList(mCurShowWordList);
         GlobalData.getInstance().updateCommandSort(mInputCommandList);
         mInputCommandList.clear();
-        mView.updateCommandText(GlobalData.getInstance().getCommandList());
+        mView.updateCommandText(GlobalData.getInstance().getCommandList(), mInputCommandList);
     }
 
     @Override

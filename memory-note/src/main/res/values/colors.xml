@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
+    <color name="command_not_choosed">@android:color/holo_green_dark</color>
+    <color name="command_chosen">@android:color/holo_red_light</color>
 </resources>
