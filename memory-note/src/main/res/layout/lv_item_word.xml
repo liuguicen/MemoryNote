@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lv_item_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,13 +9,38 @@
         android:id="@+id/lv_item_word_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="text"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lv_item_word_reduce_strange"
+        style="@style/LvItemWordStrange"
+        android:text="----"
+        app:layout_constraintEnd_toStartOf="@+id/lv_item_word_strange"
+        android:textSize="@dimen/text_size_big" />
+
+    <TextView
+        android:id="@+id/lv_item_word_strange"
+        style="@style/LvItemWordStrange"
+        app:layout_constraintEnd_toStartOf="@+id/lv_item_word_add_strange"
+        android:text="rrrrrrrrrt"/>
+
+    <TextView
+        android:id="@+id/lv_item_word_add_strange"
+        style="@style/LvItemWordStrange"
+        android:textSize="@dimen/text_size_big"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="+"/>
 
     <TextView
         android:id="@+id/lv_item_word_meaning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="text"
+        android:textSize="@dimen/text_size_small"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lv_item_word_name"/>
+        app:layout_constraintTop_toBottomOf="@+id/lv_item_word_name" />
 </android.support.constraint.ConstraintLayout>

@@ -22,7 +22,7 @@ public class WordDetailDataSourceImpl implements WordDetailDataSource {
 
     @Override
     public void addWord(Word word) {
-        GlobalData.getInstance().updateWord(word);
+        GlobalData.getInstance().addWord(word);
     }
 
     @Override

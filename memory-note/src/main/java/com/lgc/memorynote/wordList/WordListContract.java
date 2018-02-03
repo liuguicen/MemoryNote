@@ -52,5 +52,9 @@ public class WordListContract {
         void reorderWordList(String search);
 
         String getWordName(int adapterPosition);
+
+        void addStrange(int position);
+
+        void reduceStrange(int position);
     }
 }

@@ -93,18 +93,33 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
     private void initData() {
         mWordListAdapter = new WordListAdapter(this);
-        mWordListAdapter.setClickListener(new WordListAdapter.ItemClickListener() {
+        mWordListAdapter.setItemClickListener(new WordListAdapter.ItemClickListener() {
             @Override
-            public void onItemClick(WordListAdapter.ItemHolder itemHolder) {
-                Intent intent  = WordDetailActivity.getStartIntent(WordListActivity.this);
-                intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, false);
-                intent.putExtra(WordDetailActivity.INTENT_EXTRA_WORD_NAME,
-                        mPresenter.getWordName(itemHolder.getAdapterPosition()));
-                startActivity(intent);
+            public void onItemClick(View v, WordListAdapter.ItemHolder itemHolder) {
+                int position = itemHolder.getAdapterPosition();
+                switch (v.getId()) {
+                    case R.id.lv_item_layout:
+                         startActivityWordDetail(mPresenter.getWordName(position));
+                         break;
+                    case R.id.lv_item_word_add_strange:
+                        mPresenter.addStrange(position);
+                        mWordListAdapter.notifyItemChanged(position);
+                        break;
+                    case R.id.lv_item_word_reduce_strange:
+                        mPresenter.reduceStrange(position);
+                        mWordListAdapter.notifyItemChanged(position);
+                }
             }
         });
         mPresenter.start();
         mWordListView.setAdapter(mWordListAdapter);
+    }
+
+    private void startActivityWordDetail(String wordName) {
+        Intent intent = WordDetailActivity.getStartIntent(WordListActivity.this);
+        intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, false);
+        intent.putExtra(WordDetailActivity.INTENT_EXTRA_WORD_NAME, wordName);
+        startActivity(intent);
     }
 
     @Override

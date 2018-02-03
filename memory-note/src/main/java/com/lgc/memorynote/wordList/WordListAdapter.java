@@ -11,7 +11,6 @@ import com.lgc.memorynote.R;
 import com.lgc.memorynote.wordDetail.MeaningUtil;
 import com.lgc.memorynote.wordDetail.Word;
 
-
 import java.util.List;
 
 /**
@@ -30,18 +29,18 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static int ITEM = 1;
 
     public interface ItemClickListener {
-        void onItemClick(ItemHolder itemHolder);
+        void onItemClick(View v, ItemHolder itemHolder);
     }
 
     public interface LongClickListener {
-        boolean onItemLongClick(ItemHolder itemHolder);
+        boolean onItemLongClick(View v, ItemHolder itemHolder);
     }
 
-    ItemClickListener clickListener;
-    LongClickListener longClickListener;
+    private ItemClickListener itemClickListener;
+    private LongClickListener longClickListener;
 
-    public void setClickListener(ItemClickListener clickListenner) {
-        this.clickListener = clickListenner;
+    public void setItemClickListener(ItemClickListener clickListenner) {
+        this.itemClickListener = clickListenner;
     }
 
     public void setLongClickListener(LongClickListener longClickListenner) {
@@ -70,13 +69,13 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clickListener.onItemClick(itemHolder);
+                itemClickListener.onItemClick(v, itemHolder);
             }
         });
         layout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                return longClickListener.onItemLongClick(itemHolder);
+                return longClickListener.onItemLongClick(v, itemHolder);
             }
         });
         return itemHolder;
@@ -84,8 +83,11 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((ItemHolder) holder).ivName.setText(mWordList.get(position).getName());
-        MeaningUtil.showMeaningList(((ItemHolder)holder).ivMeaning, mWordList.get(position).getMeaningList());
+        ItemHolder itemHolder = ((ItemHolder) holder);
+        Word word = mWordList.get(position);
+        itemHolder.tvName.setText(word.getName());
+        itemHolder.tvStrange.setText(word.getStrangeDegree());
+        MeaningUtil.showMeaningList(((ItemHolder)holder).tvMeaning, mWordList.get(position).getMeaningList());
     }
 
     @Override
@@ -97,14 +99,33 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return count;
     }
 
-    public static class ItemHolder extends RecyclerView.ViewHolder {
-        TextView ivMeaning;
-        TextView ivName;
+    public class ItemHolder extends RecyclerView.ViewHolder {
+        TextView tvMeaning;
+        TextView tvName;
+        TextView tvStrange;
+        TextView tvAddStrange;
+        TextView tvReduceStrange;
 
         public ItemHolder(View itemView) {
             super(itemView);
-            ivName = (TextView) itemView.findViewById(R.id.lv_item_word_name);
-            ivMeaning = (TextView) itemView.findViewById(R.id.lv_item_word_meaning);
+            tvName = (TextView) itemView.findViewById(R.id.lv_item_word_name);
+            tvMeaning = (TextView) itemView.findViewById(R.id.lv_item_word_meaning);
+            tvStrange = (TextView) itemView.findViewById(R.id.lv_item_word_strange);
+            tvAddStrange = (TextView)itemView.findViewById(R.id.lv_item_word_add_strange);
+            tvReduceStrange = (TextView)itemView.findViewById(R.id.lv_item_word_reduce_strange);
+
+            tvReduceStrange.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onItemClick(v, ItemHolder.this);
+                }
+            });
+            tvAddStrange.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onItemClick(v, ItemHolder.this);
+                }
+            });
         }
     }
 }

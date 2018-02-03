@@ -62,9 +62,22 @@ public class GlobalData {
         return mAllWord;
     }
 
+    public void addWord(Word word) {
+        try {
+            MyDatabase.getInstance().insertWord(word.getName(), new Gson().toJson(word));
+            mAllWord.add(word);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Logcat.d(e.getMessage());
+        } finally {
+            MyDatabase.getInstance().close();
+        }
+    }
+
     public void updateWord(Word word) {
         try {
             MyDatabase.getInstance().insertWord(word.getName(), new Gson().toJson(word));
+            // 更新，内存中的已经更新了，不用在更新
         } catch (IOException e) {
             e.printStackTrace();
             Logcat.d(e.getMessage());
@@ -76,6 +89,7 @@ public class GlobalData {
     public void deleteWord(Word word) {
         try {
             MyDatabase.getInstance().deleteWord(word.getName());
+            mAllWord.remove(word);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -88,7 +102,7 @@ public class GlobalData {
             SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences("user_habit", Context.MODE_PRIVATE);
             String jsonCommand = sp.getString(SP_COMMAND_LIST, "");
             if (jsonCommand.isEmpty()) {
-                mCommandList = Command.commadList;
+                mCommandList = Command.commandList;
             } else {
                 mCommandList = new Gson().fromJson(jsonCommand,  new TypeToken<List<String>>(){}.getType());
             }

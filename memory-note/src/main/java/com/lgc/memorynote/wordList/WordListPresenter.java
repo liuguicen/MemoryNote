@@ -56,7 +56,7 @@ public class WordListPresenter implements WordListContract.Presenter {
         }
         mCurShowWordList = Command.orderByCommand(mInputCommandList, GlobalData.getInstance().getAllWord());
         mView.refreshWordList(mCurShowWordList);
-        GlobalData.getInstance().updateCommandSort(mInputCommandList);
+        // GlobalData.getInstance().updateCommandSort(mInputCommandList);
         mInputCommandList.clear();
         mView.updateCommandText(GlobalData.getInstance().getCommandList(), mInputCommandList);
     }
@@ -64,5 +64,17 @@ public class WordListPresenter implements WordListContract.Presenter {
     @Override
     public String getWordName(int adapterPosition) {
         return mCurShowWordList.get(adapterPosition).getName();
+    }
+
+    @Override
+    public void addStrange(int position) {
+        Word word = mCurShowWordList.get(position);
+        word.setStrangeDegree(word.strangeDegree + 1);
+    }
+
+    @Override
+    public void reduceStrange(int position) {
+        Word word = mCurShowWordList.get(position);
+        word.setStrangeDegree(word.strangeDegree - 1);
     }
 }

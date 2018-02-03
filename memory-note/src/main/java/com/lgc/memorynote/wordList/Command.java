@@ -4,7 +4,6 @@ import com.lgc.memorynote.data.SearchUtil;
 import com.lgc.memorynote.wordDetail.Word;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +56,8 @@ public class Command {
     public static final String _sim    = COMMAND_START + "sim";
     public static final String _sim_ui    =  "相似";
 
-    public static final List<String> commadList = Arrays.asList(_stra, _last, _dict, _len, _sn, _rev, _word, _phr, _sheng, _guai, _sim);
+    public static final List<String> commandList = new ArrayList<String>(){{
+        add(_stra); add(_last); add(_dict); add(_len); add(_sn); add(_rev); add(_word); add(_phr); add(_sheng); add(_guai); add(_sim);}};
     public static final Map<String, String> UICommandMap = new HashMap<String, String>(){{
             put(_stra, _stra_ui);  put(_last, _last_ui);  put(_dict, _dict_ui);  put(_len ,_len_ui);
             put(_sn, _sn_ui);
@@ -107,14 +107,14 @@ public class Command {
             String grep = commandList.remove(i);
             if (_phr.equals(grep)) {
                 SearchUtil.grepNotPhrase(wordList);
-                commandList.remove(i);
             } else if (_word.equals(grep)) {
                 SearchUtil.grepNotWord(wordList);
-                commandList.remove(i);
             } else if (_sheng.equals(grep) || (_guai.equals(grep))) {
                 SearchUtil.grepNoTag(_guai.substring(1, _guai.length()),wordList);
-                commandList.remove(i);
+            } else {
+                commandList.add(i, grep);
             }
+
         }
 
         // 第三步，进行排序操作
