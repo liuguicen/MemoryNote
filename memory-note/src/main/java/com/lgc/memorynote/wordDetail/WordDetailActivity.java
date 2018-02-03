@@ -3,6 +3,7 @@ package com.lgc.memorynote.wordDetail;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     private TextView mTvStrangeDegree;
     private TextView mTvLastRememberTime;
     private Button mBtnEdit;
+    private Drawable mDefaultEditBack;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         mTvStrangeDegree     = (TextView) findViewById(R.id.value_strange_degree);
         mTvLastRememberTime  = (TextView) findViewById(R.id.last_remember_time);
         mBtnEdit             = (Button) findViewById(R.id.btn_word_detail_edit);
+        mDefaultEditBack = mTvWordName.getBackground();
         mBtnEdit.setOnClickListener(this);
         findViewById(R.id.add_strange_degree).setOnClickListener(this);
         findViewById(R.id.reduce_strange_degree).setOnClickListener(this);
@@ -85,14 +88,29 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     @Override
-    public void switchEdit(boolean isInEdit) {
-        mTvWordName.setFocusable(isInEdit);
-        mTvWordMeaning.setFocusable(isInEdit);
-        mTvSimilarWord.setFocusable(isInEdit);
+    public void switchEditStyle(boolean isInEdit) {
+        switchTvEditStyle(mTvWordName, isInEdit);
+        switchTvEditStyle(mTvWordMeaning, isInEdit);
+        switchTvEditStyle(mTvSimilarWord, isInEdit);
+        if (isInEdit && mTvSimilarWord.getText().toString().isEmpty()) {
+            mTvSimilarWord.setVisibility(View.GONE);
+        } else {
+            mTvSimilarWord.setVisibility(View.VISIBLE);
+        }
         if (isInEdit) {
             mBtnEdit.setText(getString(R.string.edit_finish));
         } else {
             mBtnEdit.setText(getString(R.string.edit));
+        }
+    }
+
+    private void switchTvEditStyle(EditText tv, boolean isInEdit) {
+        tv.setFocusable(isInEdit);
+        if (isInEdit) {
+            tv.setBackground(mDefaultEditBack);
+        } else {
+            tv.setBackground(null);
+            tv.setHint("");
         }
     }
 
@@ -121,6 +139,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     }
 
+
     @Override
     public void showInputMeaning(String inputMeaning) {
 
@@ -128,7 +147,13 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     @Override
     public void showSimilarWords(List<String> similarWordList) {
-
+        if (similarWordList != null && similarWordList.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (String similar : similarWordList) {
+               sb.append(similar + "   ");
+            }
+            mTvSimilarWord.setText(sb.toString());
+        }
     }
 
     @Override

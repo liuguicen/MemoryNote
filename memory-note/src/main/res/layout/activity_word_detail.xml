@@ -8,14 +8,16 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp">
         <EditText
             android:id="@+id/word_detail_word"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/please_input_word"
             app:layout_constraintStart_toStartOf="parent"
+
+            android:textSize="25sp"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
@@ -35,8 +37,8 @@
         <EditText
             android:id="@+id/word_detail_meaning"
             style="@style/WordDetailEditItem"
-            app:layout_constraintStart_toEndOf="@+id/word_detail_meaning_name"
-            app:layout_constraintTop_toBottomOf="@+id/word_detail_word" />
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/word_detail_meaning_name" />
 
         <TextView
             android:id="@+id/similar_form_word_name"
@@ -97,6 +99,7 @@
         <TextView
             android:id="@+id/last_remember_time"
             style="@style/WordDetailEditItem"
+            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/last_remember_time_name"/>
     </android.support.constraint.ConstraintLayout>

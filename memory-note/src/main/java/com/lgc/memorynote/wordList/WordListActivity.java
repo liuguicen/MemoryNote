@@ -35,8 +35,15 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_list);
         mPresenter = new WordListPresenter(this);
+        //test();
         intView();
         initData();
+    }
+
+    private void test() {
+        Intent intent  = WordDetailActivity.getStartIntent(WordListActivity.this);
+        intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, true);
+        startActivity(intent);
     }
 
     private void intView() {
@@ -60,6 +67,8 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                 } else {
                     mTvCommand.setMaxLines(1);
                 }
+                mTvCommand.setVisibility(View.GONE);
+                mTvCommand.setVisibility(View.VISIBLE);
                 mTvCommand.requestLayout();
             }
         });
@@ -95,13 +104,14 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         for (int i = 0; i < commandList.size(); i++) {
             sb.append(commandList.get(i));
             if (i < commandList.size() -1) {
-                sb.append(" | ");
+                sb.append("   |   ");
             }
         }
         String commandString = sb.toString();
         SpannableString ss = new SpannableString(commandString);
         for (int i = 0; i < commandList.size(); i++) {
             String command = commandList.get(i);
+            String UIComa
             // i 对应于commanList中的
             int startId = commandString.indexOf(command);
             int endId = startId + command.length();

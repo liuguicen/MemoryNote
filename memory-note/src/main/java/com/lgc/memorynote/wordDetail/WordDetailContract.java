@@ -28,7 +28,7 @@ public interface WordDetailContract {
 
         void showLastRememberTime(long lastRememberTime);
 
-        void switchEdit(boolean mIsInEdit);
+        void switchEditStyle(boolean mIsInEdit);
 
         String getInputWordName();
         String getInputWordMeaning();

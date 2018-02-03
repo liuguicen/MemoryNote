@@ -73,13 +73,13 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             saveWordDate();
         }
         showData(true);
-        mView.switchEdit(mIsInEdit);
+        mView.switchEditStyle(mIsInEdit);
     }
 
     private void showData(boolean isSwitchEdit) {
         if (mIsInEdit) {
-            mView.showInputSimilarWords(mWord.getInputSimilarWords());
             mView.showInputMeaning(mWord.getInputMeaning());
+            mView.showInputSimilarWords(mWord.getInputSimilarWords());
         } else {
             mView.showWordMeaning(mWord.getMeaningList());
             mView.showSimilarWords(mWord.getSimilarWordList());

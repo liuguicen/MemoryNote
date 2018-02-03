@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">WordNote</string>
     <string name="please_input_word">请输入单词</string>
-    <string name="word_meaning">词义:</string>
-    <string name="similar_form_word">形近词:</string>
-    <string name="strange_degree">不熟悉度:</string>
-    <string name="last_remember_time">上次记忆时间:</string>
+    <string name="word_meaning">词义</string>
+    <string name="similar_form_word">形近词</string>
+    <string name="strange_degree">不熟悉度</string>
+    <string name="last_remember_time">上次记忆时间</string>
     <string name="edit">编辑</string>
     <string name="edit_finish">完成</string>
 </resources>
