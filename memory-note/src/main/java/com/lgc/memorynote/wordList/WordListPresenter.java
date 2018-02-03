@@ -29,18 +29,18 @@ public class WordListPresenter implements WordListContract.Presenter {
 
     @Override
     public void start() {
-        mCurShowWordList = GlobalData.getInstance().getAllWord();
+        mCurShowWordList = GlobalData.getInstance().getCurWords();
         mView.showWordList(mCurShowWordList);
         mInputCommandList.add(SortUtil.DEFAULT_SORT_COMMAND);
         reorderWordList(null);
     }
 
     @Override
-    public void addOneCommand(String UICommand) {
-        if (!mInputCommandList.contains(UICommand)) {
-            mInputCommandList.add(UICommand);
+    public void addOneCommand(String command) {
+        if (!mInputCommandList.contains(command)) {
+            mInputCommandList.add(command);
         } else {
-            mInputCommandList.remove(UICommand);
+            mInputCommandList.remove(command);
         }
         mView.updateCommandText(GlobalData.getInstance().getCommandList(), mInputCommandList);
     }
@@ -55,6 +55,7 @@ public class WordListPresenter implements WordListContract.Presenter {
             mInputCommandList.add(search);
         }
         mCurShowWordList = Command.orderByCommand(mInputCommandList, GlobalData.getInstance().getAllWord());
+        GlobalData.getInstance().setCurWords(mCurShowWordList);
         mView.refreshWordList(mCurShowWordList);
         // GlobalData.getInstance().updateCommandSort(mInputCommandList);
         mInputCommandList.clear();
@@ -70,11 +71,13 @@ public class WordListPresenter implements WordListContract.Presenter {
     public void addStrange(int position) {
         Word word = mCurShowWordList.get(position);
         word.setStrangeDegree(word.strangeDegree + 1);
+        GlobalData.getInstance().updateWord(word);
     }
 
     @Override
     public void reduceStrange(int position) {
         Word word = mCurShowWordList.get(position);
         word.setStrangeDegree(word.strangeDegree - 1);
+        GlobalData.getInstance().updateWord(word);
     }
 }

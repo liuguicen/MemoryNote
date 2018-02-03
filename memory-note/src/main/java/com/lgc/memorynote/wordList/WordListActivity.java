@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.lgc.memorynote.R;
+import com.lgc.memorynote.base.Logcat;
+import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.wordDetail.Word;
 import com.lgc.memorynote.wordDetail.WordDetailActivity;
 
@@ -29,6 +31,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     private TextView mTvCommand;
     private TextView mTvInputCommand;
     private WordListPresenter mPresenter;
+    private Util.RepetitiveEventFilter searchFilter = new Util.RepetitiveEventFilter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +79,11 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         findViewById(R.id.btn_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickSearch(mTvInputCommand.getText().toString());
+                if (!searchFilter.isDoubleClick(1000)) {
+                    onClickSearch(mTvInputCommand.getText().toString());
+                } else {
+                    Logcat.d("repetitive click");
+                }
             }
         });
 

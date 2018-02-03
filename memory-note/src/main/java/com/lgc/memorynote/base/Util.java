@@ -10,7 +10,6 @@ import android.support.annotation.ColorRes;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -94,16 +93,16 @@ public class Util {
         Toast.makeText(context, s.toString(), Toast.LENGTH_LONG).show();
     }
 
+
     /**
      * Created by Administrator on 2016/5/8.
      */
-    public static class DoubleClick {
+    public static class RepetitiveEventFilter {
         public static long lastTime = -1;
 
-        public static boolean isDoubleClick() {
+        public static boolean isDoubleClick(long intervalTime) {
             long curTime = System.currentTimeMillis();
-            //貌似系统定义的双击正是300毫秒 ViewConfiguration.getDoubleTapTimeout()
-            if (curTime - lastTime < ViewConfiguration.getDoubleTapTimeout()) {
+            if (curTime - lastTime < intervalTime) {
                 lastTime = curTime;
                 return true;
             } else {

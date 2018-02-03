@@ -25,7 +25,10 @@ import java.util.Map;
  */
 
 public class GlobalData {
-    private static List<Word> mAllWord = new ArrayList<>();
+    // 涉及到数据同步的问题，比较麻烦，两个基本上在一起操作
+    private static List<Word> mAllWords = new ArrayList<>();
+    private static List<Word> mCurWords = new ArrayList<>();
+
     private static GlobalData mInstance = new GlobalData();
     private List<String> mCommandList;
     private Map<String, String> mUIComandMap = new HashMap<>();
@@ -46,7 +49,9 @@ public class GlobalData {
             database.queryAllWord(jasonList);
             Gson gson = new Gson();
             for (String oneJsonWord : jasonList) {
-                mAllWord.add(gson.fromJson(oneJsonWord, Word.class));
+                Word word = gson.fromJson(oneJsonWord, Word.class);
+                mAllWords.add(word);
+                mCurWords.add(word);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -63,16 +68,28 @@ public class GlobalData {
     }
 
     public List<Word> getAllWord() {
-        if (mAllWord == null) {
+        if (mAllWords == null) {
             queryAllWord();
         }
-        return mAllWord;
+        return mAllWords;
+    }
+
+    public List<Word> getCurWords() {
+        if (mAllWords == null) {
+            queryAllWord();
+        }
+        return mCurWords;
+    }
+
+    public void setCurWords(List<Word> curWords) {
+        mCurWords = curWords;
     }
 
     public void addWord(Word word) {
         try {
             MyDatabase.getInstance().insertWord(word.getName(), new Gson().toJson(word));
-            mAllWord.add(word);
+            mAllWords.add(word);
+            mCurWords.add(word);
         } catch (IOException e) {
             e.printStackTrace();
             Logcat.d(e.getMessage());
@@ -96,7 +113,8 @@ public class GlobalData {
     public void deleteWord(Word word) {
         try {
             MyDatabase.getInstance().deleteWord(word.getName());
-            mAllWord.remove(word);
+            mAllWords.remove(word);
+            mCurWords.remove(word);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

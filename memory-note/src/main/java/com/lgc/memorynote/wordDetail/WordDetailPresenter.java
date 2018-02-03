@@ -17,15 +17,13 @@ import java.util.regex.Pattern;
  */
 
 public class WordDetailPresenter implements WordDetailContract.Presenter {
-    private WordDetailDataSource mDataSource;
     private WordDetailContract.View mView;
     private boolean mIsAdd = false;
     private boolean mIsInEdit = false;
     private Context mContext;
     private Word mWord;
 
-    WordDetailPresenter(WordDetailDataSource wordDetailDataSource, WordDetailContract.View wordDetailView) {
-        mDataSource = wordDetailDataSource;
+    WordDetailPresenter(WordDetailContract.View wordDetailView) {
         mView = wordDetailView;
         mContext = (Context) mView;
         mWord = new Word();
@@ -43,7 +41,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             setStrangeDegree(10);
         } else {
             String wordName = intent.getStringExtra(WordDetailActivity.INTENT_EXTRA_WORD_NAME);
-            mWord = mDataSource.getWordByName(wordName);
+            mWord = SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), wordName);
             if (mWord == null)
                 mWord = new Word();
             showData(false);
@@ -72,9 +70,9 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         }
 
         if (mIsAdd) {
-            mDataSource.addWord(mWord);
+            GlobalData.getInstance().addWord(mWord);
         } else {
-            mDataSource.updateWord(mWord);
+            GlobalData.getInstance().updateWord(mWord);
         }
     }
 
