@@ -62,11 +62,12 @@ public class GlobalData {
         return mAllWord;
     }
 
-    public void updateWord(com.lgc.memorynote.wordDetail.Word word) {
+    public void updateWord(Word word) {
         try {
             MyDatabase.getInstance().insertWord(word.getName(), new Gson().toJson(word));
         } catch (IOException e) {
             e.printStackTrace();
+            Logcat.d(e.getMessage());
         } finally {
             MyDatabase.getInstance().close();
         }

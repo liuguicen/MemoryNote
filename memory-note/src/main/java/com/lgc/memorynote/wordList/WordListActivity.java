@@ -58,7 +58,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                 startActivity(intent);
             }
         });
-        mTvInputCommand.setHint(OrderUtil.getHingString());
+        mTvInputCommand.setHint(SortUtil.getHingString());
         findViewById(R.id.btn_expand_command_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,11 +73,21 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
             }
         });
 
+        findViewById(R.id.btn_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickSearch(mTvInputCommand.getText().toString());
+            }
+        });
 
         // about recyclerView
         mWordListView = (RecyclerView) findViewById(R.id.lv_word_list);
         linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false);
         mWordListView.setLayoutManager(linearLayoutManager);
+    }
+
+    private void onClickSearch(String search) {
+        mPresenter.reorderWordList(search);
     }
 
 

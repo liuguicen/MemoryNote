@@ -1,6 +1,7 @@
 package com.lgc.memorynote.wordList;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.wordDetail.Word;
@@ -30,7 +31,8 @@ public class WordListPresenter implements WordListContract.Presenter {
     public void start() {
         mCurShowWordList = GlobalData.getInstance().getAllWord();
         mView.showWordList(mCurShowWordList);
-        reorderWordList();
+        mInputCommandList.add(SortUtil.DEFAULT_SORT_COMMAND);
+        reorderWordList(null);
     }
 
     @Override
@@ -45,9 +47,13 @@ public class WordListPresenter implements WordListContract.Presenter {
 
     /**
      * 点击搜索，重新组织单词列表
+     * @param search
      */
     @Override
-    public void reorderWordList() {
+    public void reorderWordList(String search) {
+        if (!TextUtils.isEmpty(search)) {
+            mInputCommandList.add(search);
+        }
         mCurShowWordList = Command.orderByCommand(mInputCommandList, GlobalData.getInstance().getAllWord());
         mView.refreshWordList(mCurShowWordList);
         GlobalData.getInstance().updateCommandSort(mInputCommandList);

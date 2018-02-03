@@ -47,8 +47,9 @@ public class WordListContract {
 
         /**
          * 点击搜索，重新组织单词列表
+         * @param search
          */
-        void reorderWordList();
+        void reorderWordList(String search);
 
         String getWordName(int adapterPosition);
     }
