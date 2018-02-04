@@ -71,37 +71,30 @@ public class Command {
     /**
      * 排序，会生成一个新的列表，不改变原来的数据
      * @param commandList 必须是标准的命令才有效
+     * @param search 用户输入的搜索命令
      */
-    public static List<Word> orderByCommand(List<String> commandList, List<Word> wordList) {
+    public static List<Word> orderByCommand(String search, List<String> commandList, List<Word> wordList) {
         List<Word> resultList = new ArrayList<>(wordList.size());
         resultList.addAll(wordList);
 
         // 第一步，如果是搜索，搜索出满足条件的
-        for (int i = commandList.size() - 1; i >= 0; i--) {
-            String search = commandList.get(i);
-            if (!search.startsWith(COMMAND_START)) {
-                SearchUtil.searchWordOrMeaning(search, resultList);
-                commandList.remove(i);
-            }
-        }
+        SearchUtil.searchWordOrMeaning(search, resultList);
 
         // 第二步，进行过滤操作
         for (int i = commandList.size() - 1; i >= 0; i--) {
-            String grep = commandList.remove(i);
+            String grep = commandList.get(i);
             if (_phr.equals(grep)) {
-                SearchUtil.grepNotPhrase(wordList);
+                SearchUtil.grepNotPhrase(resultList);
             } else if (_word.equals(grep)) {
-                SearchUtil.grepNotWord(wordList);
+                SearchUtil.grepNotWord(resultList);
             } else if (_sheng.equals(grep) || (_guai.equals(grep))) {
-                SearchUtil.grepNoTag(_guai.substring(1, _guai.length()),wordList);
-            } else {
-                commandList.add(i, grep);
+                SearchUtil.grepNoTag(_guai.substring(1, _guai.length()), resultList);
             }
 
         }
 
         // 第三步，进行排序操作
-        Collections.sort(wordList, SortUtil.getComparator(commandList));
+        Collections.sort(resultList, SortUtil.getComparator(commandList));
         return wordList;
     }
 }

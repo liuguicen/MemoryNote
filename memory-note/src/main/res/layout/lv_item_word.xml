@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/lv_item_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/word_list_margin"
+    android:layout_marginBottom="@dimen/word_list_margin">
 
     <TextView
         android:id="@+id/lv_item_word_name"
@@ -17,28 +19,32 @@
     <TextView
         android:id="@+id/lv_item_word_reduce_strange"
         style="@style/LvItemWordStrange"
-        android:text="----"
-        app:layout_constraintEnd_toStartOf="@+id/lv_item_word_strange"
-        android:textSize="@dimen/text_size_big" />
+        android:text=" - "
+        android:textSize="@dimen/text_size_big"
+        app:layout_constraintEnd_toStartOf="@+id/lv_item_word_strange" />
 
     <TextView
         android:id="@+id/lv_item_word_strange"
         style="@style/LvItemWordStrange"
+        android:gravity="center"
+        android:text="10"
+        android:textColor="@color/color_strange"
+        app:layout_constraintBottom_toBottomOf="@id/lv_item_word_add_strange"
         app:layout_constraintEnd_toStartOf="@+id/lv_item_word_add_strange"
-        android:text="rrrrrrrrrt"/>
+        app:layout_constraintTop_toTopOf="@id/lv_item_word_add_strange" />
 
     <TextView
         android:id="@+id/lv_item_word_add_strange"
         style="@style/LvItemWordStrange"
+        android:text=" + "
         android:textSize="@dimen/text_size_big"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="+"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/lv_item_word_meaning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="@dimen/small_margin"
         android:textSize="@dimen/text_size_small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lv_item_word_name" />

@@ -11,7 +11,9 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Pair;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
 import com.lgc.memorynote.R;
@@ -62,6 +64,17 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
             }
         });
         mTvInputCommand.setHint(SortUtil.getHingString());
+        mTvInputCommand.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                        (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    onClickSearch(mTvCommand.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
         findViewById(R.id.btn_expand_command_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +92,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         findViewById(R.id.btn_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!searchFilter.isDoubleClick(1000)) {
+                if (!searchFilter.isRepetitive(1000)) {
                     onClickSearch(mTvInputCommand.getText().toString());
                 } else {
                     Logcat.d("repetitive click");
@@ -197,6 +210,12 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
     }
 
+    @Override
+    protected void onRestart() {
+        onClickSearch(null);
+        super.onRestart();
+    }
+
     /**
      * picAdapter通知数据更新了,刷新图片列表视图
      *
@@ -218,7 +237,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
         @Override
         public void onClick(View widget) {
-            mPresenter.addOneCommand(mCommand);
+            mPresenter.switchOneCommand(mCommand);
         }
 
         @Override

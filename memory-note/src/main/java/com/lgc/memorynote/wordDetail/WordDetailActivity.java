@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lgc.memorynote.R;
+import com.lgc.memorynote.base.CertainDialog;
 import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.base.UIUtil;
 import com.lgc.memorynote.base.Util;
@@ -29,12 +31,14 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     public static final String INTENT_EXTRA_IS_ADD = "intent_extra_word_detail_is_add";
 
     private WordDetailContract.Presenter mPresenter;
-    private EditText mTvWordName;
+    private TextView mTvWordName;
     private EditText mTvWordMeaning;
     private EditText mTvSimilarWord;
     private TextView mTvStrangeDegree;
     private TextView mTvLastRememberTime;
     private Button mBtnEdit;
+    private CertainDialog mCertainDialog;
+    private int lastInputType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +50,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     private void initView() {
-        mTvWordName          = (EditText) findViewById(R.id.word_detail_word);
+        mTvWordName          = (TextView) findViewById(R.id.et_word_detail_name);
         mTvWordMeaning       = (EditText) findViewById(R.id.word_detail_meaning);
         mTvSimilarWord       = (EditText) findViewById(R.id.similar_word);
         mTvStrangeDegree     = (TextView) findViewById(R.id.value_strange_degree);
@@ -55,9 +59,11 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         mBtnEdit.setOnClickListener(this);
         mTvWordName.setTag(mTvWordName.getTag());
         mTvWordMeaning.setTag(mTvWordMeaning.getTag());
+        lastInputType = mTvWordMeaning.getInputType();
         mTvSimilarWord.setTag(mTvSimilarWord.getTag());
         findViewById(R.id.add_strange_degree).setOnClickListener(this);
         findViewById(R.id.reduce_strange_degree).setOnClickListener(this);
+        findViewById(R.id.word_detail_delete).setOnClickListener(this);
 
         mTvWordName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -87,8 +93,28 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
                 mPresenter.reduceStrangeDegree();
                 break;
             case R.id.btn_word_detail_edit:
+                if (Util.RepetitiveEventFilter.isRepetitive(500))
+                    return;
                 mPresenter.switchEdit();
+                break;
+            case R.id.word_detail_delete:
+                onclickDelete();
+                break;
         }
+    }
+
+    private void onclickDelete() {
+        if (mCertainDialog == null) {
+            mCertainDialog = new CertainDialog(this);
+        }
+        mCertainDialog.showDialog(null, getString(R.string.certain_delete),
+                new CertainDialog.ActionListener() {
+                    @Override
+                    public void onSure() {
+                        mPresenter.deleteWord();
+                        WordDetailActivity.this.finish();
+                    }
+                });
     }
 
     @Override
@@ -108,8 +134,12 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         }
     }
 
-    private void switchTvEditStyle(EditText tv, boolean isInEdit) {
-        tv.setFocusable(isInEdit);
+    private void switchTvEditStyle(TextView tv, boolean isInEdit) {
+        if(isInEdit) {
+            tv.setInputType(lastInputType);
+        } else {
+            tv.setInputType(InputType.TYPE_NULL);
+        }
         if (isInEdit) {
             tv.setBackground(((Drawable) tv.getTag()));
         } else {
@@ -146,18 +176,12 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     @Override
     public void showInputMeaning(String inputMeaning) {
-
+        mTvWordMeaning.setText(inputMeaning);
     }
 
     @Override
     public void showSimilarWords(List<String> similarWordList) {
-        if (similarWordList != null && similarWordList.isEmpty()) {
-            StringBuilder sb = new StringBuilder();
-            for (String similar : similarWordList) {
-               sb.append(similar + "   ");
-            }
-            mTvSimilarWord.setText(sb.toString());
-        }
+        UIUtil.showSimilarWords(mTvSimilarWord, similarWordList);
     }
 
     @Override

@@ -9,5 +9,7 @@
     <color name="color_strange">#e84e40</color>
     <color name="color_add_strange">#f69988</color>
     <color name="color_word">#455ede</color>
+    <color name="color_red">#e51c23</color>
+
 
 </resources>

@@ -53,8 +53,6 @@ public interface WordDetailContract {
 
         boolean reduceStrangeDegree();
 
-        void setSimilarFormatWords(String similarFormatWords);
-
         /**
          * @return 加入的单词是否是有效单词
          */
@@ -63,6 +61,8 @@ public interface WordDetailContract {
         void setLastRememberTime();
 
         void initAndShowData(Intent intent);
+
+        void deleteWord();
     }
 
 }

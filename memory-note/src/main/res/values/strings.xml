@@ -10,4 +10,6 @@
     <string name="word_format_erorr">单词或短语格式错误，保存失败</string>
     <string name="word_repetitive">单词重复，保存失败"</string>
     <string name="caommand_hint">搜索</string>
+    <string name="delete">删除</string>
+    <string name="certain_delete">确定删除吗</string>
 </resources>

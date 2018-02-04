@@ -45,6 +45,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mWord = SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), wordName);
             if (mWord == null)
                 mWord = new Word();
+            mView.switchEditStyle(false);
             showData(false);
         }
     }
@@ -55,7 +56,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         if (mIsAdd) {
             String inputName = mView.getInputWordName();
             inputName = inputName.trim();
-            while(Pattern.compile("[^a-zA-z- ]").matcher(inputName).find()) {
+            while(Pattern.compile(Word.NAME_FORMAT_REGEX).matcher(inputName).find()) {
                 mView.showSaveFailed(AppConstant.WORD_FORMAT_ERROR);
                 return;
             } if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), mWord.getName()) != null) {
@@ -66,7 +67,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         if (!TextUtils.equals(inputMeaings, mWord.getInputMeaning())) {
             mWord.setInputMeaning(inputMeaings);
             List<Word.WordMeaning> meaningList = new ArrayList<>();
-            int resultCode = InputAnalyzerUtil.analyzeMeaningFromUser(inputMeaings, meaningList);
+            int resultCode = InputAnalyzerUtil.analyzeInputMeaning(inputMeaings, meaningList);
             if (resultCode != InputAnalyzerUtil.SUCCESS) {
                 mView.showAnalyzeFailed(resultCode);
             } else {
@@ -76,7 +77,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         if (!TextUtils.equals(inputSimilars, mWord.getInputSimilarWords())) {
             mWord.setInputSimilarWords(inputSimilars);
             List<String> similarList = new ArrayList<>();
-            InputAnalyzerUtil.analyzeSimilarWordsFromUser(inputSimilars, similarList);
+            InputAnalyzerUtil.analyzeInputSimilarWords(inputSimilars, similarList);
             mWord.setSimilarWordList(similarList);
         }
 
@@ -133,14 +134,6 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     }
 
     @Override
-    public void setSimilarFormatWords(String inputSimilarWord) {
-        List<String> similarWordList = new ArrayList<>();
-        InputAnalyzerUtil.analyzeSimilarWordsFromUser(inputSimilarWord, similarWordList);
-        mWord.setInputSimilarWords(inputSimilarWord);
-        mWord.setSimilarWordList(similarWordList);
-    }
-
-    @Override
     public boolean addWord(String word) {
         return false;
     }
@@ -159,5 +152,10 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     public void setStrangeDegree(int strangeDegree) {
         mWord.strangeDegree = strangeDegree;
         mView.showStrangeDegree(mWord.strangeDegree);
+    }
+
+    @Override
+    public void deleteWord() {
+        GlobalData.getInstance().deleteWord(mWord);
     }
 }

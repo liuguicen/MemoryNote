@@ -42,17 +42,54 @@ public class SortUtil {
         if (commandList == null) {
             commandList = new ArrayList<>();
         }
-        if (commandList.isEmpty()) {
-            commandList.add(DEFAULT_SORT_COMMAND);
-        }
         return new WordComparator(commandList);
     }
 
     public static class WordComparator implements Comparator<Word> {
-        final List<String> finalOrderList;
+        /**
+         * 排序命令的执行顺序
+         */
+        final List<Integer> sortList = new ArrayList<>();
+        private final int _stra = 1;
+        private final int _last = 2;
+        private final int _sn   = 3;
+        private final int _dict = 4;
+        private final int _len  = 5;
+
+        public int sortString2int(String sort) {
+            if(Command._stra.equals(sort)) {
+                return _stra;
+            } else if (Command._last.equals(sort)) {
+                return _last;
+            } else if (Command._sn.equals(sort)) {
+                return _sn;
+            } else if (Command._dict.equals(sort)) {
+                return _dict;
+            } else if (Command._len.contains(sort)) {
+                return _len;
+            }
+            return -1;
+        }
 
         public WordComparator(List<String> finalOrderList) {
-            this.finalOrderList = finalOrderList;
+            // 找出需要比较的顺序
+            for(String order : finalOrderList) {
+                if(Command._stra.equals(order)) {
+                    sortList.add(_stra);
+                } else if (Command._last.equals(order)) {
+                    sortList.add(_last);
+                } else if (Command._sn.equals(order)) {
+                    sortList.add(_sn);
+                } else if (Command._dict.equals(order)) {
+                    sortList.add(_dict);
+                } else if (Command._len.contains(order)) {
+                    sortList.add(_len);
+                }
+            }
+            // 如果没有，加入默认的排序方式
+            if (sortList.isEmpty()) {
+                sortList.add(sortString2int(SortUtil.DEFAULT_SORT_COMMAND));
+            }
         }
 
         @Override
@@ -65,17 +102,23 @@ public class SortUtil {
                  * 如果这种方式比较结果相等，那么继续遍历下一种方式
                  */
             int re = 0;
-            for(String order : finalOrderList) {
-                if(Command._stra.equals(order)) {
-                    re = Word.compareStrangeDegree(o1.getStrangeDegree(), o2.getStrangeDegree());
-                }  else if (Command._last.equals(order)) {
-                    re = Word.compareRememberTime(o1.getLastRememberTime(), o2.getLastRememberTime());
-                } else if (Command._sn.equals(order)) {
-                    re = Word.compareSimilarNumber(o1.getSimilarWordList(), o2.getSimilarWordList());
-                } else if (Command._dict.equals(order)) {
-                    re = Word.compareDictionary(o1.getName(), o2.getName());
-                } else if (Command._len.contains(order)) {
-                    re = Word.compareLength(o1.getName(), o2.getName());
+            for(int sort : sortList) {
+                switch (sort) {
+                    case _stra:
+                        re = Word.compareStrangeDegree(o1.getStrangeDegree(), o2.getStrangeDegree());
+                        break;
+                    case _last:
+                        re = Word.compareRememberTime(o1.getLastRememberTime(), o2.getLastRememberTime());
+                        break;
+                    case _sn:
+                        re = Word.compareSimilarNumber(o1.getSimilarWordList(), o2.getSimilarWordList());
+                        break;
+                    case _dict:
+                        re = Word.compareDictionary(o1.getName(), o2.getName());
+                        break;
+                    case _len:
+                        re = Word.compareLength(o1.getName(), o2.getName());
+                        break;
                 }
                 if (re != 0) return re;
             }

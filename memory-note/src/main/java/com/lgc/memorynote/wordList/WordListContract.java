@@ -18,7 +18,7 @@ import java.util.List;
 public class WordListContract {
     interface View extends BaseView<Presenter> {
         /**
-         * 进入界面，并且获取到图片信息之后开始显示
+         * 进入界面，并且获取到单词 信息之后开始显示
          * @param mCurShowWordList
          */
         void showWordList(List<Word> mCurShowWordList);
@@ -40,10 +40,10 @@ public class WordListContract {
     }
     interface Presenter extends BasePresenter {
         /**
-         *  用户点击添加一个命令
+         *  选中或者去掉一个命令
          * @param command
          */
-        void addOneCommand(String command);
+        void switchOneCommand(String command);
 
         /**
          * 点击搜索，重新组织单词列表

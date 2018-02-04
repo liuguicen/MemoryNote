@@ -25,18 +25,18 @@ public class WordListPresenter implements WordListContract.Presenter {
 
     public WordListPresenter(WordListContract.View view) {
         mView = view;
+        mInputCommandList.add(SortUtil.DEFAULT_SORT_COMMAND);
     }
 
     @Override
     public void start() {
         mCurShowWordList = GlobalData.getInstance().getCurWords();
-        mView.showWordList(mCurShowWordList);
-        mInputCommandList.add(SortUtil.DEFAULT_SORT_COMMAND);
+        mView.updateCommandText(GlobalData.getInstance().getCommandList(), mInputCommandList);
         reorderWordList(null);
     }
 
     @Override
-    public void addOneCommand(String command) {
+    public void switchOneCommand(String command) {
         if (!mInputCommandList.contains(command)) {
             mInputCommandList.add(command);
         } else {
@@ -46,20 +46,20 @@ public class WordListPresenter implements WordListContract.Presenter {
     }
 
     /**
-     * 点击搜索，重新组织单词列表
+     * 点击搜索，重新组织单词列表,搜索过程是种总的列表复制到新列表中，再对新列表进行排序，过滤
      * @param search
      */
     @Override
     public void reorderWordList(String search) {
+        if (search !=  null)
+            search = search.trim();
         if (!TextUtils.isEmpty(search)) {
             mInputCommandList.add(search);
         }
-        mCurShowWordList = Command.orderByCommand(mInputCommandList, GlobalData.getInstance().getAllWord());
+        mCurShowWordList = Command.orderByCommand(search, mInputCommandList, GlobalData.getInstance().getAllWord());
         GlobalData.getInstance().setCurWords(mCurShowWordList);
         mView.refreshWordList(mCurShowWordList);
         // GlobalData.getInstance().updateCommandSort(mInputCommandList);
-        mInputCommandList.clear();
-        mView.updateCommandText(GlobalData.getInstance().getCommandList(), mInputCommandList);
     }
 
     @Override

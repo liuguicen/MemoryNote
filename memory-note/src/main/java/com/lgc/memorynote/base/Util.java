@@ -100,10 +100,14 @@ public class Util {
     public static class RepetitiveEventFilter {
         public static long lastTime = -1;
 
-        public static boolean isDoubleClick(long intervalTime) {
+        /**
+         *  使用的是静态变量，同一时间段只能过滤一个时间，通常只能过滤用户操作
+         * @param intervalTime
+         * @return
+         */
+        public static boolean isRepetitive(long intervalTime) {
             long curTime = System.currentTimeMillis();
             if (curTime - lastTime < intervalTime) {
-                lastTime = curTime;
                 return true;
             } else {
                 lastTime = curTime;

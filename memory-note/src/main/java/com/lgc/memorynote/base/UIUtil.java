@@ -45,17 +45,15 @@ public class UIUtil {
                     sb.append(oneMeaning.getCiXing() + ". ");
                 }
             }
-            if (oneMeaning.isGuai()) {
-                sb.append(Word.WordMeaning.TAG_GUAI_UI + " ");
-            } if (oneMeaning.isSheng()) {
-                sb.append(Word.WordMeaning.TAG_SHENG_UI + " ");
+
+            for (String tag : oneMeaning.getTagList()) {
+                sb.append(tag + " ");
             }
             sb.append(oneMeaning.getMeaning());
         }
         String meaningString = sb.toString();
         SpannableString ss = new SpannableString(meaningString);
-        Matcher matcher = Pattern.compile(Word.WordMeaning.TAG_GUAI_UI + "|" +
-                Word.WordMeaning.TAG_SHENG_UI).matcher(meaningString);
+        Matcher matcher = Pattern.compile("@.+?\\s").matcher(meaningString);
         while (matcher.find()) {
             int startId = matcher.start();
             int endId = startId + matcher.group().length();
@@ -63,5 +61,16 @@ public class UIUtil {
                     SpannableString.SPAN_INCLUSIVE_EXCLUSIVE);
         }
         tv.setText(ss);
+    }
+
+    public static void showSimilarWords(TextView tv, List<String> similarWordList) {
+        if (tv == null || similarWordList == null || similarWordList.size() == 0)
+            return;
+
+        StringBuilder sb = new StringBuilder();
+        for (String similar : similarWordList) {
+            sb.append(similar + "   ");
+        }
+        tv.setText(sb.toString());
     }
 }
