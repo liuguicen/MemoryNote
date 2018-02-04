@@ -23,7 +23,7 @@ import java.util.List;
  * @guai @gsdf adj. adv. uauaua
  * **********************************/
 public class Word {
-    public static String NAME_FORMAT_REGEX = "[^a-zA-z\\-' ]";
+    public static String NOT_NAME_FORMAT_REGEX = "[^a-zA-z\\-' ]";
 
 
     public String name;

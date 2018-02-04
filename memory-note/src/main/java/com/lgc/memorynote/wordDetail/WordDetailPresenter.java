@@ -50,17 +50,38 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         }
     }
 
+    @Override
+    public boolean isInEdit() {
+        return mIsInEdit;
+    }
+
+    @Override
+    public void switchEdit() {
+        mIsInEdit = !mIsInEdit;
+        if (!mIsInEdit) { // 编辑完成
+            saveWordDate();
+        }
+        showData(true);
+        mView.switchEditStyle(mIsInEdit);
+    }
+
     public void saveWordDate() {
         String inputMeaings = mView.getInputWordMeaning().trim();
         String inputSimilars = mView.getInputSimilarWords().trim();
         if (mIsAdd) {
             String inputName = mView.getInputWordName();
             inputName = inputName.trim();
-            while(Pattern.compile(Word.NAME_FORMAT_REGEX).matcher(inputName).find()) {
+            if (inputName.isEmpty()) {
+                mView.showSaveFailed(AppConstant.WORD_IS_NULL);
+                return;
+            }
+            if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(inputName).find()) {
                 mView.showSaveFailed(AppConstant.WORD_FORMAT_ERROR);
                 return;
-            } if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), mWord.getName()) != null) {
+            }
+            if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), mWord.getName()) != null) {
                 mView.showSaveFailed(AppConstant.REPETITIVE_WORD);
+                return;
             }
             mWord.setName(inputName);
         }
@@ -88,21 +109,6 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         }
     }
 
-    @Override
-    public boolean isInEdit() {
-        return mIsInEdit;
-    }
-
-    @Override
-    public void switchEdit() {
-        mIsInEdit = !mIsInEdit;
-        if (!mIsInEdit) { // 编辑完成
-            saveWordDate();
-        }
-        showData(true);
-        mView.switchEditStyle(mIsInEdit);
-    }
-
     private void showData(boolean isSwitchEdit) {
         if (mIsInEdit) {
             mView.showInputMeaning(mWord.getInputMeaning());
@@ -121,14 +127,14 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
 
     @Override
     public boolean addStrangeDegree() {
-        mWord.strangeDegree ++;
+        mWord.strangeDegree++;
         mView.showStrangeDegree(mWord.strangeDegree);
         return false;
     }
 
     @Override
     public boolean reduceStrangeDegree() {
-        mWord.strangeDegree --;
+        mWord.strangeDegree--;
         mView.showStrangeDegree(mWord.strangeDegree);
         return false;
     }

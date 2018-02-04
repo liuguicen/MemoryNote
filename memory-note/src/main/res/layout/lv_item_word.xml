@@ -4,41 +4,52 @@
     android:id="@+id/lv_item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/word_list_margin"
-    android:layout_marginBottom="@dimen/word_list_margin">
+    android:layout_marginBottom="@dimen/word_list_margin"
+    android:layout_marginTop="@dimen/word_list_margin">
 
     <TextView
         android:id="@+id/lv_item_word_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="text"
         android:textSize="@dimen/text_size_normal"
+        app:layout_constraintEnd_toStartOf="@+id/lv_item_word_reduce_strange"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/lv_item_word_reduce_strange"
         style="@style/LvItemWordStrange"
-        android:text=" - "
-        android:textSize="@dimen/text_size_big"
-        app:layout_constraintEnd_toStartOf="@+id/lv_item_word_strange" />
+        android:text=" — "
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintBottom_toBottomOf="@+id/lv_item_strange_value"
+        app:layout_constraintEnd_toStartOf="@+id/lv_item_strange_value"
+        app:layout_constraintTop_toTopOf="@+id/lv_item_strange_value" />
 
     <TextView
-        android:id="@+id/lv_item_word_strange"
+        android:id="@+id/lv_item_strange_value"
         style="@style/LvItemWordStrange"
-        android:gravity="center"
+        android:layout_width="40dp"
+        android:layout_height="60dp"
         android:text="10"
+        android:paddingEnd="0dp"
+        android:paddingStart="0dp"
         android:textColor="@color/color_strange"
-        app:layout_constraintBottom_toBottomOf="@id/lv_item_word_add_strange"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/lv_item_word_add_strange"
-        app:layout_constraintTop_toTopOf="@id/lv_item_word_add_strange" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/lv_item_word_add_strange"
         style="@style/LvItemWordStrange"
+        android:paddingEnd="@dimen/small_margin"
+        android:paddingStart="@dimen/small_margin"
         android:text=" + "
-        android:textSize="@dimen/text_size_big"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:textSize="@dimen/text_size_very_big"
+        app:layout_constraintBottom_toBottomOf="@+id/lv_item_strange_value"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/lv_item_strange_value" />
 
     <TextView
         android:id="@+id/lv_item_word_meaning"
@@ -46,6 +57,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/small_margin"
         android:textSize="@dimen/text_size_small"
+        app:layout_constraintEnd_toStartOf="@+id/lv_item_word_reduce_strange"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lv_item_word_name" />
 </android.support.constraint.ConstraintLayout>

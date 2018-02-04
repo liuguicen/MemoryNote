@@ -57,7 +57,7 @@ public class SearchUtil {
     public static List<Word> searchWordOrMeaning(String search, List<Word> wordList) {
         // 含有非单词字符，搜索词义
         if (search == null) return wordList;
-        if (Pattern.compile(Word.NAME_FORMAT_REGEX).matcher(search).find()) {
+        if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(search).find()) {
             for (int i = wordList.size() -1; i >= 0; i--) {
                 Word word = wordList.get(i);
                 List<Word.WordMeaning> meaningList = word.getMeaningList();

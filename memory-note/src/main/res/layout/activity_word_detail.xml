@@ -13,15 +13,36 @@
 
         <EditText
             android:id="@+id/et_word_detail_name"
-            style="@style/TvWordDetailWorName"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/please_input_word"
+            android:textColor="@color/color_word"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/normal_margin"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_word_detail_edit"
+            />
 
-        <Button
+        <TextView
             android:id="@+id/btn_word_detail_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/btn_bg_red"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingStart="@dimen/normal_margin"
+            android:paddingEnd="@dimen/normal_margin"
+            android:textSize="@dimen/text_size_normal"
+            android:textColor="@android:color/white"
             android:text="@string/edit"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/et_word_detail_name"
+            app:layout_constraintBottom_toBottomOf="@+id/et_word_detail_name"
+            />
 
         <TextView
             android:id="@+id/word_detail_meaning_name"
@@ -59,7 +80,7 @@
             android:text="@string/strange_degree"
             app:layout_constraintBottom_toBottomOf="@+id/value_strange_degree"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/similar_word" />
+            app:layout_constraintTop_toTopOf="@+id/value_strange_degree" />
 
         <TextView
             android:id="@+id/reduce_strange_degree"
@@ -67,9 +88,10 @@
             android:layout_marginStart="40dp"
             android:gravity="center"
             android:minWidth="40dp"
-            android:text=" - "
+            android:text=" — "
             app:layout_constraintStart_toEndOf="@+id/strange_degree_name"
-            app:layout_constraintTop_toBottomOf="@+id/similar_word" />
+            app:layout_constraintTop_toTopOf="@id/value_strange_degree"
+            app:layout_constraintBottom_toBottomOf="@id/value_strange_degree"/>
 
         <TextView
             android:id="@+id/value_strange_degree"
@@ -83,21 +105,27 @@
             android:id="@+id/add_strange_degree"
             style="@style/StrangeDegreeItem"
             android:text=" + "
+            android:paddingBottom="2dp"
+            android:textSize="@dimen/text_size_very_very_big"
             app:layout_constraintStart_toEndOf="@+id/value_strange_degree"
-            app:layout_constraintTop_toBottomOf="@+id/similar_word" />
+            app:layout_constraintTop_toTopOf="@id/value_strange_degree"
+            app:layout_constraintBottom_toBottomOf="@id/value_strange_degree"/>
 
         <TextView
             android:id="@+id/last_remember_time_name"
             style="@style/WordDetailItemName"
+            android:gravity="center"
             android:text="@string/last_remember_time"
             app:layout_constraintTop_toBottomOf="@id/value_strange_degree" />
 
         <TextView
             android:id="@+id/last_remember_time"
-            style="@style/WordDetailEditItem"
-            android:layout_marginStart="8dp"
-            app:layout_constraintStart_toEndOf="@+id/last_remember_time_name"
-            app:layout_constraintTop_toBottomOf="@id/value_strange_degree" />
+            android:layout_marginStart="@dimen/big_margin"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/last_remember_time_name"
+            app:layout_constraintBottom_toBottomOf="@+id/last_remember_time_name"
+            app:layout_constraintStart_toEndOf="@+id/last_remember_time_name"/>
 
         <TextView
             android:id="@+id/word_detail_delete"

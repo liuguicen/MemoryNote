@@ -36,7 +36,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     private EditText mTvSimilarWord;
     private TextView mTvStrangeDegree;
     private TextView mTvLastRememberTime;
-    private Button mBtnEdit;
+    private TextView mBtnEdit;
     private CertainDialog mCertainDialog;
     private int lastInputType;
 
@@ -55,7 +55,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         mTvSimilarWord       = (EditText) findViewById(R.id.similar_word);
         mTvStrangeDegree     = (TextView) findViewById(R.id.value_strange_degree);
         mTvLastRememberTime  = (TextView) findViewById(R.id.last_remember_time);
-        mBtnEdit             = (Button) findViewById(R.id.btn_word_detail_edit);
+        mBtnEdit             = (TextView) findViewById(R.id.btn_word_detail_edit);
         mBtnEdit.setOnClickListener(this);
         mTvWordName.setTag(mTvWordName.getTag());
         mTvWordMeaning.setTag(mTvWordMeaning.getTag());
@@ -220,6 +220,9 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
                 break;
             case AppConstant.REPETITIVE_WORD:
                 msg = getString(R.string.word_repetitive);
+                break;
+            case AppConstant.WORD_IS_NULL:
+                msg = getString(R.string.word_name_is_null);
 
         }
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
@@ -243,5 +246,19 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, WordDetailActivity.class);
         return intent;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mPresenter.isInEdit()) {
+            mCertainDialog.showDialog(null, getString(R.string.cetain_leave_in_edit), new CertainDialog.ActionListener() {
+                @Override
+                public void onSure() {
+                    finish();
+                }
+            });
+        } else {
+            super.onBackPressed();
+        }
     }
 }

@@ -144,7 +144,7 @@ public class InputAnalyzerUtil {
         if(inputSimilarWord.isEmpty()) return IS_NULL;
         String[] similarWords = inputSimilarWord.split("\n");
         for (String oneWord : similarWords) {
-            //if (oneWord.matches(Word.NAME_FORMAT_REGEX)) {// 先不限制用户输入
+            //if (oneWord.matches(Word.NOT_NAME_FORMAT_REGEX)) {// 先不限制用户输入
             //
             //}
             oneWord = oneWord.trim();

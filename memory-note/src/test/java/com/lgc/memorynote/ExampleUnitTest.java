@@ -19,11 +19,17 @@ import  static  com.lgc.memorynote.wordDetail.Word.WordMeaning;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-        testWordInput();
+//        testWordInput();
 //        testAnalyzeSimilarWord();
 //        testInputWordTag();
 //        textInputNoTagMeaning();
 //        textInputMeanings(new Word());
+        testInputName();
+    }
+
+    public void testInputName() {
+        String inputName = "sdfsdf-sdfs' bn/dfsd";
+        System.out.println(Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(inputName).find());
     }
 
     private void testWordInput() {

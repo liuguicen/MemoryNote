@@ -110,7 +110,7 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(itemView);
             tvName = (TextView) itemView.findViewById(R.id.lv_item_word_name);
             tvMeaning = (TextView) itemView.findViewById(R.id.lv_item_word_meaning);
-            tvStrange = (TextView) itemView.findViewById(R.id.lv_item_word_strange);
+            tvStrange = (TextView) itemView.findViewById(R.id.lv_item_strange_value);
             tvAddStrange = (TextView)itemView.findViewById(R.id.lv_item_word_add_strange);
             tvReduceStrange = (TextView)itemView.findViewById(R.id.lv_item_word_reduce_strange);
 
@@ -124,6 +124,11 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     itemClickListener.onItemClick(v, ItemHolder.this);
+                }
+            });
+            tvStrange.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                 }
             });
         }
