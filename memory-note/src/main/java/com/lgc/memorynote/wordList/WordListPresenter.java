@@ -1,8 +1,8 @@
 package com.lgc.memorynote.wordList;
 
 import android.content.Context;
-import android.text.TextUtils;
 
+import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.wordDetail.Word;
 
@@ -20,29 +20,31 @@ import java.util.List;
 public class WordListPresenter implements WordListContract.Presenter {
     private final WordListContract.View mView;
     private Context mContext;
-    private List<String> mInputCommandList = new ArrayList<>();
+
+    private List<String> mCmdList = new ArrayList<>();
+    private List<String> mInputCmdList = new ArrayList<>();
     private List<Word> mCurShowWordList = new ArrayList<>();
 
     public WordListPresenter(WordListContract.View view) {
         mView = view;
-        mInputCommandList.add(SortUtil.DEFAULT_SORT_COMMAND);
+        mCmdList.add(SortUtil.DEFAULT_SORT_COMMAND);
     }
 
     @Override
     public void start() {
         mCurShowWordList = GlobalData.getInstance().getCurWords();
-        mView.updateCommandText(GlobalData.getInstance().getCommandList(), mInputCommandList);
+        mView.updateCommandText(GlobalData.getInstance().getCommandList(), mCmdList);
         reorderWordList(null);
     }
 
     @Override
     public void switchOneCommand(String command) {
-        if (!mInputCommandList.contains(command)) {
-            mInputCommandList.add(command);
+        if (!mCmdList.contains(command)) {
+            mCmdList.add(command);
         } else {
-            mInputCommandList.remove(command);
+            mCmdList.remove(command);
         }
-        mView.updateCommandText(GlobalData.getInstance().getCommandList(), mInputCommandList);
+        mView.updateCommandText(GlobalData.getInstance().getCommandList(), mCmdList);
     }
 
     /**
@@ -53,13 +55,15 @@ public class WordListPresenter implements WordListContract.Presenter {
     public void reorderWordList(String search) {
         if (search !=  null)
             search = search.trim();
-        if (!TextUtils.isEmpty(search)) {
-            mInputCommandList.add(search);
-        }
-        mCurShowWordList = Command.orderByCommand(search, mInputCommandList, GlobalData.getInstance().getAllWord());
+        mCmdList.removeAll(mInputCmdList);
+        mInputCmdList.clear(); //  clear last input cmd list first
+
+        search = InputAnalyzerUtil.analyzeInputCommand(search, mInputCmdList);
+        mCmdList.addAll(mInputCmdList); // analyze and add current input cmd list
+
+        mCurShowWordList = Command.orderByCommand(search, mCmdList, GlobalData.getInstance().getAllWord());
         GlobalData.getInstance().setCurWords(mCurShowWordList);
         mView.refreshWordList(mCurShowWordList);
-        // GlobalData.getInstance().updateCommandSort(mInputCommandList);
     }
 
     @Override

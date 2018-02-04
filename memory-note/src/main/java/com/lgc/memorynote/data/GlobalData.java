@@ -1,20 +1,13 @@
 package com.lgc.memorynote.data;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.lgc.memorynote.base.Logcat;
-import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.wordDetail.Word;
 import com.lgc.memorynote.wordList.Command;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <pre>
@@ -30,15 +23,10 @@ public class GlobalData {
     private static List<Word> mCurWords = new ArrayList<>();
 
     private static GlobalData mInstance = new GlobalData();
-    private List<String> mCommandList;
-    private Map<String, String> mUIComandMap = new HashMap<>();
-    private static final String SP_COMMAND_LIST = "command_string";
 
     private GlobalData() {
         Logcat.d(System.currentTimeMillis());
         queryAllWord();
-        getCommandList();
-
         Logcat.d(System.currentTimeMillis());
     }
 
@@ -123,30 +111,6 @@ public class GlobalData {
     }
 
     public List<String> getCommandList() {
-        if (mCommandList == null) {
-            SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences("user_habit", Context.MODE_PRIVATE);
-            String jsonCommand = sp.getString(SP_COMMAND_LIST, "");
-            if (jsonCommand.isEmpty()) {
-                mCommandList = Command.commandList;
-            } else {
-                mCommandList = new Gson().fromJson(jsonCommand,  new TypeToken<List<String>>(){}.getType());
-            }
-
-        }
-        return mCommandList;
-    }
-
-    public Map<String, String> getUIComandMap() {
-        return Command.UICommandMap;
-    }
-
-    public void updateCommandSort(List<String> inputCommands) {
-        mCommandList.removeAll(inputCommands);
-        mCommandList.addAll(0, inputCommands);
-    }
-
-    public void saveCommandList() {
-        SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences("user_habit", Context.MODE_PRIVATE);
-        sp.edit().putString(SP_COMMAND_LIST, new Gson().toJson(mCommandList));
+        return Command.commandList;
     }
 }

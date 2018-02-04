@@ -35,6 +35,37 @@ public class InputAnalyzerUtil {
     }
 
     /**
+     * analyze cmd, will change it and return it
+     * @param inputCmd
+     * @param commandList
+     * @return
+     */
+    public static String analyzeInputCommand(String inputCmd, List<String> commandList) {
+        if (inputCmd == null || commandList == null) return inputCmd;
+        inputCmd = inputCmd.trim();
+        if(inputCmd.isEmpty()) return inputCmd;
+
+        int tagEnd = 0;
+        if (inputCmd.startsWith(WordMeaning.TAG_START)) { // has tag cmd
+            Matcher tagMather = Pattern.compile("@.+?\\s").matcher(inputCmd);
+            while (tagMather.find()) {
+                tagEnd = tagMather.end();
+                String tag = tagMather.group().trim();
+                if (tag.length() <= WordMeaning.TAG_START.length()) continue;
+                commandList.add(tag);
+            }
+        }
+
+        // second handle the meaning, if the meaning is null, the tag is valid\
+        if (tagEnd >= 1) tagEnd--;
+        if (tagEnd >= inputCmd.length())
+            return "";
+        String search = inputCmd.substring(tagEnd, inputCmd.length()).trim();
+        return search;
+    }
+
+
+    /**
      * 解析用户输入的单词的意思的数据
      * 最后会按词性排序
      * @return 解析结果状态码
@@ -54,7 +85,6 @@ public class InputAnalyzerUtil {
             WordMeaning oneMeaning = new WordMeaning();
 
             // first, 处理tag相关的
-//            (%@(\\w+)%u)
             one = one.trim();
             int tagEnd = 0;
             if (one.startsWith(WordMeaning.TAG_START)) {
@@ -68,9 +98,9 @@ public class InputAnalyzerUtil {
             }
 
             // second handle the meaning, if the meaning is null, the tag is valid\
+            if (tagEnd >= 1) tagEnd--; // real position
             if (tagEnd >= one.length())
                 continue;
-            if (tagEnd >= 1) tagEnd--;
             String tempMeaning = one.substring(tagEnd, one.length()).trim();
             analysisNoTagMeaning(oneMeaning, tempMeaning);
             meaningList.add(oneMeaning);
@@ -154,25 +184,4 @@ public class InputAnalyzerUtil {
         }
         return SUCCESS;
     }
-
-
-
-    /**
-     * 解析输入的命令
-     */
-    public static List<String> analysisCommandInput(String inputCommand) {
-        List<String> commandList = new ArrayList<>();
-        if (inputCommand == null) return commandList;
-        inputCommand = inputCommand.trim();
-        if (inputCommand.isEmpty()) return commandList;
-        String[] temp = inputCommand.split(" ");
-        for (String one : temp) {
-            one = one.trim();
-            if (!one.isEmpty()) {
-
-            }
-        }
-        return commandList;
-    }
-
 }

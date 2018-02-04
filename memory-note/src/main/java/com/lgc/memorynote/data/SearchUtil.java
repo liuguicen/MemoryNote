@@ -20,9 +20,10 @@ public class SearchUtil {
         for (int i = wordList.size() - 1; i >= 0; i--) {
             Word word = wordList.get(i);
             List<Word.WordMeaning> meaningList = word.getMeaningList();
+            if (meaningList == null) return;
             int j = 0;
             for (j = 0; j < meaningList.size(); j++) {
-                if (meaningList.get(i).hasTag(tag)) {
+                if (meaningList.get(j).hasTag(tag)) {
                     break;
                 }
             }
@@ -58,31 +59,21 @@ public class SearchUtil {
         // 含有非单词字符，搜索词义
         if (search == null) return wordList;
         if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(search).find()) {
+            int equalEnd = 0;
             for (int i = wordList.size() -1; i >= 0; i--) {
                 Word word = wordList.get(i);
-                List<Word.WordMeaning> meaningList = word.getMeaningList();
-                if (meaningList == null) {
-                    wordList.remove(i);
-                    continue;
-                }
-
-                int j = 0;
-                for (; j < meaningList.size(); j++){
-                    String meaning = meaningList.get(j).getMeaning();
-                    if (meaning != null && meaning.contains(search)) {
-                        if (meaning.equals(search)) {
-                            wordList.remove(i);
-                            wordList.add(0, word);
-                        }
-                        break;
-                    }
-                }
-                if (j >= wordList.size()) {
+                int res = word.containMeaning(search);
+                if (res == 2) {
+                    wordList.add(0, wordList.remove(i));
+                    equalEnd ++;
+                } else if (res == 1) {
+                    wordList.add(equalEnd, wordList.remove(i));
+                } else if (res == -1) {
                     wordList.remove(i);
                 }
-
             }
         } else {
+            int equalNumber = 0;
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
                 String name = word.getName();
@@ -90,6 +81,10 @@ public class SearchUtil {
                     if (name.equals(search)) {
                         wordList.remove(i);
                         wordList.add(0, word);
+                        equalNumber ++;
+                    } else if (name.startsWith(search)) {
+                        wordList.remove(i);
+                        wordList.add(equalNumber, word);
                     }
                 } else {
                     wordList.remove(i);

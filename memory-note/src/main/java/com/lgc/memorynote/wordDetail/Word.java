@@ -38,6 +38,32 @@ public class Word {
     public String inputMeaning;
     public String inputSimilarWords;
 
+    /**
+     * @return -1 no
+     *          0 contain
+     *          1 startWith
+     *          2 equal
+     */
+    public int containMeaning(String search) {
+        List<Word.WordMeaning> meaningList = getMeaningList();
+        if (meaningList == null) {
+            return -1;
+        }
+
+        for (int j = 0; j < meaningList.size(); j++){
+            String meaning = meaningList.get(j).getMeaning();
+            if (meaning != null && meaning.contains(search)) {
+                if (meaning.equals(search)) {
+                    return 2;
+                } else if (meaning.startsWith(search)) {
+                    return 1;
+                }
+                return 0;
+            }
+        }
+        return -1;
+    }
+
 
     public static class WordMeaning {
 

@@ -87,14 +87,14 @@ public class Command {
                 SearchUtil.grepNotPhrase(resultList);
             } else if (_word.equals(grep)) {
                 SearchUtil.grepNotWord(resultList);
-            } else if (_sheng.equals(grep) || (_guai.equals(grep))) {
-                SearchUtil.grepNoTag(_guai.substring(1, _guai.length()), resultList);
+            } else if (grep != null && grep.startsWith(Word.WordMeaning.TAG_START)) {
+                SearchUtil.grepNoTag(grep, resultList);
             }
 
         }
 
         // 第三步，进行排序操作
         Collections.sort(resultList, SortUtil.getComparator(commandList));
-        return wordList;
+        return resultList;
     }
 }
