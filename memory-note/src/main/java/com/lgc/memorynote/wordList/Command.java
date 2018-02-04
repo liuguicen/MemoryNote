@@ -49,10 +49,10 @@ public class Command {
     public static final String _phr    = COMMAND_START + "phr";
     public static final String _phr_ui    = "短语";
     /** 只显示生的单词 */
-    public static final String _sheng  =  COMMAND_START + Word.WordMeaning.TAG_SHENG;
+    public static final String _sheng  =  Word.WordMeaning.TAG_SHENG;
     public static final String _sheng_ui  =  "生的";
     /** 只显示词义怪的词 */
-    public static final String _guai   =  COMMAND_START + Word.WordMeaning.TAG_GUAI;
+    public static final String _guai   =  Word.WordMeaning.TAG_GUAI;
     public static final String _guai_ui   =  "怪的";
     /** 把近似的词放到一起 */
     public static final String _sim    = COMMAND_START + "sim";

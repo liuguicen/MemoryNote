@@ -27,7 +27,7 @@ public class SearchUtil {
                     break;
                 }
             }
-            if (j > meaningList.size()) {
+            if (j >= meaningList.size()) {
                 wordList.remove(i);
             }
         }
