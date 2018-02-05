@@ -20,11 +20,11 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
 //        testWordInput();
-//        testAnalyzeSimilarWord();
+        testAnalyzeSimilarWord();
 //        testInputWordTag();
 //        textInputNoTagMeaning();
 //        textInputMeanings(new Word());
-        testInputName();
+//        testInputName();
     }
 
     public void testInputName() {
@@ -54,9 +54,9 @@ public class ExampleUnitTest {
     }
 
     public void testInputSimilar(Word word) {
-        String input = "sdfsd word id good" +
-                "hahaha";
-        List<String> similarList = new ArrayList<>();
+        String input = "sdfsd word id good // 哄哄的东方盛世房东发的" +
+                "hahaha// 双方双方双方爽肤水";
+        List<Word.SimilarWord> similarList = new ArrayList<>();
         InputAnalyzerUtil.analyzeInputSimilarWords(input, similarList);
         System.out.println(similarList);
         word.setSimilarWordList(similarList);
@@ -69,8 +69,9 @@ public class ExampleUnitTest {
     }
 
     private void testAnalyzeSimilarWord() {
-        String similarWord = " credit parliament parliamentary  pre-cise accuracy virtue virtuosity distract rational ";
-        List<String> similarWorList = new ArrayList<>();
+        String similarWord =  "sdfsd word id good // 哄哄的东方盛世房东发的\n" +
+                "hahaha// 双方双方双方爽肤水";
+        List<Word.SimilarWord> similarWorList = new ArrayList<>();
         InputAnalyzerUtil.analyzeInputSimilarWords(similarWord, similarWorList);
         Word word = new Word();
         word.setInputSimilarWords(similarWord);

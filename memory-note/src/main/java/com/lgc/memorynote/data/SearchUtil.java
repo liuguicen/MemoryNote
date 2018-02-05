@@ -35,17 +35,17 @@ public class SearchUtil {
 
     public static void grepNotPhrase(List<Word> wordList) {
         for (int i = wordList.size() - 1; i >= 0; i--) {
-//            if (!wordList.get(i).isPhrase()) {
+            if (!wordList.get(i).getName().contains(" ")) {
                 wordList.remove(i);
-//            }
+            }
         }
     }
 
     public static void grepNotWord(List<Word> wordList) {
         for (int i = wordList.size() - 1; i >= 0; i--) {
-//            if (wordList.get(i).isPhrase()) {
-//                wordList.remove(i);
-//            }
+            if (wordList.get(i).getName().contains(" ")) {
+                wordList.remove(i);
+            }
         }
     }
 

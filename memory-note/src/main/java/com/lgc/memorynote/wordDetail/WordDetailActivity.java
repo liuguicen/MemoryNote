@@ -175,7 +175,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     @Override
-    public void showSimilarWords(List<String> similarWordList) {
+    public void showSimilarWords(List<Word.SimilarWord> similarWordList) {
         UIUtil.showSimilarWords(mTvSimilarWord, similarWordList, "\n");
         if (mPresenter.isInEdit() && mTvWordMeaning.getText().toString().trim().isEmpty()) {
             mTvSimilarWord.setVisibility(View.GONE);

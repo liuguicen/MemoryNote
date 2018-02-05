@@ -1,10 +1,7 @@
 package com.lgc.memorynote.base;
 
-import android.view.TextureView;
-
 import com.lgc.memorynote.wordDetail.Word;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -168,7 +165,7 @@ public class InputAnalyzerUtil {
     /**
      * 解析用户输入的相似单词
      */
-    public static int analyzeInputSimilarWords(String inputSimilarWord, List<String> similarWordList) {
+    public static int analyzeInputSimilarWords(String inputSimilarWord, List<Word.SimilarWord> similarWordList) {
         if (inputSimilarWord == null || similarWordList == null) return IS_NULL;
         inputSimilarWord = inputSimilarWord.trim();
         if(inputSimilarWord.isEmpty()) return IS_NULL;
@@ -178,8 +175,16 @@ public class InputAnalyzerUtil {
             //
             //}
             oneWord = oneWord.trim();
+            Word.SimilarWord similarWord = new Word.SimilarWord();
+            int annoStart = oneWord.indexOf("//");
+            if (annoStart >= 0) {
+                String annotation = oneWord.substring(annoStart + 2, oneWord.length());
+                similarWord.setAnotation(annotation);
+            }
+            String name = oneWord.substring(0,  annoStart != -1 ? annoStart : oneWord.length()).trim();
             if (!oneWord.isEmpty()) {
-                similarWordList.add(oneWord);
+                similarWord.setName(name);
+                similarWordList.add(similarWord);
             }
         }
         return SUCCESS;

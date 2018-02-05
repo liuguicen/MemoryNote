@@ -29,7 +29,7 @@ public class Word {
     public String name;
     public List<WordMeaning> meaningList = new ArrayList<>();
     public int strangeDegree = 0;
-    public List<String> similarWordList;
+    public List<SimilarWord> similarWordList;
     public long lastRememberTime = 0;
 
     /**
@@ -148,6 +148,27 @@ public class Word {
         }
     }
 
+    public static class SimilarWord {
+        public String name;
+        public String anotation;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setAnotation(String anotation) {
+            this.anotation = anotation;
+        }
+
+        public String getAnotation() {
+            return anotation;
+        }
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null || this.getClass() != obj.getClass()) return false;
@@ -165,7 +186,7 @@ public class Word {
         return 0;
     }
 
-    public static int compareSimilarNumber(List<String> w1, List<String> w2) {
+    public static int compareSimilarNumber(List<SimilarWord> w1, List<SimilarWord> w2) {
         int s1 = 0, s2 = 0;
         if (w1 != null) s1 = w1.size();
         if (w2 != null) s2 = w2.size();
@@ -203,7 +224,7 @@ public class Word {
         this.meaningList = meaningList;
     }
 
-    public void setSimilarWordList(List<String> similarWordList) {
+    public void setSimilarWordList(List<SimilarWord> similarWordList) {
         this.similarWordList = similarWordList;
     }
 
@@ -231,7 +252,7 @@ public class Word {
         return meaningList;
     }
 
-    public List<String> getSimilarWordList() {
+    public List<SimilarWord> getSimilarWordList() {
         return similarWordList;
     }
 

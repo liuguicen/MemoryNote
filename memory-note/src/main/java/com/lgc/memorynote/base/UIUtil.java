@@ -62,14 +62,16 @@ public class UIUtil {
         tv.setText(ss);
     }
 
-    public static void showSimilarWords(TextView tv, List<String> similarWordList, String divider) {
+    public static void showSimilarWords(TextView tv, List<Word.SimilarWord> similarWordList, String divider) {
         if (tv == null || similarWordList == null || similarWordList.size() == 0)
             return;
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < similarWordList.size(); i++) {
-            String similar = similarWordList.get(i);
-            sb.append(similar);
+            Word.SimilarWord similar = similarWordList.get(i);
+            sb.append(similar.getName());
+            sb.append(" ");
+            sb.append(similar.getAnotation());
             if (i < similarWordList.size() - 1) {
                  sb.append(divider);
             }

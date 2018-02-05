@@ -97,7 +97,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         }
         if (!TextUtils.equals(inputSimilars, mWord.getInputSimilarWords())) {
             mWord.setInputSimilarWords(inputSimilars);
-            List<String> similarList = new ArrayList<>();
+            List<Word.SimilarWord> similarList = new ArrayList<>();
             InputAnalyzerUtil.analyzeInputSimilarWords(inputSimilars, similarList);
             mWord.setSimilarWordList(similarList);
         }

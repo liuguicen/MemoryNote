@@ -21,7 +21,7 @@ public interface WordDetailContract {
 
         void showInputMeaning(String inputMeaning);
 
-        void showSimilarWords(List<String> similarWordList);
+        void showSimilarWords(List<Word.SimilarWord> similarWordList);
 
         void showInputSimilarWords(String inputSimilarWords);
 
