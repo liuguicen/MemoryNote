@@ -11,7 +11,6 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -170,7 +169,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     @Override
     public void showWordMeaning(List<Word.WordMeaning> wordMeaningList) {
-        UIUtil.showMeaningList(mTvWordMeaning, wordMeaningList);
+        UIUtil.showMeaningList(mTvWordMeaning, wordMeaningList, "\n");
     }
 
 
@@ -181,7 +180,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     @Override
     public void showSimilarWords(List<String> similarWordList) {
-        UIUtil.showSimilarWords(mTvSimilarWord, similarWordList);
+        UIUtil.showSimilarWords(mTvSimilarWord, similarWordList, "\n");
     }
 
     @Override

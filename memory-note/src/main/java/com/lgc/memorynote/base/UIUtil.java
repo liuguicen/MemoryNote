@@ -7,8 +7,6 @@ import android.widget.TextView;
 
 import com.lgc.memorynote.wordDetail.Word;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,7 +24,7 @@ public class UIUtil {
     /**
      * 显示词义，顺序显示，词性 + 意思，有特殊标记的就显示对应的颜色或者打上标记
      */
-    public static void showMeaningList(TextView tv, List<Word.WordMeaning> wordMeaningList) {
+    public static void showMeaningList(TextView tv, List<Word.WordMeaning> wordMeaningList, String divider) {
         if (tv == null || wordMeaningList == null || wordMeaningList.size() == 0)
             return;
         // 解析词义，特殊的词意采用特殊的颜色
@@ -37,10 +35,10 @@ public class UIUtil {
             sb.append(lastCixing + ". ");
         }
         for (Word.WordMeaning oneMeaning : wordMeaningList) {
-            if (!lastCixing.equals(oneMeaning.getCiXing())) { // xixing has changing , add "\n" + cixing
+            if (!lastCixing.equals(oneMeaning.getCiXing())) { // xixing has changing , add divider = "\n" or others + cixing
                 lastCixing = oneMeaning.getCiXing();
                 if (sb.length() > 0) {
-                    sb.append("\n");
+                    sb.append("\n\n\n\n");
                 } if (lastCixing != null) {
                     sb.append(oneMeaning.getCiXing() + ". ");
                 }
@@ -63,13 +61,13 @@ public class UIUtil {
         tv.setText(ss);
     }
 
-    public static void showSimilarWords(TextView tv, List<String> similarWordList) {
+    public static void showSimilarWords(TextView tv, List<String> similarWordList, String divider) {
         if (tv == null || similarWordList == null || similarWordList.size() == 0)
             return;
 
         StringBuilder sb = new StringBuilder();
         for (String similar : similarWordList) {
-            sb.append(similar + "   ");
+            sb.append(similar + divider);
         }
         tv.setText(sb.toString());
     }
