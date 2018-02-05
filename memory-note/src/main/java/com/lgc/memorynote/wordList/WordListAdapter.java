@@ -91,14 +91,14 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             itemHolder.tvMeaning.setVisibility(View.GONE);
         } else {
             itemHolder.tvMeaning.setVisibility(View.VISIBLE);
-            UIUtil.showMeaningList(itemHolder.tvMeaning, word.getMeaningList(), ";   ");
+            UIUtil.showMeaningList(itemHolder.tvMeaning, word.getMeaningList(), " ;   ");
         }
 
         if (word.getSimilarWordList() == null || word.getSimilarWordList().size() == 0) {
             itemHolder.tvSimilar.setVisibility(View.GONE);
         } else {
             itemHolder.tvSimilar.setVisibility(View.VISIBLE);
-            UIUtil.showSimilarWords(itemHolder.tvSimilar, word.getSimilarWordList(), ";   ");
+            UIUtil.showSimilarWords(itemHolder.tvSimilar, word.getSimilarWordList(), "   #   ");
         }
     }
 

@@ -121,11 +121,6 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         switchTvEditStyle(mTvWordName, isInEdit);
         switchTvEditStyle(mTvWordMeaning, isInEdit);
         switchTvEditStyle(mTvSimilarWord, isInEdit);
-        if (!isInEdit && mTvSimilarWord.getText().toString().isEmpty()) {
-            mTvSimilarWord.setVisibility(View.GONE);
-        } else {
-            mTvSimilarWord.setVisibility(View.VISIBLE);
-        }
         if (isInEdit) {
             mBtnEdit.setText(getString(R.string.edit_save));
         } else {
@@ -138,6 +133,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
             tv.setInputType(lastInputType);
         } else {
             tv.setInputType(InputType.TYPE_NULL);
+            tv.setSingleLine(false);
         }
         if (isInEdit) {
             tv.setBackground(((Drawable) tv.getTag()));
@@ -181,6 +177,11 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     @Override
     public void showSimilarWords(List<String> similarWordList) {
         UIUtil.showSimilarWords(mTvSimilarWord, similarWordList, "\n");
+        if (mPresenter.isInEdit() && mTvWordMeaning.getText().toString().trim().isEmpty()) {
+            mTvSimilarWord.setVisibility(View.GONE);
+        } else {
+            mTvSimilarWord.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

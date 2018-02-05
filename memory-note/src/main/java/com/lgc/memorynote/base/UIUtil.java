@@ -32,15 +32,16 @@ public class UIUtil {
 
         String lastCixing = Word.WordMeaning.CIXING_N;
         if (lastCixing.equals(wordMeaningList.get(0).getCiXing())) {
-            sb.append(lastCixing + ". ");
+            sb.append(lastCixing + " ");
         }
         for (Word.WordMeaning oneMeaning : wordMeaningList) {
             if (!lastCixing.equals(oneMeaning.getCiXing())) { // xixing has changing , add divider = "\n" or others + cixing
                 lastCixing = oneMeaning.getCiXing();
                 if (sb.length() > 0) {
-                    sb.append("\n\n\n\n");
-                } if (lastCixing != null) {
-                    sb.append(oneMeaning.getCiXing() + ". ");
+                    sb.append(divider);
+                }
+                if (lastCixing != null) {
+                    sb.append(oneMeaning.getCiXing() + " ");
                 }
             }
 
@@ -66,8 +67,12 @@ public class UIUtil {
             return;
 
         StringBuilder sb = new StringBuilder();
-        for (String similar : similarWordList) {
-            sb.append(similar + divider);
+        for (int i = 0; i < similarWordList.size(); i++) {
+            String similar = similarWordList.get(i);
+            sb.append(similar);
+            if (i < similarWordList.size() - 1) {
+                 sb.append(divider);
+            }
         }
         tv.setText(sb.toString());
     }
