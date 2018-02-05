@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/word_list_margin"
-    android:layout_marginTop="@dimen/word_list_margin">
+    android:layout_marginTop="@dimen/very_small_margin">
 
     <TextView
         android:id="@+id/lv_item_word_name"
@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:text="text"
         android:textSize="@dimen/text_size_normal"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/lv_item_word_reduce_strange"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,6 +24,7 @@
         style="@style/LvItemWordStrange"
         android:text=" — "
         android:textSize="@dimen/text_size_normal"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/lv_item_strange_value"
         app:layout_constraintEnd_toStartOf="@+id/lv_item_strange_value"
         app:layout_constraintTop_toTopOf="@+id/lv_item_strange_value" />
@@ -32,9 +34,9 @@
         style="@style/LvItemWordStrange"
         android:layout_width="40dp"
         android:layout_height="60dp"
-        android:text="10"
         android:paddingEnd="0dp"
         android:paddingStart="0dp"
+        android:text="10"
         android:textColor="@color/color_strange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/lv_item_word_add_strange"
@@ -61,4 +63,14 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lv_item_word_name" />
+
+    <TextView
+        android:id="@+id/lv_item_word_similar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintEnd_toStartOf="@+id/lv_item_word_reduce_strange"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lv_item_word_meaning" />
 </android.support.constraint.ConstraintLayout>

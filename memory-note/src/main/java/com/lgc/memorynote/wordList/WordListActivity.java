@@ -83,6 +83,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                 } else {
                     mTvCommand.setMaxLines(1);
                 }
+                updateCommandText(Command.commandList, mPresenter.getChoseCommand());
                 mTvCommand.setVisibility(View.GONE);
                 mTvCommand.setVisibility(View.VISIBLE);
                 mTvCommand.requestLayout();
@@ -133,6 +134,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         });
         mPresenter.start();
         mWordListView.setAdapter(mWordListAdapter);
+        mWordListView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
     }
 
     private void startActivityWordDetail(String wordName) {
@@ -146,7 +148,13 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     public void updateCommandText(List<String> commandList, List<String> chosenList) {
         // 转话层UI上的字符串
         List<Pair<String, String>> UICommandList = new ArrayList<>();
-        for (String one : commandList) {
+        int maxNumber = commandList.size();
+        if (mTvCommand.getMaxLines() <= 1) {
+            maxNumber = Math.min(maxNumber, 4);
+        }
+
+        for (int i = 0; i < maxNumber; i++) {
+            String one  = commandList.get(i);
             UICommandList.add(
                     new Pair<>(Command.UICommandMap.get(one), one));
         }
@@ -168,7 +176,8 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
         // 用Spanable装饰
         SpannableString ss = new SpannableString(commandString);
-        for (int i = 0; i < UICommandList.size(); i++) {
+
+        for (int i = 0; i < maxNumber; i++) {
             Pair<String, String> pair = UICommandList.get(i);
             String UICommand = pair.first;
             String command = pair.second;

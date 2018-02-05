@@ -56,5 +56,7 @@ public class WordListContract {
         void addStrange(int position);
 
         void reduceStrange(int position);
+
+        List<String> getChoseCommand();
     }
 }

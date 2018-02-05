@@ -21,30 +21,30 @@ public class WordListPresenter implements WordListContract.Presenter {
     private final WordListContract.View mView;
     private Context mContext;
 
-    private List<String> mCmdList = new ArrayList<>();
+    private List<String> mChosenCmdList = new ArrayList<>();
     private List<String> mInputCmdList = new ArrayList<>();
     private List<Word> mCurShowWordList = new ArrayList<>();
 
     public WordListPresenter(WordListContract.View view) {
         mView = view;
-        mCmdList.add(SortUtil.DEFAULT_SORT_COMMAND);
+        mChosenCmdList.add(SortUtil.DEFAULT_SORT_COMMAND);
     }
 
     @Override
     public void start() {
         mCurShowWordList = GlobalData.getInstance().getCurWords();
-        mView.updateCommandText(GlobalData.getInstance().getCommandList(), mCmdList);
+        mView.updateCommandText(GlobalData.getInstance().getCommandList(), mChosenCmdList);
         reorderWordList(null);
     }
 
     @Override
     public void switchOneCommand(String command) {
-        if (!mCmdList.contains(command)) {
-            mCmdList.add(command);
+        if (!mChosenCmdList.contains(command)) {
+            mChosenCmdList.add(command);
         } else {
-            mCmdList.remove(command);
+            mChosenCmdList.remove(command);
         }
-        mView.updateCommandText(GlobalData.getInstance().getCommandList(), mCmdList);
+        mView.updateCommandText(GlobalData.getInstance().getCommandList(), mChosenCmdList);
     }
 
     /**
@@ -55,13 +55,13 @@ public class WordListPresenter implements WordListContract.Presenter {
     public void reorderWordList(String search) {
         if (search !=  null)
             search = search.trim();
-        mCmdList.removeAll(mInputCmdList);
+        mChosenCmdList.removeAll(mInputCmdList);
         mInputCmdList.clear(); //  clear last input cmd list first
 
         search = InputAnalyzerUtil.analyzeInputCommand(search, mInputCmdList);
-        mCmdList.addAll(mInputCmdList); // analyze and add current input cmd list
+        mChosenCmdList.addAll(mInputCmdList); // analyze and add current input cmd list
 
-        mCurShowWordList = Command.orderByCommand(search, mCmdList, GlobalData.getInstance().getAllWord());
+        mCurShowWordList = Command.orderByCommand(search, mChosenCmdList, GlobalData.getInstance().getAllWord());
         GlobalData.getInstance().setCurWords(mCurShowWordList);
         mView.refreshWordList(mCurShowWordList);
     }
@@ -83,5 +83,10 @@ public class WordListPresenter implements WordListContract.Presenter {
         Word word = mCurShowWordList.get(position);
         word.setStrangeDegree(word.strangeDegree - 1);
         GlobalData.getInstance().updateWord(word);
+    }
+
+    @Override
+    public List<String> getChoseCommand() {
+        return mChosenCmdList;
     }
 }

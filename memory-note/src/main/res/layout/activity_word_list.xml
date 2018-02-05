@@ -83,5 +83,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_input_command"
         app:layout_constraintBottom_toTopOf="@id/lv_word_list"
         app:layout_constraintEnd_toStartOf="@+id/btn_expand_command_list"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:overScrollMode="never"
+        />
 </android.support.constraint.ConstraintLayout>

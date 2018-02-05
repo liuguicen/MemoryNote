@@ -87,7 +87,19 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Word word = mWordList.get(position);
         itemHolder.tvName.setText(word.getName());
         itemHolder.tvStrange.setText(word.getStrangeDegree() + "");
-        UIUtil.showMeaningList(((ItemHolder)holder).tvMeaning, mWordList.get(position).getMeaningList());
+        if (word.getMeaningList() == null || word.getMeaningList().size() == 0) {
+            itemHolder.tvMeaning.setVisibility(View.GONE);
+        } else {
+            itemHolder.tvMeaning.setVisibility(View.VISIBLE);
+            UIUtil.showMeaningList(itemHolder.tvMeaning, word.getMeaningList());
+        }
+
+        if (word.getSimilarWordList() == null || word.getSimilarWordList().size() == 0) {
+            itemHolder.tvSimilar.setVisibility(View.GONE);
+        } else {
+            itemHolder.tvSimilar.setVisibility(View.VISIBLE);
+            UIUtil.showSimilarWords(itemHolder.tvSimilar, word.getSimilarWordList());
+        }
     }
 
     @Override
@@ -100,16 +112,19 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder {
-        TextView tvMeaning;
-        TextView tvName;
-        TextView tvStrange;
-        TextView tvAddStrange;
-        TextView tvReduceStrange;
+        private final TextView tvSimilar;
+        private final TextView tvMeaning;
+        private final TextView tvName;
+        private final TextView tvStrange;
+        private final TextView tvAddStrange;
+        private final TextView tvReduceStrange;
 
         public ItemHolder(View itemView) {
             super(itemView);
             tvName = (TextView) itemView.findViewById(R.id.lv_item_word_name);
             tvMeaning = (TextView) itemView.findViewById(R.id.lv_item_word_meaning);
+            tvSimilar = (TextView) itemView.findViewById(R.id.lv_item_word_similar);
+
             tvStrange = (TextView) itemView.findViewById(R.id.lv_item_strange_value);
             tvAddStrange = (TextView)itemView.findViewById(R.id.lv_item_word_add_strange);
             tvReduceStrange = (TextView)itemView.findViewById(R.id.lv_item_word_reduce_strange);
