@@ -1,4 +1,4 @@
-package com.lgc.memorynote.wordDetail;
+package com.lgc.memorynote.data;
 
 import android.text.TextUtils;
 
@@ -22,14 +22,14 @@ import java.util.List;
  * adj.国会的，议会的
  * @guai @gsdf adj. adv. uauaua
  * **********************************/
-public class Word {
+public class OldWord {
     public static String NOT_NAME_FORMAT_REGEX = "[^a-zA-z\\-' ]";
 
 
     public String name;
     public List<WordMeaning> meaningList = new ArrayList<>();
     public int strangeDegree = 0;
-    public List<SimilarWord> similarWordList;
+    public List<String> similarWordList;
     public long lastRememberTime = 0;
 
     /**
@@ -45,7 +45,7 @@ public class Word {
      *          2 equal
      */
     public int containMeaning(String search) {
-        List<Word.WordMeaning> meaningList = getMeaningList();
+        List<OldWord.WordMeaning> meaningList = getMeaningList();
         if (meaningList == null) {
             return -1;
         }
@@ -143,36 +143,15 @@ public class Word {
             this.tagList = tagList;
         }
 
-        public void putValidCiXing(String validCiXing) {
+        public void setValidCiXing(String validCiXing) {
             this.ciXing = validCiXing;
-        }
-    }
-
-    public static class SimilarWord {
-        public String name;
-        public String anotation;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public void setAnotation(String anotation) {
-            this.anotation = anotation;
-        }
-
-        public String getAnotation() {
-            return anotation;
         }
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj == null || this.getClass() != obj.getClass()) return false;
-        return this == obj || TextUtils.equals(this.name, ((Word) obj).name);
+        return this == obj || TextUtils.equals(this.name, ((OldWord) obj).name);
     }
 
     public static int compareStrangeDegree(int s1, int s2) {
@@ -186,7 +165,7 @@ public class Word {
         return 0;
     }
 
-    public static int compareSimilarNumber(List<SimilarWord> w1, List<SimilarWord> w2) {
+    public static int compareSimilarNumber(List<String> w1, List<String> w2) {
         int s1 = 0, s2 = 0;
         if (w1 != null) s1 = w1.size();
         if (w2 != null) s2 = w2.size();
@@ -224,7 +203,7 @@ public class Word {
         this.meaningList = meaningList;
     }
 
-    public void setSimilarWordList(List<SimilarWord> similarWordList) {
+    public void setSimilarWordList(List<String> similarWordList) {
         this.similarWordList = similarWordList;
     }
 
@@ -252,7 +231,7 @@ public class Word {
         return meaningList;
     }
 
-    public List<SimilarWord> getSimilarWordList() {
+    public List<String> getSimilarWordList() {
         return similarWordList;
     }
 

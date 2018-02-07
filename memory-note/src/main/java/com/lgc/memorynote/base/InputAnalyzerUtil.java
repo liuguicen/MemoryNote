@@ -157,7 +157,7 @@ public class InputAnalyzerUtil {
             return NO_VALID_MEANING;
         }
         String realMeaning = tempMeaning.substring(cixing.length(), tempMeaning.length()).trim();
-        oneMeaning.setValidCiXing(cixing);
+        oneMeaning.putValidCiXing(cixing);
         oneMeaning.setMeaning(realMeaning);
         return SUCCESS;
     }

@@ -40,12 +40,63 @@ public class GlobalData {
                 Word word = gson.fromJson(oneJsonWord, Word.class);
                 mAllWords.add(word);
                 mCurWords.add(word);
+                /**
+                 * word数据结构变化的时候用， 把原版的Word拷一份出来了，命名为OldWord，去掉上面几行代码，
+                 * 使用下面的代码，在oldWord2NewWord方法里面加上相关逻辑
+                 * OldWord oldWord = gson.fromJson(oneJsonWord, OldWord.class);
+                 * oldWord2NewWord(oldWord);
+                 * 看效果加上这两行，不关掉应用可能会改到数据库
+                 * mAllWords.add(word);
+                 * mCurWords.add(word);
+                 * Toast.makeText(MemoryNoteApplication.appContext, "应用数据已更新完毕", Toast.LENGTH_LONG).show();
+                 */
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             database.close();
         }
+    }
+
+    public Word oldWord2NewWord(OldWord oldWord) {
+        Word word = new Word();
+        word.setName(oldWord.getName());
+
+        // 放入词义
+        word.setInputMeaning(oldWord.getInputMeaning()); // 放入输入的
+
+        List<Word.WordMeaning> newMeaningList = word.getMeaningList();
+        for (OldWord.WordMeaning oldMeaning : oldWord.getMeaningList()) {
+            Word.WordMeaning newMeaning = new Word.WordMeaning(); // 创建
+
+            newMeaning.setCiXing(oldMeaning.getCiXing()); // 设置
+            newMeaning.setMeaning(oldMeaning.getMeaning());
+            newMeaning.setTagList(oldMeaning.getTagList());
+
+            newMeaningList.add(newMeaning); // 加入
+        }
+        word.setMeaningList(newMeaningList); // 加入word
+
+        // 放入相似的词
+        word.setInputMeaning(oldWord.getInputMeaning()); // 放入输入的
+
+        List<Word.SimilarWord> newSimilarList = new ArrayList<>();
+        for (String oldSimilar : oldWord.getSimilarWordList()) {
+            Word.SimilarWord newSimilar = new Word.SimilarWord(); //创建
+
+            newSimilar.setName(oldSimilar); // 设置
+
+            newSimilarList.add(newSimilar); // 加入
+        }
+        word.setSimilarWordList(newSimilarList); // 加入word
+
+        // 放入陌生度以及上次记忆时间
+        word.setStrangeDegree(oldWord.getStrangeDegree());
+        word.setLastRememberTime(oldWord.getLastRememberTime());
+
+        // 刷新数据库
+        updateWord(word);
+        return word;
     }
 
     public static GlobalData getInstance() {
@@ -89,6 +140,7 @@ public class GlobalData {
     public void updateWord(Word word) {
         try {
             MyDatabase.getInstance().insertWord(word.getName(), new Gson().toJson(word));
+            Logcat.e(word.getName() + "已更新");
             // 更新，内存中的已经更新了，不用在更新
         } catch (IOException e) {
             e.printStackTrace();
