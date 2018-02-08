@@ -58,10 +58,11 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         mTvLastRememberTime  = (TextView) findViewById(R.id.last_remember_time);
         mBtnEdit             = (TextView) findViewById(R.id.btn_word_detail_edit);
         mBtnEdit.setOnClickListener(this);
-        mTvWordName.setTag(mTvWordName.getTag());
-        mTvWordMeaning.setTag(mTvWordMeaning.getTag());
+        mTvWordName.setTag(mTvWordName.getBackground());
+        mTvWordMeaning.setTag(mTvWordName.getBackground());
         lastInputType = mTvWordMeaning.getInputType();
-        mTvSimilarWord.setTag(mTvSimilarWord.getTag());
+        mTvSimilarWord.setTag(mTvSimilarWord.getBackground());
+        mTvRememberWay.setTag(mTvRememberWay.getBackground());
         findViewById(R.id.add_strange_degree).setOnClickListener(this);
         findViewById(R.id.reduce_strange_degree).setOnClickListener(this);
         findViewById(R.id.word_detail_delete).setOnClickListener(this);
@@ -187,7 +188,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     @Override
     public void showSimilarWords(List<Word.SimilarWord> similarWordList) {
         UIUtil.showSimilarWords(mTvSimilarWord, similarWordList, "\n");
-        if (mPresenter.isInEdit() && mTvWordMeaning.getText().toString().trim().isEmpty()) {
+        if (!mPresenter.isInEdit() && mTvSimilarWord.getText().toString().trim().isEmpty()) {
             mTvSimilarWord.setVisibility(View.GONE);
         } else {
             mTvSimilarWord.setVisibility(View.VISIBLE);
@@ -196,16 +197,17 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     @Override
     public void showInputSimilarWords(String inputSimilarWords) {
+        mTvSimilarWord.setVisibility(View.VISIBLE);
         mTvSimilarWord.setText(inputSimilarWords);
     }
 
     @Override
     public void showInputRememberWay(String rememberWay) {
-        if (mPresenter.isInEdit() && (rememberWay ==null || rememberWay.isEmpty())) {
-            mTvSimilarWord.setVisibility(View.GONE);
+        if (!mPresenter.isInEdit() && (rememberWay ==null || rememberWay.isEmpty())) {
+            mTvRememberWay.setVisibility(View.GONE);
         } else {
+            mTvRememberWay.setVisibility(View.VISIBLE);
             mTvRememberWay.setText(rememberWay);
-            mTvSimilarWord.setVisibility(View.VISIBLE);
         }
     }
 

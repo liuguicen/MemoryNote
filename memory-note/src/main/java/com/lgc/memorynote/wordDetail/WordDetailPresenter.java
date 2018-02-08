@@ -118,13 +118,14 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         if (mIsInEdit) {
             mView.showInputMeaning(mWord.getInputMeaning());
             mView.showInputSimilarWords(mWord.getInputSimilarWords());
+            mView.showInputRememberWay(mWord.getInputRememberWay());
         } else {
             mView.showWordMeaning(mWord.getMeaningList());
             mView.showSimilarWords(mWord.getSimilarWordList());
+            mView.showInputRememberWay(mWord.getInputRememberWay());
         }
         if (!isSwitchEdit) { // 切换编辑的过程中，这些视图的数据不用变
             mView.showWord(mWord.getName());
-            mView.showInputRememberWay(mWord.getInputRememberWay());
             mView.showStrangeDegree(mWord.getStrangeDegree());
             mView.showLastRememberTime(mWord.getLastRememberTime());
         }
