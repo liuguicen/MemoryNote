@@ -82,7 +82,7 @@ public class SortUtil {
                     sortList.add(_sn);
                 } else if (Command._dict.equals(order)) {
                     sortList.add(_dict);
-                } else if (Command._len.contains(order)) {
+                } else if (Command._len.equals(order)) {
                     sortList.add(_len);
                 }
             }

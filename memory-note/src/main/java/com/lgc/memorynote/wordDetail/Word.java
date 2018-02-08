@@ -30,6 +30,7 @@ public class Word {
     public List<WordMeaning> meaningList = new ArrayList<>();
     public int strangeDegree = 0;
     public List<SimilarWord> similarWordList;
+    public List<SimilarWord> groupList;
     public long lastRememberTime = 0;
 
     /**
@@ -38,6 +39,7 @@ public class Word {
     public String inputMeaning;
     public String inputSimilarWords;
     public String inputRememberWay;
+    private String inputWordGroup;
 
     /**
      * @return -1 no
@@ -64,7 +66,6 @@ public class Word {
         }
         return -1;
     }
-
 
     public static class WordMeaning {
 
@@ -245,6 +246,14 @@ public class Word {
         return inputRememberWay;
     }
 
+    public String getInputWordGroup() {
+        return inputWordGroup;
+    }
+
+    public void setInputWordGroup(String inputWordGroup) {
+        this.inputWordGroup = inputWordGroup;
+    }
+
     public String getName() {
         return name;
     }
@@ -257,6 +266,10 @@ public class Word {
         return lastRememberTime;
     }
 
+    public String getInputMeaning() {
+        return inputMeaning;
+    }
+
     public List<WordMeaning> getMeaningList() {
         return meaningList;
     }
@@ -265,11 +278,15 @@ public class Word {
         return similarWordList;
     }
 
-    public String getInputMeaning() {
-        return inputMeaning;
-    }
-
     public String getInputSimilarWords() {
         return inputSimilarWords;
+    }
+
+    public List<SimilarWord> getGroupList() {
+        return groupList;
+    }
+
+    public void setGroupList(List<SimilarWord> groupList) {
+        this.groupList = groupList;
     }
 }

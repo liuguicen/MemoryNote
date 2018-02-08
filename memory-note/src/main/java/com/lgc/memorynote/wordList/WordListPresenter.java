@@ -61,7 +61,9 @@ public class WordListPresenter implements WordListContract.Presenter {
         search = InputAnalyzerUtil.analyzeInputCommand(search, mInputCmdList);
         mChosenCmdList.addAll(mInputCmdList); // analyze and add current input cmd list
 
+
         mCurShowWordList = Command.orderByCommand(search, mChosenCmdList, GlobalData.getInstance().getAllWord());
+        setUICommand(mChosenCmdList);
         GlobalData.getInstance().setCurWords(mCurShowWordList);
         mView.refreshWordList(mCurShowWordList);
     }
@@ -88,5 +90,15 @@ public class WordListPresenter implements WordListContract.Presenter {
     @Override
     public List<String> getChoseCommand() {
         return mChosenCmdList;
+    }
+
+    public void setUICommand(List<String> UICommand) {
+        for (String s : UICommand) {
+            if (Command._hdm.equals(s)) {
+                mView.hideMeaning();
+            } else if (Command._hdw.equals(s)) {
+                mView.hideWord();
+            }
+        }
     }
 }

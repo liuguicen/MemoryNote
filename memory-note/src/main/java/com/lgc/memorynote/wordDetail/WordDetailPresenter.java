@@ -69,6 +69,8 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         String inputMeaings = mView.getInputWordMeaning().trim();
         String inputSimilars = mView.getInputSimilarWords().trim();
         String inputRememberWay = mView.getInputRememberWay().trim();
+        String inputWordGroup = mView.getInputWordGroup().trim();
+
         if (mIsAdd) {
             String inputName = mView.getInputWordName();
             inputName = inputName.trim();
@@ -107,11 +109,19 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mWord.setInputRememberWay(inputRememberWay);
         }
 
+        if (!TextUtils.equals(inputWordGroup, mWord.getInputWordGroup())) {
+            mWord.setInputWordGroup(inputWordGroup);
+            List<Word.SimilarWord> groupList = new ArrayList<>();
+            InputAnalyzerUtil.analyzeInputSimilarWords(inputWordGroup, groupList);
+            mWord.setGroupList(groupList);
+        }
+
         if (mIsAdd) {
             GlobalData.getInstance().addWord(mWord);
         } else {
             GlobalData.getInstance().updateWord(mWord);
         }
+        mIsAdd = false; // 保存一次之后就不再是true了
     }
 
     private void showData(boolean isSwitchEdit) {
@@ -119,10 +129,12 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mView.showInputMeaning(mWord.getInputMeaning());
             mView.showInputSimilarWords(mWord.getInputSimilarWords());
             mView.showInputRememberWay(mWord.getInputRememberWay());
+            mView.showInputWordGroup(mWord.getInputWordGroup());
         } else {
             mView.showWordMeaning(mWord.getMeaningList());
             mView.showSimilarWords(mWord.getSimilarWordList());
             mView.showInputRememberWay(mWord.getInputRememberWay());
+            mView.showWordGroupList(mWord.getGroupList());
         }
         if (!isSwitchEdit) { // 切换编辑的过程中，这些视图的数据不用变
             mView.showWord(mWord.getName());

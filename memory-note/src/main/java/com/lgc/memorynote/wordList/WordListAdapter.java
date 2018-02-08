@@ -27,6 +27,8 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Word> mWordList;
 
     private static int ITEM = 1;
+    private boolean mIsHideWord = false;
+    private boolean mIsHideMeaning = false;
 
     public interface ItemClickListener {
         void onItemClick(View v, ItemHolder itemHolder);
@@ -57,6 +59,16 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return mWordList;
     }
 
+    public void setHideMeaning(boolean isHide) {
+        mIsHideMeaning = isHide;
+        notifyDataSetChanged();
+    }
+
+    public void setHideWord(boolean isHide) {
+        mIsHideWord = isHide;
+        notifyDataSetChanged();
+    }
+
     public void setWordList(List<Word> WordList) {
         this.mWordList = WordList;
         notifyDataSetChanged();
@@ -85,13 +97,21 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ItemHolder itemHolder = ((ItemHolder) holder);
         Word word = mWordList.get(position);
-        itemHolder.tvName.setText(word.getName());
+        if (!mIsHideWord) {
+            itemHolder.tvName.setText(word.getName());
+        } else {
+            itemHolder.tvName.setText("_________");
+        }
         itemHolder.tvStrange.setText(word.getStrangeDegree() + "");
         if (word.getMeaningList() == null || word.getMeaningList().size() == 0) {
             itemHolder.tvMeaning.setVisibility(View.GONE);
         } else {
             itemHolder.tvMeaning.setVisibility(View.VISIBLE);
-            UIUtil.showMeaningList(itemHolder.tvMeaning, word.getMeaningList(), " ;   ");
+            if (!mIsHideMeaning) {
+                UIUtil.showMeaningList(itemHolder.tvMeaning, word.getMeaningList(), " ;   ");
+            } else {
+                itemHolder.tvMeaning.setText("_________");
+            }
         }
 
         if (word.getSimilarWordList() == null || word.getSimilarWordList().size() == 0) {

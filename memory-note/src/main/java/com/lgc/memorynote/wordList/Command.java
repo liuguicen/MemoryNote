@@ -58,11 +58,27 @@ public class Command {
     public static final String _sim    = COMMAND_START + "sim";
     public static final String _sim_ui    =  "相似";
 
+    /**
+     * UI 功能
+     */
+    /** 隐藏词义 **/
+    public static final String _hdm = COMMAND_START + "hdm";
+    public static final String _hdm_ui = "藏义";
+
+    /** 隐藏单词 **/
+    public static final String _hdw = COMMAND_START + "hdw";
+    public static final String _hdw_ui = "藏词";
+
+
     public static final List<String> commandList = new ArrayList<String>(){{
-        add(_stra); add(_last); add(_dict); add(_len); add(_sn); add(_rev); add(_word); add(_phr); add(_sheng); add(_guai); add(_sim);}};
+        add(_stra); add(_last); add(_sheng); add(_guai);
+
+        add(_hdm); add(_hdw);  add(_dict); add(_len); add(_sn); add(_rev);
+
+        add(_word); add(_phr);add(_sim);}};
     public static final Map<String, String> UICommandMap = new HashMap<String, String>(){{
             put(_stra, _stra_ui);  put(_last, _last_ui);  put(_dict, _dict_ui);  put(_len ,_len_ui);
-            put(_sn, _sn_ui);
+            put(_sn, _sn_ui);      put(_hdm, _hdm_ui); put(_hdw, _hdw_ui);
             put(_rev, _rev_ui);    put(_word, _word_ui);  put(_phr, _phr_ui);    put(_sheng, _sheng_ui);
             put(_guai, _guai_ui);  put(_sim, _sim_ui);
 

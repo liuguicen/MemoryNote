@@ -15,4 +15,5 @@
     <string name="certain_delete">确定删除吗</string>
     <string name="cetain_leave_in_edit">正在编辑单词，你确定离开吗？</string>
     <string name="word_name_is_null">单词名为空，保存失败</string>
+    <string name="word_group">词组</string>
 </resources>

@@ -2,10 +2,13 @@ package com.lgc.memorynote.base;
 
 import android.graphics.Color;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.widget.TextView;
 
 import com.lgc.memorynote.wordDetail.Word;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -30,20 +33,17 @@ public class UIUtil {
         // 解析词义，特殊的词意采用特殊的颜色
         StringBuilder sb = new StringBuilder();
 
-        String lastCixing = Word.WordMeaning.CIXING_N;
-        if (lastCixing.equals(wordMeaningList.get(0).getCiXing())) {
-            sb.append(lastCixing + ". ");
-        }
+        String lastCixing = null;
         for (Word.WordMeaning oneMeaning : wordMeaningList) {
             for (String tag : oneMeaning.getTagList()) {
                 sb.append(tag + " ");
             }
 
-            if (lastCixing != null && !lastCixing.equals(oneMeaning.getCiXing())) { // xixing has changing , add divider = "\n" or others + cixing
-                lastCixing = oneMeaning.getCiXing();
-                if (sb.length() > 0) {
+            if (!TextUtils.equals(lastCixing, oneMeaning.getCiXing())) { // xixing has changing , add divider = "\n" or others + cixing
+                if (lastCixing != null) {
                     sb.append(divider);
                 }
+                lastCixing = oneMeaning.getCiXing();
                 if (lastCixing != null) {
                     sb.append(oneMeaning.getCiXing() + ". ");
                 }

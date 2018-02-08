@@ -194,6 +194,15 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     }
 
     @Override
+    public void hideMeaning() {
+        mWordListAdapter.setHideMeaning(true);
+    }
+
+    public void hideWord() {
+        mWordListAdapter.setHideWord(true);
+    }
+
+    @Override
     public void setPresenter(WordListContract.Presenter presenter) {
 
     }

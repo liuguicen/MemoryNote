@@ -37,6 +37,9 @@ public class WordListContract {
          * 命令优先级改变了，重新显示
          */
         void updateCommandText(List<String> commandList, List<String> chosenList);
+
+        void hideMeaning();
+        void hideWord();
     }
     interface Presenter extends BasePresenter {
         /**

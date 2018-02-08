@@ -35,10 +35,12 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     private EditText mTvSimilarWord;
     private TextView mTvStrangeDegree;
     private TextView mTvLastRememberTime;
+    private EditText mTvRememberWay;
+    private EditText mtvWordGroup;
+
     private TextView mBtnEdit;
     private CertainDialog mCertainDialog;
     private int lastInputType;
-    private EditText mTvRememberWay;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +55,8 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         mTvWordName          = (TextView) findViewById(R.id.et_word_detail_name);
         mTvWordMeaning       = (EditText) findViewById(R.id.word_detail_meaning);
         mTvSimilarWord       = (EditText) findViewById(R.id.similar_word);
-        mTvRememberWay       = (EditText)findViewById(R.id.word_remember_way);
+        mTvRememberWay       = (EditText) findViewById(R.id.word_remember_way);
+        mtvWordGroup         = (EditText) findViewById(R.id.word_detail_group);
         mTvStrangeDegree     = (TextView) findViewById(R.id.value_strange_degree);
         mTvLastRememberTime  = (TextView) findViewById(R.id.last_remember_time);
         mBtnEdit             = (TextView) findViewById(R.id.btn_word_detail_edit);
@@ -63,6 +66,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         lastInputType = mTvWordMeaning.getInputType();
         mTvSimilarWord.setTag(mTvSimilarWord.getBackground());
         mTvRememberWay.setTag(mTvRememberWay.getBackground());
+        mtvWordGroup.setTag(mtvWordGroup.getBackground());
         findViewById(R.id.add_strange_degree).setOnClickListener(this);
         findViewById(R.id.reduce_strange_degree).setOnClickListener(this);
         findViewById(R.id.word_detail_delete).setOnClickListener(this);
@@ -125,6 +129,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         switchTvEditStyle(mTvWordMeaning, isInEdit);
         switchTvEditStyle(mTvSimilarWord, isInEdit);
         switchTvEditStyle(mTvRememberWay, isInEdit);
+        switchTvEditStyle(mtvWordGroup, isInEdit);
         if (isInEdit) {
             mBtnEdit.setBackgroundResource(R.drawable.btn_bg_finish);
             mBtnEdit.setText(getString(R.string.edit_save));
@@ -170,6 +175,11 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     @Override
+    public String getInputWordGroup() {
+        return mtvWordGroup.getText().toString();
+    }
+
+    @Override
     public void showWord(String word) {
         mTvWordName.setText(word);
     }
@@ -209,6 +219,22 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
             mTvRememberWay.setVisibility(View.VISIBLE);
             mTvRememberWay.setText(rememberWay);
         }
+    }
+
+    public void showWordGroupList(List<Word.SimilarWord> groupList) {
+        UIUtil.showSimilarWords(mtvWordGroup, groupList, "\n");
+        if (!mPresenter.isInEdit() && mtvWordGroup.getText().toString().trim().isEmpty()) {
+            mtvWordGroup.setVisibility(View.GONE);
+        } else {
+            mtvWordGroup.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    @Override
+    public void showInputWordGroup(String wordGroup) {
+        mtvWordGroup.setVisibility(View.VISIBLE);
+        mtvWordGroup.setText(wordGroup);
     }
 
     @Override

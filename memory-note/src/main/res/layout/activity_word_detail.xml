@@ -75,10 +75,25 @@
         </EditText>
 
         <TextView
+            style="@style/WordDetailItemName"
+            android:id="@+id/word_detail_group_name"
+            android:text="@string/word_group"
+            app:layout_constraintTop_toBottomOf="@+id/similar_word"
+            />
+        <EditText
+            style="@style/WordDetailEditItem"
+            android:id="@+id/word_detail_group"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:imeOptions="normal"
+            android:maxLines="100000"
+            app:layout_constraintTop_toBottomOf="@+id/word_detail_group_name"/>
+
+        <TextView
             android:id="@+id/word_remember_way_name"
             style="@style/WordDetailItemName"
             android:text="@string/remember_way"
-            app:layout_constraintTop_toBottomOf="@+id/similar_word" />
+            app:layout_constraintTop_toBottomOf="@+id/word_detail_group" />
 
         <EditText
             android:id="@+id/word_remember_way"
