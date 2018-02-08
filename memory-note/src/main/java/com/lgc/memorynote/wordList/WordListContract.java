@@ -38,8 +38,8 @@ public class WordListContract {
          */
         void updateCommandText(List<String> commandList, List<String> chosenList);
 
-        void hideMeaning();
-        void hideWord();
+        void hideMeaning(boolean isHideMeaning);
+        void hideWord(boolean isHideWord);
     }
     interface Presenter extends BasePresenter {
         /**

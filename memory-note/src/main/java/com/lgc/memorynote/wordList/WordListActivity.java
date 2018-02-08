@@ -194,12 +194,12 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     }
 
     @Override
-    public void hideMeaning() {
-        mWordListAdapter.setHideMeaning(true);
+    public void hideMeaning(boolean isHideMeaning) {
+        mWordListAdapter.setHideMeaning(isHideMeaning);
     }
 
-    public void hideWord() {
-        mWordListAdapter.setHideWord(true);
+    public void hideWord(boolean isHideWord) {
+        mWordListAdapter.setHideWord(isHideWord);
     }
 
     @Override

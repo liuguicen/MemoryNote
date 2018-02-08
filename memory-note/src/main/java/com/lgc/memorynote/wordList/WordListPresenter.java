@@ -93,12 +93,16 @@ public class WordListPresenter implements WordListContract.Presenter {
     }
 
     public void setUICommand(List<String> UICommand) {
+        boolean isHideMeaning = false;
+        boolean isHideWord = false;
         for (String s : UICommand) {
             if (Command._hdm.equals(s)) {
-                mView.hideMeaning();
+                isHideMeaning = true;
             } else if (Command._hdw.equals(s)) {
-                mView.hideWord();
+                isHideWord = true;
             }
         }
+        mView.hideMeaning(isHideMeaning);
+        mView.hideWord(isHideWord);
     }
 }
