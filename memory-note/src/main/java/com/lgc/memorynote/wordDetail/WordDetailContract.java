@@ -25,6 +25,8 @@ public interface WordDetailContract {
 
         void showInputSimilarWords(String inputSimilarWords);
 
+        void showInputRememberWay(String rememberWay);
+
         void showStrangeDegree(int strangeDegree);
 
         void showLastRememberTime(long lastRememberTime);
@@ -34,6 +36,7 @@ public interface WordDetailContract {
         String getInputWordName();
         String getInputWordMeaning();
         String getInputSimilarWords();
+        String getInputRememberWay();
 
         void showSaveFailed(int state);
 

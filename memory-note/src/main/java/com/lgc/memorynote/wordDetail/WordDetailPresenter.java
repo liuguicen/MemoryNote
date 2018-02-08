@@ -68,6 +68,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     public void saveWordDate() {
         String inputMeaings = mView.getInputWordMeaning().trim();
         String inputSimilars = mView.getInputSimilarWords().trim();
+        String inputRememberWay = mView.getInputRememberWay().trim();
         if (mIsAdd) {
             String inputName = mView.getInputWordName();
             inputName = inputName.trim();
@@ -102,6 +103,10 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mWord.setSimilarWordList(similarList);
         }
 
+        if (!TextUtils.equals(inputRememberWay, mWord.getInputRememberWay())) {
+            mWord.setInputRememberWay(inputRememberWay);
+        }
+
         if (mIsAdd) {
             GlobalData.getInstance().addWord(mWord);
         } else {
@@ -119,6 +124,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         }
         if (!isSwitchEdit) { // 切换编辑的过程中，这些视图的数据不用变
             mView.showWord(mWord.getName());
+            mView.showInputRememberWay(mWord.getInputRememberWay());
             mView.showStrangeDegree(mWord.getStrangeDegree());
             mView.showLastRememberTime(mWord.getLastRememberTime());
         }

@@ -32,22 +32,23 @@ public class UIUtil {
 
         String lastCixing = Word.WordMeaning.CIXING_N;
         if (lastCixing.equals(wordMeaningList.get(0).getCiXing())) {
-            sb.append(lastCixing + " ");
+            sb.append(lastCixing + ". ");
         }
         for (Word.WordMeaning oneMeaning : wordMeaningList) {
-            if (!lastCixing.equals(oneMeaning.getCiXing())) { // xixing has changing , add divider = "\n" or others + cixing
+            for (String tag : oneMeaning.getTagList()) {
+                sb.append(tag + " ");
+            }
+
+            if (lastCixing != null && !lastCixing.equals(oneMeaning.getCiXing())) { // xixing has changing , add divider = "\n" or others + cixing
                 lastCixing = oneMeaning.getCiXing();
                 if (sb.length() > 0) {
                     sb.append(divider);
                 }
                 if (lastCixing != null) {
-                    sb.append(oneMeaning.getCiXing() + " ");
+                    sb.append(oneMeaning.getCiXing() + ". ");
                 }
             }
 
-            for (String tag : oneMeaning.getTagList()) {
-                sb.append(tag + " ");
-            }
             sb.append(oneMeaning.getMeaning());
         }
         String meaningString = sb.toString();
@@ -70,8 +71,10 @@ public class UIUtil {
         for (int i = 0; i < similarWordList.size(); i++) {
             Word.SimilarWord similar = similarWordList.get(i);
             sb.append(similar.getName());
-            sb.append(" ");
-            sb.append(similar.getAnotation());
+            if (similar.getAnotation() != null) {
+                sb.append(" ");
+                sb.append(similar.getAnotation());
+            }
             if (i < similarWordList.size() - 1) {
                  sb.append(divider);
             }

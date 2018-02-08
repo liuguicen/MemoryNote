@@ -175,13 +175,17 @@ public class InputAnalyzerUtil {
             //
             //}
             oneWord = oneWord.trim();
+            if (oneWord.isEmpty()) continue;
             Word.SimilarWord similarWord = new Word.SimilarWord();
-            int annoStart = oneWord.indexOf("//");
+            Matcher matcher = Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(oneWord);
+            int annoStart = -1;
+            if (matcher.find())
+                annoStart = matcher.start();
             if (annoStart >= 0) {
-                String annotation = oneWord.substring(annoStart + 2, oneWord.length());
+                String annotation = oneWord.substring(annoStart, oneWord.length());
                 similarWord.setAnotation(annotation);
             }
-            String name = oneWord.substring(0,  annoStart != -1 ? annoStart : oneWord.length()).trim();
+            String name = oneWord.substring(0,  annoStart == -1 ? oneWord.length() : annoStart).trim();
             if (!oneWord.isEmpty()) {
                 similarWord.setName(name);
                 similarWordList.add(similarWord);

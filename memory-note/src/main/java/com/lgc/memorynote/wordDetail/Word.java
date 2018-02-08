@@ -37,6 +37,7 @@ public class Word {
      */
     public String inputMeaning;
     public String inputSimilarWords;
+    public String inputRememberWay;
 
     /**
      * @return -1 no
@@ -68,10 +69,10 @@ public class Word {
     public static class WordMeaning {
 
         public static final String TAG_START = "@";
-        public static final String CIXING_N = "n.";
-        public static final String CIXING_V = "v.";
-        public static final String CIXING_ADJ = "adj.";
-        public static final String CIXING_ADV = "adv.";
+        public static final String CIXING_N = "n";
+        public static final String CIXING_V = "v";
+        public static final String CIXING_ADJ = "adj";
+        public static final String CIXING_ADV = "adv";
         public static final String TAG_SHENG = "@生";
         public static final String TAG_GUAI = "@怪";
 
@@ -234,6 +235,14 @@ public class Word {
 
     public void setInputSimilarWords(String inputSimilarWords) {
         this.inputSimilarWords = inputSimilarWords;
+    }
+
+    public void setInputRememberWay(String inputRememberWay) {
+        this.inputRememberWay = inputRememberWay;
+    }
+
+    public String getInputRememberWay() {
+        return inputRememberWay;
     }
 
     public String getName() {

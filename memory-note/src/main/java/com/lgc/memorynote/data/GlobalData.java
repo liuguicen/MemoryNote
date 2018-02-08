@@ -38,11 +38,16 @@ public class GlobalData {
             Gson gson = new Gson();
             for (String oneJsonWord : jasonList) {
                 Word word = gson.fromJson(oneJsonWord, Word.class);
+
                 mAllWords.add(word);
                 mCurWords.add(word);
                 /**
+                 * convertWordFormat(word);
+                 *
                  * word数据结构变化的时候用， 把原版的Word拷一份出来了，命名为OldWord，去掉上面几行代码，
                  * 使用下面的代码，在oldWord2NewWord方法里面加上相关逻辑
+                 *
+                 *
                  * OldWord oldWord = gson.fromJson(oneJsonWord, OldWord.class);
                  * oldWord2NewWord(oldWord);
                  * 看效果加上这两行，不关掉应用可能会改到数据库
@@ -56,6 +61,25 @@ public class GlobalData {
         } finally {
             database.close();
         }
+    }
+
+    /**
+     * 直接转换 word的数据
+     * @param word
+     */
+    private void convertWordFormat(Word word) {
+        List<Word.WordMeaning> meaningList = word.getMeaningList();
+        if (meaningList != null) {
+            for (Word.WordMeaning wordMeaning : meaningList) {
+                String cixing = wordMeaning.getCiXing();
+                if (cixing != null) {
+                    if (cixing.endsWith(".")) {
+                        wordMeaning.setCiXing(cixing.substring(0, cixing.length() - 1));
+                    }
+                }
+            }
+        }
+        updateWord(word);
     }
 
     public Word oldWord2NewWord(OldWord oldWord) {
