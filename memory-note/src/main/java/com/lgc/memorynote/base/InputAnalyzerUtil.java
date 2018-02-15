@@ -105,19 +105,6 @@ public class InputAnalyzerUtil {
 
         if (meaningList.size() == 0) { // 没有获取到有效的词义，不设置数据
             resultCode = InputAnalyzerUtil.NO_VALID_MEANING;
-        } else {
-            Collections.sort(meaningList, new Comparator<WordMeaning>() {
-                @Override
-                public int compare(WordMeaning o1, WordMeaning o2) {
-                    if (o1 == null && o2 == null) return 0;
-                    if (o1 == null) return 1;
-                    if (o2 == null) return -1;
-                    int x1 = WordMeaning.getCiXingImportance(o1.getCiXing());
-                    int x2 = WordMeaning.getCiXingImportance(o2.getCiXing());
-                    //  值越小，越重要，故直接从小到大排
-                    return x1 - x2;
-                }
-            });
         }
         return resultCode;
     }
@@ -128,26 +115,8 @@ public class InputAnalyzerUtil {
         } else {
             tempMeaning = tempMeaning.trim();
             if (tempMeaning.isEmpty()) return NO_VALID_MEANING;
-            if (tempMeaning.startsWith(WordMeaning.CIXING_N)) {
-                if (SUCCESS != setRealMeaning(oneMeaning, tempMeaning,
-                        WordMeaning.CIXING_N))
-                    return NO_VALID_MEANING;
-            } else if (tempMeaning.startsWith(WordMeaning.CIXING_V)) {
-                if (SUCCESS != setRealMeaning(oneMeaning, tempMeaning,
-                        WordMeaning.CIXING_V))
-                    return NO_VALID_MEANING;
-            } else if (tempMeaning.startsWith(WordMeaning.CIXING_ADJ)) {
-                if (SUCCESS != setRealMeaning(oneMeaning, tempMeaning,
-                        WordMeaning.CIXING_ADJ))
-                    return NO_VALID_MEANING;
-            } else if (tempMeaning.startsWith(WordMeaning.CIXING_ADV)) {
-                if (SUCCESS != setRealMeaning(oneMeaning, tempMeaning,
-                        WordMeaning.CIXING_ADV))
-                    return NO_VALID_MEANING;
-            } else { // don't match any cixing, it's the meaning
-                oneMeaning.setMeaning(tempMeaning);
-            }
-
+            // don't match any cixing, it's the meaning
+            oneMeaning.setMeaning(tempMeaning);
         }
         return SUCCESS;
     }

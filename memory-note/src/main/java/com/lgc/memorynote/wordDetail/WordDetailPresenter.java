@@ -82,7 +82,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                 mView.showSaveFailed(AppConstant.WORD_FORMAT_ERROR);
                 return;
             }
-            if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), mWord.getName()) != null) {
+            if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), inputName) != null) {
                 mView.showSaveFailed(AppConstant.REPETITIVE_WORD);
                 return;
             }

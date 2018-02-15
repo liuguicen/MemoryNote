@@ -69,7 +69,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                         (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    onClickSearch(mTvCommand.getText().toString());
+                    onClickSearch(mTvInputCommand.getText().toString());
                     return true;
                 }
                 return false;

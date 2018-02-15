@@ -33,23 +33,14 @@ public class UIUtil {
         // 解析词义，特殊的词意采用特殊的颜色
         StringBuilder sb = new StringBuilder();
 
-        String lastCixing = null;
-        for (Word.WordMeaning oneMeaning : wordMeaningList) {
+        for (int i = 0; i < wordMeaningList.size(); i++) {
+            Word.WordMeaning oneMeaning = wordMeaningList.get(i);
             for (String tag : oneMeaning.getTagList()) {
-                sb.append(tag + " ");
+                sb.append(tag).append(" ");
             }
-
-            if (!TextUtils.equals(lastCixing, oneMeaning.getCiXing())) { // xixing has changing , add divider = "\n" or others + cixing
-                if (lastCixing != null) {
-                    sb.append(divider);
-                }
-                lastCixing = oneMeaning.getCiXing();
-                if (lastCixing != null) {
-                    sb.append(oneMeaning.getCiXing() + ". ");
-                }
-            }
-
             sb.append(oneMeaning.getMeaning());
+            if (i < wordMeaningList.size() - 1)
+                sb.append(divider);
         }
         String meaningString = sb.toString();
         SpannableString ss = new SpannableString(meaningString);
