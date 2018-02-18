@@ -61,7 +61,7 @@ public class SearchUtil {
      */
     public static List<Word> searchWordOrMeaning(String search, List<Word> wordList) {
         // 含有非单词字符，搜索词义
-        if (search == null) return wordList;
+        if (TextUtils.isEmpty(search)) return wordList;
         List<Word> searchedList = new ArrayList<>();
         if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(search).find()) {
             int equalEnd = 0;

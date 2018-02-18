@@ -108,7 +108,8 @@ public class Command {
         }
 
         // 第三步，进行排序操作
-        Collections.sort(resultList, SortUtil.getComparator(commandList));
+        if (commandList.size() > 0)
+            Collections.sort(resultList, SortUtil.getComparator(commandList));
         return resultList;
     }
 }

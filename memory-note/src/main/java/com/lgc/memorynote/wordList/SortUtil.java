@@ -86,10 +86,6 @@ public class SortUtil {
                     sortList.add(_len);
                 }
             }
-            // 如果没有，加入默认的排序方式
-            if (sortList.isEmpty()) {
-                sortList.add(sortString2int(SortUtil.DEFAULT_SORT_COMMAND));
-            }
         }
 
         @Override
@@ -122,6 +118,7 @@ public class SortUtil {
                 }
                 if (re != 0) return re;
             }
+            re = -1; // 排序列表为空或者没找到，表示不改变顺序
             return re;
         }
 

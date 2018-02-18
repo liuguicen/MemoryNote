@@ -21,6 +21,7 @@ import cn.bmob.v3.listener.UpdateListener;
 public class BmobWord extends BmobObject {
     String name;
     String jsonData;
+    String userID;
 
     public BmobWord(Word word) {
         this.name = word.getName();
@@ -45,6 +46,14 @@ public class BmobWord extends BmobObject {
 
     public Word toWord() {
         return new Gson().fromJson(jsonData, Word.class);
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public String getUserID() {
+        return userID;
     }
 
     public void selfUpdate(String objectId, final NetWorkUtil.UploadListener uploadListener) {

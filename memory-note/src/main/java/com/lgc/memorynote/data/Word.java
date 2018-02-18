@@ -36,7 +36,6 @@ public class Word {
     public int strangeDegree = 0;
     public List<SimilarWord> similarWordList;
     public List<SimilarWord> groupList;
-    public String userId;
     public long lastRememberTime = 0;
 
     /** 上次修改时间 **/
@@ -340,13 +339,5 @@ public class Word {
 
     public long getLastDownLoadTime() {
         return lastDownLoadTime;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getUserId() {
-        return userId;
     }
 }
