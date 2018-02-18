@@ -54,10 +54,20 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     private void initView() {
         mTvWordName          = (TextView) findViewById(R.id.et_word_detail_name);
-        mTvWordMeaning       = (EditText) findViewById(R.id.word_detail_meaning);
-        mTvSimilarWord       = (EditText) findViewById(R.id.similar_word);
-        mTvRememberWay       = (EditText) findViewById(R.id.word_remember_way);
-        mtvWordGroup         = (EditText) findViewById(R.id.word_detail_group);
+        mTvWordName.setOnLongClickListener(this);
+
+        mTvWordMeaning       = (EditText) findViewById(R.id.et_word_detail_meaning);
+        mTvWordMeaning.setOnLongClickListener(this);
+
+        mTvSimilarWord       = (EditText) findViewById(R.id.et_similar_word);
+        mTvSimilarWord.setOnLongClickListener(this);
+
+        mtvWordGroup         = (EditText) findViewById(R.id.et_word_detail_group);
+        mtvWordGroup.setOnLongClickListener(this);
+
+        mTvRememberWay       = (EditText) findViewById(R.id.et_word_remember_way);
+        mTvRememberWay.setOnLongClickListener(this);
+
         mTvStrangeDegree     = (TextView) findViewById(R.id.value_strange_degree);
         mTvLastRememberTime  = (TextView) findViewById(R.id.last_remember_time);
         mBtnEdit             = (TextView) findViewById(R.id.btn_word_detail_edit);
@@ -108,6 +118,26 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
                 onclickDelete();
                 break;
         }
+    }
+
+    /**
+     * Called when a view has been clicked and held.
+     *
+     * @param v The view that was clicked and held.
+     * @return true if the callback consumed the long click, false otherwise.
+     */
+    @Override
+    public boolean onLongClick(View v) {
+        switch (v.getId()) {
+            case R.id.et_word_detail_name:
+            case R.id.et_word_detail_meaning:
+            case R.id.et_similar_word:
+            case R.id.et_word_detail_group:
+            case R.id.et_word_remember_way:
+                mPresenter.switchEdit();
+                break;
+        }
+        return false;
     }
 
     private void onclickDelete() {
@@ -300,15 +330,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     @Override
     public void onBackPressed() {
         if (mPresenter.isInEdit()) {
-            if (mCertainDialog == null) {
-                mCertainDialog = new CertainDialog(this);
-            }
-            mCertainDialog.showDialog(null, getString(R.string.cetain_leave_in_edit), new CertainDialog.ActionListener() {
-                @Override
-                public void onSure() {
-                    finish();
-                }
-            });
+             mPresenter.switchEdit();
         } else {
             super.onBackPressed();
         }

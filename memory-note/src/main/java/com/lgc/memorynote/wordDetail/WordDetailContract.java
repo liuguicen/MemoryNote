@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 public interface WordDetailContract {
-    interface View extends BaseView<Presenter>, android.view.View.OnClickListener {
+    interface View extends BaseView<Presenter>, android.view.View.OnClickListener, android.view.View.OnLongClickListener{
 
         void showWord(String word);
 

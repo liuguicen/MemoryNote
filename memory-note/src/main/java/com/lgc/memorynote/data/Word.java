@@ -39,6 +39,8 @@ public class Word extends BmobObject {
     public long lastModifyTime = 0;
     /** 上次上传到服务器的时间, if last upload time is smaller than last modify time, should upload it**/
     public long lastUploadTime = 0;
+    /** 上次下载时间 **/
+    public long lastDownLoadTime = 0;
 
     /**
      * 用户输入的原始数据，用户用户再次编辑时使用
@@ -310,6 +312,14 @@ public class Word extends BmobObject {
 
     public void setLastUploadTime(long lastUploadTime) {
         this.lastUploadTime = lastUploadTime;
+    }
+
+    public void setLastDownLoadTime(long lastDownLoadTime) {
+        this.lastDownLoadTime = lastDownLoadTime;
+    }
+
+    public long getLastDownLoadTime() {
+        return lastDownLoadTime;
     }
 
 }
