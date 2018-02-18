@@ -1,6 +1,7 @@
 package com.lgc.memorynote.wordList;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.data.GlobalData;
@@ -52,11 +53,12 @@ public class WordListPresenter implements WordListContract.Presenter {
      * @param search
      */
     @Override
-    public void reorderWordList(String search) {
+    public void reorderWordList(@Nullable String search) {
         if (search !=  null)
             search = search.trim();
-        if (search.startsWith(Command.COMMAND_START + "setting")) {
+        if (search != null && search.startsWith(Command.COMMAND_START + "setting")) {
             mView.setSettingActivity();
+            return;
         }
         mChosenCmdList.removeAll(mInputCmdList);
         mInputCmdList.clear(); //  clear last input cmd list first

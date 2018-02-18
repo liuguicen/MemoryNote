@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.lgc.memorynote.R;
-import com.lgc.memorynote.wordDetail.WordDetailPresenter;
 
 /**
  * <pre>
