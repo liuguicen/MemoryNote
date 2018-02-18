@@ -2,7 +2,7 @@ package com.lgc.memorynote;
 
 import com.google.gson.Gson;
 import com.lgc.memorynote.base.InputAnalyzerUtil;
-import com.lgc.memorynote.wordDetail.Word;
+import com.lgc.memorynote.data.Word;
 
 import org.junit.Test;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import  static  com.lgc.memorynote.wordDetail.Word.WordMeaning;
+import  static  com.lgc.memorynote.data.Word.WordMeaning;
 /**
  * Example local unit test, which will execute on the development machine (host).
  *

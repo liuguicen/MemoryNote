@@ -8,6 +8,7 @@ import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.data.AppConstant;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SearchUtil;
+import com.lgc.memorynote.data.Word;
 
 import java.util.ArrayList;
 import java.util.List;

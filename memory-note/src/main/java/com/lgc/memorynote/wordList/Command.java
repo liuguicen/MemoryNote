@@ -1,9 +1,7 @@
 package com.lgc.memorynote.wordList;
 
-import android.widget.TextView;
-
 import com.lgc.memorynote.data.SearchUtil;
-import com.lgc.memorynote.wordDetail.Word;
+import com.lgc.memorynote.data.Word;
 
 import java.util.ArrayList;
 import java.util.Collections;

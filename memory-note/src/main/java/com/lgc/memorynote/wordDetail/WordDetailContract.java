@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import com.lgc.memorynote.base.BasePresenter;
 import com.lgc.memorynote.base.BaseView;
+import com.lgc.memorynote.data.Word;
 
 import java.util.List;
 

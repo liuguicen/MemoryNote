@@ -2,7 +2,7 @@ package com.lgc.memorynote.wordList;
 
 import com.lgc.memorynote.R;
 import com.lgc.memorynote.base.MemoryNoteApplication;
-import com.lgc.memorynote.wordDetail.Word;
+import com.lgc.memorynote.data.Word;
 
 import java.util.ArrayList;
 import java.util.Comparator;

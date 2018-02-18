@@ -2,7 +2,6 @@ package com.lgc.memorynote.data;
 
 import com.google.gson.Gson;
 import com.lgc.memorynote.base.Logcat;
-import com.lgc.memorynote.wordDetail.Word;
 import com.lgc.memorynote.wordList.Command;
 
 import java.io.IOException;

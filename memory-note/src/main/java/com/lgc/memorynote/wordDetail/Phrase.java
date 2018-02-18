@@ -1,6 +1,6 @@
 package com.lgc.memorynote.wordDetail;
 
-import com.lgc.memorynote.wordDetail.Word;
+import com.lgc.memorynote.data.Word;
 
 /**
  * <pre>

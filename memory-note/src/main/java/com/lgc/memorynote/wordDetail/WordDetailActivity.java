@@ -21,6 +21,7 @@ import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.base.UIUtil;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.data.AppConstant;
+import com.lgc.memorynote.data.Word;
 
 import java.util.List;
 

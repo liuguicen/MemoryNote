@@ -2,8 +2,6 @@ package com.lgc.memorynote.data;
 
 import android.text.TextUtils;
 
-import com.lgc.memorynote.wordDetail.Word;
-
 import java.util.List;
 import java.util.regex.Pattern;
 

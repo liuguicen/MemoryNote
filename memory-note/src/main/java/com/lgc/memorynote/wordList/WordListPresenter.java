@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.data.GlobalData;
-import com.lgc.memorynote.wordDetail.Word;
+import com.lgc.memorynote.data.Word;
 
 import java.util.ArrayList;
 import java.util.List;

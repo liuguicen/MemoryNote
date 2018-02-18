@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.lgc.memorynote.R;
 import com.lgc.memorynote.base.UIUtil;
-import com.lgc.memorynote.wordDetail.Word;
+import com.lgc.memorynote.data.Word;
 
 import java.util.List;
 

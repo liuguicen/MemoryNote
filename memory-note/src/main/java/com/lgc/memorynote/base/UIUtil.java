@@ -2,13 +2,10 @@ package com.lgc.memorynote.base;
 
 import android.graphics.Color;
 import android.text.SpannableString;
-import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.widget.TextView;
 
-import com.lgc.memorynote.wordDetail.Word;
-
-import org.w3c.dom.Text;
+import com.lgc.memorynote.data.Word;
 
 import java.util.List;
 import java.util.regex.Matcher;

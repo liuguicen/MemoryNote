@@ -1,9 +1,11 @@
-package com.lgc.memorynote.wordDetail;
+package com.lgc.memorynote.data;
 
 import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.bmob.v3.BmobObject;
 
 /************************************
  * 数据格式的定义：
@@ -22,7 +24,7 @@ import java.util.List;
  * adj.国会的，议会的
  * @guai @gsdf adj. adv. uauaua
  * **********************************/
-public class Word {
+public class Word extends BmobObject {
     public static String NOT_NAME_FORMAT_REGEX = "[^a-zA-z\\-' ]";
 
 
@@ -32,6 +34,11 @@ public class Word {
     public List<SimilarWord> similarWordList;
     public List<SimilarWord> groupList;
     public long lastRememberTime = 0;
+
+    /** 上次修改时间 **/
+    public long lastModifyTime = 0;
+    /** 上次上传到服务器的时间, if last upload time is smaller than last modify time, should upload it**/
+    public long lastUploadTime = 0;
 
     /**
      * 用户输入的原始数据，用户用户再次编辑时使用
@@ -289,4 +296,20 @@ public class Word {
     public void setGroupList(List<SimilarWord> groupList) {
         this.groupList = groupList;
     }
+
+    public void setLastModifyTime(long lastModifyTime) {
+        this.lastModifyTime = lastModifyTime;
+    }
+    public long getLastModifyTime() {
+        return lastModifyTime;
+    }
+
+    public long getLastUploadTime() {
+        return lastUploadTime;
+    }
+
+    public void setLastUploadTime(long lastUploadTime) {
+        this.lastUploadTime = lastUploadTime;
+    }
+
 }

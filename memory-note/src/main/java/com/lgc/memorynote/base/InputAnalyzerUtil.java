@@ -1,14 +1,12 @@
 package com.lgc.memorynote.base;
 
-import com.lgc.memorynote.wordDetail.Word;
+import com.lgc.memorynote.data.Word;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.lgc.memorynote.wordDetail.Word.WordMeaning;
+import static com.lgc.memorynote.data.Word.WordMeaning;
 
 /**
  * 单词数据的解析器
