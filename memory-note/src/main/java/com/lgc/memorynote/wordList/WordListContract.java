@@ -40,6 +40,8 @@ public class WordListContract {
 
         void hideMeaning(boolean isHideMeaning);
         void hideWord(boolean isHideWord);
+
+        void setSettingActivity();
     }
     interface Presenter extends BasePresenter {
         /**

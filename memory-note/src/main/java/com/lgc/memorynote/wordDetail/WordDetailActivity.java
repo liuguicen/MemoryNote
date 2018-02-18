@@ -41,6 +41,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     private TextView mBtnEdit;
     private CertainDialog mCertainDialog;
+    private View mDeleteView;
     private int lastInputType;
 
     @Override
@@ -71,6 +72,8 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         mTvStrangeDegree     = (TextView) findViewById(R.id.value_strange_degree);
         mTvLastRememberTime  = (TextView) findViewById(R.id.last_remember_time);
         mBtnEdit             = (TextView) findViewById(R.id.btn_word_detail_edit);
+
+        mDeleteView          = (TextView) findViewById(R.id.word_detail_delete);
         mBtnEdit.setOnClickListener(this);
         mTvWordName.setTag(mTvWordName.getBackground());
         mTvWordMeaning.setTag(mTvWordName.getBackground());
@@ -164,9 +167,11 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         if (isInEdit) {
             mBtnEdit.setBackgroundResource(R.drawable.btn_bg_finish);
             mBtnEdit.setText(getString(R.string.edit_save));
+            mDeleteView.setVisibility(View.GONE);
         } else {
             mBtnEdit.setBackgroundResource(R.drawable.btn_bg_edit);
             mBtnEdit.setText(getString(R.string.edit));
+            mDeleteView.setVisibility(View.VISIBLE);
         }
     }
 

@@ -25,6 +25,7 @@ import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.data.Word;
+import com.lgc.memorynote.user.setting.SettingActivity;
 import com.lgc.memorynote.wordDetail.WordDetailActivity;
 
 import java.util.ArrayList;
@@ -246,6 +247,11 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
     public void hideWord(boolean isHideWord) {
         mWordListAdapter.setHideWord(isHideWord);
+    }
+
+    @Override
+    public void setSettingActivity() {
+        startActivity(new Intent(this, SettingActivity.class));
     }
 
     @Override
