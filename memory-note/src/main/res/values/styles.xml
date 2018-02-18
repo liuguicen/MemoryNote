@@ -42,4 +42,12 @@
         <item name="android:textSize">@dimen/text_size_normal</item>
     </style>
 
+    <style name="SyncBtn">
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_width">30dp</item>
+        <item name="android:background">@mipmap/sync</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginStart">20dp</item>
+    </style>
+
 </resources>

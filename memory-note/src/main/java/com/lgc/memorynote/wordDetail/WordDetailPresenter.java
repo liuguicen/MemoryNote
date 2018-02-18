@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.lgc.memorynote.base.InputAnalyzerUtil;
+import com.lgc.memorynote.base.UIUtil;
+import com.lgc.memorynote.base.network.NetWorkUtil;
 import com.lgc.memorynote.data.AppConstant;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SearchUtil;
@@ -12,6 +14,7 @@ import com.lgc.memorynote.data.Word;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -72,23 +75,32 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         String inputRememberWay = mView.getInputRememberWay().trim();
         String inputWordGroup = mView.getInputWordGroup().trim();
 
+        // 名字相关
+        String inputName = mView.getInputWordName();
+        inputName = inputName.trim();
+        if (inputName.isEmpty()) {
+            mView.showSaveFailed(AppConstant.WORD_IS_NULL);
+            return;
+        }
+        if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(inputName).find()) {
+            mView.showSaveFailed(AppConstant.WORD_FORMAT_ERROR);
+            return;
+        }
+        if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), inputName) != null) {
+            mView.showSaveFailed(AppConstant.REPETITIVE_WORD);
+            return;
+        }
+        if (!inputName.equals(mWord.getName())) {  // 名字发生变动，视为添加
+            mIsAdd = true;
+            if (!TextUtils.isEmpty(mWord.getName())) {
+                GlobalData.getInstance().deleteWord(mWord); // 删掉旧的word
+            }
+        }
         if (mIsAdd) {
-            String inputName = mView.getInputWordName();
-            inputName = inputName.trim();
-            if (inputName.isEmpty()) {
-                mView.showSaveFailed(AppConstant.WORD_IS_NULL);
-                return;
-            }
-            if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(inputName).find()) {
-                mView.showSaveFailed(AppConstant.WORD_FORMAT_ERROR);
-                return;
-            }
-            if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), inputName) != null) {
-                mView.showSaveFailed(AppConstant.REPETITIVE_WORD);
-                return;
-            }
             mWord.setName(inputName);
         }
+
+        // 其他输入
         if (!TextUtils.equals(inputMeaings, mWord.getInputMeaning())) {
             mWord.setInputMeaning(inputMeaings);
             List<Word.WordMeaning> meaningList = new ArrayList<>();
@@ -116,6 +128,8 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             InputAnalyzerUtil.analyzeInputSimilarWords(inputWordGroup, groupList);
             mWord.setGroupList(groupList);
         }
+
+        mWord.setLastModifyTime(System.currentTimeMillis());
 
         if (mIsAdd) {
             GlobalData.getInstance().addWord(mWord);
@@ -146,6 +160,40 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
 
 
     @Override
+    public void syncSimilarWord() {
+        String similar = syncChildWord(
+                mView.getInputSimilarWords(),
+                SearchUtil.searchAllSimilars(GlobalData.getInstance().getAllWord(), mWord.getName()));
+        mView.showInputSimilarWords(similar);
+    }
+
+    @Override
+    public void syncWordGroup() {
+        String groupString = syncChildWord(
+                mView.getInputWordGroup(),
+                SearchUtil.searchAllGroups(GlobalData.getInstance().getAllWord(), mWord.getName()));
+        mView.showInputWordGroup(groupString);
+    }
+
+    private String syncChildWord(String inputChildWord, Set<Word.SimilarWord> searchWord) {
+
+        // 解析出已经存在的
+        List<Word.SimilarWord> exitSimilar = new ArrayList<>();
+        InputAnalyzerUtil.analyzeInputSimilarWords(inputChildWord, exitSimilar);
+
+        // 在去除重复的
+        searchWord.removeAll(exitSimilar);
+        if (searchWord.isEmpty())
+            return  inputChildWord;
+
+        if (!mIsInEdit) {
+            switchEdit();
+        }
+        return  UIUtil.joinSimilar(inputChildWord, new ArrayList<>(searchWord));
+    }
+
+
+    @Override
     public boolean addStrangeDegree() {
         mWord.strangeDegree++;
         mView.showStrangeDegree(mWord.strangeDegree);
@@ -166,8 +214,8 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
 
     @Override
     public void setLastRememberTime() {
-        mWord.lastRememberTime = System.currentTimeMillis();
-        mView.showLastRememberTime(mWord.lastRememberTime);
+        mWord.setLastRememberTime(System.currentTimeMillis());
+        mView.showLastRememberTime(mWord.getLastRememberTime());
     }
 
     @Override

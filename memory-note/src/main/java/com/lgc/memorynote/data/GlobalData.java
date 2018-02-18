@@ -2,6 +2,7 @@ package com.lgc.memorynote.data;
 
 import com.google.gson.Gson;
 import com.lgc.memorynote.base.Logcat;
+import com.lgc.memorynote.base.network.NetWorkUtil;
 import com.lgc.memorynote.wordList.Command;
 
 import java.io.IOException;
@@ -150,6 +151,7 @@ public class GlobalData {
     public void addWord(Word word) {
         try {
             MyDatabase.getInstance().insertWord(word.getName(), new Gson().toJson(word));
+            NetWorkUtil.saveWordService(new BmobWord(word), null);
             mAllWords.add(word);
             mCurWords.add(word);
         } catch (IOException e) {
@@ -163,6 +165,7 @@ public class GlobalData {
     public void updateWord(Word word) {
         try {
             MyDatabase.getInstance().insertWord(word.getName(), new Gson().toJson(word));
+            NetWorkUtil.upLoadWord(word, null);
             Logcat.e(word.getName() + "已更新");
             // 更新，内存中的已经更新了，不用在更新
         } catch (IOException e) {
@@ -176,6 +179,7 @@ public class GlobalData {
     public void deleteWord(Word word) {
         try {
             MyDatabase.getInstance().deleteWord(word.getName());
+            NetWorkUtil.deleteWord(word, null);
             mAllWords.remove(word);
             mCurWords.remove(word);
         } catch (IOException e) {

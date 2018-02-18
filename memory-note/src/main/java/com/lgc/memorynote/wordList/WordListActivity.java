@@ -49,14 +49,14 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         initApp();
         setContentView(R.layout.activity_word_list);
         mPresenter = new WordListPresenter(this);
-        //test();
+//        test();
         intView();
         initData();
     }
 
     private void initApp() {
         permission();
-        Bmob.initialize(MemoryNoteApplication.appContext, "3000c4af659e92854854c5b10f0824a2");//再是网络初始化
+        Bmob.initialize(MemoryNoteApplication.appContext, "63ab0dfdd965aa92efbfce03fd10d082");//再是网络初始化
         startBackgroundService();
         Log.e("------------", "init: 应用初始化成功");
     }
@@ -93,9 +93,10 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     }
 
     private void test() {
-        Intent intent  = WordDetailActivity.getStartIntent(WordListActivity.this);
-        intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, true);
-        startActivity(intent);
+//        Intent intent  = WordDetailActivity.getStartIntent(WordListActivity.this);
+//        intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, true);
+//        startActivity(intent);
+        startActivity(new Intent(this, SettingActivity.class));
     }
 
     private void intView() {

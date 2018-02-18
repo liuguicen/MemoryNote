@@ -1,6 +1,9 @@
 package com.lgc.memorynote.data;
 
 import android.text.TextUtils;
+import android.view.TextureView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +27,7 @@ import cn.bmob.v3.BmobObject;
  * adj.国会的，议会的
  * @guai @gsdf adj. adv. uauaua
  * **********************************/
-public class Word extends BmobObject {
+public class Word {
     public static String NOT_NAME_FORMAT_REGEX = "[^a-zA-z\\-' ]";
 
 
@@ -33,6 +36,7 @@ public class Word extends BmobObject {
     public int strangeDegree = 0;
     public List<SimilarWord> similarWordList;
     public List<SimilarWord> groupList;
+    public String userId;
     public long lastRememberTime = 0;
 
     /** 上次修改时间 **/
@@ -178,6 +182,22 @@ public class Word extends BmobObject {
         public String getAnotation() {
             return anotation;
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof SimilarWord) {
+                return TextUtils.equals(name, ((SimilarWord) obj).getName());
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            if (name != null)
+                return name.hashCode();
+            else
+                return "".hashCode();
+        }
     }
 
     @Override
@@ -322,4 +342,11 @@ public class Word extends BmobObject {
         return lastDownLoadTime;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
 }

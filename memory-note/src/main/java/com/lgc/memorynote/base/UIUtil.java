@@ -3,6 +3,7 @@ package com.lgc.memorynote.base;
 import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.view.TextureView;
 import android.widget.TextView;
 
 import com.lgc.memorynote.data.Word;
@@ -52,8 +53,16 @@ public class UIUtil {
     }
 
     public static void showSimilarWords(TextView tv, List<Word.SimilarWord> similarWordList, String divider) {
-        if (tv == null || similarWordList == null || similarWordList.size() == 0)
+        if (tv == null)
             return;
+
+
+        tv.setText(similarList2String(similarWordList, divider));
+    }
+
+    public static String similarList2String(List<Word.SimilarWord> similarWordList, String divider) {
+        if(similarWordList == null || similarWordList.size() == 0)
+            return "";
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < similarWordList.size(); i++) {
@@ -64,9 +73,20 @@ public class UIUtil {
                 sb.append(similar.getAnotation());
             }
             if (i < similarWordList.size() - 1) {
-                 sb.append(divider);
+                sb.append(divider);
             }
         }
-        tv.setText(sb.toString());
+        return sb.toString();
+    }
+
+    public static String joinSimilar(String inputSimilarWords, List<Word.SimilarWord> similarWords) {
+
+        String addSimilar = similarList2String(similarWords, "\n");
+        if (inputSimilarWords == null)
+            inputSimilarWords = "";
+        if (!inputSimilarWords.isEmpty()) {
+            inputSimilarWords = inputSimilarWords + "\n";
+        }
+        return inputSimilarWords + addSimilar;
     }
 }

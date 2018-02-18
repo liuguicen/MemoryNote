@@ -16,4 +16,7 @@
     <string name="cetain_leave_in_edit">正在编辑单词，你确定离开吗？</string>
     <string name="word_name_is_null">单词名为空，保存失败</string>
     <string name="word_group">词组</string>
+    <string name="upload_date">上传数据</string>
+    <string name="refresh_date">更新数据</string>
+    <string name="upload_data">上传单词数据</string>
 </resources>

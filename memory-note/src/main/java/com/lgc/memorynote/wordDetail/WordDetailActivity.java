@@ -74,16 +74,18 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         mBtnEdit             = (TextView) findViewById(R.id.btn_word_detail_edit);
 
         mDeleteView          = (TextView) findViewById(R.id.word_detail_delete);
-        mBtnEdit.setOnClickListener(this);
         mTvWordName.setTag(mTvWordName.getBackground());
         mTvWordMeaning.setTag(mTvWordName.getBackground());
         lastInputType = mTvWordMeaning.getInputType();
         mTvSimilarWord.setTag(mTvSimilarWord.getBackground());
         mTvRememberWay.setTag(mTvRememberWay.getBackground());
         mtvWordGroup.setTag(mtvWordGroup.getBackground());
+        mBtnEdit.setOnClickListener(this);
+        mDeleteView.setOnClickListener(this);
         findViewById(R.id.add_strange_degree).setOnClickListener(this);
         findViewById(R.id.reduce_strange_degree).setOnClickListener(this);
-        findViewById(R.id.word_detail_delete).setOnClickListener(this);
+        findViewById(R.id.btn_sync_similar).setOnClickListener(this);
+        findViewById(R.id.btn_sync_group).setOnClickListener(this);
 
         mTvWordName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -105,6 +107,9 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     @Override
     public void onClick(View v) {
+        // 排除重复的点击
+        if (Util.RepetitiveEventFilter.isRepetitive(500))
+            return;
         switch (v.getId()) {
             case R.id.add_strange_degree:
                 mPresenter.addStrangeDegree();
@@ -113,13 +118,18 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
                 mPresenter.reduceStrangeDegree();
                 break;
             case R.id.btn_word_detail_edit:
-                if (Util.RepetitiveEventFilter.isRepetitive(500))
-                    return;
                 mPresenter.switchEdit();
                 break;
             case R.id.word_detail_delete:
                 onclickDelete();
                 break;
+            case R.id.btn_sync_similar:
+                mPresenter.syncSimilarWord();
+                break;
+            case R.id.btn_sync_group:
+                mPresenter.syncWordGroup();
+                break;
+
         }
     }
 

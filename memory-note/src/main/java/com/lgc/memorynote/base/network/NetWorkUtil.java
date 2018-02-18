@@ -2,20 +2,16 @@ package com.lgc.memorynote.base.network;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Loader;
-import android.graphics.Typeface;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lgc.memorynote.base.MemoryNoteApplication;
+import com.lgc.memorynote.data.BmobWord;
 import com.lgc.memorynote.data.Word;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobQueryResult;
@@ -26,7 +22,6 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import rx.Observable;
 import rx.Subscriber;
-import rx.functions.Func1;
 
 /**
  * <pre>
@@ -36,7 +31,7 @@ import rx.functions.Func1;
  * <pre>
  */
 
-public class WordUtil {
+public class NetWorkUtil {
     /**
      * update all word form service
      */
@@ -95,7 +90,7 @@ public class WordUtil {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        Toast.makeText(MemoryNoteApplication.appContext,"网络出错，不能获取贴图", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MemoryNoteApplication.appContext, "网络出错，不能获取贴图", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -110,7 +105,8 @@ public class WordUtil {
         return null;
     }
 
-    private static void refreshWordDetail(){}
+    private static void refreshWordDetail() {
+    }
 
 
     private static void queryWordModifyInfo(final Subscriber<? super List<Word>> subscriber) {
@@ -135,60 +131,86 @@ public class WordUtil {
                 });
     }
 
-    public static void saveWordService(Word word) {
-        word.save(new SaveListener<String>() {
-            @Override
-            public void done(String objectId, BmobException e) {
-                if (e == null) {
-                    Log.e("服务器保存成功：", objectId);
-                } else {
-                    Log.e("bmob", "服务器保存失败：" + e.getMessage() + "," + e.getErrorCode());
-                }
-            }
-        });
+    public static void saveWordService(BmobWord bmobWord, final UploadListener uploadListener) {
+        bmobWord.selfSave(uploadListener);
     }
 
-    public void upLoadWord(final Word localWord) {
-        BmobQuery<Word> query = new BmobQuery<>();
-        query.addWhereEqualTo("name", localWord.getName());
+    public static void upLoadWord(final Word localWord, final UploadListener uploadListener) {
+        final BmobWord localBmobWord = new BmobWord(localWord);
+        BmobQuery<BmobWord> query = new BmobQuery<>();
+        query.addWhereEqualTo("name", localBmobWord.getName());
+
         //先查询，查到了更新
         query.findObjects(
-                new FindListener<Word>() {
+                new FindListener<BmobWord>() {
                     @Override
-                    public void done(List<Word> list, BmobException e) {
-                        if (e == null) {
-                            Word serviceWord = null;
-                            if (list != null && list.size() != 0)
-                                serviceWord = list.get(0);
-                            else { // 没有找到，直接上传
-                                saveWordService(localWord);
-                                return;
-                            }
-
-                            //更新使用天数
-                            if (serviceWord.getLastUploadTime() > localWord.getLastUploadTime()) {
-                                 // todo 发现服务器对象的上传时间本地记录的上传时间晚，说明可能在其它设备上上传了，
-                                // 不要上传
-                            }
-
-                            String objectId = serviceWord.getObjectId();
-                            localWord.update(objectId,
-                                    new UpdateListener() {
-
-                                        @Override
-                                        public void done(BmobException ee) {
-                                            if (ee == null) {
-                                                Log.e("bmob", "更新成功");
-                                            } else {
-                                                Log.e("bmob", "更新失败：" + ee.getMessage() + "," + ee.getErrorCode());
-                                            }
-                                        }
-                                    });
-                        } else {
+                    public void done(List<BmobWord> list, BmobException e) {
+                        if (e != null) {
                             Log.e("bmob", "查询失败：" + e.getMessage() + "," + e.getErrorCode());
+                            saveWordService(localBmobWord, uploadListener);
+                            if (uploadListener != null)
+                                uploadListener.uploadFailed(e);
+                            return;
                         }
+
+                        BmobWord serviceBmob = null;
+                        Word serviceWord;
+                        if (list == null || list.size() == 0) { // 没有找到，直接上传
+                            saveWordService(localBmobWord, uploadListener);
+                            return;
+                        }
+
+                        serviceBmob = list.get(0);
+                        serviceWord = serviceBmob.toWord();
+
+                        if (serviceWord.getLastUploadTime() > localWord.getLastUploadTime()) {
+                            // todo 发现服务器对象的上传时间本地记录的上传时间晚，说明可能在其它设备上上传了，
+                            // 不要上传
+                        }
+
+                        // 上传时间在修改时间之后，不用上传
+                        if (serviceWord.getLastUploadTime() >= localWord.getLastModifyTime()) {
+                            return;
+                        }
+
+                        String objectId = serviceBmob.getObjectId();
+                        localBmobWord.selfUpdate(objectId, uploadListener);
                     }
                 });
 
     }
+
+    public static void deleteWord(final Word localWord, final UploadListener uploadListener) {
+        final BmobWord localBmobWord = new BmobWord(localWord);
+        BmobQuery<BmobWord> query = new BmobQuery<>();
+        query.addWhereEqualTo("name", localBmobWord.getName());
+
+        //先查询，查到了更新
+        query.findObjects(
+                new FindListener<BmobWord>() {
+                    @Override
+                    public void done(List<BmobWord> list, BmobException e) {
+                        if (e != null) {
+                            Log.e("bmob", "查询失败：" + e.getMessage() + "," + e.getErrorCode());
+                            if (uploadListener != null)
+                                uploadListener.uploadFailed(e);
+                            return;
+                        }
+
+
+                        if (list == null || list.size() == 0) { // 没有找到，直接上传
+                            return;
+                        }
+                        String objectId = list.get(0).getObjectId();
+                        localBmobWord.setObjectId(objectId);
+                        localBmobWord.selfDelete(uploadListener);
+                    }
+                });
+    }
+
+    public interface UploadListener {
+    void uploadSuccess();
+
+    void uploadFailed(BmobException e);
+}
 }
