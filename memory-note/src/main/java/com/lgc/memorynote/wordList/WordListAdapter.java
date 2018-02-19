@@ -87,7 +87,10 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         layout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                return longClickListener.onItemLongClick(v, itemHolder);
+                if (longClickListener != null) {
+                    return longClickListener.onItemLongClick(v, itemHolder);
+                }
+                return false;
             }
         });
         return itemHolder;

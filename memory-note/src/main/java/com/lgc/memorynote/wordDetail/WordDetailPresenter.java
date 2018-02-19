@@ -86,11 +86,13 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mView.showSaveFailed(AppConstant.WORD_FORMAT_ERROR);
             return;
         }
-        if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), inputName) != null) {
-            mView.showSaveFailed(AppConstant.REPETITIVE_WORD);
-            return;
-        }
+
         if (!inputName.equals(mWord.getName())) {  // 名字发生变动，视为添加
+            // 检查添加的名字是否重复，若重复则什么动作都不做
+            if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), inputName) != null) {
+                mView.showSaveFailed(AppConstant.REPETITIVE_WORD);
+                return;
+            }
             mIsAdd = true;
             if (!TextUtils.isEmpty(mWord.getName())) {
                 GlobalData.getInstance().deleteWord(mWord); // 删掉旧的word
