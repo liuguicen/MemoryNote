@@ -110,6 +110,7 @@
         <TextView
             android:id="@+id/word_remember_way_name"
             style="@style/WordDetailItemName"
+            android:layout_marginTop="6dp"
             android:text="@string/remember_way"
             app:layout_constraintTop_toBottomOf="@+id/et_word_detail_group" />
 

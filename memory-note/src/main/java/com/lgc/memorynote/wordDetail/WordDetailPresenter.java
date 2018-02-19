@@ -75,33 +75,6 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         String inputRememberWay = mView.getInputRememberWay().trim();
         String inputWordGroup = mView.getInputWordGroup().trim();
 
-        // 名字相关
-        String inputName = mView.getInputWordName();
-        inputName = inputName.trim();
-        if (inputName.isEmpty()) {
-            mView.showSaveFailed(AppConstant.WORD_IS_NULL);
-            return;
-        }
-        if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(inputName).find()) {
-            mView.showSaveFailed(AppConstant.WORD_FORMAT_ERROR);
-            return;
-        }
-
-        if (!inputName.equals(mWord.getName())) {  // 名字发生变动，视为添加
-            // 检查添加的名字是否重复，若重复则什么动作都不做
-            if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), inputName) != null) {
-                mView.showSaveFailed(AppConstant.REPETITIVE_WORD);
-                return;
-            }
-            mIsAdd = true;
-            if (!TextUtils.isEmpty(mWord.getName())) {
-                GlobalData.getInstance().deleteWord(mWord); // 删掉旧的word
-            }
-        }
-        if (mIsAdd) {
-            mWord.setName(inputName);
-        }
-
         // 其他输入
         if (!TextUtils.equals(inputMeaings, mWord.getInputMeaning())) {
             mWord.setInputMeaning(inputMeaings);
@@ -113,6 +86,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                 mWord.setMeaningList(meaningList);
             }
         }
+
         if (!TextUtils.equals(inputSimilars, mWord.getInputSimilarWords())) {
             mWord.setInputSimilarWords(inputSimilars);
             List<Word.SimilarWord> similarList = new ArrayList<>();
@@ -132,6 +106,32 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         }
 
         mWord.setLastModifyTime(System.currentTimeMillis());
+
+        // 名字相关
+        String inputName = mView.getInputWordName();
+        inputName = inputName.trim();
+        if (inputName.isEmpty()) {
+            mView.showSaveFailed(AppConstant.WORD_IS_NULL);
+            return;
+        }
+        if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(inputName).find()) {
+            mView.showSaveFailed(AppConstant.WORD_FORMAT_ERROR);
+            return;
+        }
+        if (!inputName.equals(mWord.getName())) {  // 名字发生变动，视为添加
+            // 检查添加的名字是否重复，若重复则什么动作都不做
+            if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), inputName) != null) {
+                mView.showSaveFailed(AppConstant.REPETITIVE_WORD);
+                return;
+            }
+            mIsAdd = true;
+            if (!TextUtils.isEmpty(mWord.getName())) {
+                GlobalData.getInstance().deleteWord(mWord); // 删掉旧的word
+            }
+        }
+        if (mIsAdd) {
+            mWord.setName(inputName);
+        }
 
         if (mIsAdd) {
             GlobalData.getInstance().addWord(mWord);
