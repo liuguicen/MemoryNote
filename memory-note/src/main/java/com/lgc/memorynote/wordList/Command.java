@@ -83,8 +83,10 @@ public class Command {
     }};
     public static final String OPEN_SETTING = "setting";
     public static final String WORD_NUMBER = "number";
+    public static final String REGEX_SERACH = "re";
     public static final String commandGuide = OPEN_SETTING + " 进入设置界面\n" +
-                                              WORD_NUMBER + " 当前列表单词数量\n";
+                                              WORD_NUMBER + " 当前列表单词数量\n" +
+                                              REGEX_SERACH + " 正则式搜索，仅支持单词名称";
 
     /**
      * 排序，会生成一个新的列表，不改变原来的数据

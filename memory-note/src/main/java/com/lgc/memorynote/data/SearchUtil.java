@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.base.Util;
+import com.lgc.memorynote.wordList.Command;
 
 import java.net.SocketImpl;
 import java.util.ArrayList;
@@ -67,7 +68,17 @@ public class SearchUtil {
         // 含有非单词字符，搜索词义
         if (TextUtils.isEmpty(search)) return wordList;
         List<Word> searchedList = new ArrayList<>();
-        if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(search).find()) {
+        if (search.startsWith(Command.COMMAND_START + Command.REGEX_SERACH)) {
+            String regex = search.substring(Command.COMMAND_START.length() +
+                    Command.REGEX_SERACH.length(), search.length()).trim();
+            for (int i = wordList.size() - 1; i >= 0; i--) {
+                Word word = wordList.get(i);
+                String name = word.getName();
+                if (name != null && name.matches(regex)) {
+                    searchedList.add(word);
+                }
+            }
+        } else if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(search).find()) {
             int equalEnd = 0;
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
@@ -77,7 +88,7 @@ public class SearchUtil {
                     equalEnd++;
                 } else if (res == 1) {
                     searchedList.add(equalEnd, word);
-                } else {
+                } else if (res == 0){
                     searchedList.add(word);
                 }
             }
