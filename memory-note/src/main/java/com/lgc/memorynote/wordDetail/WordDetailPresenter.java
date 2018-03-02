@@ -105,8 +105,6 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mWord.setGroupList(groupList);
         }
 
-        mWord.setLastModifyTime(System.currentTimeMillis());
-
         // 名字相关
         String inputName = mView.getInputWordName();
         inputName = inputName.trim();
@@ -133,6 +131,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mWord.setName(inputName);
         }
 
+        mWord.setLastModifyTime(System.currentTimeMillis());
         if (mIsAdd) {
             GlobalData.getInstance().addWord(mWord);
         } else {

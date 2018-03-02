@@ -81,6 +81,10 @@ public class Command {
             put(_guai, _guai_ui);  put(_sim, _sim_ui);
 
     }};
+    public static final String OPEN_SETTING = "setting";
+    public static final String WORD_NUMBER = "number";
+    public static final String commandGuide = OPEN_SETTING + " 进入设置界面\n" +
+                                              WORD_NUMBER + " 当前列表单词数量\n";
 
     /**
      * 排序，会生成一个新的列表，不改变原来的数据
@@ -108,8 +112,9 @@ public class Command {
         }
 
         // 第三步，进行排序操作
-        if (commandList.size() > 0)
+        if (commandList.size() > 0) {
             Collections.sort(resultList, SortUtil.getComparator(commandList));
+        }
         return resultList;
     }
 }

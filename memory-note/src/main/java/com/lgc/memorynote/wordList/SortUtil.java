@@ -52,12 +52,12 @@ public class SortUtil {
         final List<Integer> sortList = new ArrayList<>();
         private final int _stra = 1;
         private final int _last = 2;
-        private final int _sn   = 3;
+        private final int _sn = 3;
         private final int _dict = 4;
-        private final int _len  = 5;
+        private final int _len = 5;
 
         public int sortString2int(String sort) {
-            if(Command._stra.equals(sort)) {
+            if (Command._stra.equals(sort)) {
                 return _stra;
             } else if (Command._last.equals(sort)) {
                 return _last;
@@ -73,8 +73,8 @@ public class SortUtil {
 
         public WordComparator(List<String> finalOrderList) {
             // 找出需要比较的顺序
-            for(String order : finalOrderList) {
-                if(Command._stra.equals(order)) {
+            for (String order : finalOrderList) {
+                if (Command._stra.equals(order)) {
                     sortList.add(_stra);
                 } else if (Command._last.equals(order)) {
                     sortList.add(_last);
@@ -90,15 +90,20 @@ public class SortUtil {
 
         @Override
         public int compare(Word o1, Word o2) {
-            if (o1 == null && o2 == null) return 0;
+            if (o1 == o2) return 0;
             if (o1 == null) return 1;
             if (o2 == null) return -1;
 
-                /*从前面往后一直遍历命令，先遍历到的就以这个命令的方式比较，
-                 * 如果这种方式比较结果相等，那么继续遍历下一种方式
-                 */
+            if (sortList.size() == 0) { // 默认的，按不熟悉度比较
+                return Word.compareStrangeDegree(o1.getStrangeDegree(), o2.getStrangeDegree());
+            }
+
+            /*
+             * 从前面往后一直遍历命令，先遍历到的就以这个命令的方式比较，
+             * 如果这种方式比较结果相等，那么继续遍历下一种方式
+             */
             int re = 0;
-            for(int sort : sortList) {
+            for (int sort : sortList) {
                 switch (sort) {
                     case _stra:
                         re = Word.compareStrangeDegree(o1.getStrangeDegree(), o2.getStrangeDegree());
@@ -118,7 +123,6 @@ public class SortUtil {
                 }
                 if (re != 0) return re;
             }
-            re = -1; // 排序列表为空或者没找到，表示不改变顺序
             return re;
         }
 
@@ -126,5 +130,5 @@ public class SortUtil {
         public boolean equals(Object obj) {
             return false;
         }
-    };
+    }
 }

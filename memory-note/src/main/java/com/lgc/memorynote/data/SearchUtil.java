@@ -1,12 +1,16 @@
 package com.lgc.memorynote.data;
 
 import android.text.TextUtils;
-import android.view.TextureView;
 
+import com.lgc.memorynote.base.MemoryNoteApplication;
+import com.lgc.memorynote.base.Util;
+
+import java.net.SocketImpl;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -123,44 +127,53 @@ public class SearchUtil {
 
     /**
      * 如果该单词的相似单词列表包含了这个单词，就将整个相似列表添加进来
+     * @param name 同步列表的单词的名字
      */
     public static Set<Word.SimilarWord> searchAllSimilars(List<Word> wordList, String name) {
-        Set<Word.SimilarWord> resultSimilarSet = new LinkedHashSet<>();
+        Map<String,Word.SimilarWord> resultSimilarMap = new LinkedHashMap<>();
         for (Word word : wordList) {
-            List<Word.SimilarWord> srcSimilarList = word.getSimilarWordList();
-            if (srcSimilarList == null) continue;
-
-            for (Word.SimilarWord similarWord : srcSimilarList) {
-                // 如果该单词的相似单词列表包含了这个单词，就将整个相似列表添加进来
-                if (TextUtils.equals(similarWord.getName(), name)) {
-                    resultSimilarSet.addAll(srcSimilarList);
-                    break;
-                }
-            }
+            addSimilarList(name, resultSimilarMap, word.getSimilarWordList(), word);
         }
 
-        resultSimilarSet.remove(name);
-        return resultSimilarSet;
+        resultSimilarMap.remove(name);
+        return Util.map2set(resultSimilarMap);
     }
+
 
     /**
      * 如果该单词的相似单词列表包含了这个单词，就将整个词组列表添加进来
      */
     public static Set<Word.SimilarWord> searchAllGroups(List<Word> wordList, String name) {
-        Set<Word.SimilarWord> resultGroupSet = new LinkedHashSet<>();
+        Map<String, Word.SimilarWord> resultGroupMap = new LinkedHashMap<>();
         for (Word word : wordList) {
-            List<Word.SimilarWord> srcGroupList = word.getGroupList();
-            if (srcGroupList == null) continue;
-
-            for (Word.SimilarWord oneMember : srcGroupList) {
-                if (TextUtils.equals(oneMember.getName(), name)) {
-                    resultGroupSet.addAll(srcGroupList);
-                    break;
-                }
-            }
+            addSimilarList(name, resultGroupMap, word.getGroupList(), word);
         }
 
-        resultGroupSet.remove(name);
-        return resultGroupSet;
+        resultGroupMap.remove(name);
+        return Util.map2set(resultGroupMap);
+    }
+
+    private static void addSimilarList(String srcName, Map<String, Word.SimilarWord> resultSimilarMap, List<Word.SimilarWord> srcSimilarList, Word matchWord) {
+        if (srcSimilarList == null) return;
+
+        for (Word.SimilarWord similarWord : srcSimilarList) {
+            // 如果该单词的相似单词列表包含了这个单词，就将整个相似列表添加进来
+            if (TextUtils.equals(similarWord.getName(), srcName)) {
+                for (int j= 0; j< srcSimilarList.size(); j ++) {
+                    Word.SimilarWord addSimilar = srcSimilarList.get(j);
+                    resultSimilarMap.put(addSimilar.getName(), addSimilar);
+                }
+
+                // do not contain the word self should add it
+                if (!resultSimilarMap.containsKey(matchWord.getName())) {
+                    // convert word to similar word and use wordMeaning which be replace "\n" to " " to create anotation
+                    Word.SimilarWord selfSimilar = new Word.SimilarWord();
+                    selfSimilar.setName(matchWord.getName());
+                    selfSimilar.setAnotation(matchWord.getInputMeaning().replace("\n", " "));
+                    resultSimilarMap.put(selfSimilar.getName(), selfSimilar);
+                }
+                return;
+            }
+        }
     }
 }

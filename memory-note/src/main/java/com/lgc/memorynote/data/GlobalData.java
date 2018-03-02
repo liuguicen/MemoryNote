@@ -25,9 +25,9 @@ public class GlobalData {
     private static GlobalData mInstance = new GlobalData();
 
     private GlobalData() {
-        Logcat.d(System.currentTimeMillis());
+        Logcat.e(System.currentTimeMillis());
         queryAllWord();
-        Logcat.d(System.currentTimeMillis());
+        Logcat.e(System.currentTimeMillis());
     }
 
     private void queryAllWord() {
@@ -163,9 +163,15 @@ public class GlobalData {
     }
 
     public void updateWord(Word word) {
+        updateWord(word, true);
+    }
+
+    public void updateWord(Word word, boolean isUpload) {
         try {
             MyDatabase.getInstance().insertWord(word.getName(), new Gson().toJson(word));
-            NetWorkUtil.upLoadWord(word, null);
+            if (isUpload) {
+                NetWorkUtil.upLoadWord(word, null);
+            }
             Logcat.e(word.getName() + "已更新");
             // 更新，内存中的已经更新了，不用在更新
         } catch (IOException e) {

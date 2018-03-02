@@ -15,6 +15,7 @@ public class MemoryNoteApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Logcat.setTag("Memory Note");
         appContext = this;
     }
 }

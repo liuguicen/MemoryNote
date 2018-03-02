@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created 0 Administrator on 2016/5/19.
@@ -170,4 +173,13 @@ public class Util {
        Date date = new Date(millSec);
        return sdf.format(date);
    }
+
+    // 获取Map中的Value的Set
+    public static <T> Set<T> map2set(Map<?, T> map) {
+        Set<T> set = new LinkedHashSet<>();
+        for (Map.Entry<?, T> entry : map.entrySet()) {
+            set.add(entry.getValue());
+        }
+        return set;
+    }
 }

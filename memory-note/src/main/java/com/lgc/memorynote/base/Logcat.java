@@ -15,6 +15,7 @@
 
 package com.lgc.memorynote.base;
 
+import android.nfc.Tag;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -37,7 +38,11 @@ public final class Logcat {
 
     private static boolean LOG_PRINT_FLAG = true;
 
-    private static final String TAG_PREFIX = "RRIVI";
+    private static  String TAG_PREFIX = "RRIVI";
+
+    public static void setTag(String tag) {
+        TAG_PREFIX = tag;
+    }
 
     private Logcat() {
     }
@@ -255,6 +260,10 @@ public final class Logcat {
                 Log.w(TAG_PREFIX + TAG, elements[3].getMethodName() + " " + elements[3].getLineNumber() + " " +  msg, tr);
             }
         }
+    }
+
+    public static void e(long l) {
+        e(String.valueOf(l));
     }
 
     /**

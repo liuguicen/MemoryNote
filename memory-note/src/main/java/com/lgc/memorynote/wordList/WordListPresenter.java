@@ -56,9 +56,15 @@ public class WordListPresenter implements WordListContract.Presenter {
     public void reorderWordList(@Nullable String search) {
         if (search !=  null)
             search = search.trim();
-        if (search != null && search.startsWith(Command.COMMAND_START + "setting")) {
-            mView.setSettingActivity();
-            return;
+        if (search != null) {
+            if (search.startsWith(Command.COMMAND_START + Command.OPEN_SETTING)) {
+                mView.setSettingActivity();
+                return;
+            }
+            if (search.startsWith(Command.COMMAND_START + Command.WORD_NUMBER)) {
+                mView.showWordNumber();
+                return;
+            }
         }
         mChosenCmdList.removeAll(mInputCmdList);
         mInputCmdList.clear(); //  clear last input cmd list first

@@ -42,6 +42,8 @@ public class WordListContract {
         void hideWord(boolean isHideWord);
 
         void setSettingActivity();
+
+        void showWordNumber();
     }
     interface Presenter extends BasePresenter {
         /**

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.data.BmobWord;
 import com.lgc.memorynote.data.Word;
@@ -145,11 +146,10 @@ public class NetWorkUtil {
                 new FindListener<BmobWord>() {
                     @Override
                     public void done(List<BmobWord> list, BmobException e) {
+                        Logcat.e("query one word finish");
                         if (e != null) {
-                            Log.e("bmob", "查询失败：" + e.getMessage() + "," + e.getErrorCode());
+                            Logcat.e("bmob", "查询失败：" + e.getMessage() + "," + e.getErrorCode());
                             saveWordService(localBmobWord, uploadListener);
-                            if (uploadListener != null)
-                                uploadListener.uploadFailed(e);
                             return;
                         }
 
@@ -170,6 +170,9 @@ public class NetWorkUtil {
 
                         // 上传时间在修改时间之后，不用上传
                         if (serviceWord.getLastUploadTime() >= localWord.getLastModifyTime()) {
+                            if (uploadListener != null) {
+                                uploadListener.uploadSuccess();
+                            }
                             return;
                         }
 

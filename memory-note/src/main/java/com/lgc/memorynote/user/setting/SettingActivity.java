@@ -18,6 +18,7 @@ import com.lgc.memorynote.base.network.NetWorkUtil;
 import com.lgc.memorynote.data.BmobWord;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.Word;
+import com.lgc.memorynote.wordList.Command;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
     ProgressDialog mProgressDialog;
     CertainDialog certainDialog;
+    private int uploadNumber = 0;
     private UpLoadTask mUpLoadTask;
     private GlobalData globalData;
 
@@ -44,7 +46,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_setting);
         globalData = GlobalData.getInstance();
         TextView tvAppGuide = ((TextView) findViewById(R.id.tv_app_guide));
-        tvAppGuide.setText("搜索框里面可以输入命令，以--开头就表示命令，支持的命令如下：\n");
+        tvAppGuide.setText("搜索框里面可以输入命令，以--开头就表示命令，支持的命令如下：\n" + Command.commandGuide);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle(getString(R.string.upload_data));
         mProgressDialog.setProgressStyle(
@@ -59,6 +61,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
         certainDialog = new CertainDialog(this);
         findViewById(R.id.btn_upload_data).setOnClickListener(this);
+        Logcat.e("Setting activitty init success");
     }
 
     private void cancelUploadData() {
@@ -100,6 +103,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         protected void onPreExecute() {
             mProgressDialog.setMax(globalData.getAllWord().size());
             mProgressDialog.show();
+            uploadNumber = 0;
             super.onPreExecute();
         }
 
@@ -111,6 +115,16 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 if (isCancelled()) break;
 
                 final Word word = allWord.get(i);
+
+                if (word.getLastModifyTime() < word.getLastUploadTime())
+                {
+                    publishProgress(++uploadNumber);
+                    Logcat.e("upload word " + i + " = "+ word.getName() + " success");
+                    continue;
+                }
+
+                // 只有修改时间大于上传时间才上传，否则不上传
+                Logcat.e("start upload word " + i + " = "+ word.getName());
                 final int finalI = i;
                 try {
                     Thread.sleep(500);
@@ -121,14 +135,16 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void uploadSuccess() {
                         word.setLastUploadTime(System.currentTimeMillis());
-                        globalData.updateWord(word);
-                        publishProgress(finalI);
+                        globalData.updateWord(word, false);
+                        publishProgress(++uploadNumber);
+                        Logcat.e("upload word " + finalI + " = "+ word.getName() + " success");
                     }
 
                     @Override
                     public void uploadFailed(BmobException e) {
                         failedNumber[0]++;
-                        Logcat.e("SettingActivity", e.toString());
+                        publishProgress(++uploadNumber);
+                        Logcat.e("upload word " + finalI + " = " + word.getName() + " fail because  ", e.toString());
                     }
                 });
             }
@@ -154,6 +170,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             }
 
             Toast.makeText(SettingActivity.this, msg, Toast.LENGTH_LONG).show();
+            Logcat.d(msg);
             mProgressDialog.dismiss();
         }
     }

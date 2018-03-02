@@ -56,7 +56,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
     private void initApp() {
         permission();
-        Bmob.initialize(MemoryNoteApplication.appContext, "63ab0dfdd965aa92efbfce03fd10d082");//再是网络初始化
+        Bmob.initialize(this, "63ab0dfdd965aa92efbfce03fd10d082");//再是网络初始化
         startBackgroundService();
         Log.e("------------", "init: 应用初始化成功");
     }
@@ -96,6 +96,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 //        Intent intent  = WordDetailActivity.getStartIntent(WordListActivity.this);
 //        intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, true);
 //        startActivity(intent);
+        Logcat.d("start setting activity");
         startActivity(new Intent(this, SettingActivity.class));
     }
 
@@ -256,6 +257,11 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     }
 
     @Override
+    public void showWordNumber() {
+        mTvInputCommand.setText("当前单词数 = " + mWordListAdapter.getItemCount());
+    }
+
+    @Override
     public void setPresenter(WordListContract.Presenter presenter) {
 
     }
@@ -279,12 +285,6 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     @Override
     public void onTogglePicList(WordListAdapter wordListAdapter) {
 
-    }
-
-    @Override
-    protected void onRestart() {
-        onClickSearch(null);
-        super.onRestart();
     }
 
     /**
