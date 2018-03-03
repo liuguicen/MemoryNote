@@ -18,6 +18,7 @@ import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.lgc.memorynote.R;
@@ -38,8 +39,8 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     private RecyclerView mWordListView;
     private WordListAdapter mWordListAdapter;
     private LinearLayoutManager linearLayoutManager;
-    private TextView mTvCommand;
-    private TextView mTvInputCommand;
+    private TextView mTvCommandList;
+    private EditText mTvInputCommand;
     private WordListPresenter mPresenter;
     private Util.RepetitiveEventFilter searchFilter = new Util.RepetitiveEventFilter();
 
@@ -102,8 +103,8 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
     private void intView() {
         // base view widget
-        mTvInputCommand = (TextView) findViewById(R.id.tv_input_command);
-        mTvCommand = (TextView)findViewById(R.id.tv_command);
+        mTvInputCommand = (EditText) findViewById(R.id.tv_input_command);
+        mTvCommandList = (TextView)findViewById(R.id.tv_command);
         findViewById(R.id.add_word).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,18 +125,24 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                 return false;
             }
         });
+        mTvInputCommand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTvInputCommand.setSelection(0, mTvInputCommand.getText().length());
+            }
+        });
         findViewById(R.id.btn_expand_command_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mTvCommand.getMaxLines() == 1) {
-                    mTvCommand.setMaxLines(100);
+                if (mTvCommandList.getMaxLines() == 1) {
+                    mTvCommandList.setMaxLines(100);
                 } else {
-                    mTvCommand.setMaxLines(1);
+                    mTvCommandList.setMaxLines(1);
                 }
                 updateCommandText(Command.commandList, mPresenter.getChoseCommand());
-                mTvCommand.setVisibility(View.GONE);
-                mTvCommand.setVisibility(View.VISIBLE);
-                mTvCommand.requestLayout();
+                mTvCommandList.setVisibility(View.GONE);
+                mTvCommandList.setVisibility(View.VISIBLE);
+                mTvCommandList.requestLayout();
             }
         });
 
@@ -198,7 +205,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         // 转话层UI上的字符串
         List<Pair<String, String>> UICommandList = new ArrayList<>();
         int maxNumber = commandList.size();
-        if (mTvCommand.getMaxLines() <= 1) {
+        if (mTvCommandList.getMaxLines() <= 1) {
             maxNumber = Math.min(maxNumber, 4);
         }
 
@@ -238,8 +245,8 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                         startId, endId, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             }
         }
-        mTvCommand.setMovementMethod(LinkMovementMethod.getInstance());
-        mTvCommand.setText(ss);
+        mTvCommandList.setMovementMethod(LinkMovementMethod.getInstance());
+        mTvCommandList.setText(ss);
     }
 
     @Override
