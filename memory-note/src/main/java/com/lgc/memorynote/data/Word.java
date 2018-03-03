@@ -1,14 +1,9 @@
 package com.lgc.memorynote.data;
 
 import android.text.TextUtils;
-import android.view.TextureView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import cn.bmob.v3.BmobObject;
 
 /************************************
  * 数据格式的定义：
@@ -28,6 +23,7 @@ import cn.bmob.v3.BmobObject;
  * @guai @gsdf adj. adv. uauaua
  * **********************************/
 public class Word {
+    public static final String TAG_START = "@";
     public static String NOT_NAME_FORMAT_REGEX = "[^a-zA-z\\-' ]";
 
 
@@ -81,7 +77,6 @@ public class Word {
 
     public static class WordMeaning {
 
-        public static final String TAG_START = "@";
         public static final String CIXING_N = "n";
         public static final String CIXING_V = "v";
         public static final String CIXING_ADJ = "adj";

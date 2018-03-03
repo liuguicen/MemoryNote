@@ -84,9 +84,12 @@ public class Command {
     public static final String OPEN_SETTING = "setting";
     public static final String WORD_NUMBER = "number";
     public static final String REGEX_SERACH = "re";
-    public static final String commandGuide = OPEN_SETTING + " 进入设置界面\n" +
-                                              WORD_NUMBER + " 当前列表单词数量\n" +
-                                              REGEX_SERACH + " 正则式搜索，仅支持单词名称";
+    public static final String TAG_START = Word.TAG_START;
+    public static final String commandGuide
+                   = "   " + OPEN_SETTING + " 进入设置界面\n"
+                   + "   " + WORD_NUMBER + " 当前列表单词数量\n"
+                   + "   " + REGEX_SERACH + " 正则式搜索，仅支持单词名称\n"
+                   + "   " + TAG_START + " 对单词添加标志，说明它的一些特性，比如词义怪，是个短语、词组等";
 
     /**
      * 排序，会生成一个新的列表，不改变原来的数据
@@ -107,7 +110,7 @@ public class Command {
                 SearchUtil.grepNotPhrase(resultList);
             } else if (_word.equals(grep)) {
                 SearchUtil.grepNotWord(resultList);
-            } else if (grep != null && grep.startsWith(Word.WordMeaning.TAG_START)) {
+            } else if (grep != null && grep.startsWith(Word.TAG_START)) {
                 SearchUtil.grepNoTag(grep, resultList);
             }
 

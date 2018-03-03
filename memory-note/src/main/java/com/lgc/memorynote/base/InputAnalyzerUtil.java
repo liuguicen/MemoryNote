@@ -41,12 +41,12 @@ public class InputAnalyzerUtil {
         if(inputCmd.isEmpty()) return inputCmd;
 
         int tagEnd = 0;
-        if (inputCmd.startsWith(WordMeaning.TAG_START)) { // has tag cmd
+        if (inputCmd.startsWith(Word.TAG_START)) { // has tag cmd
             Matcher tagMather = Pattern.compile("@.+?\\s").matcher(inputCmd);
             while (tagMather.find()) {
                 tagEnd = tagMather.end();
                 String tag = tagMather.group().trim();
-                if (tag.length() <= WordMeaning.TAG_START.length()) continue;
+                if (tag.length() <= Word.TAG_START.length()) continue;
                 commandList.add(tag);
             }
         }
@@ -82,12 +82,12 @@ public class InputAnalyzerUtil {
             // first, 处理tag相关的
             one = one.trim();
             int tagEnd = 0;
-            if (one.startsWith(WordMeaning.TAG_START)) {
+            if (one.startsWith(Word.TAG_START)) {
                 Matcher tagMather = Pattern.compile("@.+?\\s").matcher(one);
                 while (tagMather.find()) {
                     tagEnd = tagMather.end();
                     String tag = tagMather.group().trim();
-                    if (tag.length() <= WordMeaning.TAG_START.length()) continue;
+                    if (tag.length() <= Word.TAG_START.length()) continue;
                     oneMeaning.addValidTag(tag);
                 }
             }

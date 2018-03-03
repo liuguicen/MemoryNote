@@ -78,6 +78,17 @@ public class SearchUtil {
                     searchedList.add(word);
                 }
             }
+        } else if (search.startsWith(Command.TAG_START)) {
+            for (int i = wordList.size() - 1; i >= 0; i--) {
+                Word word = wordList.get(i);
+
+                for (Word.WordMeaning wordMeaning : word.getMeaningList()) {
+                    if (wordMeaning.hasTag(search)) {
+                        searchedList.add(word);
+                        break;
+                    }
+                }
+            }
         } else if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(search).find()) {
             int equalEnd = 0;
             for (int i = wordList.size() - 1; i >= 0; i--) {
