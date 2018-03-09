@@ -31,7 +31,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     public static final String INTENT_EXTRA_IS_ADD = "intent_extra_word_detail_is_add";
 
     private WordDetailContract.Presenter mPresenter;
-    private TextView mTvWordName;
+    private EditText mTvWordName;
     private EditText mTvWordMeaning;
     private EditText mTvSimilarWord;
     private TextView mTvStrangeDegree;
@@ -54,7 +54,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     private void initView() {
-        mTvWordName          = (TextView) findViewById(R.id.et_word_detail_name);
+        mTvWordName          = (EditText) findViewById(R.id.et_word_detail_name);
         mTvWordName.setOnLongClickListener(this);
 
         mTvWordMeaning       = (EditText) findViewById(R.id.et_word_detail_meaning);
@@ -101,6 +101,15 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        mTvWordName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    mPresenter.checkWordValidity();
+                }
             }
         });
     }

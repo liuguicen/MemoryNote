@@ -6,7 +6,6 @@ import android.text.TextUtils;
 
 import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.base.UIUtil;
-import com.lgc.memorynote.base.network.NetWorkUtil;
 import com.lgc.memorynote.data.AppConstant;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SearchUtil;
@@ -138,6 +137,28 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             GlobalData.getInstance().updateWord(mWord);
         }
         mIsAdd = false; // 保存一次之后就不再是true了
+    }
+
+    @Override
+    public void checkWordValidity() {
+        // 名字相关
+        String inputName = mView.getInputWordName();
+        inputName = inputName.trim();
+        if (inputName.isEmpty()) {
+            mView.showSaveFailed(AppConstant.WORD_IS_NULL);
+            return;
+        }
+        if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(inputName).find()) {
+            mView.showSaveFailed(AppConstant.WORD_FORMAT_ERROR);
+            return;
+        }
+        if (!inputName.equals(mWord.getName())) {  // 名字发生变动，视为添加
+            // 检查添加的名字是否重复，若重复则什么动作都不做
+            if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), inputName) != null) {
+                mView.showSaveFailed(AppConstant.REPETITIVE_WORD);
+                return;
+            }
+        }
     }
 
     private void showData(boolean isSwitchEdit) {
