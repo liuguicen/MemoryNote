@@ -326,7 +326,24 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
                 break;
             case AppConstant.WORD_IS_NULL:
                 msg = getString(R.string.word_name_is_null);
+                break;
+        }
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
 
+    @Override
+    public void showInvalidName(int state) {
+        String msg = null;
+        switch (state) {
+            case AppConstant.WORD_FORMAT_ERROR:
+                msg = getString(R.string.word_invalid_format_erorr);
+                break;
+            case AppConstant.REPETITIVE_WORD:
+                msg = getString(R.string.word_invalid_repetitive);
+                break;
+            case AppConstant.WORD_IS_NULL:
+                msg = getString(R.string.word_invalid_name_is_null);
+                break;
         }
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }

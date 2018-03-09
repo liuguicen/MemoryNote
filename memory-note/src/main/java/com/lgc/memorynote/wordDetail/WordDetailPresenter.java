@@ -145,17 +145,17 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         String inputName = mView.getInputWordName();
         inputName = inputName.trim();
         if (inputName.isEmpty()) {
-            mView.showSaveFailed(AppConstant.WORD_IS_NULL);
+            mView.showInvalidName(AppConstant.WORD_IS_NULL);
             return;
         }
         if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(inputName).find()) {
-            mView.showSaveFailed(AppConstant.WORD_FORMAT_ERROR);
+            mView.showInvalidName(AppConstant.WORD_FORMAT_ERROR);
             return;
         }
-        if (!inputName.equals(mWord.getName())) {  // 名字发生变动，视为添加
-            // 检查添加的名字是否重复，若重复则什么动作都不做
+        if (!inputName.equals(mWord.getName())) {  // 名字发生变动
+            // 检查添加的名字是否重复
             if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), inputName) != null) {
-                mView.showSaveFailed(AppConstant.REPETITIVE_WORD);
+                mView.showInvalidName(AppConstant.REPETITIVE_WORD);
                 return;
             }
         }

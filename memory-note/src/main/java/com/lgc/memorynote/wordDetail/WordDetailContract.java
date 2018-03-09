@@ -46,7 +46,10 @@ public interface WordDetailContract {
 
         void showSaveFailed(int state);
 
+        void showInvalidName(int state);
+
         void showAnalyzeFailed(int resultCode);
+
     }
 
     interface Presenter extends BasePresenter {
