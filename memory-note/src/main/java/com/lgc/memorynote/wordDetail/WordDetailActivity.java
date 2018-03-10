@@ -32,7 +32,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     public static final String INTENT_EXTRA_ADD_NAME = "intent_extra_add_name";
 
     private WordDetailContract.Presenter mPresenter;
-    private TextView mTvWordName;
+    private EditText mTvWordName;
     private EditText mTvWordMeaning;
     private EditText mTvSimilarWord;
     private TextView mTvStrangeDegree;
@@ -55,7 +55,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     private void initView() {
-        mTvWordName          = (TextView) findViewById(R.id.et_word_detail_name);
+        mTvWordName          = (EditText) findViewById(R.id.et_word_detail_name);
         mTvWordName.setOnLongClickListener(this);
 
         mTvWordMeaning       = (EditText) findViewById(R.id.et_word_detail_meaning);
@@ -102,6 +102,15 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        mTvWordName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    mPresenter.checkWordValidity();
+                }
             }
         });
     }
@@ -318,7 +327,24 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
                 break;
             case AppConstant.WORD_IS_NULL:
                 msg = getString(R.string.word_name_is_null);
+                break;
+        }
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
 
+    @Override
+    public void showInvalidName(int state) {
+        String msg = null;
+        switch (state) {
+            case AppConstant.WORD_FORMAT_ERROR:
+                msg = getString(R.string.word_invalid_format_erorr);
+                break;
+            case AppConstant.REPETITIVE_WORD:
+                msg = getString(R.string.word_invalid_repetitive);
+                break;
+            case AppConstant.WORD_IS_NULL:
+                msg = getString(R.string.word_invalid_name_is_null);
+                break;
         }
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }

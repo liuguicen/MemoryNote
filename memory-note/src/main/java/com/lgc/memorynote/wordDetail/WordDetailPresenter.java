@@ -144,6 +144,28 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         mIsAdd = false; // 保存一次之后就不再是true了
     }
 
+    @Override
+    public void checkWordValidity() {
+        // 名字相关
+        String inputName = mView.getInputWordName();
+        inputName = inputName.trim();
+        if (inputName.isEmpty()) {
+            mView.showInvalidName(AppConstant.WORD_IS_NULL);
+            return;
+        }
+        if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(inputName).find()) {
+            mView.showInvalidName(AppConstant.WORD_FORMAT_ERROR);
+            return;
+        }
+        if (!inputName.equals(mWord.getName())) {  // 名字发生变动
+            // 检查添加的名字是否重复
+            if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), inputName) != null) {
+                mView.showInvalidName(AppConstant.REPETITIVE_WORD);
+                return;
+            }
+        }
+    }
+
     private void showData(boolean isSwitchEdit) {
         if (mIsInEdit) {
             mView.showInputMeaning(mWord.getInputMeaning());

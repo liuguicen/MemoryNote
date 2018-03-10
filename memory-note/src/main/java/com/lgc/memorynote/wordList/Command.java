@@ -74,10 +74,14 @@ public class Command {
         add(_hdm); add(_hdw);  add(_dict); add(_len); add(_sn); add(_rev);
 
         add(_word); add(_phr);add(_sim);}};
+
     public static final Map<String, String> UICommandMap = new HashMap<String, String>(){{
             put(_stra, _stra_ui);  put(_last, _last_ui);  put(_dict, _dict_ui);  put(_len ,_len_ui);
-            put(_sn, _sn_ui);      put(_hdm, _hdm_ui); put(_hdw, _hdw_ui);
+
+            put(_sn, _sn_ui);      put(_hdm, _hdm_ui);    put(_hdw, _hdw_ui);
+
             put(_rev, _rev_ui);    put(_word, _word_ui);  put(_phr, _phr_ui);    put(_sheng, _sheng_ui);
+
             put(_guai, _guai_ui);  put(_sim, _sim_ui);
 
     }};
