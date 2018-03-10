@@ -29,6 +29,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     public static final String INTENT_EXTRA_WORD_NAME = "intent_extra_word_detail_word_name";
     public static final String INTENT_EXTRA_IS_ADD = "intent_extra_word_detail_is_add";
+    public static final String INTENT_EXTRA_ADD_NAME = "intent_extra_add_name";
 
     private WordDetailContract.Presenter mPresenter;
     private TextView mTvWordName;
@@ -226,7 +227,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     @Override
-    public void showWord(String word) {
+    public void showWordName(String word) {
         mTvWordName.setText(word);
     }
 

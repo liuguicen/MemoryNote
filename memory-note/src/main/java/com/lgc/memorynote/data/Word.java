@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /************************************
  * 数据格式的定义：
@@ -334,5 +335,10 @@ public class Word {
 
     public long getLastDownLoadTime() {
         return lastDownLoadTime;
+    }
+
+    public static boolean isLegalWordName(String name) {
+        if (name == null) return false;
+        return !Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(name).find();
     }
 }

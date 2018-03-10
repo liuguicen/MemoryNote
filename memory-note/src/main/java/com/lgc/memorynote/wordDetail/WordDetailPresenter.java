@@ -6,7 +6,6 @@ import android.text.TextUtils;
 
 import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.base.UIUtil;
-import com.lgc.memorynote.base.network.NetWorkUtil;
 import com.lgc.memorynote.data.AppConstant;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SearchUtil;
@@ -41,6 +40,11 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mWord = new Word();
             if (!mIsInEdit) {
                 switchEdit();
+            }
+            String recevName = intent.getStringExtra(WordDetailActivity.INTENT_EXTRA_ADD_NAME);
+            if (recevName != null) {
+                mWord.setName(recevName);
+                mView.showWordName(recevName);
             }
             setLastRememberTime();
             setStrangeDegree(10);
@@ -153,7 +157,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mView.showWordGroupList(mWord.getGroupList());
         }
         if (!isSwitchEdit) { // 切换编辑的过程中，这些视图的数据不用变
-            mView.showWord(mWord.getName());
+            mView.showWordName(mWord.getName());
             mView.showStrangeDegree(mWord.getStrangeDegree());
             mView.showLastRememberTime(mWord.getLastRememberTime());
         }

@@ -89,7 +89,7 @@ public class SearchUtil {
                     }
                 }
             }
-        } else if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(search).find()) {
+        } else if (!Word.isLegalWordName(search)) {
             int equalEnd = 0;
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);

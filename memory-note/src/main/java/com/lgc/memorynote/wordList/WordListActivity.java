@@ -110,6 +110,10 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
             public void onClick(View v) {
                 Intent intent  = WordDetailActivity.getStartIntent(WordListActivity.this);
                 intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, true);
+                String inputName = mTvInputCommand.getText().toString().trim();
+                if (Word.isLegalWordName(inputName) && mWordListAdapter.getItemCount() == 0) { // 单词合法，并且没有找到结果，自动添加
+                    intent.putExtra(WordDetailActivity.INTENT_EXTRA_ADD_NAME, inputName);
+                }
                 startActivity(intent);
             }
         });
@@ -128,7 +132,10 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         mTvInputCommand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTvInputCommand.setSelection(0, mTvInputCommand.getText().length());
+                if (mTvInputCommand.getSelectionStart() == -1
+                        && mTvInputCommand.getSelectionEnd() == -1) {
+                    mTvInputCommand.setSelection(0, mTvInputCommand.getText().length());
+                }
             }
         });
         findViewById(R.id.btn_expand_command_list).setOnClickListener(new View.OnClickListener() {
