@@ -32,6 +32,9 @@ public class WordListPresenter implements WordListContract.Presenter {
 
     public WordListPresenter(WordListContract.View view) {
         mView = view;
+        if (mView instanceof Context) {
+            mContext = (Context)mView;
+        }
         mChosenCmdList.add(SortUtil.DEFAULT_SORT_COMMAND);
     }
 
