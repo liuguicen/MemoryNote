@@ -43,6 +43,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     private EditText mTvInputCommand;
     private WordListPresenter mPresenter;
     private Util.RepetitiveEventFilter searchFilter = new Util.RepetitiveEventFilter();
+    private boolean isNewClick = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,9 +133,9 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         mTvInputCommand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mTvInputCommand.getSelectionStart() == -1
-                        && mTvInputCommand.getSelectionEnd() == -1) {
+                if (isNewClick) {
                     mTvInputCommand.setSelection(0, mTvInputCommand.getText().length());
+                    isNewClick = false;
                 }
             }
         });
@@ -158,6 +159,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
             public void onClick(View v) {
                 if (!searchFilter.isRepetitive(1000)) {
                     onClickSearch(mTvInputCommand.getText().toString());
+                    isNewClick = true;
                 } else {
                     Logcat.d("repetitive click");
                 }

@@ -44,6 +44,8 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     private CertainDialog mCertainDialog;
     private View mDeleteView;
     private int lastInputType;
+    private boolean mWordNameChanged;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
         mTvWordMeaning       = (EditText) findViewById(R.id.et_word_detail_meaning);
         mTvWordMeaning.setOnLongClickListener(this);
+        mTvWordMeaning.setOnClickListener(this);
 
         mTvSimilarWord       = (EditText) findViewById(R.id.et_similar_word);
         mTvSimilarWord.setOnLongClickListener(this);
@@ -89,9 +92,30 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         findViewById(R.id.btn_sync_group).setOnClickListener(this);
 
         mTvWordName.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mWordNameChanged = true;
+            }
+        });
+
+        mTvWordMeaning.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (mWordNameChanged) {
+                    mPresenter.checkWordValidity();
+                    mWordNameChanged = false;
+                }
             }
 
             @Override
@@ -105,14 +129,6 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
             }
         });
 
-        mTvWordName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    mPresenter.checkWordValidity();
-                }
-            }
-        });
     }
 
     @Override
