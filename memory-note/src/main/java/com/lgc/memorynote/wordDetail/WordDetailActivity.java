@@ -1,15 +1,19 @@
 package com.lgc.memorynote.wordDetail;
 
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -44,7 +48,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     private CertainDialog mCertainDialog;
     private View mDeleteView;
     private int lastInputType;
-    private boolean mWordNameChanged;
+    private boolean mWordNameChanged = false;
 
 
     @Override
@@ -90,45 +94,6 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         findViewById(R.id.reduce_strange_degree).setOnClickListener(this);
         findViewById(R.id.btn_sync_similar).setOnClickListener(this);
         findViewById(R.id.btn_sync_group).setOnClickListener(this);
-
-        mTvWordName.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mWordNameChanged = true;
-            }
-        });
-
-        mTvWordMeaning.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (mWordNameChanged) {
-                    mPresenter.checkWordValidity();
-                    mWordNameChanged = false;
-                }
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
     }
 
     @Override
@@ -393,4 +358,5 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
             super.onBackPressed();
         }
     }
+
 }

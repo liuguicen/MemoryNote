@@ -3,6 +3,7 @@ package com.lgc.memorynote.wordDetail;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.TextureView;
 
 import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.base.UIUtil;
@@ -10,6 +11,8 @@ import com.lgc.memorynote.data.AppConstant;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SearchUtil;
 import com.lgc.memorynote.data.Word;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -207,6 +210,18 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         // 解析出已经存在的
         List<Word.SimilarWord> exitSimilar = new ArrayList<>();
         InputAnalyzerUtil.analyzeInputSimilarWords(inputChildWord, exitSimilar);
+
+        // the exit word which don't input meaning, search meaning in global list, add meaning to it
+        for (Word.SimilarWord similarWord : exitSimilar) {
+            if(TextUtils.isEmpty(similarWord.getAnotation())) {
+                List<Word.WordMeaning> meaningList = SearchUtil.getOneWordByName(
+                        GlobalData.getInstance().getAllWord(), similarWord.getName()
+                ).getMeaningList();
+                similarWord.setAnotation(UIUtil.meaningList2String(meaningList));
+                inputChildWord = inputChildWord.replace(similarWord.getName(), similarWord.getName()
+                        + "  " + similarWord.getAnotation());
+            }
+        }
 
         // 在去除重复的
         searchWord.removeAll(exitSimilar);

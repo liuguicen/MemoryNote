@@ -79,6 +79,16 @@ public class UIUtil {
         return sb.toString();
     }
 
+    public static String meaningList2String(List<Word.WordMeaning> meaningList) {
+        StringBuilder sb = new StringBuilder();
+        if (meaningList != null) {
+            for (Word.WordMeaning oneMeaning : meaningList) {
+                sb.append(oneMeaning.getMeaning() + "   ");
+            }
+        }
+        return sb.toString();
+    }
+
     public static String joinSimilar(String inputSimilarWords, List<Word.SimilarWord> similarWords) {
 
         String addSimilar = similarList2String(similarWords, "\n");
