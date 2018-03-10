@@ -194,8 +194,4 @@ public class GlobalData {
             MyDatabase.getInstance().close();
         }
     }
-
-    public List<String> getCommandList() {
-        return Command.commandList;
-    }
 }

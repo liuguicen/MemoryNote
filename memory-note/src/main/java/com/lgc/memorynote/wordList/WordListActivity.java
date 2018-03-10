@@ -209,7 +209,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
     @Override
     public void updateCommandText(List<String> commandList, List<String> chosenList) {
-        // 转话层UI上的字符串
+        // 转换层UI上的字符串
         List<Pair<String, String>> UICommandList = new ArrayList<>();
         int maxNumber = commandList.size();
         if (mTvCommandList.getMaxLines() <= 1) {
@@ -309,6 +309,15 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     @Override
     public void refreshWordList(List<Word> resultList) {
         mWordListAdapter.setWordList(resultList);
+    }
+
+    @Override
+    public int getListPosition() {
+        return linearLayoutManager.findFirstVisibleItemPosition();
+    }
+
+    public void restorePosition(int position) {
+        linearLayoutManager.scrollToPosition(position);
     }
 
     public class clickSpan extends ClickableSpan {

@@ -1,10 +1,14 @@
 package com.lgc.memorynote.wordList;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
+import android.util.Pair;
+import android.widget.Toast;
 
 import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.data.GlobalData;
+import com.lgc.memorynote.data.SpUtil;
 import com.lgc.memorynote.data.Word;
 
 import java.util.ArrayList;
@@ -34,7 +38,7 @@ public class WordListPresenter implements WordListContract.Presenter {
     @Override
     public void start() {
         mCurShowWordList = GlobalData.getInstance().getCurWords();
-        mView.updateCommandText(GlobalData.getInstance().getCommandList(), mChosenCmdList);
+        mView.updateCommandText(Command.commandList, mChosenCmdList);
         reorderWordList(null);
     }
 
@@ -45,7 +49,7 @@ public class WordListPresenter implements WordListContract.Presenter {
         } else {
             mChosenCmdList.remove(command);
         }
-        mView.updateCommandText(GlobalData.getInstance().getCommandList(), mChosenCmdList);
+        mView.updateCommandText(Command.commandList, mChosenCmdList);
     }
 
     /**
@@ -56,16 +60,39 @@ public class WordListPresenter implements WordListContract.Presenter {
     public void reorderWordList(@Nullable String search) {
         if (search !=  null)
             search = search.trim();
+        int lastPostion = -1;
         if (search != null) {
-            if (search.startsWith(Command.COMMAND_START + Command.OPEN_SETTING)) {
+            if (search.startsWith(Command.OPEN_SETTING)) {
                 mView.setSettingActivity();
                 return;
             }
-            if (search.startsWith(Command.COMMAND_START + Command.WORD_NUMBER)) {
+
+            if (search.startsWith(Command.WORD_NUMBER)) {
                 mView.showWordNumber();
                 return;
             }
+
+            if (search.startsWith(Command.RMB)) {
+                saveCurRememberPosition();
+                return;
+            }
+
+            if (search.startsWith(Command.RST)) {
+                search = "";
+
+                // get saved date
+                Pair<ArrayList<String>, Integer> pair = SpUtil.getLastRemberState();
+
+                if (!pair.first.isEmpty() && pair.second >= 0) {
+                    lastPostion = pair.second;
+                    // remove all cur chosen and add all saved cmd
+                    mChosenCmdList.clear();
+                    mChosenCmdList.addAll(pair.first);
+                    mView.updateCommandText(Command.commandList, mChosenCmdList);
+                }
+            }
         }
+
         mChosenCmdList.removeAll(mInputCmdList);
         mInputCmdList.clear(); //  clear last input cmd list first
 
@@ -77,6 +104,19 @@ public class WordListPresenter implements WordListContract.Presenter {
         setUICommand(mChosenCmdList);
         GlobalData.getInstance().setCurWords(mCurShowWordList);
         mView.refreshWordList(mCurShowWordList);
+
+        if (lastPostion >= 0) {
+            mView.restorePosition(lastPostion);
+        }
+    }
+
+    private void saveCurRememberPosition() {
+        boolean res = SpUtil.saveCurRememberPosition(mChosenCmdList, mView.getListPosition());
+        if (res) {
+            Toast.makeText(mContext, "保存记录位置成功", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(mContext, "保存记录位置失败", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

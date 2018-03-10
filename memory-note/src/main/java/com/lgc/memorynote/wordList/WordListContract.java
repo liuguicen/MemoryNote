@@ -44,7 +44,12 @@ public class WordListContract {
         void setSettingActivity();
 
         void showWordNumber();
+
+        int getListPosition();
+
+        void restorePosition(int position);
     }
+
     interface Presenter extends BasePresenter {
         /**
          *  选中或者去掉一个命令

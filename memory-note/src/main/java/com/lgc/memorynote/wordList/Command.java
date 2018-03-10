@@ -69,30 +69,42 @@ public class Command {
 
 
     public static final List<String> commandList = new ArrayList<String>(){{
-        add(_stra); add(_last); add(_sheng); add(_guai);
+            add(_stra);  add(_last);
 
-        add(_hdm); add(_hdw);  add(_dict); add(_len); add(_sn); add(_rev);
+            add(_hdm);   add(_hdw);   add(_sheng); add(_guai);
 
-        add(_word); add(_phr);add(_sim);}};
+            add(_dict);  add(_len);   add(_sn);    add(_rev);
+
+            add(_word);  add(_phr);   add(_sim);}};
 
     public static final Map<String, String> UICommandMap = new HashMap<String, String>(){{
-            put(_stra, _stra_ui);  put(_last, _last_ui);  put(_dict, _dict_ui);  put(_len ,_len_ui);
+            put(_stra, _stra_ui);  put(_last, _last_ui);
 
-            put(_sn, _sn_ui);      put(_hdm, _hdm_ui);    put(_hdw, _hdw_ui);
+            put(_hdw,  _hdw_ui);    put(_hdm, _hdm_ui);   put(_sheng, _sheng_ui);  put(_guai, _guai_ui);
 
-            put(_rev, _rev_ui);    put(_word, _word_ui);  put(_phr, _phr_ui);    put(_sheng, _sheng_ui);
+            put(_dict, _dict_ui);  put(_len , _len_ui);   put(_sn, _sn_ui);        put(_rev, _rev_ui);
 
-            put(_guai, _guai_ui);  put(_sim, _sim_ui);
-
+            put(_word, _word_ui);  put(_phr,  _phr_ui);   put(_sim, _sim_ui);
     }};
-    public static final String OPEN_SETTING = "setting";
-    public static final String WORD_NUMBER = "number";
-    public static final String REGEX_SERACH = "re";
+
+    public static final String OPEN_SETTING = COMMAND_START + "setting";
+
+    /** 显示单词数量 **/
+    public static final String WORD_NUMBER  = COMMAND_START + "number";
+    /** 使用正则式搜索 **/
+    public static final String REGEX_SERACH = COMMAND_START + "re";
+    /** 记录当前记忆的位置 **/
+    public static final String RMB          = COMMAND_START + "rmb";
+    /** 恢复到上次记忆的位置 **/
+    public static final String RST          = COMMAND_START + "rst";
+
     public static final String TAG_START = Word.TAG_START;
     public static final String commandGuide
                    = "   " + OPEN_SETTING + " 进入设置界面\n"
                    + "   " + WORD_NUMBER + " 当前列表单词数量\n"
                    + "   " + REGEX_SERACH + " 正则式搜索，仅支持单词名称\n"
+                   + "   " + RMB + " 记录当前的记忆位置\n"
+                   + "   " + RST + " 恢复上次记忆位置\n"
                    + "   " + TAG_START + " 对单词添加标志，说明它的一些特性，比如词义怪，是个短语、词组等";
 
     /**
