@@ -69,8 +69,9 @@ public class ExampleUnitTest {
     }
 
     private void testAnalyzeSimilarWord() {
-        String similarWord =  "sdfsd word id good // 哄哄的东方盛世房东发的\n" +
-                "hahaha// 双方双方双方爽肤水";
+        String similarWord =  "sdfsd word id good v 哄哄的东方盛世房东发的\n" +
+                "hahaha v&n 双方双方双方爽肤水\n" +
+                "third meaning adj.第三个";
         List<Word.SimilarWord> similarWorList = new ArrayList<>();
         InputAnalyzerUtil.analyzeInputSimilarWords(similarWord, similarWorList);
         Word word = new Word();

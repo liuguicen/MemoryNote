@@ -175,7 +175,8 @@ public class SearchUtil {
         return Util.map2set(resultGroupMap);
     }
 
-    private static void addSimilarList(String srcName, Map<String, Word.SimilarWord> resultSimilarMap, List<Word.SimilarWord> srcSimilarList, Word matchWord) {
+    private static void addSimilarList(String srcName, Map<String, Word.SimilarWord> resultSimilarMap,
+                                       List<Word.SimilarWord> srcSimilarList, Word matchWord) {
         if (srcSimilarList == null) return;
 
         for (Word.SimilarWord similarWord : srcSimilarList) {
@@ -186,7 +187,7 @@ public class SearchUtil {
                     resultSimilarMap.put(addSimilar.getName(), addSimilar);
                 }
 
-                // do not contain the word self should add it
+                // do not contain the word self,  should add it
                 if (!resultSimilarMap.containsKey(matchWord.getName())) {
                     // convert word to similar word and use wordMeaning which be replace "\n" to " " to create anotation
                     Word.SimilarWord selfSimilar = new Word.SimilarWord();

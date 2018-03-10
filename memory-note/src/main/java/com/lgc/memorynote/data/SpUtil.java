@@ -24,6 +24,7 @@ public class SpUtil {
     private static String CMD_LIST = "cmd_list";
     private static String POSITION = "position";
     private static String USER_SP_NAME = "user";
+    private static String UPLOAD_STATE = "upload state";
 
     /**
      * save last remember date, include the cmd list and the position of the word
@@ -42,5 +43,16 @@ public class SpUtil {
         Set<String> stringSet = sp.getStringSet(CMD_LIST, new HashSet<String>());
         int position = sp.getInt(POSITION, -1);
         return new Pair<>(new ArrayList<>(stringSet), position);
+    }
+
+    public static boolean saveUploadState(String msg) {
+        SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences(USER_SP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor spEditor = sp.edit();
+        return spEditor.putString(UPLOAD_STATE, msg).commit();
+    }
+
+    public static String getUploadState() {
+        SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences(USER_SP_NAME, Context.MODE_PRIVATE);
+        return sp.getString(UPLOAD_STATE, "");
     }
 }

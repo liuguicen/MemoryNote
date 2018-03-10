@@ -18,6 +18,9 @@ import cn.bmob.v3.listener.UpdateListener;
  * <pre>
  */
 
+/**
+ * 这个是一种装饰器模式，用在还是很贴切的，所以也是很好用的
+ */
 public class BmobWord extends BmobObject {
     String name;
     String jsonData;

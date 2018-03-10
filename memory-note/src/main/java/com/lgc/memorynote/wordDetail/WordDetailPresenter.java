@@ -205,7 +205,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         mView.showInputWordGroup(groupString);
     }
 
-    private String syncChildWord(String inputChildWord, Set<Word.SimilarWord> searchWord) {
+    private String syncChildWord(String inputChildWord, Set<Word.SimilarWord> searchWordList) {
 
         // 解析出已经存在的
         List<Word.SimilarWord> exitSimilar = new ArrayList<>();
@@ -214,24 +214,27 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         // the exit word which don't input meaning, search meaning in global list, add meaning to it
         for (Word.SimilarWord similarWord : exitSimilar) {
             if(TextUtils.isEmpty(similarWord.getAnotation())) {
-                List<Word.WordMeaning> meaningList = SearchUtil.getOneWordByName(
+                Word oneWordByName = SearchUtil.getOneWordByName(
                         GlobalData.getInstance().getAllWord(), similarWord.getName()
-                ).getMeaningList();
-                similarWord.setAnotation(UIUtil.meaningList2String(meaningList));
-                inputChildWord = inputChildWord.replace(similarWord.getName(), similarWord.getName()
-                        + "  " + similarWord.getAnotation());
+                );
+                if (oneWordByName != null) {
+                    List<Word.WordMeaning> meaningList = oneWordByName.getMeaningList();
+                    similarWord.setAnotation(UIUtil.meaningList2String(meaningList));
+                    inputChildWord = inputChildWord.replace(similarWord.getName(), similarWord.getName()
+                            + "  " + similarWord.getAnotation());
+                }
             }
         }
 
         // 在去除重复的
-        searchWord.removeAll(exitSimilar);
-        if (searchWord.isEmpty())
+        searchWordList.removeAll(exitSimilar);
+        if (searchWordList.isEmpty())
             return  inputChildWord;
 
         if (!mIsInEdit) {
             switchEdit();
         }
-        return  UIUtil.joinSimilar(inputChildWord, new ArrayList<>(searchWord));
+        return  UIUtil.joinSimilar(inputChildWord, new ArrayList<>(searchWordList));
     }
 
 

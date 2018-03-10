@@ -148,6 +148,16 @@ public class InputAnalyzerUtil {
             int annoStart = -1;
             if (matcher.find())
                 annoStart = matcher.start();
+            String cixingRegex = " +("  + WordMeaning.CIXING_ADJ + "|"
+                                       + WordMeaning.CIXING_ADV + "|"
+                                       + WordMeaning.CIXING_N   + "|"
+                                       + WordMeaning.CIXING_V
+                               + ") *[^a-zA-z\\-']";
+            Matcher cixingMatcher = Pattern.compile(cixingRegex).matcher(oneWord);
+            if (cixingMatcher.find()) {
+                annoStart = Math.min(annoStart, cixingMatcher.start());
+            }
+
             if (annoStart >= 0) {
                 String annotation = oneWord.substring(annoStart, oneWord.length());
                 similarWord.setAnotation(annotation);

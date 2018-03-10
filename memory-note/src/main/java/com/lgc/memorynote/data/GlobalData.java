@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.exception.BmobException;
+
 /**
  * <pre>
  *      author : liuguicen
@@ -148,10 +150,20 @@ public class GlobalData {
         mCurWords = curWords;
     }
 
-    public void addWord(Word word) {
+    public void addWord(final Word word) {
         try {
+            NetWorkUtil.saveWordService(new BmobWord(word), new NetWorkUtil.UploadListener() {
+                @Override
+                public void uploadSuccess() {
+                    word.setLastUploadTime(System.currentTimeMillis());
+                }
+
+                @Override
+                public void uploadFailed(BmobException e) {
+
+                }
+            });
             MyDatabase.getInstance().insertWord(word.getName(), new Gson().toJson(word));
-            NetWorkUtil.saveWordService(new BmobWord(word), null);
             mAllWords.add(word);
             mCurWords.add(word);
         } catch (IOException e) {
@@ -166,12 +178,22 @@ public class GlobalData {
         updateWord(word, true);
     }
 
-    public void updateWord(Word word, boolean isUpload) {
+    public void updateWord(final Word word, boolean isUpload) {
         try {
-            MyDatabase.getInstance().insertWord(word.getName(), new Gson().toJson(word));
             if (isUpload) {
-                NetWorkUtil.upLoadWord(word, null);
+                NetWorkUtil.upLoadWord(word, new NetWorkUtil.UploadListener() {
+                    @Override
+                    public void uploadSuccess() {
+                        word.setLastUploadTime(System.currentTimeMillis());
+                    }
+
+                    @Override
+                    public void uploadFailed(BmobException e) {
+
+                    }
+                });
             }
+            MyDatabase.getInstance().insertWord(word.getName(), new Gson().toJson(word));
             Logcat.e(word.getName() + "已更新");
             // 更新，内存中的已经更新了，不用在更新
         } catch (IOException e) {
