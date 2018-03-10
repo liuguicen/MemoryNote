@@ -63,6 +63,12 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         Log.e("------------", "init: 应用初始化成功");
     }
 
+    @Override
+    protected void onRestart() {
+        onClickSearch();
+        super.onRestart();
+    }
+
     /**
      * 启动后台服务，
      * <p>1.在后台发送用户使用信息
@@ -124,7 +130,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                         (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    onClickSearch(mTvInputCommand.getText().toString());
+                    onClickSearch();
                     return true;
                 }
                 return false;
@@ -158,7 +164,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
             @Override
             public void onClick(View v) {
                 if (!searchFilter.isRepetitive(1000)) {
-                    onClickSearch(mTvInputCommand.getText().toString());
+                    onClickSearch();
                     isNewClick = true;
                 } else {
                     Logcat.d("repetitive click");
@@ -172,8 +178,8 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         mWordListView.setLayoutManager(linearLayoutManager);
     }
 
-    private void onClickSearch(String search) {
-        mPresenter.reorderWordList(search);
+    private void onClickSearch() {
+        mPresenter.reorderWordList(mTvInputCommand.getText().toString());
     }
 
 
