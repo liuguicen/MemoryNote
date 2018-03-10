@@ -182,6 +182,10 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         mPresenter.reorderWordList(mTvInputCommand.getText().toString());
     }
 
+    @Override
+    public void clearCommandEt() {
+        mTvInputCommand.setText("");
+    }
 
     private void initData() {
         mWordListAdapter = new WordListAdapter(this);

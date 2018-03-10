@@ -64,6 +64,7 @@ public class WordListPresenter implements WordListContract.Presenter {
         if (search != null) {
             if (search.startsWith(Command.OPEN_SETTING)) {
                 mView.setSettingActivity();
+                mView.clearCommandEt();
                 return;
             }
 

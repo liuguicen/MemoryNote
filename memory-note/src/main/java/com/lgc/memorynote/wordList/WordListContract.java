@@ -48,6 +48,8 @@ public class WordListContract {
         int getListPosition();
 
         void restorePosition(int position);
+
+        void clearCommandEt();
     }
 
     interface Presenter extends BasePresenter {
