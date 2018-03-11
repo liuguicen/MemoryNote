@@ -140,15 +140,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                 return false;
             }
         });
-        mTvInputCommand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isNewClick) {
-                    mTvInputCommand.setSelection(0, mTvInputCommand.getText().length());
-                    isNewClick = false;
-                }
-            }
-        });
+
         initTvInputCmd();
         findViewById(R.id.btn_expand_command_list).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,6 +176,16 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     }
 
     private void initTvInputCmd() {
+        mTvInputCommand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isNewClick) {
+                    mTvInputCommand.setSelection(0, mTvInputCommand.getText().length());
+                    isNewClick = false;
+                }
+            }
+        });
+
         //创建一个ArrayAdapter，封装数组
         recentCmdAdapter = new ArrayAdapter<String>(this
                 ,android.R.layout.simple_dropdown_item_1line, GlobalData.getInstance().getRecentCmd());
@@ -196,7 +198,6 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
             String inputCmd = mTvInputCommand.getText().toString();
             mPresenter.reorderWordList(inputCmd);
             GlobalData.getInstance().addInputCmd(inputCmd);
-
             recentCmdAdapter = new ArrayAdapter<String>(this
                     ,android.R.layout.simple_dropdown_item_1line, GlobalData.getInstance().getRecentCmd());
             mTvInputCommand.setAdapter(recentCmdAdapter);

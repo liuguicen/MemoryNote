@@ -224,6 +224,13 @@ public class GlobalData {
     public ArrayList<String> getRecentCmd() {
         if(recentCmdList == null) {
             recentCmdList = new ArrayList<>();
+            recentCmdList.add(Command.RMB);
+            recentCmdList.add(Command.RST);
+            recentCmdList.add(Command.WORD_NUMBER);
+            recentCmdList.add(Command.STRANGE_DEGREE + " >");
+            recentCmdList.add(Command.STRANGE_DEGREE + " <");
+            recentCmdList.add(Command.OPEN_SETTING);
+            recentCmdList.add(Command.REGEX_SERACH + " ");
         }
         return recentCmdList;
     }

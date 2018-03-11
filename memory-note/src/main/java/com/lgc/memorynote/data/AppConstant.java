@@ -20,5 +20,5 @@ public class AppConstant {
     /**
      * 最近命令的数量
      */
-    public static final int RECENT_CMD_NUMBER = 5;
+    public static final int RECENT_CMD_NUMBER = 10;
 }
