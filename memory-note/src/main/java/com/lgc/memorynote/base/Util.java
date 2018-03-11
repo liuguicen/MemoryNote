@@ -103,6 +103,7 @@ public class Util {
     public static class RepetitiveEventFilter {
         public static long lastTime = -1;
 
+        private RepetitiveEventFilter(){}
         /**
          *  使用的是静态变量，同一时间段只能过滤一个时间，通常只能过滤用户操作
          * @param intervalTime

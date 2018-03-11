@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.base.MemoryNoteApplication;
+import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.data.BmobWord;
 import com.lgc.memorynote.data.Word;
 
@@ -33,6 +34,8 @@ import rx.Subscriber;
  */
 
 public class NetWorkUtil {
+    public static final long NET_INTERVAL_TIME = 500;
+
     /**
      * update all word form service
      */
@@ -137,6 +140,7 @@ public class NetWorkUtil {
     }
 
     public static void upLoadWord(final Word localWord, final UploadListener uploadListener) {
+        Util.RepetitiveEventFilter.isRepetitive(NET_INTERVAL_TIME); //
         final BmobWord localBmobWord = new BmobWord(localWord);
         BmobQuery<BmobWord> query = new BmobQuery<>();
         query.addWhereEqualTo("name", localBmobWord.getName());

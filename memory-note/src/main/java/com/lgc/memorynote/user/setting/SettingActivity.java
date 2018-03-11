@@ -137,7 +137,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 Logcat.e("start upload word " + i + " = "+ word.getName());
                 final int finalI = i;
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(NetWorkUtil.NET_INTERVAL_TIME);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -151,7 +151,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     }
 
                     @Override
-                    public void uploadFailed(BmobException e) {
+                    public void
+                    uploadFailed(BmobException e) {
                         failedNumber[0]++;
                         publishProgress(++mUploadNumber);
                         Logcat.e("upload word " + finalI + " = " + word.getName() + " fail because  ", e.toString());

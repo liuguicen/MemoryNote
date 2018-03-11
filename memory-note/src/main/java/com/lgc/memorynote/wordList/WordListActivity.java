@@ -42,7 +42,6 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     private TextView mTvCommandList;
     private EditText mTvInputCommand;
     private WordListPresenter mPresenter;
-    private Util.RepetitiveEventFilter searchFilter = new Util.RepetitiveEventFilter();
     private boolean isNewClick = true;
 
     @Override
@@ -163,7 +162,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         findViewById(R.id.btn_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!searchFilter.isRepetitive(1000)) {
+                if (!Util.RepetitiveEventFilter.isRepetitive(1000)) {
                     onClickSearch();
                     isNewClick = true;
                 } else {
@@ -204,6 +203,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                     case R.id.lv_item_word_reduce_strange:
                         mPresenter.reduceStrange(position);
                         mWordListAdapter.notifyItemChanged(position);
+                        break;
                 }
             }
         });
