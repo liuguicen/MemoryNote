@@ -211,7 +211,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         List<Word.SimilarWord> exitSimilar = new ArrayList<>();
         InputAnalyzerUtil.analyzeInputSimilarWords(inputChildWord, exitSimilar);
 
-        boolean hasModity = false;
+        boolean hasModify = false;
         // the exit word which don't input meaning, search meaning in global list, add meaning to it
         for (Word.SimilarWord similarWord : exitSimilar) {
             if(TextUtils.isEmpty(similarWord.getAnotation())) {
@@ -223,14 +223,14 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                     similarWord.setAnotation(UIUtil.meaningList2String(meaningList));
                     inputChildWord = inputChildWord.replace(similarWord.getName(), similarWord.getName()
                             + "  " + similarWord.getAnotation());
-                    hasModity = true;
+                    hasModify = true;
                 }
             }
         }
 
         // 在去除重复的
         searchWordList.removeAll(exitSimilar);
-        if (searchWordList.isEmpty() && !hasModity)
+        if (searchWordList.isEmpty() && !hasModify)
             return  inputChildWord;
 
         if (!mIsInEdit) {
