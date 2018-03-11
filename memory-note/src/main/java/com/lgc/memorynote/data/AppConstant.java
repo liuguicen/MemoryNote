@@ -16,4 +16,9 @@ public class AppConstant {
      * 没有输入有效数据
      */
     public static final int WORD_IS_NULL      =3;
+
+    /**
+     * 最近命令的数量
+     */
+    public static final int RECENT_CMD_NUMBER = 5;
 }

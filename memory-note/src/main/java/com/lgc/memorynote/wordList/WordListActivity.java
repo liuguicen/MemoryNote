@@ -18,13 +18,17 @@ import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lgc.memorynote.R;
 import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.base.Util;
+import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.Word;
 import com.lgc.memorynote.user.setting.SettingActivity;
 import com.lgc.memorynote.wordDetail.WordDetailActivity;
@@ -40,9 +44,10 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     private WordListAdapter mWordListAdapter;
     private LinearLayoutManager linearLayoutManager;
     private TextView mTvCommandList;
-    private EditText mTvInputCommand;
+    private AutoCompleteTextView  mTvInputCommand;
     private WordListPresenter mPresenter;
     private boolean isNewClick = true;
+    private ArrayAdapter<String> recentCmdAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +114,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
     private void intView() {
         // base view widget
-        mTvInputCommand = (EditText) findViewById(R.id.tv_input_command);
+        mTvInputCommand = (AutoCompleteTextView) findViewById(R.id.tv_input_command);
         mTvCommandList = (TextView)findViewById(R.id.tv_command);
         findViewById(R.id.add_word).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +149,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                 }
             }
         });
+        initTvInputCmd();
         findViewById(R.id.btn_expand_command_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,8 +183,28 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         mWordListView.setLayoutManager(linearLayoutManager);
     }
 
+    private void initTvInputCmd() {
+        //创建一个ArrayAdapter，封装数组
+        recentCmdAdapter = new ArrayAdapter<String>(this
+                ,android.R.layout.simple_dropdown_item_1line, GlobalData.getInstance().getRecentCmd());
+        mTvInputCommand.setAdapter(recentCmdAdapter);
+        mTvInputCommand.setThreshold(0);
+    }
+
     private void onClickSearch() {
-        mPresenter.reorderWordList(mTvInputCommand.getText().toString());
+        try {
+            String inputCmd = mTvInputCommand.getText().toString();
+            mPresenter.reorderWordList(inputCmd);
+            GlobalData.getInstance().addInputCmd(inputCmd);
+
+            recentCmdAdapter = new ArrayAdapter<String>(this
+                    ,android.R.layout.simple_dropdown_item_1line, GlobalData.getInstance().getRecentCmd());
+            mTvInputCommand.setAdapter(recentCmdAdapter);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "输入数字格式错误", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -207,7 +233,11 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                 }
             }
         });
-        mPresenter.start();
+        try {
+            mPresenter.start();
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
         mWordListView.setAdapter(mWordListAdapter);
         mWordListView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
     }
@@ -284,7 +314,8 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
     @Override
     public void showWordNumber() {
-        mTvInputCommand.setText("当前单词数 = " + mWordListAdapter.getItemCount());
+        mTvInputCommand.setText("");
+        mTvInputCommand.setHint("当前单词数 = " + mWordListAdapter.getItemCount());
     }
 
     @Override

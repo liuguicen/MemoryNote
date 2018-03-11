@@ -63,7 +63,7 @@ public class WordListContract {
          * 点击搜索，重新组织单词列表
          * @param search
          */
-        void reorderWordList(String search);
+        void reorderWordList(String search) throws Exception;
 
         String getWordName(int adapterPosition);
 

@@ -25,13 +25,15 @@ public class SpUtil {
     private static String POSITION = "position";
     private static String USER_SP_NAME = "user";
     private static String UPLOAD_STATE = "upload state";
+    private static String RECENT_CMD = "recent_cmd";
+    private static SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences(USER_SP_NAME, Context.MODE_PRIVATE);
+    ;
 
     /**
      * save last remember date, include the cmd list and the position of the word
      * @return if remember success
      */
     public static boolean saveCurRememberPosition(List<String> cmdList, int position) {
-        SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences(USER_SP_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor spEditor = sp.edit();
         spEditor.putStringSet(CMD_LIST, new HashSet<>(cmdList));
         spEditor.putInt(POSITION, position);
@@ -39,20 +41,24 @@ public class SpUtil {
     }
 
     public static Pair<ArrayList<String>, Integer> getLastRemberState() {
-        SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences(USER_SP_NAME, Context.MODE_PRIVATE);
         Set<String> stringSet = sp.getStringSet(CMD_LIST, new HashSet<String>());
         int position = sp.getInt(POSITION, -1);
         return new Pair<>(new ArrayList<>(stringSet), position);
     }
 
     public static boolean saveUploadState(String msg) {
-        SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences(USER_SP_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor spEditor = sp.edit();
-        return spEditor.putString(UPLOAD_STATE, msg).commit();
+        return sp.edit().putString(UPLOAD_STATE, msg).commit();
     }
 
     public static String getUploadState() {
-        SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences(USER_SP_NAME, Context.MODE_PRIVATE);
         return sp.getString(UPLOAD_STATE, "");
     }
+
+//    public static boolean saveRecentCmd(Set<String> cmdSet) {
+//        return sp.edit().putStringSet(CMD_LIST, cmdSet).commit();
+//    }
+//
+//    public static Set<String> getLastCommand() {
+//        return sp.getStringSet(CMD_LIST, new HashSet<String>());
+//    }
 }

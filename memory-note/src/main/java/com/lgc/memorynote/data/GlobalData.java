@@ -1,5 +1,7 @@
 package com.lgc.memorynote.data;
 
+import android.support.v7.app.AppCompatActivity;
+
 import com.google.gson.Gson;
 import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.base.network.NetWorkUtil;
@@ -8,6 +10,7 @@ import com.lgc.memorynote.wordList.Command;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import cn.bmob.v3.exception.BmobException;
 
@@ -25,6 +28,7 @@ public class GlobalData {
     private static List<Word> mCurWords = new ArrayList<>();
 
     private static GlobalData mInstance = new GlobalData();
+    private static ArrayList<String> recentCmdList;
 
     private GlobalData() {
         Logcat.e(System.currentTimeMillis());
@@ -215,5 +219,19 @@ public class GlobalData {
         } finally {
             MyDatabase.getInstance().close();
         }
+    }
+
+    public ArrayList<String> getRecentCmd() {
+        if(recentCmdList == null) {
+            recentCmdList = new ArrayList<>();
+        }
+        return recentCmdList;
+    }
+
+    public void addInputCmd(String cmd) {
+        if (recentCmdList.size() > AppConstant.RECENT_CMD_NUMBER) {
+            recentCmdList.remove(recentCmdList.size() -1);
+        }
+        recentCmdList.add(cmd);
     }
 }

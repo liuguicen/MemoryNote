@@ -9,7 +9,7 @@
     android:layout_marginTop="4dp"
     tools:layout_editor_absoluteY="4dp">
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/tv_input_command"
         android:layout_width="0dp"
         android:layout_height="0dp"

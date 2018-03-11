@@ -39,7 +39,7 @@ public class WordListPresenter implements WordListContract.Presenter {
     }
 
     @Override
-    public void start() {
+    public void start() throws Exception {
         mCurShowWordList = GlobalData.getInstance().getCurWords();
         mView.updateCommandText(Command.commandList, mChosenCmdList);
         reorderWordList(null);
@@ -60,7 +60,7 @@ public class WordListPresenter implements WordListContract.Presenter {
      * @param search
      */
     @Override
-    public void reorderWordList(@Nullable String search) {
+    public void reorderWordList(@Nullable String search) throws Exception {
         if (search !=  null)
             search = search.trim();
         int lastPostion = -1;

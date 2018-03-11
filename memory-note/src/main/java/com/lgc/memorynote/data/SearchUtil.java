@@ -8,11 +8,13 @@ import com.lgc.memorynote.wordList.Command;
 
 import java.net.SocketImpl;
 import java.util.ArrayList;
+import java.util.IllegalFormatException;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -64,13 +66,37 @@ public class SearchUtil {
      * @param wordList
      * @return
      */
-    public static List<Word> searchWordOrMeaning(String search, List<Word> wordList) {
+    public static List<Word> searchWordOrMeaning(String search, List<Word> wordList) throws Exception {
         // 含有非单词字符，搜索词义
         if (TextUtils.isEmpty(search)) return wordList;
         List<Word> searchedList = new ArrayList<>();
-        if (search.startsWith(Command.COMMAND_START + Command.REGEX_SERACH)) {
-            String regex = search.substring(Command.COMMAND_START.length() +
-                    Command.REGEX_SERACH.length(), search.length()).trim();
+
+        if (search.contains(Command.STRANGE_DEGREE)) {
+            String sd = search.substring(Command.STRANGE_DEGREE.length()).trim();
+            // 赋极值
+            int bigger = Integer.MIN_VALUE, smaller = Integer.MAX_VALUE;
+            Matcher bigMatcher = Pattern.compile(">[ ]*(\\d+)").matcher(sd);
+            if (bigMatcher.find()) {
+                bigger = Integer.valueOf(bigMatcher.group(1));
+            }
+
+            Matcher smallMatcher = Pattern.compile("<[ ]*(\\d+)").matcher(sd);
+            if (smallMatcher.find()) {
+                smaller = Integer.valueOf(smallMatcher.group(1));
+            }
+
+            if (bigger == Integer.MAX_VALUE && smaller == Integer.MIN_VALUE) {
+                throw new Exception("比较格式错误");
+            }
+
+            for (int i = wordList.size() - 1; i >= 0; i--) {
+                Word word = wordList.get(i);
+                if (word.getStrangeDegree() > bigger && word.getStrangeDegree() < smaller) {
+                    searchedList.add(word);
+                }
+            }
+        } else if (search.startsWith(Command.REGEX_SERACH)) {
+            String regex = search.substring(Command.REGEX_SERACH.length()).trim();
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
                 String name = word.getName();
