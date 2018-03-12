@@ -1,7 +1,5 @@
 package com.lgc.memorynote.data;
 
-import android.support.v7.app.AppCompatActivity;
-
 import com.google.gson.Gson;
 import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.base.network.NetWorkUtil;
@@ -10,7 +8,6 @@ import com.lgc.memorynote.wordList.Command;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import cn.bmob.v3.exception.BmobException;
 
@@ -239,6 +236,6 @@ public class GlobalData {
         if (recentCmdList.size() > AppConstant.RECENT_CMD_NUMBER) {
             recentCmdList.remove(recentCmdList.size() -1);
         }
-        recentCmdList.add(cmd);
+        recentCmdList.add(0, cmd);
     }
 }

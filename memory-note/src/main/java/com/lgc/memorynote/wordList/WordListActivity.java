@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +69,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     @Override
     protected void onRestart() {
         onClickSearch();
+        isNewClick = true;
         super.onRestart();
     }
 
@@ -114,7 +114,8 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
     private void intView() {
         // base view widget
-        mTvInputCommand = (AutoCompleteTextView) findViewById(R.id.tv_input_command);
+        initTvInputCmd();
+
         mTvCommandList = (TextView)findViewById(R.id.tv_command);
         findViewById(R.id.add_word).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,20 +129,6 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                 startActivity(intent);
             }
         });
-        mTvInputCommand.setHint(SortUtil.getHingString());
-        mTvInputCommand.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                        (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    onClickSearch();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        initTvInputCmd();
         findViewById(R.id.btn_expand_command_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,6 +163,20 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     }
 
     private void initTvInputCmd() {
+        mTvInputCommand = (AutoCompleteTextView) findViewById(R.id.tv_input_command);
+        mTvInputCommand.setHint(SortUtil.getHingString());
+        mTvInputCommand.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                        (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    onClickSearch();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         mTvInputCommand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
