@@ -2,15 +2,11 @@ package com.lgc.memorynote.data;
 
 import android.text.TextUtils;
 
-import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.wordList.Command;
 
-import java.net.SocketImpl;
 import java.util.ArrayList;
-import java.util.IllegalFormatException;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -71,7 +67,7 @@ public class SearchUtil {
         if (TextUtils.isEmpty(search)) return wordList;
         List<Word> searchedList = new ArrayList<>();
 
-        if (search.contains(Command.STRANGE_DEGREE)) {
+        if (search.contains(Command.STRANGE_DEGREE)) {  // 按陌生度过滤
             String sd = search.substring(Command.STRANGE_DEGREE.length()).trim();
             // 赋极值
             int bigger = Integer.MIN_VALUE, smaller = Integer.MAX_VALUE;
@@ -95,12 +91,22 @@ public class SearchUtil {
                     searchedList.add(word);
                 }
             }
-        } else if (search.startsWith(Command.REGEX_SERACH)) {
+        } else if (search.startsWith(Command.REGEX_SERACH)) {  // 正则式搜索
+            int lastId = Command.REGEX_SERACH.length();
+            boolean global = false;
+            int globalId = search.indexOf(Command.GLOBAL);
+            if (globalId >= lastId) {
+                global = true;
+                lastId = globalId + Command.GLOBAL.length();
+            }
             String regex = search.substring(Command.REGEX_SERACH.length()).trim();
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
-                String name = word.getName();
-                if (name != null && name.matches(regex)) {
+                String data;
+                if (global) data = word.getName();
+                else data = word.toString();
+
+                if (data != null && data.matches(regex)) {
                     searchedList.add(word);
                 }
             }
@@ -119,7 +125,8 @@ public class SearchUtil {
             int equalEnd = 0;
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
-                int res = word.containMeaning(search);
+
+                int res = Util.containDegree(word.toString(), search);
                 if (res == 2) {
                     searchedList.add(0, word);
                     equalEnd++;
@@ -131,14 +138,28 @@ public class SearchUtil {
             }
         } else {
             int equalNumber = 0;
+            int lastId = 0;
+            boolean global = false;
+            int globalId = search.indexOf(Command.GLOBAL);
+            if (globalId >= lastId) {
+                global = true;
+                lastId = globalId + Command.GLOBAL.length();
+            }
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
-                String name = word.getName();
-                if (name != null && name.contains(search)) {
-                    if (name.equals(search)) {
+
+                String date;
+                if (global) {
+                    date = word.toString();
+                } else {
+                    date = word.getName();
+                }
+
+                if (date != null && date.contains(search)) {
+                    if (date.equals(search)) {
                         searchedList.add(0, word);
                         equalNumber++;
-                    } else if (name.startsWith(search)) {
+                    } else if (date.startsWith(search)) {
                         searchedList.add(equalNumber, word);
                     } else {
                         searchedList.add(word);

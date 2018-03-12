@@ -14,7 +14,6 @@ import com.lgc.memorynote.data.Word;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * Created by LiuGuicen on 2017/1/5 0005.
@@ -118,10 +117,10 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mView.showSaveFailed(AppConstant.WORD_IS_NULL);
             return;
         }
-        if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(inputName).find()) {
-            mView.showSaveFailed(AppConstant.WORD_FORMAT_ERROR);
-            return;
-        }
+//        if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(inputName).find()) {
+//            mView.showSaveFailed(AppConstant.WORD_FORMAT_ERROR);
+//            return;
+//        }
         if (!inputName.equals(mWord.getName())) {  // 名字发生变动，视为添加
             // 检查添加的名字是否重复，若重复则什么动作都不做
             if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), inputName) != null) {
@@ -155,10 +154,10 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mView.showInvalidName(AppConstant.WORD_IS_NULL);
             return;
         }
-        if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(inputName).find()) {
-            mView.showInvalidName(AppConstant.WORD_FORMAT_ERROR);
-            return;
-        }
+//        if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(inputName).find()) {
+//            mView.showInvalidName(AppConstant.WORD_FORMAT_ERROR);
+//            return;
+//        }
         if (!inputName.equals(mWord.getName())) {  // 名字发生变动
             // 检查添加的名字是否重复
             if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), inputName) != null) {

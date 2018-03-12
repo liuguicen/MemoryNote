@@ -341,4 +341,16 @@ public class Word {
         if (name == null) return false;
         return !Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(name).find();
     }
+
+    @Override
+    public String toString() {
+        // java 8 默认使用StringBuilder拼接字符串了，简化编码
+        return  name +
+                inputMeaning +
+                inputSimilarWords +
+                inputWordGroup +
+                inputRememberWay +
+                strangeDegree +
+                lastRememberTime;
+    }
 }

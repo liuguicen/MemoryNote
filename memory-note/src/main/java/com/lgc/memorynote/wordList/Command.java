@@ -125,6 +125,11 @@ public class Command {
     public static final String STRANGE_DEGREE   = COMMAND_START + "sd";
     public static final int STRANGE_DEGREE_ID   = 19;
 
+    /** 搜索所有数据 */
+    public static final String GLOBAL = "-g";
+    public static final int GLOBAL_ID   = 20;
+
+
     public static final List<String> INPUT_COMMAND_LIST = new ArrayList<String>(){{
         add(REGEX_SERACH);  add(RMB);           add(RST);
         add(OPEN_SETTING);  add(WORD_NUMBER);   add(STRANGE_DEGREE);
@@ -138,6 +143,7 @@ public class Command {
                    + "   " + RMB + " 记录当前的记忆位置\n"
                    + "   " + RST + " 恢复上次记忆位置\n"
                    + "   " + STRANGE_DEGREE  + "陌生度过滤， 比如" + STRANGE_DEGREE +">8" + "\n"
+                   + "   " + GLOBAL + "加载搜索命令后面，搜索单词所有数据"
                    + "   " + TAG_START + " 对单词添加标志，说明它的一些特性，比如词义怪，是个短语、词组等";
 
     /**

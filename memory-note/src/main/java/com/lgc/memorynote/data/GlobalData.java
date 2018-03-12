@@ -245,7 +245,7 @@ public class GlobalData {
 
     public void readRecentCmd() {
         recentCmdList = SpUtil.getRecentCmdList();
-        int start = recentCmdList.size() / 2;
+        int start = recentCmdList.size() / 3;
         for (String oneCmd : Command.INPUT_COMMAND_LIST) {
             if (!recentCmdList.contains(oneCmd)) {
                 recentCmdList.add(start++, oneCmd);

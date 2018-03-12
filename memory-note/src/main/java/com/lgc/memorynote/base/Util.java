@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorRes;
+import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.View;
@@ -182,5 +183,20 @@ public class Util {
             set.add(entry.getValue());
         }
         return set;
+    }
+
+    /**
+     * 不要传空进去，提升性能
+     * @return -1 no
+     *          0 contain
+     *          1 startWith
+     *          2 equal
+     */
+    public static int containDegree(@NonNull String a, @NonNull String b) {
+        if (a == b) return 2;
+        if (a.equals(b)) return 2;
+        if (a.startsWith(b)) return 1;
+        if (a.contains(b)) return 0;
+        return -1;
     }
 }
