@@ -10,7 +10,7 @@
     tools:layout_editor_absoluteY="4dp">
 
     <AutoCompleteTextView
-        android:id="@+id/tv_input_command"
+        android:id="@+id/et_command_frame"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:imeOptions="actionSearch"
@@ -41,10 +41,10 @@
         android:background="@mipmap/search"
         android:gravity="center_vertical"
         app:layout_constraintEnd_toStartOf="@+id/add_word"
-        app:layout_constraintStart_toEndOf="@id/tv_input_command"
+        app:layout_constraintStart_toEndOf="@id/et_command_frame"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+     <TextView
         android:id="@+id/btn_expand_command_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
         android:textColor="@android:color/holo_green_light"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_input_command" />
+        app:layout_constraintTop_toBottomOf="@+id/et_command_frame" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lv_word_list"
@@ -85,6 +85,6 @@
         app:layout_constraintBottom_toTopOf="@id/lv_word_list"
         app:layout_constraintEnd_toStartOf="@+id/btn_expand_command_list"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_input_command"
+        app:layout_constraintTop_toBottomOf="@id/et_command_frame"
         app:layout_goneMarginTop="@dimen/normal_margin" />
 </android.support.constraint.ConstraintLayout>

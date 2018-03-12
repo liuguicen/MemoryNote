@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * the util of SharedPreference
@@ -54,11 +55,27 @@ public class SpUtil {
         return sp.getString(UPLOAD_STATE, "");
     }
 
-//    public static boolean saveRecentCmd(Set<String> cmdSet) {
-//        return sp.edit().putStringSet(CMD_LIST, cmdSet).commit();
-//    }
-//
-//    public static Set<String> getLastCommand() {
-//        return sp.getStringSet(CMD_LIST, new HashSet<String>());
-//    }
+    public static List<String> getRecentCmdList() {
+        String recentS = sp.getString(CMD_LIST, "");
+        String[] split = recentS.split(Pattern.quote(AppConstant.RECENT_CMD_DIVIDER));
+        List<String> recentCmdList = new ArrayList<>();
+        for (String s : split) {
+            s=s.trim();
+            if(!s.isEmpty()) {
+                recentCmdList.add(s);
+            }
+        }
+        return recentCmdList;
+    }
+
+    public static boolean saveRecentCmd(List<String> cmdList) {
+        StringBuilder sb = new StringBuilder();
+        for (String s : cmdList) {
+            s = s.trim();
+            if (!s.isEmpty()) {
+                sb.append(s).append(AppConstant.RECENT_CMD_DIVIDER);
+            }
+        }
+        return sp.edit().putString(CMD_LIST, sb.toString()).commit();
+    }
 }

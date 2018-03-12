@@ -93,7 +93,7 @@ public class Command {
     public static final Map<String, String> UICommandMap = new HashMap<String, String>(){{
             put(_stra, _stra_ui);  put(_last, _last_ui);
 
-            put(_hdw,  _hdw_ui);    put(_hdm, _hdm_ui);   put(_sheng, _sheng_ui);  put(_guai, _guai_ui);
+            put(_hdw,  _hdw_ui);   put(_hdm, _hdm_ui);    put(_sheng, _sheng_ui);  put(_guai, _guai_ui);
 
             put(_dict, _dict_ui);  put(_len , _len_ui);   put(_sn, _sn_ui);        put(_rev, _rev_ui);
 
@@ -108,12 +108,15 @@ public class Command {
     /** 显示单词数量 **/
     public static final String WORD_NUMBER      = COMMAND_START + "number";
     public static final int WORD_NUMBER_ID      = 15;
+
     /** 使用正则式搜索 **/
     public static final String REGEX_SERACH     = COMMAND_START + "re";
     public static final int REGEX_SEARCH_ID     = 16;
+
     /** 记录当前记忆的位置 **/
     public static final String RMB              = COMMAND_START + "rmb";
     public static final int RMB_ID              = 17;
+
     /** 恢复到上次记忆的位置 **/
     public static final String RST              = COMMAND_START + "rst";
     public static final int RST_ID              = 18;
@@ -122,6 +125,10 @@ public class Command {
     public static final String STRANGE_DEGREE   = COMMAND_START + "sd";
     public static final int STRANGE_DEGREE_ID   = 19;
 
+    public static final List<String> INPUT_COMMAND_LIST = new ArrayList<String>(){{
+        add(REGEX_SERACH);  add(RMB);           add(RST);
+        add(OPEN_SETTING);  add(WORD_NUMBER);   add(STRANGE_DEGREE);
+    }};
 
     public static final String TAG_START = Word.TAG_START;
     public static final String commandGuide

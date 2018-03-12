@@ -1,19 +1,13 @@
 package com.lgc.memorynote.wordDetail;
 
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,6 +20,7 @@ import com.lgc.memorynote.base.UIUtil;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.data.AppConstant;
 import com.lgc.memorynote.data.Word;
+import com.lgc.memorynote.wordList.WordListActivity;
 
 import java.util.List;
 
@@ -359,4 +354,11 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        Intent resIntent = new Intent();
+        resIntent.putExtra(WordListActivity.IS_REFRESH_LIST, mPresenter.isRefreshList());
+        setResult(WordListActivity.WORD_DETAIL_ACTIVITY_ONE, resIntent);
+        super.onDestroy();
+    }
 }

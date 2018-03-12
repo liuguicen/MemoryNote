@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,14 +40,20 @@ import cn.bmob.v3.Bmob;
 
 public class WordListActivity extends AppCompatActivity implements WordListContract.View{
 
+    public static final int WORD_DETAIL_ACTIVITY_ONE = 1;
+    public static final String IS_REFRESH_LIST = "is_research";
+
     private RecyclerView mWordListView;
     private WordListAdapter mWordListAdapter;
     private LinearLayoutManager linearLayoutManager;
     private TextView mTvCommandList;
-    private AutoCompleteTextView  mTvInputCommand;
+    private AutoCompleteTextView mTvCommandFrame;
     private WordListPresenter mPresenter;
-    private boolean isNewClick = true;
+    private boolean mIsNewClick = true;
     private ArrayAdapter<String> recentCmdAdapter;
+
+    private GlobalData mGlobalData;
+    boolean isRefreshOnReturn = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +75,22 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
     @Override
     protected void onRestart() {
-        onClickSearch();
-        isNewClick = true;
+        if (isRefreshOnReturn) {
+            onClickSearch();
+        } else {
+            isRefreshOnReturn = true;
+        }
+        mIsNewClick = true;
         super.onRestart();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == WORD_DETAIL_ACTIVITY_ONE) {
+            isRefreshOnReturn = data.getBooleanExtra(IS_REFRESH_LIST, true);
+        }
     }
 
     /**
@@ -122,7 +142,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
             public void onClick(View v) {
                 Intent intent  = WordDetailActivity.getStartIntent(WordListActivity.this);
                 intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, true);
-                String inputName = mTvInputCommand.getText().toString().trim();
+                String inputName = mTvCommandFrame.getText().toString().trim();
                 if (Word.isLegalWordName(inputName) && mWordListAdapter.getItemCount() == 0) { // 单词合法，并且没有找到结果，自动添加
                     intent.putExtra(WordDetailActivity.INTENT_EXTRA_ADD_NAME, inputName);
                 }
@@ -149,7 +169,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
             public void onClick(View v) {
                 if (!Util.RepetitiveEventFilter.isRepetitive(1000)) {
                     onClickSearch();
-                    isNewClick = true;
+                    mIsNewClick = true;
                 } else {
                     Logcat.d("repetitive click");
                 }
@@ -163,9 +183,9 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     }
 
     private void initTvInputCmd() {
-        mTvInputCommand = (AutoCompleteTextView) findViewById(R.id.tv_input_command);
-        mTvInputCommand.setHint(SortUtil.getHingString());
-        mTvInputCommand.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mTvCommandFrame = (AutoCompleteTextView) findViewById(R.id.et_command_frame);
+        mTvCommandFrame.setHint(SortUtil.getHingString());
+        mTvCommandFrame.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH ||
@@ -177,12 +197,15 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
             }
         });
 
-        mTvInputCommand.setOnClickListener(new View.OnClickListener() {
+        mTvCommandFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isNewClick) {
-                    mTvInputCommand.setSelection(0, mTvInputCommand.getText().length());
-                    isNewClick = false;
+                if (mIsNewClick || mTvCommandFrame.getText().toString().trim().isEmpty()) {
+                    mTvCommandFrame.showDropDown();
+                }
+                if (mIsNewClick) {
+                    mTvCommandFrame.setSelection(0, mTvCommandFrame.getText().length());
+                    mIsNewClick = false;
                 }
             }
         });
@@ -190,18 +213,17 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         //创建一个ArrayAdapter，封装数组
         recentCmdAdapter = new ArrayAdapter<String>(this
                 ,android.R.layout.simple_dropdown_item_1line, GlobalData.getInstance().getRecentCmd());
-        mTvInputCommand.setAdapter(recentCmdAdapter);
-        mTvInputCommand.setThreshold(0);
+        mTvCommandFrame.setAdapter(recentCmdAdapter);
+        mTvCommandFrame.setThreshold(0);
     }
 
     private void onClickSearch() {
+        mIsNewClick = true;
         try {
-            String inputCmd = mTvInputCommand.getText().toString();
-            mPresenter.reorderWordList(inputCmd);
-            GlobalData.getInstance().addInputCmd(inputCmd);
+            mPresenter.reorderWordList();
             recentCmdAdapter = new ArrayAdapter<String>(this
                     ,android.R.layout.simple_dropdown_item_1line, GlobalData.getInstance().getRecentCmd());
-            mTvInputCommand.setAdapter(recentCmdAdapter);
+            mTvCommandFrame.setAdapter(recentCmdAdapter);
         } catch (NumberFormatException e) {
             Toast.makeText(this, "输入数字格式错误", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
@@ -209,9 +231,14 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         }
     }
 
+    public @Nullable String getInputCmd() {
+        if (mTvCommandFrame == null) return null;
+        return mTvCommandFrame.getText().toString();
+    }
+
     @Override
     public void clearCommandEt() {
-        mTvInputCommand.setText("");
+        mTvCommandFrame.setText("");
     }
 
     private void initData() {
@@ -242,13 +269,14 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         }
         mWordListView.setAdapter(mWordListAdapter);
         mWordListView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
+        mGlobalData = GlobalData.getInstance();
     }
 
     private void startActivityWordDetail(String wordName) {
         Intent intent = WordDetailActivity.getStartIntent(WordListActivity.this);
         intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, false);
         intent.putExtra(WordDetailActivity.INTENT_EXTRA_WORD_NAME, wordName);
-        startActivity(intent);
+        startActivityForResult(intent, WORD_DETAIL_ACTIVITY_ONE);
     }
 
     @Override
@@ -316,8 +344,8 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
     @Override
     public void showWordNumber() {
-        mTvInputCommand.setText("");
-        mTvInputCommand.setHint("当前单词数 = " + mWordListAdapter.getItemCount());
+        mTvCommandFrame.setText("");
+        mTvCommandFrame.setHint("当前单词数 = " + mWordListAdapter.getItemCount());
     }
 
     @Override
@@ -388,5 +416,11 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                 ds.setColor(getColor(R.color.command_not_choosed));
             }
         }
+    }
+
+    @Override
+    protected void onStop() {
+        mGlobalData.saveRecentCmd();
+        super.onStop();
     }
 }

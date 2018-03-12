@@ -25,7 +25,7 @@ public class GlobalData {
     private static List<Word> mCurWords = new ArrayList<>();
 
     private static GlobalData mInstance = new GlobalData();
-    private static ArrayList<String> recentCmdList;
+    private static List<String> recentCmdList;
 
     private GlobalData() {
         Logcat.e(System.currentTimeMillis());
@@ -218,24 +218,38 @@ public class GlobalData {
         }
     }
 
-    public ArrayList<String> getRecentCmd() {
+    public List<String> getRecentCmd() {
         if(recentCmdList == null) {
-            recentCmdList = new ArrayList<>();
-            recentCmdList.add(Command.RMB);
-            recentCmdList.add(Command.RST);
-            recentCmdList.add(Command.WORD_NUMBER);
-            recentCmdList.add(Command.STRANGE_DEGREE + " >");
-            recentCmdList.add(Command.STRANGE_DEGREE + " <");
-            recentCmdList.add(Command.OPEN_SETTING);
-            recentCmdList.add(Command.REGEX_SERACH + " ");
+            readRecentCmd();
         }
         return recentCmdList;
     }
 
-    public void addInputCmd(String cmd) {
-        if (recentCmdList.size() > AppConstant.RECENT_CMD_NUMBER) {
-            recentCmdList.remove(recentCmdList.size() -1);
+    public void updateInputCmd(String cmd) {
+        if (cmd.trim().isEmpty()) return;
+        int id = recentCmdList.indexOf(cmd); // 先检查是否存在
+
+        if (id < 0) {
+            if (recentCmdList.size() > AppConstant.RECENT_CMD_NUMBER) {
+                recentCmdList.remove(recentCmdList.size() -1);
+            }
+            recentCmdList.add(0, cmd);
+        } else { // 放到最开始位置
+            recentCmdList.add(0, recentCmdList.remove(id));
         }
-        recentCmdList.add(0, cmd);
+    }
+
+    public void saveRecentCmd() {
+        SpUtil.saveRecentCmd(recentCmdList);
+    }
+
+    public void readRecentCmd() {
+        recentCmdList = SpUtil.getRecentCmdList();
+        int start = recentCmdList.size() / 2;
+        for (String oneCmd : Command.INPUT_COMMAND_LIST) {
+            if (!recentCmdList.contains(oneCmd)) {
+                recentCmdList.add(start++, oneCmd);
+            }
+        }
     }
 }

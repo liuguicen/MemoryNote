@@ -85,6 +85,8 @@ public interface WordDetailContract {
         void initAndShowData(Intent intent);
 
         void deleteWord();
+
+        boolean isRefreshList();
     }
 
 }

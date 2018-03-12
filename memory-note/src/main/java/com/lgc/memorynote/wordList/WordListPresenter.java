@@ -1,8 +1,6 @@
 package com.lgc.memorynote.wordList;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
 import android.util.Pair;
 import android.widget.Toast;
 
@@ -29,6 +27,7 @@ public class WordListPresenter implements WordListContract.Presenter {
     private List<String> mChosenCmdList = new ArrayList<>();
     private List<String> mInputCmdList = new ArrayList<>();
     private List<Word> mCurShowWordList = new ArrayList<>();
+    private final GlobalData mGlobalData;
 
     public WordListPresenter(WordListContract.View view) {
         mView = view;
@@ -36,13 +35,14 @@ public class WordListPresenter implements WordListContract.Presenter {
             mContext = (Context)mView;
         }
         mChosenCmdList.add(SortUtil.DEFAULT_SORT_COMMAND);
+        mGlobalData = GlobalData.getInstance();
     }
 
     @Override
     public void start() throws Exception {
         mCurShowWordList = GlobalData.getInstance().getCurWords();
         mView.updateCommandText(Command.commandList, mChosenCmdList);
-        reorderWordList(null);
+        reorderWordList();
     }
 
     @Override
@@ -57,38 +57,40 @@ public class WordListPresenter implements WordListContract.Presenter {
 
     /**
      * 点击搜索，重新组织单词列表,搜索过程是种总的列表复制到新列表中，再对新列表进行排序，过滤
-     * @param search
      */
     @Override
-    public void reorderWordList(@Nullable String search) throws Exception {
-        if (search !=  null)
-            search = search.trim();
-        int lastPostion = -1;
-        if (search != null) {
-            if (search.startsWith(Command.OPEN_SETTING)) {
+    public void reorderWordList() throws Exception {
+        String inputCmd = mView.getInputCmd();
+        if (inputCmd != null) {
+            inputCmd = inputCmd.trim();
+        }
+        int lastPosition = -1;
+        if (inputCmd != null) {
+            mGlobalData.updateInputCmd(inputCmd); // 记录更新
+            if (inputCmd.startsWith(Command.OPEN_SETTING)) {
                 mView.setSettingActivity();
                 mView.clearCommandEt();
                 return;
             }
 
-            if (search.startsWith(Command.WORD_NUMBER)) {
+            if (inputCmd.startsWith(Command.WORD_NUMBER)) {
                 mView.showWordNumber();
                 return;
             }
 
-            if (search.startsWith(Command.RMB)) {
+            if (inputCmd.startsWith(Command.RMB)) {
                 saveCurRememberPosition();
                 return;
             }
 
-            if (search.startsWith(Command.RST)) {
-                search = "";
+            if (inputCmd.startsWith(Command.RST)) {
+                inputCmd = "";
 
                 // get saved date
                 Pair<ArrayList<String>, Integer> pair = SpUtil.getLastRemberState();
 
                 if (!pair.first.isEmpty() && pair.second >= 0) {
-                    lastPostion = pair.second;
+                    lastPosition = pair.second;
                     // remove all cur chosen and add all saved cmd
                     mChosenCmdList.clear();
                     mChosenCmdList.addAll(pair.first);
@@ -100,17 +102,17 @@ public class WordListPresenter implements WordListContract.Presenter {
         mChosenCmdList.removeAll(mInputCmdList);
         mInputCmdList.clear(); //  clear last input cmd list first
 
-        search = InputAnalyzerUtil.analyzeInputCommand(search, mInputCmdList);
+        inputCmd = InputAnalyzerUtil.analyzeInputCommand(inputCmd, mInputCmdList);
         mChosenCmdList.addAll(mInputCmdList); // analyze and add current input cmd list
 
 
-        mCurShowWordList = Command.orderByCommand(search, mChosenCmdList, GlobalData.getInstance().getAllWord());
+        mCurShowWordList = Command.orderByCommand(inputCmd, mChosenCmdList, GlobalData.getInstance().getAllWord());
         setUICommand(mChosenCmdList);
         GlobalData.getInstance().setCurWords(mCurShowWordList);
         mView.refreshWordList(mCurShowWordList);
 
-        if (lastPostion >= 0) {
-            mView.restorePosition(lastPostion);
+        if (lastPosition >= 0) {
+            mView.restorePosition(lastPosition);
         }
     }
 
@@ -139,7 +141,7 @@ public class WordListPresenter implements WordListContract.Presenter {
     public void reduceStrange(int position) {
         Word word = mCurShowWordList.get(position);
         word.setStrangeDegree(word.strangeDegree - 1);
-        GlobalData.getInstance().updateWord(word);
+        mGlobalData.updateWord(word);
     }
 
     @Override

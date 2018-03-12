@@ -3,7 +3,6 @@ package com.lgc.memorynote.wordDetail;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.view.TextureView;
 
 import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.base.UIUtil;
@@ -11,8 +10,6 @@ import com.lgc.memorynote.data.AppConstant;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SearchUtil;
 import com.lgc.memorynote.data.Word;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +26,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     private boolean mIsInEdit = false;
     private Context mContext;
     private Word mWord;
+    private boolean isRefreshList = false;
 
     WordDetailPresenter(WordDetailContract.View wordDetailView) {
         mView = wordDetailView;
@@ -68,6 +66,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
 
     @Override
     public void switchEdit() {
+        isRefreshList = true;
         mIsInEdit = !mIsInEdit;
         if (!mIsInEdit) { // 编辑完成
             saveWordDate();
@@ -278,5 +277,10 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     @Override
     public void deleteWord() {
         GlobalData.getInstance().deleteWord(mWord);
+    }
+
+    @Override
+    public boolean isRefreshList() {
+        return isRefreshList;
     }
 }

@@ -20,5 +20,10 @@ public class AppConstant {
     /**
      * 最近命令的数量
      */
-    public static final int RECENT_CMD_NUMBER = 10;
+    public static final int RECENT_CMD_NUMBER = 16;
+
+    /**
+     * 最近命令的分隔符
+     */
+    public static final String RECENT_CMD_DIVIDER = "%^&%^&^$&";
 }
