@@ -84,12 +84,22 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         super.onRestart();
     }
 
+    private void startActivityWordDetail(String wordName) {
+        Intent intent = WordDetailActivity.getStartIntent(WordListActivity.this);
+        intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, false);
+        intent.putExtra(WordDetailActivity.INTENT_EXTRA_WORD_NAME, wordName);
+        startActivityForResult(intent, WORD_DETAIL_ACTIVITY_ONE);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == WORD_DETAIL_ACTIVITY_ONE) {
-            isRefreshOnReturn = data.getBooleanExtra(IS_REFRESH_LIST, true);
+        if (requestCode == WORD_DETAIL_ACTIVITY_ONE) {
+            if (data != null) {
+                isRefreshOnReturn = data.getBooleanExtra(IS_REFRESH_LIST, true);
+            } else {
+                isRefreshOnReturn = true;
+            }
         }
     }
 
@@ -270,13 +280,6 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         mWordListView.setAdapter(mWordListAdapter);
         mWordListView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
         mGlobalData = GlobalData.getInstance();
-    }
-
-    private void startActivityWordDetail(String wordName) {
-        Intent intent = WordDetailActivity.getStartIntent(WordListActivity.this);
-        intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, false);
-        intent.putExtra(WordDetailActivity.INTENT_EXTRA_WORD_NAME, wordName);
-        startActivityForResult(intent, WORD_DETAIL_ACTIVITY_ONE);
     }
 
     @Override
