@@ -93,13 +93,16 @@ public class SearchUtil {
             }
         } else if (search.startsWith(Command.REGEX_SERACH)) {  // 正则式搜索
             int lastId = Command.REGEX_SERACH.length();
+
             boolean global = false;
             int globalId = search.indexOf(Command.GLOBAL);
             if (globalId >= lastId) {
                 global = true;
                 lastId = globalId + Command.GLOBAL.length();
             }
-            String regex = search.substring(Command.REGEX_SERACH.length()).trim();
+            if (globalId < 0) globalId = search.length();
+
+            String regex = search.substring(Command.REGEX_SERACH.length(), globalId).trim();
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
                 String data;
