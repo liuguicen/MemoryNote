@@ -156,7 +156,7 @@ public class Command {
         resultList.addAll(wordList);
 
         // 第一步，如果是搜索，搜索出满足条件的
-        resultList = SearchUtil.searchWordOrMeaning(search, resultList);
+        resultList = SearchUtil.searchMultiAspects(search, resultList);
 
         // 第二步，进行过滤操作
         for (int i = commandList.size() - 1; i >= 0; i--) {

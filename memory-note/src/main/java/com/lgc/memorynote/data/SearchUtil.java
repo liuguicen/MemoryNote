@@ -56,13 +56,13 @@ public class SearchUtil {
     }
 
     /**
-     * 会搜索所有包含关键字的项，完全匹配的放在最前面
+     * 各种类型的搜索，有点多
      *
      * @param search
      * @param wordList
      * @return
      */
-    public static List<Word> searchWordOrMeaning(String search, List<Word> wordList) throws Exception {
+    public static List<Word> searchMultiAspects(String search, List<Word> wordList) throws Exception {
         // 含有非单词字符，搜索词义
         if (TextUtils.isEmpty(search)) return wordList;
         List<Word> searchedList = new ArrayList<>();

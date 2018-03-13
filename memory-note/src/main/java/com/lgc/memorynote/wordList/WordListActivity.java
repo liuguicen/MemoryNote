@@ -52,7 +52,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     private boolean mIsNewClick = true;
     private ArrayAdapter<String> recentCmdAdapter;
 
-    private GlobalData mGlobalData;
+    private final GlobalData mGlobalData = GlobalData.H.instance;
     boolean isRefreshOnReturn = true;
 
     @Override
@@ -212,7 +212,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
         //创建一个ArrayAdapter，封装数组
         recentCmdAdapter = new ArrayAdapter<String>(this
-                ,android.R.layout.simple_dropdown_item_1line, GlobalData.getInstance().getRecentCmd());
+                ,android.R.layout.simple_dropdown_item_1line, mGlobalData.getRecentCmd());
         mTvCommandFrame.setAdapter(recentCmdAdapter);
         mTvCommandFrame.setThreshold(0);
     }
@@ -222,7 +222,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         try {
             mPresenter.reorderWordList();
             recentCmdAdapter = new ArrayAdapter<String>(this
-                    ,android.R.layout.simple_dropdown_item_1line, GlobalData.getInstance().getRecentCmd());
+                    ,android.R.layout.simple_dropdown_item_1line, mGlobalData.getRecentCmd());
             mTvCommandFrame.setAdapter(recentCmdAdapter);
         } catch (NumberFormatException e) {
             Toast.makeText(this, "输入数字格式错误", Toast.LENGTH_LONG).show();
@@ -269,7 +269,6 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         }
         mWordListView.setAdapter(mWordListAdapter);
         mWordListView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
-        mGlobalData = GlobalData.getInstance();
     }
 
     private void startActivityWordDetail(String wordName) {

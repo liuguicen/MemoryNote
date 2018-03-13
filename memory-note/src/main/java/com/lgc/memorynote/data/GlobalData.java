@@ -24,8 +24,17 @@ public class GlobalData {
     private static List<Word> mAllWords = new ArrayList<>();
     private static List<Word> mCurWords = new ArrayList<>();
 
-    private static GlobalData mInstance = new GlobalData();
     private static List<String> recentCmdList;
+
+    // 静态内部类单例，比较好的用法
+    public static final class H {
+        public static final GlobalData instance = new GlobalData();
+    }
+
+    // 或者使用下面形式，再用getInstance方法访问
+    //    private static class H {
+    //        private static GlobalData instance = new GlobalData();
+    //    }
 
     private GlobalData() {
         Logcat.e(System.currentTimeMillis());
@@ -127,10 +136,7 @@ public class GlobalData {
     }
 
     public static GlobalData getInstance() {
-        if (mInstance == null) {
-            mInstance = new GlobalData();
-        }
-        return mInstance;
+        return H.instance;
     }
 
     public List<Word> getAllWord() {
