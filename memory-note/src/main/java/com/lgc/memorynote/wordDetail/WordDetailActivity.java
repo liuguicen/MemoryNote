@@ -350,15 +350,10 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         if (mPresenter.isInEdit()) {
              mPresenter.switchEdit();
         } else {
+            Intent resIntent = new Intent();
+            resIntent.putExtra(WordListActivity.IS_REFRESH_LIST, mPresenter.isRefreshList());
+            setResult(WordListActivity.WORD_DETAIL_ACTIVITY_ONE, resIntent);
             super.onBackPressed();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        Intent resIntent = new Intent();
-        resIntent.putExtra(WordListActivity.IS_REFRESH_LIST, mPresenter.isRefreshList());
-        setResult(WordListActivity.WORD_DETAIL_ACTIVITY_ONE, resIntent);
-        super.onDestroy();
     }
 }
