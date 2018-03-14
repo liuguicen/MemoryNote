@@ -3,6 +3,7 @@ package com.lgc.memorynote.data;
 import com.google.gson.Gson;
 import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.base.network.NetWorkUtil;
+import com.lgc.memorynote.user.User;
 import com.lgc.memorynote.wordList.Command;
 
 import java.io.IOException;
@@ -25,6 +26,8 @@ public class GlobalData {
     private static List<Word> mCurWords = new ArrayList<>();
 
     private static List<String> recentCmdList;
+    private User mUser;
+    boolean mIsCheckedUser = false;
 
     // 静态内部类单例，比较好的用法
     public static final class H {
@@ -39,12 +42,19 @@ public class GlobalData {
     private GlobalData() {
         Logcat.e(System.currentTimeMillis());
         queryAllWord();
+        mUser = User.getInstance();
+        mUser.setName(SpUtil.getUserName());
+        mUser.setPassword(SpUtil.getUserPassword());
         Logcat.e(System.currentTimeMillis());
+    }
+
+    public static void init() {
+        getInstance();
     }
 
     private void queryAllWord() {
         MyDatabase database = MyDatabase.getInstance();
-        List<String>  jasonList = new ArrayList<>();
+        List<String> jasonList = new ArrayList<>();
         try {
             database.queryAllWord(jasonList);
             Gson gson = new Gson();
@@ -77,6 +87,7 @@ public class GlobalData {
 
     /**
      * 直接转换 word的数据
+     *
      * @param word
      */
     private void convertWordFormat(Word word) {
@@ -225,7 +236,7 @@ public class GlobalData {
     }
 
     public List<String> getRecentCmd() {
-        if(recentCmdList == null) {
+        if (recentCmdList == null) {
             readRecentCmd();
         }
         return recentCmdList;
@@ -237,7 +248,7 @@ public class GlobalData {
 
         if (id < 0) {
             if (recentCmdList.size() > AppConstant.RECENT_CMD_NUMBER) {
-                recentCmdList.remove(recentCmdList.size() -1);
+                recentCmdList.remove(recentCmdList.size() - 1);
             }
             recentCmdList.add(0, cmd);
         } else { // 放到最开始位置
@@ -257,5 +268,17 @@ public class GlobalData {
                 recentCmdList.add(start++, oneCmd);
             }
         }
+    }
+
+    public boolean isCheckedUser() {
+        return mIsCheckedUser;
+    }
+
+    public void setCheckedUser(boolean isChecked) {
+        mIsCheckedUser = isChecked;
+    }
+
+    public User getUser() {
+        return mUser;
     }
 }

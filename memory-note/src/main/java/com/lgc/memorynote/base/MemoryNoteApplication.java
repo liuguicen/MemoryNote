@@ -3,6 +3,8 @@ package com.lgc.memorynote.base;
 import android.app.Application;
 import android.util.Log;
 
+import com.lgc.memorynote.data.GlobalData;
+
 /**
  * 在mainifest中使用android:name=".MemoryNoteApplication"，系统将会创建myapplication替代一般的application
  */
@@ -17,5 +19,6 @@ public class MemoryNoteApplication extends Application {
         super.onCreate();
         Logcat.setTag("Memory Note");
         appContext = this;
+        GlobalData.init();
     }
 }

@@ -50,4 +50,18 @@
         <item name="android:layout_marginStart">20dp</item>
     </style>
 
+    <style name="text_user_name_password">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="setting_user_name_password_not_editable" parent="text_user_name_password">
+    </style>
+
+    <style name="setting_user_name_password_editable" parent="text_user_name_password">
+        <item name="android:editable">false</item>
+        <item name="android:layout_marginStart">@dimen/big_margin</item>
+    </style>
+
 </resources>

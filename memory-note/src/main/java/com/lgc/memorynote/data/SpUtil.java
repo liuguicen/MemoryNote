@@ -22,11 +22,13 @@ import java.util.regex.Pattern;
  */
 
 public class SpUtil {
-    private static String CMD_LIST = "cmd_list";
-    private static String POSITION = "position";
-    private static String USER_SP_NAME = "user";
-    private static String UPLOAD_STATE = "upload state";
-    private static String RECENT_CMD = "recent_cmd";
+    private static final String USER_NAME = "user_name";
+    private static final String USER_PASSWORD = "user_password";
+    private static final String CMD_LIST = "cmd_list";
+    private static final String POSITION = "position";
+    private static final String USER_SP_NAME = "user";
+    private static final String UPLOAD_STATE = "upload state";
+    private static final String RECENT_CMD = "recent_cmd";
     private static SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences(USER_SP_NAME, Context.MODE_PRIVATE);
     ;
 
@@ -77,5 +79,23 @@ public class SpUtil {
             }
         }
         return sp.edit().putString(CMD_LIST, sb.toString()).commit();
+    }
+
+    public static String getUserName() {
+        return sp.getString(USER_NAME, "");
+    }
+
+    public static boolean updateUserName(String userName) {
+        if (userName == null || userName.isEmpty()) return false;
+        return sp.edit().putString(USER_NAME, userName).commit();
+    }
+    
+    public static String getUserPassword() {
+        return sp.getString(USER_PASSWORD, "");
+    }
+
+    public static boolean setUserPassword(String passWord) {
+        if (passWord == null || passWord.isEmpty()) return false;
+        return sp.edit().putString(USER_NAME, passWord).commit();
     }
 }

@@ -30,6 +30,7 @@ import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.Word;
+import com.lgc.memorynote.user.User;
 import com.lgc.memorynote.user.setting.SettingActivity;
 import com.lgc.memorynote.wordDetail.WordDetailActivity;
 
@@ -58,12 +59,26 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!checkUser()) {
+            Toast.makeText(this, "请输入用户名和密码，否则无法使用网络", Toast.LENGTH_LONG).show();
+            startSetting();
+        }
         initApp();
         setContentView(R.layout.activity_word_list);
         mPresenter = new WordListPresenter(this);
 //        test();
         intView();
         initData();
+    }
+
+    private boolean checkUser() {
+        if (mGlobalData.isCheckedUser()) // 每次应用启动只检查一次
+            return true;
+        if (User.checkName(mGlobalData.getUser().getName()) != User.VALID
+            || User.checkPassword(mGlobalData.getUser().getPassword()) != User.VALID) {
+            return false;
+        }
+        return true;
     }
 
     private void initApp() {
@@ -139,6 +154,10 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 //        intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, true);
 //        startActivity(intent);
         Logcat.d("start setting activity");
+        startSetting();
+    }
+
+    private void startSetting() {
         startActivity(new Intent(this, SettingActivity.class));
     }
 
