@@ -281,4 +281,11 @@ public class GlobalData {
     public User getUser() {
         return mUser;
     }
+
+    public boolean saveUserDate() {
+        boolean res;
+        res = SpUtil.saveUserName(mUser.getName());
+        res &= SpUtil.saveUserPassword(mUser.getPassword());
+        return res;
+    }
 }

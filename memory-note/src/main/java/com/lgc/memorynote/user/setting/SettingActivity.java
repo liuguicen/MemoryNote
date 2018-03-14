@@ -2,11 +2,14 @@ package com.lgc.memorynote.user.setting;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +22,7 @@ import com.lgc.memorynote.base.network.NetWorkUtil;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SpUtil;
 import com.lgc.memorynote.data.Word;
+import com.lgc.memorynote.user.User;
 import com.lgc.memorynote.wordList.Command;
 
 import java.util.List;
@@ -41,14 +45,25 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private UpLoadTask mUpLoadTask;
     private GlobalData mGlobalData;
     private TextView mTvUploadState;
+    private EditText mEtUserName;
+    private EditText mEtPassword;
+    private User mUser;
+    private int mLastInputType;
+    private boolean mIsInEdit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         mGlobalData = GlobalData.getInstance();
+        mUser = mGlobalData.getUser();
+
+        initUser();
+
         TextView tvAppGuide = ((TextView) findViewById(R.id.tv_app_guide));
         mTvUploadState = ((TextView)findViewById(R.id.tv_upload_result));
+        findViewById(R.id.setting_modify_name_password).setOnClickListener(this);
+        findViewById(R.id.setting_verify_modify).setOnClickListener(this);
         String lastUpladMsg = SpUtil.getUploadState();
         if (lastUpladMsg.isEmpty()) {
             lastUpladMsg = "未上传过";
@@ -72,6 +87,18 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         findViewById(R.id.btn_upload_data).setOnClickListener(this);
         Logcat.e("Setting activitty init success");
     }
+
+    private void initUser() {
+        mEtUserName = ((EditText) findViewById(R.id.setting_user_name_input));
+        mEtPassword = ((EditText) findViewById(R.id.setting_password_input));
+        mLastInputType = mEtUserName.getInputType();
+        mEtUserName.setText(mUser.getName());
+        mEtPassword.setText(mUser.getPassword());
+    }
+
+
+
+
 
     private void cancelUploadData() {
         if (mUpLoadTask != null) {
@@ -99,6 +126,49 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 });
                 break;
+            case R.id.setting_modify_name_password:
+                if (!mIsInEdit) {
+                    mIsInEdit = true;
+                    switchTvEditStyle(mEtUserName, mIsInEdit);
+                    switchTvEditStyle(mEtPassword, mIsInEdit);
+                }
+                break;
+            case R.id.setting_verify_modify:
+                if (mIsInEdit) {
+                    mIsInEdit = false;
+                    String userName = mEtUserName.getText().toString();
+                    String password = mEtPassword.getText().toString();
+                    switchTvEditStyle(mEtUserName, mIsInEdit);
+                    switchTvEditStyle(mEtPassword, mIsInEdit);
+                    if (User.checkName(userName) != User.VALID || User.checkPassword(password) != User.VALID) {
+
+                        return;
+                    }
+                    mUser.setName(userName);
+                    mUser.setPassword(password);
+                    boolean res = mGlobalData.saveUserDate();
+                    if (res) {
+                        Util.T(this, "保存成功");
+                    } else {
+                        Util.T(this, "保存失败");
+                    }
+                }
+                break;
+        }
+    }
+
+    private void switchTvEditStyle(TextView tv, boolean isInEdit) {
+        if(isInEdit) {
+            tv.setInputType(mLastInputType);
+        } else {
+            tv.setInputType(InputType.TYPE_NULL);
+            tv.setSingleLine(false);
+        }
+        if (isInEdit) {
+            tv.setBackground(((Drawable) tv.getTag()));
+        } else {
+            tv.setBackground(null);
+            tv.setHint("");
         }
     }
 

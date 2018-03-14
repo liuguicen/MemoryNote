@@ -97,7 +97,6 @@ public class Util {
         Toast.makeText(context, s.toString(), Toast.LENGTH_LONG).show();
     }
 
-
     /**
      * Created by Administrator on 2016/5/8.
      */

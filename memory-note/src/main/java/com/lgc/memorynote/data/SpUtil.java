@@ -34,6 +34,7 @@ public class SpUtil {
 
     /**
      * save last remember date, include the cmd list and the position of the word
+     *
      * @return if remember success
      */
     public static boolean saveCurRememberPosition(List<String> cmdList, int position) {
@@ -62,8 +63,8 @@ public class SpUtil {
         String[] split = recentS.split(Pattern.quote(AppConstant.RECENT_CMD_DIVIDER));
         List<String> recentCmdList = new ArrayList<>();
         for (String s : split) {
-            s=s.trim();
-            if(!s.isEmpty()) {
+            s = s.trim();
+            if (!s.isEmpty()) {
                 recentCmdList.add(s);
             }
         }
@@ -85,16 +86,24 @@ public class SpUtil {
         return sp.getString(USER_NAME, "");
     }
 
+    public static boolean saveUserName(String userName) {
+        return updateUserName(userName);
+    }
+
+    public static boolean saveUserPassword(String password) {
+        return updateUserPassword(password);
+    }
+
     public static boolean updateUserName(String userName) {
         if (userName == null || userName.isEmpty()) return false;
         return sp.edit().putString(USER_NAME, userName).commit();
     }
-    
+
     public static String getUserPassword() {
         return sp.getString(USER_PASSWORD, "");
     }
 
-    public static boolean setUserPassword(String passWord) {
+    public static boolean updateUserPassword(String passWord) {
         if (passWord == null || passWord.isEmpty()) return false;
         return sp.edit().putString(USER_NAME, passWord).commit();
     }
