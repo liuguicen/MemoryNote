@@ -73,5 +73,7 @@ public class WordListContract {
         void reduceStrange(int position);
 
         List<String> getChoseCommand();
+
+        boolean checkUser();
     }
 }

@@ -8,6 +8,7 @@ import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SpUtil;
 import com.lgc.memorynote.data.Word;
+import com.lgc.memorynote.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,5 +162,17 @@ public class WordListPresenter implements WordListContract.Presenter {
         }
         mView.hideMeaning(isHideMeaning);
         mView.hideWord(isHideWord);
+    }
+
+
+    @Override
+    public boolean checkUser() {
+        if (mGlobalData.isCheckedUser()) // 每次应用启动只检查一次
+            return true;
+        if (User.checkName(mGlobalData.getUser().getName()) != User.VALID
+                || User.checkPassword(mGlobalData.getUser().getPassword()) != User.VALID) {
+            return false;
+        }
+        return true;
     }
 }

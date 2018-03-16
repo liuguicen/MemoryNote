@@ -10,17 +10,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import  static  com.lgc.memorynote.data.Word.WordMeaning;
+
+import static com.lgc.memorynote.data.Word.WordMeaning;
+
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
+    class M {
+        String name;
+
+        M(String name) {
+            this.name = name;
+        }
+
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
     @Test
     public void addition_isCorrect() throws Exception {
 //        testWordInput();
-        testAnalyzeSimilarWord();
+//        testAnalyzeSimilarWord();
+        M m = new M("NameA") {{
+            String innerString = "nameC";
+            setName(innerString);
+        }};
+        System.out.println(m.name);
+
 //        testInputWordTag();
 //        textInputNoTagMeaning();
 //        textInputMeanings(new Word());
@@ -69,7 +90,7 @@ public class ExampleUnitTest {
     }
 
     private void testAnalyzeSimilarWord() {
-        String similarWord =  "sdfsd word id good v 哄哄的东方盛世房东发的\n" +
+        String similarWord = "sdfsd word id good v 哄哄的东方盛世房东发的\n" +
                 "hahaha v&n 双方双方双方爽肤水\n" +
                 "third meaning adj.第三个";
         List<Word.SimilarWord> similarWorList = new ArrayList<>();
@@ -97,7 +118,7 @@ public class ExampleUnitTest {
         String one = "@祥光 分 ";
 //        Matcher tagMather = Pattern.compile("%@([^@]|[\\w])+%u").matcher(one);
         Matcher tagMather = Pattern.compile("@.*?\\s").matcher(one);
-        while(tagMather.find()) {
+        while (tagMather.find()) {
             System.out.println(tagMather.group());
         }
     }

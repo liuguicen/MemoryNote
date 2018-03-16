@@ -30,14 +30,11 @@ import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.Word;
-import com.lgc.memorynote.user.User;
 import com.lgc.memorynote.user.setting.SettingActivity;
 import com.lgc.memorynote.wordDetail.WordDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import cn.bmob.v3.Bmob;
 
 public class WordListActivity extends AppCompatActivity implements WordListContract.View{
 
@@ -59,32 +56,22 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!checkUser()) {
-            Toast.makeText(this, "请输入用户名和密码，否则无法使用网络", Toast.LENGTH_LONG).show();
-            startSetting();
-        }
+        mPresenter = new WordListPresenter(this);
         initApp();
         setContentView(R.layout.activity_word_list);
-        mPresenter = new WordListPresenter(this);
 //        test();
+        bindView();
         intView();
         initData();
     }
 
-    private boolean checkUser() {
-        if (mGlobalData.isCheckedUser()) // 每次应用启动只检查一次
-            return true;
-        if (User.checkName(mGlobalData.getUser().getName()) != User.VALID
-            || User.checkPassword(mGlobalData.getUser().getPassword()) != User.VALID) {
-            return false;
-        }
-        return true;
-    }
-
     private void initApp() {
         permission();
-        Bmob.initialize(this, "63ab0dfdd965aa92efbfce03fd10d082");//再是网络初始化
         startBackgroundService();
+        if (!mPresenter.checkUser()) {
+            Toast.makeText(this, "请输入用户名和密码，否则无法使用网络", Toast.LENGTH_LONG).show();
+            startSetting();
+        }
         Log.e("------------", "init: 应用初始化成功");
     }
 
@@ -97,6 +84,13 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         }
         mIsNewClick = true;
         super.onRestart();
+    }
+
+
+    @Override
+    protected void onStop() {
+        mGlobalData.saveRecentCmd();
+        super.onStop();
     }
 
     private void startActivityWordDetail(String wordName) {
@@ -118,37 +112,6 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         }
     }
 
-    /**
-     * 启动后台服务，
-     * <p>1.在后台发送用户使用信息
-     */
-    private static void startBackgroundService() {
-        Intent intent = new Intent("initDate");
-        intent.setAction("a.memorynote.common.appInfo.AppIntentService");
-        MemoryNoteApplication.appContext.startService(intent);
-    }
-
-    //android 6.0权限请求
-    String[] mPermissionList = new String[]{
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.INTERNET,
-            Manifest.permission.ACCESS_NETWORK_STATE,
-            Manifest.permission.ACCESS_WIFI_STATE
-    };
-
-    private void permission() {
-        //权限请求
-        PackageManager pm = getPackageManager();
-        boolean permission = (PackageManager.PERMISSION_GRANTED ==
-                pm.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, getPackageName()));
-        if (!permission) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(mPermissionList, 100);
-            }
-        }
-    }
-
     private void test() {
 //        Intent intent  = WordDetailActivity.getStartIntent(WordListActivity.this);
 //        intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, true);
@@ -161,11 +124,16 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         startActivity(new Intent(this, SettingActivity.class));
     }
 
+    private void bindView() {
+        mTvCommandList = (TextView)findViewById(R.id.tv_command);
+        mTvCommandFrame = (AutoCompleteTextView) findViewById(R.id.et_command_frame);
+        mWordListView = (RecyclerView) findViewById(R.id.lv_word_list);
+    }
+
     private void intView() {
         // base view widget
         initTvInputCmd();
 
-        mTvCommandList = (TextView)findViewById(R.id.tv_command);
         findViewById(R.id.add_word).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,13 +174,11 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         });
 
         // about recyclerView
-        mWordListView = (RecyclerView) findViewById(R.id.lv_word_list);
         linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false);
         mWordListView.setLayoutManager(linearLayoutManager);
     }
 
     private void initTvInputCmd() {
-        mTvCommandFrame = (AutoCompleteTextView) findViewById(R.id.et_command_frame);
         mTvCommandFrame.setHint(SortUtil.getHingString());
         mTvCommandFrame.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -439,9 +405,35 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         }
     }
 
-    @Override
-    protected void onStop() {
-        mGlobalData.saveRecentCmd();
-        super.onStop();
+    /**
+     * 启动后台服务，
+     * <p>1.在后台发送用户使用信息
+     */
+    private static void startBackgroundService() {
+        Intent intent = new Intent("initDate");
+        intent.setAction("a.memorynote.common.appInfo.AppIntentService");
+        MemoryNoteApplication.appContext.startService(intent);
+    }
+
+
+    //android 6.0权限请求
+    String[] mPermissionList = new String[]{
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_NETWORK_STATE,
+            Manifest.permission.ACCESS_WIFI_STATE
+    };
+
+    private void permission() {
+        //权限请求
+        PackageManager pm = getPackageManager();
+        boolean permission = (PackageManager.PERMISSION_GRANTED ==
+                pm.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, getPackageName()));
+        if (!permission) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(mPermissionList, 100);
+            }
+        }
     }
 }
