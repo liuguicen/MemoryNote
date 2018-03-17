@@ -132,7 +132,7 @@ public class UIUtil {
 
             String ra = pre + pair.second;
             if (!inputRememberWay.contains(ra)) {
-                sb.append(ra);
+                sb.append(ra + "\n");
             }
         }
         return sb.toString();
