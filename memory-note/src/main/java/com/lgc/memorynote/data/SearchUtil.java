@@ -1,7 +1,10 @@
 package com.lgc.memorynote.data;
 
 import android.text.TextUtils;
+import android.util.Pair;
 
+import com.lgc.memorynote.base.Logcat;
+import com.lgc.memorynote.base.UIUtil;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.wordList.Command;
 
@@ -135,7 +138,7 @@ public class SearchUtil {
                     equalEnd++;
                 } else if (res == 1) {
                     searchedList.add(equalEnd, word);
-                } else if (res == 0){
+                } else if (res == 0) {
                     searchedList.add(word);
                 }
             }
@@ -215,13 +218,34 @@ public class SearchUtil {
     /**
      * 如果该单词的相似单词列表包含了这个单词，就将整个词组列表添加进来
      */
-    public static Set<Word.SimilarWord> searchAllGroups(List<Word> wordList, String name) {
+    public static Set<Word.SimilarWord> searchAllGroups(List<Word> wordList, Word srcWord) {
         Map<String, Word.SimilarWord> resultGroupMap = new LinkedHashMap<>();
-        for (Word word : wordList) {
-            addSimilarList(name, resultGroupMap, word.getGroupList(), word);
+
+        // 查找词根词缀的词组
+        int wordType = WordUtil.getWordType(srcWord);
+        if (wordType == Word.ROOT || wordType == Word.PREFIX || wordType == Word.SUFFIX) {
+            List<String> rootAffixList;
+            rootAffixList = UIUtil.getRootAffixList(srcWord.getName());
+
+            for (String one : rootAffixList) {
+                for (Word word : wordList) {
+                    if (word.getName().contains(one)) {
+                        // convert word to similar word and use wordMeaning which be replace "\n" to " " to create anotation
+                        Word.SimilarWord selfSimilar = new Word.SimilarWord();
+                        selfSimilar.setName(word.getName());
+                        selfSimilar.setAnotation(word.getInputMeaning().replace("\n", " "));
+                        resultGroupMap.put(selfSimilar.getName(), selfSimilar);
+                    }
+                }
+            }
+        } else {
+            String name = srcWord.getName();
+            for (Word word : wordList) {
+                addSimilarList(name, resultGroupMap, word.getGroupList(), word);
+            }
         }
 
-        resultGroupMap.remove(name);
+        resultGroupMap.remove(srcWord.getName());
         return Util.map2set(resultGroupMap);
     }
 
@@ -232,7 +256,7 @@ public class SearchUtil {
         for (Word.SimilarWord similarWord : srcSimilarList) {
             // 如果该单词的相似单词列表包含了这个单词，就将整个相似列表添加进来
             if (TextUtils.equals(similarWord.getName(), srcName)) {
-                for (int j= 0; j< srcSimilarList.size(); j ++) {
+                for (int j = 0; j < srcSimilarList.size(); j++) {
                     Word.SimilarWord addSimilar = srcSimilarList.get(j);
                     resultSimilarMap.put(addSimilar.getName(), addSimilar);
                 }
@@ -248,5 +272,24 @@ public class SearchUtil {
                 return;
             }
         }
+    }
+
+    public static ArrayList<Pair<Integer, String>> searchRootAffix(List<Word> allWord, String name) {
+        ArrayList<Pair<Integer, String>> matchList = new ArrayList<>();
+        for (Word word : allWord) {
+            int wordType = WordUtil.getWordType(word);
+            if (wordType == Word.ROOT || wordType == Word.PREFIX || wordType == Word.SUFFIX) {
+
+                List<String> rootAffixList = UIUtil.getRootAffixList(word.getName());
+                for (String oneRA : rootAffixList) {
+                    if ( (wordType == Word.ROOT && name.contains(oneRA))
+                        || (wordType == Word.PREFIX && name.startsWith(oneRA))
+                        || (wordType == Word.SUFFIX && name.endsWith(oneRA)) ){
+                        matchList.add(new Pair<>(wordType, oneRA));
+                    }
+                }
+            }
+        }
+        return matchList;
     }
 }

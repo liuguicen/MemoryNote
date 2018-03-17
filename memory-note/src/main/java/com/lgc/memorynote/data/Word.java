@@ -27,6 +27,16 @@ public class Word {
     public static final String TAG_START = "@";
     public static String NOT_NAME_FORMAT_REGEX = "[^a-zA-z\\-' ]";
 
+    public static String TAG_ROOT      = TAG_START + "词根";
+    public static String TAG_PREFFIX   = TAG_START + "前缀";
+    public static String TAG_SUFFIX    = TAG_START + "后缀";
+
+    public static final int NORMAL = 0;
+    public static final int ROOT   = 1;
+    public static final int PREFIX = 2;
+    public static final int SUFFIX = 3;
+    public static final int OTHER  = 4;
+
 
     public String name;
     public List<WordMeaning> meaningList = new ArrayList<>();

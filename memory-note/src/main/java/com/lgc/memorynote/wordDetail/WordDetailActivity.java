@@ -51,32 +51,31 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_detail);
         mPresenter = new WordDetailPresenter(this);
+        bindView();
         initView();
         mPresenter.initAndShowData(getIntent()); // 要在View初始化之后调用
     }
 
-    private void initView() {
+    private void bindView() {
         mTvWordName          = (EditText) findViewById(R.id.et_word_detail_name);
-        mTvWordName.setOnLongClickListener(this);
-
         mTvWordMeaning       = (EditText) findViewById(R.id.et_word_detail_meaning);
-        mTvWordMeaning.setOnLongClickListener(this);
-        mTvWordMeaning.setOnClickListener(this);
-
         mTvSimilarWord       = (EditText) findViewById(R.id.et_similar_word);
-        mTvSimilarWord.setOnLongClickListener(this);
-
         mtvWordGroup         = (EditText) findViewById(R.id.et_word_detail_group);
-        mtvWordGroup.setOnLongClickListener(this);
-
         mTvRememberWay       = (EditText) findViewById(R.id.et_word_remember_way);
-        mTvRememberWay.setOnLongClickListener(this);
-
         mTvStrangeDegree     = (TextView) findViewById(R.id.value_strange_degree);
         mTvLastRememberTime  = (TextView) findViewById(R.id.last_remember_time);
         mBtnEdit             = (TextView) findViewById(R.id.btn_word_detail_edit);
-
         mDeleteView          = (TextView) findViewById(R.id.word_detail_delete);
+    }
+
+    private void initView() {
+        mTvWordName.setOnLongClickListener(this);
+        mTvWordMeaning.setOnLongClickListener(this);
+        mTvWordMeaning.setOnClickListener(this);
+        mTvSimilarWord.setOnLongClickListener(this);
+        mtvWordGroup.setOnLongClickListener(this);
+        mTvRememberWay.setOnLongClickListener(this);
+
         mTvWordName.setTag(mTvWordName.getBackground());
         mTvWordMeaning.setTag(mTvWordName.getBackground());
         lastInputType = mTvWordMeaning.getInputType();
@@ -89,6 +88,32 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         findViewById(R.id.reduce_strange_degree).setOnClickListener(this);
         findViewById(R.id.btn_sync_similar).setOnClickListener(this);
         findViewById(R.id.btn_sync_group).setOnClickListener(this);
+        findViewById(R.id.btn_sync_root_affix).setOnClickListener(this);
+    }
+
+    @Override
+    public void setInputAssistant() {
+        final  String  CIGEN = "cigen", QIANZUI = "qianzui", HOUZUI = "houzui", DIPIN = "dipin";
+        String type = DIPIN;
+        switch (type) {
+            case CIGEN:
+                mTvWordName.setText("--");
+                mTvWordName.setSelection("-".length());
+                mTvWordMeaning.setText("@词根 =");
+                break;
+            case QIANZUI:
+                mTvWordName.setText("-");
+                mTvWordMeaning.setText("@前缀 =");
+                break;
+            case HOUZUI:
+                mTvWordName.setText("-");
+                mTvWordMeaning.setText("@后缀 =");
+                break;
+            case DIPIN:
+                mTvWordMeaning.setText("@低 =");
+                break;
+        }
+        
     }
 
     @Override
@@ -114,6 +139,9 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
                 break;
             case R.id.btn_sync_group:
                 mPresenter.syncWordGroup();
+                break;
+            case R.id.btn_sync_root_affix:
+                mPresenter.syncRootAffix();
                 break;
 
         }
@@ -338,6 +366,11 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
                 return;
         }
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showRememberWay(String rememberWay) {
+        mTvRememberWay.setText(rememberWay);
     }
 
     public static Intent getStartIntent(Context context) {

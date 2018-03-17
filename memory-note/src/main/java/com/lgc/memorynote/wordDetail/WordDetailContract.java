@@ -50,6 +50,11 @@ public interface WordDetailContract {
 
         void showAnalyzeFailed(int resultCode);
 
+        void showRememberWay(String rememberWay);
+
+        /** 新增某种类型的单词时辅助填写内容 **/
+        void setInputAssistant();
+
     }
 
     interface Presenter extends BasePresenter {
@@ -75,6 +80,8 @@ public interface WordDetailContract {
 
         void syncWordGroup();
 
+        void syncRootAffix();
+
         /**
          * @return 加入的单词是否是有效单词
          */
@@ -87,6 +94,6 @@ public interface WordDetailContract {
         void deleteWord();
 
         boolean isRefreshList();
-    }
 
+    }
 }

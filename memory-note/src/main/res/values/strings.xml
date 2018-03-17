@@ -4,6 +4,7 @@
     <string name="word_meaning">词义</string>
     <string name="similar_form_word">近似词</string>
     <string name="remember_way">记忆法</string>
+    <string name="word_root_affix">词根词缀</string>
     <string name="strange_degree">不熟悉度</string>
     <string name="last_remember_time">上次记忆时间</string>
     <string name="edit">编辑</string>
@@ -22,4 +23,7 @@
     <string name="upload_date">上传数据</string>
     <string name="refresh_date">更新数据</string>
     <string name="upload_data">上传单词数据</string>
+    <string name="word_root">词根：</string>
+    <string name="word_prefix">前缀：</string>
+    <string name="word_suffix">后缀：</string>
 </resources>

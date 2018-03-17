@@ -3,6 +3,7 @@ package com.lgc.memorynote.wordDetail;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Pair;
 
 import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.base.UIUtil;
@@ -10,6 +11,7 @@ import com.lgc.memorynote.data.AppConstant;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SearchUtil;
 import com.lgc.memorynote.data.Word;
+import com.lgc.memorynote.data.WordUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             if (!mIsInEdit) {
                 switchEdit();
             }
+            mView.setInputAssistant();
             String recevName = intent.getStringExtra(WordDetailActivity.INTENT_EXTRA_ADD_NAME);
             if (recevName != null) {
                 mWord.setName(recevName);
@@ -199,8 +202,21 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     public void syncWordGroup() {
         String groupString = syncChildWord(
                 mView.getInputWordGroup(),
-                SearchUtil.searchAllGroups(GlobalData.getInstance().getAllWord(), mWord.getName()));
+                SearchUtil.searchAllGroups(GlobalData.getInstance().getAllWord(), mWord));
         mView.showInputWordGroup(groupString);
+    }
+
+    @Override
+    public void syncRootAffix() {
+        // 查找词根词缀的词组
+        ArrayList<Pair<Integer, String>> rootAffixList  = SearchUtil.searchRootAffix(
+                GlobalData.getInstance().getAllWord(), mWord.getName());
+
+        if (!rootAffixList.isEmpty() && !mIsInEdit) {
+            switchEdit();
+        }
+        String rememberWay = UIUtil.joinRememberWay(mView.getInputRememberWay(), rootAffixList);
+        mView.showRememberWay(rememberWay);
     }
 
     private String syncChildWord(String inputChildWord, Set<Word.SimilarWord> searchWordList) {

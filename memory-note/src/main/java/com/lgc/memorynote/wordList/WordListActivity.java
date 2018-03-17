@@ -68,10 +68,10 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     private void initApp() {
         permission();
         startBackgroundService();
-        if (!mPresenter.checkUser()) {
-            Toast.makeText(this, "请输入用户名和密码，否则无法使用网络", Toast.LENGTH_LONG).show();
-            startSetting();
-        }
+//        if (!mPresenter.checkUser()) {
+//            Toast.makeText(this, "请输入用户名和密码，否则无法使用网络", Toast.LENGTH_LONG).show();
+//            startSetting();
+//        }
         Log.e("------------", "init: 应用初始化成功");
     }
 

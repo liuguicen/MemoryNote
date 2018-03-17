@@ -3,11 +3,14 @@ package com.lgc.memorynote.base;
 import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Pair;
 import android.view.TextureView;
 import android.widget.TextView;
 
+import com.lgc.memorynote.R;
 import com.lgc.memorynote.data.Word;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -98,5 +101,40 @@ public class UIUtil {
             inputSimilarWords = inputSimilarWords + "\n";
         }
         return inputSimilarWords + addSimilar;
+    }
+
+    public static List<String> getRootAffixList(String name) {
+        String[] split = name.split("-");
+        ArrayList<String> rootList = new ArrayList<>();
+        for (String s : split) {
+            if (!s.trim().isEmpty()) {
+                rootList.add(s);
+            }
+        }
+        return rootList;
+    }
+
+    public static String joinRememberWay(String inputRememberWay, ArrayList<Pair<Integer, String>> rootAffixList) {
+        StringBuilder sb = new StringBuilder(inputRememberWay);
+        for (Pair<Integer, String> pair : rootAffixList) {
+            String pre = "";
+            switch (pair.first) {
+                case Word.ROOT:
+                    pre = (String) MemoryNoteApplication.appContext.getText(R.string.word_root);
+                    break;
+                case Word.PREFIX:
+                    pre = (String) MemoryNoteApplication.appContext.getText(R.string.word_prefix);
+                    break;
+                case Word.SUFFIX:
+                    pre = (String) MemoryNoteApplication.appContext.getText(R.string.word_suffix);
+                    break;
+            }
+
+            String ra = pre + pair.second;
+            if (!inputRememberWay.contains(ra)) {
+                sb.append(ra);
+            }
+        }
+        return sb.toString();
     }
 }
