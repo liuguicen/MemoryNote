@@ -50,9 +50,16 @@ public class UIUtil {
                     sb.append(divider);
             }
         }
-
-        // 使用Spannable
         String meaningString = sb.toString();
+        showMeaningString(tv, meaningString);
+    }
+
+    public static void showMeaningString(TextView tv, String meaningString, String divider) {
+        showMeaningString(tv, meaningString.replace("\n", divider));
+    }
+
+    public static void showMeaningString(TextView tv, String meaningString) {
+        // 使用Spannable
         SpannableString ss = new SpannableString(meaningString);
         Matcher matcher = Pattern.compile("@.+?\\s").matcher(meaningString);
         while (matcher.find()) {

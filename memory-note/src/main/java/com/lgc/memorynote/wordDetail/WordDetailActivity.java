@@ -246,7 +246,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     @Override
     public void showWordMeaning(Word word) {
-        UIUtil.showMeaningList(mTvWordMeaning, word, "\n");
+        UIUtil.showMeaningString(mTvWordMeaning, word.getInputMeaning());
     }
 
 

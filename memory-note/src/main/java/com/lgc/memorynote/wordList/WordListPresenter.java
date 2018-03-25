@@ -25,7 +25,7 @@ public class WordListPresenter implements WordListContract.Presenter {
     private final WordListContract.View mView;
     private Context mContext;
 
-    private List<String> mChosenCmdList = new ArrayList<>();
+    private List<String> mCmdList = new ArrayList<>();
     private List<String> mInputCmdList = new ArrayList<>();
     private List<Word> mCurShowWordList = new ArrayList<>();
     private final GlobalData mGlobalData;
@@ -35,32 +35,32 @@ public class WordListPresenter implements WordListContract.Presenter {
         if (mView instanceof Context) {
             mContext = (Context)mView;
         }
-        mChosenCmdList.add(SortUtil.DEFAULT_SORT_COMMAND);
+        mCmdList.add(SortUtil.DEFAULT_SORT_COMMAND);
         mGlobalData = GlobalData.getInstance();
     }
 
     @Override
     public void start() throws Exception {
-        mCurShowWordList = GlobalData.getInstance().getCurWords();
-        mView.updateCommandText(Command.commandList, mChosenCmdList);
-        reorderWordList();
+        mCurShowWordList = GlobalData.getInstance().getShowWords();
+        mView.updateCommandText(Command.commandList, mCmdList);
+        search();
     }
 
     @Override
     public void switchOneCommand(String command) {
-        if (!mChosenCmdList.contains(command)) {
-            mChosenCmdList.add(command);
+        if (!mCmdList.contains(command)) {
+            mCmdList.add(command);
         } else {
-            mChosenCmdList.remove(command);
+            mCmdList.remove(command);
         }
-        mView.updateCommandText(Command.commandList, mChosenCmdList);
+        mView.updateCommandText(Command.commandList, mCmdList);
     }
 
     /**
      * 点击搜索，重新组织单词列表,搜索过程是种总的列表复制到新列表中，再对新列表进行排序，过滤
      */
     @Override
-    public void reorderWordList() throws Exception {
+    public void search() throws Exception {
         String inputCmd = mView.getInputCmd();
         if (inputCmd != null) {
             inputCmd = inputCmd.trim();
@@ -93,22 +93,22 @@ public class WordListPresenter implements WordListContract.Presenter {
                 if (!pair.first.isEmpty() && pair.second >= 0) {
                     lastPosition = pair.second;
                     // remove all cur chosen and add all saved cmd
-                    mChosenCmdList.clear();
-                    mChosenCmdList.addAll(pair.first);
-                    mView.updateCommandText(Command.commandList, mChosenCmdList);
+                    mCmdList.clear();
+                    mCmdList.addAll(pair.first);
+                    mView.updateCommandText(Command.commandList, mCmdList);
                 }
             }
         }
 
-        mChosenCmdList.removeAll(mInputCmdList);
+        mCmdList.removeAll(mInputCmdList);
         mInputCmdList.clear(); //  clear last input cmd list first
 
         inputCmd = InputAnalyzerUtil.analyzeInputCommand(inputCmd, mInputCmdList);
-        mChosenCmdList.addAll(mInputCmdList); // analyze and add current input cmd list
+        mCmdList.addAll(mInputCmdList); // analyze and add current input cmd list
 
 
-        mCurShowWordList = Command.orderByCommand(inputCmd, mChosenCmdList, mGlobalData.getCurWords());
-        setUICommand(mChosenCmdList);
+        mCurShowWordList = Command.orderByCommand(inputCmd, mCmdList, mGlobalData.getAllWord());
+        setUICommand(mCmdList);
         GlobalData.getInstance().setCurWords(mCurShowWordList);
         mView.refreshWordList(mCurShowWordList);
 
@@ -118,7 +118,7 @@ public class WordListPresenter implements WordListContract.Presenter {
     }
 
     private void saveCurRememberPosition() {
-        boolean res = SpUtil.saveCurRememberPosition(mChosenCmdList, mView.getListPosition());
+        boolean res = SpUtil.saveCurRememberPosition(mCmdList, mView.getListPosition());
         if (res) {
             Toast.makeText(mContext, "保存记录位置成功", Toast.LENGTH_LONG).show();
         } else {
@@ -147,7 +147,7 @@ public class WordListPresenter implements WordListContract.Presenter {
 
     @Override
     public List<String> getChoseCommand() {
-        return mChosenCmdList;
+        return mCmdList;
     }
 
     public void setUICommand(List<String> UICommand) {

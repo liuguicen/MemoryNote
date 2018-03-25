@@ -215,7 +215,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     private void onClickSearch() {
         mIsNewClick = true;
         try {
-            mPresenter.reorderWordList();
+            mPresenter.search();
             recentCmdAdapter = new ArrayAdapter<String>(this
                     ,android.R.layout.simple_dropdown_item_1line, mGlobalData.getRecentCmd());
             mTvCommandFrame.setAdapter(recentCmdAdapter);

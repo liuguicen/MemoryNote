@@ -23,7 +23,7 @@ import cn.bmob.v3.exception.BmobException;
 public class GlobalData {
     // 涉及到数据同步的问题，比较麻烦，两个基本上在一起操作
     private static List<Word> mAllWords = new ArrayList<>();
-    private static List<Word> mCurWords = new ArrayList<>();
+    private static List<Word> mShowWords = new ArrayList<>();
 
     private static List<String> recentCmdList;
     private User mUser;
@@ -63,7 +63,7 @@ public class GlobalData {
 
                 mAllWords.add(word);
                 if (isShow(word)) {
-                    mCurWords.add(word);
+                    mShowWords.add(word);
                 }
 
 
@@ -79,7 +79,7 @@ public class GlobalData {
                  * oldWord2NewWord(oldWord);
                  * 看效果加上这两行，不关掉应用可能会改到数据库
                  * mAllWords.add(word);
-                 * mCurWords.add(word);
+                 * mShowWords.add(word);
                  * Toast.makeText(MemoryNoteApplication.appContext, "应用数据已更新完毕", Toast.LENGTH_LONG).show();
                  */
             }
@@ -174,15 +174,15 @@ public class GlobalData {
         return mAllWords;
     }
 
-    public List<Word> getCurWords() {
-        if (mCurWords == null) {
+    public List<Word> getShowWords() {
+        if (mShowWords == null) {
             queryAllWord();
         }
-        return mCurWords;
+        return mShowWords;
     }
 
     public void setCurWords(List<Word> curWords) {
-        mCurWords = curWords;
+        mShowWords = curWords;
     }
 
     public void addWord(final Word word) {
@@ -200,7 +200,7 @@ public class GlobalData {
             });
             MyDatabase.getInstance().insertWord(word.getName(), new Gson().toJson(word));
             mAllWords.add(word);
-            mCurWords.add(word);
+            mShowWords.add(word);
         } catch (IOException e) {
             e.printStackTrace();
             Logcat.d(e.getMessage());
@@ -248,7 +248,7 @@ public class GlobalData {
             MyDatabase.getInstance().deleteWord(word.getName());
             NetWorkUtil.deleteWord(word, null);
             mAllWords.remove(word);
-            mCurWords.remove(word);
+            mShowWords.remove(word);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

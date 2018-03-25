@@ -64,7 +64,7 @@ public class WordListContract {
         /**
          * 点击搜索，重新组织单词列表
          */
-        void reorderWordList() throws Exception;
+        void search() throws Exception;
 
         String getWordName(int adapterPosition);
 
