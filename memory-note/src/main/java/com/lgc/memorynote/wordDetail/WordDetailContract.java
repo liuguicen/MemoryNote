@@ -18,7 +18,7 @@ public interface WordDetailContract {
 
         void showWordName(String word);
 
-        void showWordMeaning(List<Word.WordMeaning> wordMeaningList);
+        void showWordMeaning(Word  word);
 
         void showInputMeaning(String inputMeaning);
 

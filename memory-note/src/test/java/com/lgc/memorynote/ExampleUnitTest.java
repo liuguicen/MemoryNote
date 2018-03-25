@@ -19,32 +19,14 @@ import static com.lgc.memorynote.data.Word.WordMeaning;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
-    class M {
-        String name;
-
-        M(String name) {
-            this.name = name;
-        }
-
-
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
 
     @Test
     public void addition_isCorrect() throws Exception {
 //        testWordInput();
 //        testAnalyzeSimilarWord();
-        M m = new M("NameA") {{
-            String innerString = "nameC";
-            setName(innerString);
-        }};
-        System.out.println(m.name);
-
 //        testInputWordTag();
 //        textInputNoTagMeaning();
-//        textInputMeanings(new Word());
+        textInputMeanings(new Word());
 //        testInputName();
     }
 
@@ -67,11 +49,9 @@ public class ExampleUnitTest {
                 "   n.信任，学分，声望\n\n"
                 + "adj.国会的，议会的\n\n"
                 + "@guai @gsdf   adv. √▆▃♠▆";
-        List<WordMeaning> wordMeaningList = new ArrayList<>();
-        InputAnalyzerUtil.analyzeInputMeaning(input, wordMeaningList);
-        System.out.println(new Gson().toJson(wordMeaningList));
+        InputAnalyzerUtil.analyzeInputMeaning(input, word);
         word.setInputMeaning(input);
-        word.setMeaningList(wordMeaningList);
+        System.out.println(new Gson().toJson(word));
     }
 
     public void testInputSimilar(Word word) {

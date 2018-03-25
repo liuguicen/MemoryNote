@@ -99,18 +99,18 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
             case CIGEN:
                 mTvWordName.setText("--");
                 mTvWordName.setSelection("-".length());
-                mTvWordMeaning.setText("@词根 =");
+                mTvWordMeaning.setText("@词根 ");
                 break;
             case QIANZUI:
                 mTvWordName.setText("-");
-                mTvWordMeaning.setText("@前缀 =");
+                mTvWordMeaning.setText("@前缀 ");
                 break;
             case HOUZUI:
                 mTvWordName.setText("-");
-                mTvWordMeaning.setText("@后缀 =");
+                mTvWordMeaning.setText("@后缀 ");
                 break;
             case DIPIN:
-                mTvWordMeaning.setText("@低 =");
+                mTvWordMeaning.setText("@低 ");
                 break;
         }
         
@@ -245,8 +245,8 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     @Override
-    public void showWordMeaning(List<Word.WordMeaning> wordMeaningList) {
-        UIUtil.showMeaningList(mTvWordMeaning, wordMeaningList, "\n");
+    public void showWordMeaning(Word word) {
+        UIUtil.showMeaningList(mTvWordMeaning, word, "\n");
     }
 
 

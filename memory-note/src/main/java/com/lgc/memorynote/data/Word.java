@@ -24,12 +24,8 @@ import java.util.regex.Pattern;
  * @guai @gsdf adj. adv. uauaua
  * **********************************/
 public class Word {
-    public static final String TAG_START = "@";
-    public static String NOT_NAME_FORMAT_REGEX = "[^a-zA-z\\-' ]";
 
-    public static String TAG_ROOT      = TAG_START + "词根";
-    public static String TAG_PREFFIX   = TAG_START + "前缀";
-    public static String TAG_SUFFIX    = TAG_START + "后缀";
+    public static String NOT_NAME_FORMAT_REGEX = "[^a-zA-z\\-' ]";
 
     public static final int NORMAL = 0;
     public static final int ROOT   = 1;
@@ -37,6 +33,22 @@ public class Word {
     public static final int SUFFIX = 3;
     public static final int OTHER  = 4;
 
+    public static final String TAG_START = "@";
+    public static final String TAG_GUAI = TAG_START + "怪";
+    public static final String TAG_SHENG = TAG_START + "生";
+    public static final String TAG_DI = TAG_START + "低";
+    public static final String TAG_WEI = TAG_START + "未";
+
+
+    public static String TAG_ROOT      = TAG_START + "词根";
+    public static String TAG_PREFFIX   = TAG_START + "前缀";
+    public static String TAG_SUFFIX    = TAG_START + "后缀";
+
+    public static final int DEGREE_DI = 7;
+    public static final int DEGREE_ROOT = 5;
+    public static final int DEGREE_PREFFIX = 5;
+    public static final int DEGREE_SUFFIX = 5;
+    public static final int DEGREE_WEI = 5;
 
     public String name;
     public List<WordMeaning> meaningList = new ArrayList<>();
@@ -44,6 +56,8 @@ public class Word {
     public List<SimilarWord> similarWordList;
     public List<SimilarWord> groupList;
     public long lastRememberTime = 0;
+
+    public List<String> tagList;
 
     /** 上次修改时间 **/
     public long lastModifyTime = 0;
@@ -86,14 +100,30 @@ public class Word {
         return -1;
     }
 
+    public boolean hasTag(String tag) {
+        for (WordMeaning wordMeaning : meaningList) {
+            if (wordMeaning.hasTags(tag))     {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasTag(List<String> tagList) {
+        for (WordMeaning wordMeaning : meaningList) {
+            if (wordMeaning.hasTags(tagList))     {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static class WordMeaning {
 
         public static final String CIXING_N = "n";
         public static final String CIXING_V = "v";
         public static final String CIXING_ADJ = "adj";
         public static final String CIXING_ADV = "adv";
-        public static final String TAG_SHENG = "@生";
-        public static final String TAG_GUAI = "@怪";
 
         private String ciXing;
         private String meaning;
@@ -109,15 +139,29 @@ public class Word {
             return true;
         }
 
+        /**
+         * 保证Tag是有效的
+         */
         public void addValidTag(String tag) {
             tagList.add(tag);
         }
 
-        public boolean hasTag(String tag) {
+        public boolean hasTags(String tag) {
             if (tagList == null || tag == null)
                 return false;
             for (String hadTag : tagList) {
                 if (hadTag.equals(tag)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public boolean hasTags(List<String> tagList) {
+            if (this.tagList == null || tagList == null)
+                return false;
+            for (String hadTag : tagList) {
+                if (tagList.contains(hadTag)) {
                     return true;
                 }
             }
@@ -264,8 +308,39 @@ public class Word {
         this.similarWordList = similarWordList;
     }
 
+    public void addMeaning(WordMeaning oneMeaning) {
+        if (meaningList == null) {
+            meaningList = new ArrayList<>();
+        }
+        meaningList.add(oneMeaning);
+    }
+
     public void setInputMeaning(String inputMeaning) {
         this.inputMeaning = inputMeaning;
+    }
+
+
+    public List<String> getTagList() {
+        return tagList;
+    }
+
+    public void setTagList(List<String> tagList) {
+        this.tagList = tagList;
+    }
+
+    public void addTag(String tag) {
+        if (tagList == null) {
+            tagList = new ArrayList<>();
+        }
+        tagList.add(tag);
+    }
+
+    public void addTags(List<String> outTagList) {
+        if (outTagList == null) return;
+        if (this.tagList == null) {
+            this.tagList = new ArrayList<>();
+        }
+        this.tagList.addAll(outTagList);
     }
 
     public void setInputSimilarWords(String inputSimilarWords) {

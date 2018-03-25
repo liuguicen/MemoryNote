@@ -62,11 +62,14 @@ public class GlobalData {
                 Word word = gson.fromJson(oneJsonWord, Word.class);
 
                 mAllWords.add(word);
-                mCurWords.add(word);
+                if (isShow(word)) {
+                    mCurWords.add(word);
+                }
 
-                /**
-                 * convertWordFromat(word);
-                 * word数据结构变化的时候用， 把原版的Word拷一份出来了，命名为OldWord，去掉上面几行代码，
+                preProcess(word);
+
+                convertWordFromat(word);
+                 /*** word数据结构变化的时候用， 把原版的Word拷一份出来了，命名为OldWord，去掉上面几行代码，
                  * 使用下面的代码，在oldWord2NewWord方法里面加上相关逻辑
                  *
                  *
@@ -85,6 +88,13 @@ public class GlobalData {
         }
     }
 
+    private boolean isShow(Word word) {
+        if (word.hasTag(Word.TAG_ROOT)) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * 直接转换 word的数据
      *
@@ -94,12 +104,7 @@ public class GlobalData {
         List<Word.WordMeaning> meaningList = word.getMeaningList();
         if (meaningList != null) {
             for (Word.WordMeaning wordMeaning : meaningList) {
-                String cixing = wordMeaning.getCiXing();
-                if (cixing != null) {
-                    if (cixing.endsWith(".")) {
-                        wordMeaning.setCiXing(cixing.substring(0, cixing.length() - 1));
-                    }
-                }
+                wordMeaning.setTagList(null);
             }
         }
         updateWord(word, false);
@@ -109,8 +114,16 @@ public class GlobalData {
         List<Word.WordMeaning> meaningList = word.getMeaningList();
         if (meaningList != null) {
             for (Word.WordMeaning wordMeaning : meaningList) {
-                if (wordMeaning.hasTag("@低")) {
-                    word.setStrangeDegree(7);
+                if (wordMeaning.hasTags(Word.TAG_DI)) {
+                    word.setStrangeDegree(Word.DEGREE_DI);
+                } else if (wordMeaning.hasTags(Word.TAG_ROOT)) {
+                    word.setStrangeDegree(Word.DEGREE_ROOT);
+                } else if (wordMeaning.hasTags(Word.TAG_PREFFIX)) {
+                    word.setStrangeDegree(Word.DEGREE_PREFFIX);
+                } else if (wordMeaning.hasTags(Word.TAG_SUFFIX)) {
+                    word.setStrangeDegree(Word.DEGREE_SUFFIX);
+                } else if (wordMeaning.hasTags(Word.TAG_WEI)) {
+                    word.setStrangeDegree(Word.DEGREE_WEI);
                 }
             }
         }
@@ -171,7 +184,7 @@ public class GlobalData {
     }
 
     public List<Word> getCurWords() {
-        if (mAllWords == null) {
+        if (mCurWords == null) {
             queryAllWord();
         }
         return mCurWords;
@@ -233,7 +246,7 @@ public class GlobalData {
             // 更新，内存中的已经更新了，不用在更新
         } catch (IOException e) {
             e.printStackTrace();
-            Logcat.d(e.getMessage());
+            Logcat.d(word.getName() + "更新失败 \n" + e.getMessage());
         } finally {
             MyDatabase.getInstance().close();
         }

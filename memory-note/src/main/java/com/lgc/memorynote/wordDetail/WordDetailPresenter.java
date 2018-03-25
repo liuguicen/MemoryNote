@@ -87,7 +87,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         if (!TextUtils.equals(inputMeaings, mWord.getInputMeaning())) {
             mWord.setInputMeaning(inputMeaings);
             List<Word.WordMeaning> meaningList = new ArrayList<>();
-            int resultCode = InputAnalyzerUtil.analyzeInputMeaning(inputMeaings, meaningList);
+            int resultCode = InputAnalyzerUtil.analyzeInputMeaning(inputMeaings, mWord);
             if (resultCode != InputAnalyzerUtil.SUCCESS) {
                 mView.showAnalyzeFailed(resultCode);
             } else {
@@ -137,6 +137,17 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         }
         if (mIsAdd) {
             mWord.setName(inputName);
+            if(mWord.hasTag(Word.TAG_DI)) {
+                mWord.setStrangeDegree(Word.DEGREE_DI);
+            } else if (mWord.hasTag(Word.TAG_ROOT)) {
+                mWord.setStrangeDegree(Word.DEGREE_ROOT);
+            } else if (mWord.hasTag(Word.TAG_PREFFIX)) {
+                mWord.setStrangeDegree(Word.DEGREE_PREFFIX);
+            } else if (mWord.hasTag(Word.TAG_SUFFIX)) {
+                mWord.setStrangeDegree(Word.DEGREE_SUFFIX);
+            } else if (mWord.hasTag(Word.TAG_WEI)) {
+                mWord.setStrangeDegree(Word.DEGREE_WEI);
+            }
         }
 
         mWord.setLastModifyTime(System.currentTimeMillis());
@@ -177,7 +188,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mView.showInputRememberWay(mWord.getInputRememberWay());
             mView.showInputWordGroup(mWord.getInputWordGroup());
         } else {
-            mView.showWordMeaning(mWord.getMeaningList());
+            mView.showWordMeaning(mWord);
             mView.showSimilarWords(mWord.getSimilarWordList());
             mView.showInputRememberWay(mWord.getInputRememberWay());
             mView.showWordGroupList(mWord.getGroupList());

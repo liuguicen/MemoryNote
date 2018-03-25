@@ -65,8 +65,8 @@ public class InputAnalyzerUtil {
      * 最后会按词性排序
      * @return 解析结果状态码
      */
-    public static int analyzeInputMeaning(String originalMeaning, List<WordMeaning> meaningList) {
-        if (originalMeaning == null || meaningList == null) return InputAnalyzerUtil.IS_NULL;
+    public static int analyzeInputMeaning(String originalMeaning, Word word) {
+        if (originalMeaning == null || word == null) return InputAnalyzerUtil.IS_NULL;
         originalMeaning = originalMeaning.trim();
         if (originalMeaning.isEmpty()) return IS_NULL;
         int resultCode = InputAnalyzerUtil.SUCCESS;
@@ -77,7 +77,7 @@ public class InputAnalyzerUtil {
         String[] oneArray = originalMeaning.split("\n");
         for(String one : oneArray) { // 找到了，解析tag和词义
             if (one == null || one.isEmpty()) continue;
-            WordMeaning oneMeaning = new WordMeaning();
+
 
             // first, 处理tag相关的
             one = one.trim();
@@ -88,20 +88,21 @@ public class InputAnalyzerUtil {
                     tagEnd = tagMather.end();
                     String tag = tagMather.group().trim();
                     if (tag.length() <= Word.TAG_START.length()) continue;
-                    oneMeaning.addValidTag(tag);
+                    word.addTag(tag);
                 }
             }
 
+            WordMeaning oneMeaning = new WordMeaning();
             // second handle the meaning, if the meaning is null, the tag is valid\
             if (tagEnd >= 1) tagEnd--; // real position
             if (tagEnd >= one.length())
                 continue;
             String tempMeaning = one.substring(tagEnd, one.length()).trim();
             analysisNoTagMeaning(oneMeaning, tempMeaning);
-            meaningList.add(oneMeaning);
+            word.addMeaning(oneMeaning);
         }
 
-        if (meaningList.size() == 0) { // 没有获取到有效的词义，不设置数据
+        if (word.getMeaningList() == null || word.getMeaningList().size() == 0) { // 没有获取到有效的词义，不设置数据
             resultCode = InputAnalyzerUtil.NO_VALID_MEANING;
         }
         return resultCode;

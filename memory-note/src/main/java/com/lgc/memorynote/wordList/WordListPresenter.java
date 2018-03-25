@@ -107,7 +107,7 @@ public class WordListPresenter implements WordListContract.Presenter {
         mChosenCmdList.addAll(mInputCmdList); // analyze and add current input cmd list
 
 
-        mCurShowWordList = Command.orderByCommand(inputCmd, mChosenCmdList, GlobalData.getInstance().getAllWord());
+        mCurShowWordList = Command.orderByCommand(inputCmd, mChosenCmdList, mGlobalData.getCurWords());
         setUICommand(mChosenCmdList);
         GlobalData.getInstance().setCurWords(mCurShowWordList);
         mView.refreshWordList(mCurShowWordList);

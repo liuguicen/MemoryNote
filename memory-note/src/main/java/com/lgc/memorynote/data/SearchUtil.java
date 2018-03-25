@@ -3,7 +3,6 @@ package com.lgc.memorynote.data;
 import android.text.TextUtils;
 import android.util.Pair;
 
-import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.base.UIUtil;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.wordList.Command;
@@ -32,7 +31,7 @@ public class SearchUtil {
             if (meaningList == null) return;
             int j = 0;
             for (j = 0; j < meaningList.size(); j++) {
-                if (meaningList.get(j).hasTag(tag)) {
+                if (meaningList.get(j).hasTags(tag)) {
                     break;
                 }
             }
@@ -121,7 +120,7 @@ public class SearchUtil {
                 Word word = wordList.get(i);
 
                 for (Word.WordMeaning wordMeaning : word.getMeaningList()) {
-                    if (wordMeaning.hasTag(search)) {
+                    if (wordMeaning.hasTags(search)) {
                         searchedList.add(word);
                         break;
                     }

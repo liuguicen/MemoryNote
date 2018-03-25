@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Pair;
-import android.view.TextureView;
 import android.widget.TextView;
 
 import com.lgc.memorynote.R;
@@ -28,21 +27,31 @@ public class UIUtil {
     /**
      * 显示词义，顺序显示，词性 + 意思，有特殊标记的就显示对应的颜色或者打上标记
      */
-    public static void showMeaningList(TextView tv, List<Word.WordMeaning> wordMeaningList, String divider) {
-        if (tv == null || wordMeaningList == null || wordMeaningList.size() == 0)
+    public static void showMeaningList(TextView tv, Word word, String divider) {
+        if (tv == null || word == null)
             return;
         // 解析词义，特殊的词意采用特殊的颜色
         StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < wordMeaningList.size(); i++) {
-            Word.WordMeaning oneMeaning = wordMeaningList.get(i);
-            for (String tag : oneMeaning.getTagList()) {
+        // 添加Tag
+        List<String> tagList = word.getTagList();
+        if (tagList != null) {
+            for (String tag : tagList) {
                 sb.append(tag).append(" ");
             }
-            sb.append(oneMeaning.getMeaning());
-            if (i < wordMeaningList.size() - 1)
-                sb.append(divider);
         }
+
+        // 添加Meaning
+        List<Word.WordMeaning> meaningList = word.getMeaningList();
+        if (meaningList != null) {
+            for (int i = 0; i < meaningList.size(); i++) {
+                Word.WordMeaning oneMeaning = meaningList.get(i);
+                sb.append(oneMeaning.getMeaning());
+                if (i < meaningList.size() - 1)
+                    sb.append(divider);
+            }
+        }
+
+        // 使用Spannable
         String meaningString = sb.toString();
         SpannableString ss = new SpannableString(meaningString);
         Matcher matcher = Pattern.compile("@.+?\\s").matcher(meaningString);

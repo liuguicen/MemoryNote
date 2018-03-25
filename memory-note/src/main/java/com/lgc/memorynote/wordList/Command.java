@@ -55,11 +55,11 @@ public class Command {
     public static final String _phr_ui    = "短语";
     public static final int _phr_id    = 8;
     /** 只显示生的单词 */
-    public static final String _sheng  =  Word.WordMeaning.TAG_SHENG;
+    public static final String _sheng  =  Word.TAG_SHENG;
     public static final String _sheng_ui  =  "生的";
     public static final int _sheng_id  = 9;
     /** 只显示词义怪的词 */
-    public static final String _guai   =  Word.WordMeaning.TAG_GUAI;
+    public static final String _guai   =  Word.TAG_GUAI;
     public static final String _guai_ui   =  "怪的";
     public static final int _guai_id   = 10;
     /** 把近似的词放到一起 */
