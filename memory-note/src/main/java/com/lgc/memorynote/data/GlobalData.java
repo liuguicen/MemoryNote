@@ -63,9 +63,9 @@ public class GlobalData {
 
                 mAllWords.add(word);
                 mCurWords.add(word);
+
                 /**
-                 * convertWordFormat(word);
-                 *
+                 * convertWordFromat(word);
                  * word数据结构变化的时候用， 把原版的Word拷一份出来了，命名为OldWord，去掉上面几行代码，
                  * 使用下面的代码，在oldWord2NewWord方法里面加上相关逻辑
                  *
@@ -90,7 +90,7 @@ public class GlobalData {
      *
      * @param word
      */
-    private void convertWordFormat(Word word) {
+    private void convertWordFromat(Word word) {
         List<Word.WordMeaning> meaningList = word.getMeaningList();
         if (meaningList != null) {
             for (Word.WordMeaning wordMeaning : meaningList) {
@@ -102,8 +102,21 @@ public class GlobalData {
                 }
             }
         }
-        updateWord(word);
+        updateWord(word, false);
     }
+
+    private void preProcess(Word word) {
+        List<Word.WordMeaning> meaningList = word.getMeaningList();
+        if (meaningList != null) {
+            for (Word.WordMeaning wordMeaning : meaningList) {
+                if (wordMeaning.hasTag("@低")) {
+                    word.setStrangeDegree(7);
+                }
+            }
+        }
+        updateWord(word, false);
+    }
+
 
     public Word oldWord2NewWord(OldWord oldWord) {
         Word word = new Word();
@@ -192,6 +205,10 @@ public class GlobalData {
         }
     }
 
+    /**
+     * 可以控制是否上传到网络，{@link #updateWord(Word, boolean)}
+     * @param word
+     */
     public void updateWord(Word word) {
         updateWord(word, true);
     }

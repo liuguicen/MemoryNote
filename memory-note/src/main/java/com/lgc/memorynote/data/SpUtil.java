@@ -24,13 +24,13 @@ import java.util.regex.Pattern;
 public class SpUtil {
     private static final String USER_NAME = "user_name";
     private static final String USER_PASSWORD = "user_password";
-    private static final String CMD_LIST = "cmd_list";
-    private static final String POSITION = "position";
+    private static final String CMD_RECENT = "cmd_list";
+    private static final String LAST_REMEMBER_CMD = "last_remember_cmd";
+    private static final String LAST_REMENBER_POSITION = "position";
     private static final String USER_SP_NAME = "user";
     private static final String UPLOAD_STATE = "upload state";
     private static final String RECENT_CMD = "recent_cmd";
     private static SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences(USER_SP_NAME, Context.MODE_PRIVATE);
-    ;
 
     /**
      * save last remember date, include the cmd list and the position of the word
@@ -39,14 +39,14 @@ public class SpUtil {
      */
     public static boolean saveCurRememberPosition(List<String> cmdList, int position) {
         SharedPreferences.Editor spEditor = sp.edit();
-        spEditor.putStringSet(CMD_LIST, new HashSet<>(cmdList));
-        spEditor.putInt(POSITION, position);
+        spEditor.putStringSet(LAST_REMEMBER_CMD, new HashSet<>(cmdList));
+        spEditor.putInt(LAST_REMENBER_POSITION, position);
         return spEditor.commit();
     }
 
     public static Pair<ArrayList<String>, Integer> getLastRemberState() {
-        Set<String> stringSet = sp.getStringSet(CMD_LIST, new HashSet<String>());
-        int position = sp.getInt(POSITION, -1);
+        Set<String> stringSet = sp.getStringSet(LAST_REMEMBER_CMD, new HashSet<String>());
+        int position = sp.getInt(LAST_REMENBER_POSITION, -1);
         return new Pair<>(new ArrayList<>(stringSet), position);
     }
 
@@ -59,7 +59,7 @@ public class SpUtil {
     }
 
     public static List<String> getRecentCmdList() {
-        String recentS = sp.getString(CMD_LIST, "");
+        String recentS = sp.getString(CMD_RECENT, "");
         String[] split = recentS.split(Pattern.quote(AppConstant.RECENT_CMD_DIVIDER));
         List<String> recentCmdList = new ArrayList<>();
         for (String s : split) {
@@ -79,7 +79,7 @@ public class SpUtil {
                 sb.append(s).append(AppConstant.RECENT_CMD_DIVIDER);
             }
         }
-        return sp.edit().putString(CMD_LIST, sb.toString()).commit();
+        return sp.edit().putString(CMD_RECENT, sb.toString()).commit();
     }
 
     public static String getUserName() {

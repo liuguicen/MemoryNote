@@ -13,9 +13,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.lgc.memorynote.data.Word;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,6 +59,14 @@ public class Util {
         view.getLocationOnScreen(xy);
         Rect bound = new Rect(xy[0], xy[1], xy[0] + view.getWidth(), xy[1] + view.getHeight());
         return bound.contains((int) (x + 0.5f), (int) (y + 0.5f));
+    }
+
+    public static String convertToString(List<Word.WordMeaning> meaningList) {
+        StringBuilder sb = new StringBuilder();
+        for (Word.WordMeaning wordMeaning : meaningList) {
+            sb.append(wordMeaning.getMeaning()).append("  ");
+        }
+        return sb.toString();
     }
 
     /**

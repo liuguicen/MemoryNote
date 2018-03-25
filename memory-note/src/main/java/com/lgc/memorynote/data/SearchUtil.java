@@ -285,7 +285,8 @@ public class SearchUtil {
                     if ( (wordType == Word.ROOT && name.contains(oneRA))
                         || (wordType == Word.PREFIX && name.startsWith(oneRA))
                         || (wordType == Word.SUFFIX && name.endsWith(oneRA)) ){
-                        matchList.add(new Pair<>(wordType, oneRA));
+                        String ram = oneRA + "  " + Util.convertToString(word.getMeaningList());
+                        matchList.add(new Pair<>(wordType, ram));
                     }
                 }
             }
