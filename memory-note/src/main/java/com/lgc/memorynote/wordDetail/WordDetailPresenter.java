@@ -86,12 +86,9 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         // 其他输入
         if (!TextUtils.equals(inputMeaings, mWord.getInputMeaning())) {
             mWord.setInputMeaning(inputMeaings);
-            List<Word.WordMeaning> meaningList = new ArrayList<>();
             int resultCode = InputAnalyzerUtil.analyzeInputMeaning(inputMeaings, mWord);
             if (resultCode != InputAnalyzerUtil.SUCCESS) {
                 mView.showAnalyzeFailed(resultCode);
-            } else {
-                mWord.setMeaningList(meaningList);
             }
         }
 

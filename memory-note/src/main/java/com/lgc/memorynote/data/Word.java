@@ -101,23 +101,26 @@ public class Word {
     }
 
     public boolean hasTag(String tag) {
-        for (WordMeaning wordMeaning : meaningList) {
-            if (wordMeaning.hasTags(tag))     {
-                return true;
+        if (tagList != null && tag != null) {
+            return tagList.contains(tag);
+        }
+        return false;
+    }
+
+    public boolean hasTags(List<String> outTagList) {
+        if (this.tagList != null && outTagList != null) {
+            for (String outTag : outTagList) {
+                if(outTagList.contains(outTag)) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
-    public boolean hasTag(List<String> tagList) {
-        for (WordMeaning wordMeaning : meaningList) {
-            if (wordMeaning.hasTags(tagList))     {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    /**
+     *
+     */
     public static class WordMeaning {
 
         public static final String CIXING_N = "n";
@@ -146,6 +149,10 @@ public class Word {
             tagList.add(tag);
         }
 
+        /**
+         * 弃用，使用Word的方法
+         */
+        @Deprecated
         public boolean hasTags(String tag) {
             if (tagList == null || tag == null)
                 return false;
@@ -157,6 +164,11 @@ public class Word {
             return false;
         }
 
+
+        /**
+         * 弃用，使用Word的方法
+         */
+        @Deprecated
         public boolean hasTags(List<String> tagList) {
             if (this.tagList == null || tagList == null)
                 return false;

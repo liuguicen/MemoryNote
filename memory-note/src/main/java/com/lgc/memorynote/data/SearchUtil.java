@@ -27,15 +27,7 @@ public class SearchUtil {
     public static void grepNoTag(String tag, List<Word> wordList) {
         for (int i = wordList.size() - 1; i >= 0; i--) {
             Word word = wordList.get(i);
-            List<Word.WordMeaning> meaningList = word.getMeaningList();
-            if (meaningList == null) return;
-            int j = 0;
-            for (j = 0; j < meaningList.size(); j++) {
-                if (meaningList.get(j).hasTags(tag)) {
-                    break;
-                }
-            }
-            if (j >= meaningList.size()) {
+            if (!word.hasTag(tag)) {
                 wordList.remove(i);
             }
         }
@@ -118,12 +110,8 @@ public class SearchUtil {
         } else if (search.startsWith(Command.TAG_START)) {
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
-
-                for (Word.WordMeaning wordMeaning : word.getMeaningList()) {
-                    if (wordMeaning.hasTags(search)) {
-                        searchedList.add(word);
-                        break;
-                    }
+                if (word.hasTag(search)) {
+                    searchedList.add(word);
                 }
             }
         } else if (!Word.isLegalWordName(search)) {
@@ -215,7 +203,7 @@ public class SearchUtil {
 
 
     /**
-     * 如果该单词的相似单词列表包含了这个单词，就将整个词组列表添加进来
+     * 如果该单词的词组列表包含了这个单词，就将整个词组列表添加进来
      */
     public static Set<Word.SimilarWord> searchAllGroups(List<Word> wordList, Word srcWord) {
         Map<String, Word.SimilarWord> resultGroupMap = new LinkedHashMap<>();
@@ -261,7 +249,8 @@ public class SearchUtil {
                 }
 
                 // do not contain the word self,  should add it
-                if (!resultSimilarMap.containsKey(matchWord.getName())) {
+                if (!resultSimilarMap.containsKey(matchWord.getName())
+                        && WordUtil.getWordType(matchWord) == Word.NORMAL) {
                     // convert word to similar word and use wordMeaning which be replace "\n" to " " to create anotation
                     Word.SimilarWord selfSimilar = new Word.SimilarWord();
                     selfSimilar.setName(matchWord.getName());

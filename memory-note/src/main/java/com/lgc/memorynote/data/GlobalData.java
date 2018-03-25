@@ -114,21 +114,16 @@ public class GlobalData {
     }
 
     private void preProcess(Word word) {
-        List<Word.WordMeaning> meaningList = word.getMeaningList();
-        if (meaningList != null) {
-            for (Word.WordMeaning wordMeaning : meaningList) {
-                if (wordMeaning.hasTags(Word.TAG_DI)) {
-                    word.setStrangeDegree(Word.DEGREE_DI);
-                } else if (wordMeaning.hasTags(Word.TAG_ROOT)) {
-                    word.setStrangeDegree(Word.DEGREE_ROOT);
-                } else if (wordMeaning.hasTags(Word.TAG_PREFFIX)) {
-                    word.setStrangeDegree(Word.DEGREE_PREFFIX);
-                } else if (wordMeaning.hasTags(Word.TAG_SUFFIX)) {
-                    word.setStrangeDegree(Word.DEGREE_SUFFIX);
-                } else if (wordMeaning.hasTags(Word.TAG_WEI)) {
-                    word.setStrangeDegree(Word.DEGREE_WEI);
-                }
-            }
+        if (word.hasTag(Word.TAG_DI)) {
+            word.setStrangeDegree(Word.DEGREE_DI);
+        } else if (word.hasTag(Word.TAG_ROOT)) {
+            word.setStrangeDegree(Word.DEGREE_ROOT);
+        } else if (word.hasTag(Word.TAG_PREFFIX)) {
+            word.setStrangeDegree(Word.DEGREE_PREFFIX);
+        } else if (word.hasTag(Word.TAG_SUFFIX)) {
+            word.setStrangeDegree(Word.DEGREE_SUFFIX);
+        } else if (word.hasTag(Word.TAG_WEI)) {
+            word.setStrangeDegree(Word.DEGREE_WEI);
         }
         updateWord(word, false);
     }
@@ -141,13 +136,13 @@ public class GlobalData {
         // 放入词义
         word.setInputMeaning(oldWord.getInputMeaning()); // 放入输入的
 
+        word.setTagList(oldWord.getTagList());
         List<Word.WordMeaning> newMeaningList = word.getMeaningList();
         for (OldWord.WordMeaning oldMeaning : oldWord.getMeaningList()) {
             Word.WordMeaning newMeaning = new Word.WordMeaning(); // 创建
 
             newMeaning.setCiXing(oldMeaning.getCiXing()); // 设置
             newMeaning.setMeaning(oldMeaning.getMeaning());
-            newMeaning.setTagList(oldMeaning.getTagList());
 
             newMeaningList.add(newMeaning); // 加入
         }
@@ -157,13 +152,6 @@ public class GlobalData {
         word.setInputMeaning(oldWord.getInputMeaning()); // 放入输入的
 
         List<Word.SimilarWord> newSimilarList = new ArrayList<>();
-        for (String oldSimilar : oldWord.getSimilarWordList()) {
-            Word.SimilarWord newSimilar = new Word.SimilarWord(); //创建
-
-            newSimilar.setName(oldSimilar); // 设置
-
-            newSimilarList.add(newSimilar); // 加入
-        }
         word.setSimilarWordList(newSimilarList); // 加入word
 
         // 放入陌生度以及上次记忆时间

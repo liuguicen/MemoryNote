@@ -1,7 +1,9 @@
 package com.lgc.memorynote.base;
 
+import com.lgc.memorynote.data.OldWord;
 import com.lgc.memorynote.data.Word;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -75,9 +77,10 @@ public class InputAnalyzerUtil {
          * one line one meaning
          */
         String[] oneArray = originalMeaning.split("\n");
+        List<String> tagList = new ArrayList<>();
+        List<WordMeaning> meaningList = new ArrayList<>();
         for(String one : oneArray) { // 找到了，解析tag和词义
             if (one == null || one.isEmpty()) continue;
-
 
             // first, 处理tag相关的
             one = one.trim();
@@ -88,19 +91,21 @@ public class InputAnalyzerUtil {
                     tagEnd = tagMather.end();
                     String tag = tagMather.group().trim();
                     if (tag.length() <= Word.TAG_START.length()) continue;
-                    word.addTag(tag);
+                    tagList.add(tag);
                 }
             }
 
-            WordMeaning oneMeaning = new WordMeaning();
             // second handle the meaning, if the meaning is null, the tag is valid\
+            WordMeaning oneMeaning = new WordMeaning();
             if (tagEnd >= 1) tagEnd--; // real position
             if (tagEnd >= one.length())
                 continue;
             String tempMeaning = one.substring(tagEnd, one.length()).trim();
             analysisNoTagMeaning(oneMeaning, tempMeaning);
-            word.addMeaning(oneMeaning);
+            meaningList.add(oneMeaning);
         }
+        word.setTagList(tagList);
+        word.setMeaningList(meaningList);
 
         if (word.getMeaningList() == null || word.getMeaningList().size() == 0) { // 没有获取到有效的词义，不设置数据
             resultCode = InputAnalyzerUtil.NO_VALID_MEANING;
