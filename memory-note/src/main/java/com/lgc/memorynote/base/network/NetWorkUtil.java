@@ -32,7 +32,7 @@ import rx.Subscriber;
  */
 
 public class NetWorkUtil {
-    public static final long NET_INTERVAL_TIME = 500;
+    public static final long NET_INTERVAL_TIME = 200;
 
     /**
      * update all word form service

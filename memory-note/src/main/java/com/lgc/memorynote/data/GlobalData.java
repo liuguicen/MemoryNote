@@ -66,10 +66,12 @@ public class GlobalData {
                     mCurWords.add(word);
                 }
 
-                preProcess(word);
 
-                convertWordFromat(word);
-                 /*** word数据结构变化的时候用， 把原版的Word拷一份出来了，命名为OldWord，去掉上面几行代码，
+                 /** 千万小心
+                  * preProcess(word);
+
+                  convertWordFromat(word);
+                  * word数据结构变化的时候用， 把原版的Word拷一份出来了，命名为OldWord，去掉上面几行代码，
                  * 使用下面的代码，在oldWord2NewWord方法里面加上相关逻辑
                  *
                  *
@@ -101,13 +103,14 @@ public class GlobalData {
      * @param word
      */
     private void convertWordFromat(Word word) {
+        /*
         List<Word.WordMeaning> meaningList = word.getMeaningList();
         if (meaningList != null) {
             for (Word.WordMeaning wordMeaning : meaningList) {
                 wordMeaning.setTagList(null);
             }
         }
-        updateWord(word, false);
+        updateWord(word, false);*/
     }
 
     private void preProcess(Word word) {

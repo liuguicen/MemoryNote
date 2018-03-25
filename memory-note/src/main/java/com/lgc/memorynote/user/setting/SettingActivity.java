@@ -199,7 +199,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 if (word.getLastModifyTime() < word.getLastUploadTime())
                 {
                     publishProgress(++mUploadNumber);
-                    Logcat.e("upload word " + i + " = "+ word.getName() + " success");
+                    Logcat.e("word " + i + " = "+ word.getName() + " had upload already");
                     continue;
                 }
 
@@ -240,11 +240,19 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         @Override
         protected void onCancelled(Integer integer) {
             super.onCancelled(integer);
+            if (integer == null) {
+                integer = 0;
+            }
+            showResult(integer);
             Toast.makeText(SettingActivity.this, "已取消", Toast.LENGTH_LONG).show();
         }
 
         @Override
         protected void onPostExecute(Integer integer) {
+            showResult(integer);
+        }
+
+        private void showResult(Integer integer) {
             String longTimeMsg = "上次上传时间：" + Util.long2DateDefult(System.currentTimeMillis());
             String msg = "数据上传完成";
             if (integer > 0) {
