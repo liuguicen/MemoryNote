@@ -2,6 +2,9 @@ package com.lgc.memorynote.data;
 
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * <pre>
  *      author : liuguicen

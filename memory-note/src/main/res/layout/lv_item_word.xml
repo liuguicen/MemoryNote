@@ -64,7 +64,7 @@
         app:layout_constraintTop_toBottomOf="@+id/lv_item_word_name" />
 
     <TextView
-        android:id="@+id/lv_item_word_similar"
+        android:id="@+id/lv_item_word_related"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_size_small"

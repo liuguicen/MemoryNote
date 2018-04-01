@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.lgc.memorynote.R;
 import com.lgc.memorynote.base.UIUtil;
 import com.lgc.memorynote.data.Word;
+import com.lgc.memorynote.data.WordUtil;
 
 import java.util.List;
 
@@ -117,12 +118,7 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
         }
 
-        if (word.getSimilarWordList() == null || word.getSimilarWordList().size() == 0) {
-            itemHolder.tvSimilar.setVisibility(View.GONE);
-        } else {
-            itemHolder.tvSimilar.setVisibility(View.VISIBLE);
-            UIUtil.showSimilarWords(itemHolder.tvSimilar, word.getSimilarWordList(), "   #   ");
-        }
+        UIUtil.showRelated(itemHolder.tvRelated, word);
     }
 
     @Override
@@ -135,7 +131,7 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder {
-        private final TextView tvSimilar;
+        private final TextView tvRelated;
         private final TextView tvMeaning;
         private final TextView tvName;
         private final TextView tvStrange;
@@ -146,7 +142,7 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(itemView);
             tvName = (TextView) itemView.findViewById(R.id.lv_item_word_name);
             tvMeaning = (TextView) itemView.findViewById(R.id.lv_item_word_meaning);
-            tvSimilar = (TextView) itemView.findViewById(R.id.lv_item_word_similar);
+            tvRelated = (TextView) itemView.findViewById(R.id.lv_item_word_related);
 
             tvStrange = (TextView) itemView.findViewById(R.id.lv_item_strange_value);
             tvAddStrange = (TextView)itemView.findViewById(R.id.lv_item_word_add_strange);

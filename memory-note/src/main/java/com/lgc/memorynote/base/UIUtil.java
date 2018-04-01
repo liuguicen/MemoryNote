@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Pair;
+import android.view.View;
 import android.widget.TextView;
 
 import com.lgc.memorynote.R;
@@ -80,7 +81,7 @@ public class UIUtil {
     }
 
     public static String similarList2String(List<Word.SimilarWord> similarWordList, String divider) {
-        if(similarWordList == null || similarWordList.size() == 0)
+        if (similarWordList == null || similarWordList.size() == 0)
             return "";
 
         StringBuilder sb = new StringBuilder();
@@ -152,5 +153,31 @@ public class UIUtil {
             }
         }
         return sb.toString();
+    }
+
+    public static void showRelated(TextView tvRelated, Word word) {
+        StringBuilder relatedSb = new StringBuilder();
+        List<Word.SimilarWord> similarWordList = word.getSimilarWordList();
+        if (similarWordList != null) {
+            for (Word.SimilarWord similarWord : similarWordList) {
+                relatedSb.append(similarWord.getName()).append("  ");
+            }
+        }
+        if (similarWordList.size() > 0) {
+            relatedSb.append("\n");
+        }
+        List<Word.SimilarWord> groupList = word.getGroupList();
+        if (groupList != null) {
+            for (Word.SimilarWord similarWord : groupList) {
+                relatedSb.append(similarWord.getName()).append("  ");
+            }
+        }
+        String related = relatedSb.toString().trim();
+        if (related.isEmpty()) {
+            tvRelated.setVisibility(View.GONE);
+        } else {
+            tvRelated.setVisibility(View.VISIBLE);
+            tvRelated.setText(related);
+        }
     }
 }
