@@ -264,6 +264,7 @@ public class SearchUtil {
 
     public static ArrayList<Pair<Integer, String>> searchRootAffix(List<Word> allWord, String name) {
         ArrayList<Pair<Integer, String>> matchList = new ArrayList<>();
+        if (allWord == null || name == null) return matchList;
         for (Word word : allWord) {
             int wordType = WordUtil.getWordType(word);
             if (wordType == Word.ROOT || wordType == Word.PREFIX || wordType == Word.SUFFIX) {

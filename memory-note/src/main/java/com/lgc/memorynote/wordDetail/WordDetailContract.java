@@ -95,5 +95,6 @@ public interface WordDetailContract {
 
         boolean isRefreshList();
 
+        void setStrangeDegree(int i);
     }
 }

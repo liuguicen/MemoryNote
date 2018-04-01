@@ -43,7 +43,6 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             if (!mIsInEdit) {
                 switchEdit();
             }
-            mView.setInputAssistant();
             String recevName = intent.getStringExtra(WordDetailActivity.INTENT_EXTRA_ADD_NAME);
             if (recevName != null) {
                 mWord.setName(recevName);
@@ -51,6 +50,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             }
             setLastRememberTime();
             setStrangeDegree(10);
+            mView.setInputAssistant();
         } else {
             String wordName = intent.getStringExtra(WordDetailActivity.INTENT_EXTRA_WORD_NAME);
             mWord = SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), wordName);
@@ -220,7 +220,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         ArrayList<Pair<Integer, String>> rootAffixList  = SearchUtil.searchRootAffix(
                 GlobalData.getInstance().getAllWord(), mWord.getName());
 
-        if (!rootAffixList.isEmpty() && !mIsInEdit) {
+        if (rootAffixList != null && !rootAffixList.isEmpty() && !mIsInEdit) {
             switchEdit();
         }
         String rememberWay = UIUtil.joinRememberWay(mView.getInputRememberWay(), rootAffixList);

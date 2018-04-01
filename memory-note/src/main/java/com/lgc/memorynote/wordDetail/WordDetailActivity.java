@@ -69,12 +69,12 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     private void initView() {
-        mTvWordName.setOnLongClickListener(this);
+      /*  mTvWordName.setOnLongClickListener(this);
         mTvWordMeaning.setOnLongClickListener(this);
         mTvWordMeaning.setOnClickListener(this);
         mTvSimilarWord.setOnLongClickListener(this);
         mtvWordGroup.setOnLongClickListener(this);
-        mTvRememberWay.setOnLongClickListener(this);
+        mTvRememberWay.setOnLongClickListener(this);*/
 
         mTvWordName.setTag(mTvWordName.getBackground());
         mTvWordMeaning.setTag(mTvWordName.getBackground());
@@ -94,23 +94,27 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     @Override
     public void setInputAssistant() {
         final  String  CIGEN = "cigen", QIANZUI = "qianzui", HOUZUI = "houzui", DIPIN = "dipin";
-        String type = DIPIN;
+        String type = "";
         switch (type) {
             case CIGEN:
                 mTvWordName.setText("--");
                 mTvWordName.setSelection("-".length());
                 mTvWordMeaning.setText("@词根 ");
+                mPresenter.setStrangeDegree(5);
                 break;
             case QIANZUI:
                 mTvWordName.setText("-");
                 mTvWordMeaning.setText("@前缀 ");
+                mPresenter.setStrangeDegree(5);
                 break;
             case HOUZUI:
                 mTvWordName.setText("-");
                 mTvWordMeaning.setText("@后缀 ");
+                mPresenter.setStrangeDegree(5);
                 break;
             case DIPIN:
                 mTvWordMeaning.setText("@低 ");
+                mPresenter.setStrangeDegree(7);
                 break;
         }
         

@@ -18,13 +18,15 @@ public class WordUtil {
     public static int getWordType(Word word) {
         if (!Word.isLegalWordName(word.getName()))
             return Word.OTHER;
-        for (String s : word.getTagList()) {
-            if (Word.TAG_ROOT.equals(s)) {
-                return Word.ROOT;
-            } else if (Word.TAG_PREFFIX.equals(s)) {
-                return Word.PREFIX;
-            } else if (Word.TAG_SUFFIX.equals(s)) {
-                return Word.SUFFIX;
+        if (word.getTagList() != null) {
+            for (String s : word.getTagList()) {
+                if (Word.TAG_ROOT.equals(s)) {
+                    return Word.ROOT;
+                } else if (Word.TAG_PREFFIX.equals(s)) {
+                    return Word.PREFIX;
+                } else if (Word.TAG_SUFFIX.equals(s)) {
+                    return Word.SUFFIX;
+                }
             }
         }
         return Word.NORMAL;
