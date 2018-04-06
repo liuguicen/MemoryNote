@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Pair;
+import android.widget.Toast;
 
 import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.base.UIUtil;
@@ -43,11 +44,6 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             if (!mIsInEdit) {
                 switchEdit();
             }
-            String recevName = intent.getStringExtra(WordDetailActivity.INTENT_EXTRA_ADD_NAME);
-            if (recevName != null) {
-                mWord.setName(recevName);
-                mView.showWordName(recevName);
-            }
             setLastRememberTime();
             setStrangeDegree(10);
             String assistantKey =  SpUtil.getInputAssistantKey();
@@ -55,7 +51,13 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                 mWord = SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), assistantKey);
                 if (mWord == null)
                     mWord = new Word();
-                showData(true);
+                showData(false);
+            }
+
+            String recevName = intent.getStringExtra(WordDetailActivity.INTENT_EXTRA_ADD_NAME);
+            if (recevName != null) {
+                mWord.setName(recevName);
+                mView.showWordName(recevName);
             }
         } else {
             String wordName = intent.getStringExtra(WordDetailActivity.INTENT_EXTRA_WORD_NAME);
@@ -274,6 +276,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             SpUtil.saveInputAssistantKey("");
         }
         SpUtil.saveInputAssistantKey(mWord.getName());
+        Toast.makeText(mContext, "输入填写保存成功", Toast.LENGTH_LONG).show();
     }
 
     @Override
