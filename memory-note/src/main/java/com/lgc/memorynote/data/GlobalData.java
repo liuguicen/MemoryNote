@@ -266,14 +266,14 @@ public class GlobalData {
     public void updateInputCmd(String cmd) {
         if (cmd.trim().isEmpty()) return;
         int id = recentCmdList.indexOf(cmd); // 先检查是否存在
-
+        // Command.INPUT_COMMAND_LIST 在最前面
         if (id < 0) {
             if (recentCmdList.size() > AppConstant.RECENT_CMD_NUMBER) {
                 recentCmdList.remove(recentCmdList.size() - 1);
             }
-            recentCmdList.add(0, cmd);
-        } else { // 放到最开始位置
-            recentCmdList.add(0, recentCmdList.remove(id));
+            recentCmdList.add(Command.INPUT_COMMAND_LIST.size() - 1, cmd);
+        } else if (id >= Command.INPUT_COMMAND_LIST.size() - 1) { // 放到最开始位置
+            recentCmdList.add(Command.INPUT_COMMAND_LIST.size() - 1, recentCmdList.remove(id));
         }
     }
 
@@ -283,10 +283,10 @@ public class GlobalData {
 
     public void readRecentCmd() {
         recentCmdList = SpUtil.getRecentCmdList();
-        int start = recentCmdList.size() / 3;
+        // Command.INPUT_COMMAND_LIST 在最前面
         for (String oneCmd : Command.INPUT_COMMAND_LIST) {
             if (!recentCmdList.contains(oneCmd)) {
-                recentCmdList.add(start++, oneCmd);
+                recentCmdList.add(0, oneCmd);
             }
         }
     }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Pair;
 
+import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.base.MemoryNoteApplication;
 
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ public class SpUtil {
     private static final String USER_SP_NAME = "user";
     private static final String UPLOAD_STATE = "upload state";
     private static final String RECENT_CMD = "recent_cmd";
+    private static final String INPUT_ASSISTANT = "INPUT_ASSISTANT";
+
     private static SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences(USER_SP_NAME, Context.MODE_PRIVATE);
 
     /**
@@ -106,5 +109,14 @@ public class SpUtil {
     public static boolean updateUserPassword(String passWord) {
         if (passWord == null || passWord.isEmpty()) return false;
         return sp.edit().putString(USER_NAME, passWord).commit();
+    }
+
+    public static String getInputAssistant() {
+        return sp.getString(INPUT_ASSISTANT, "");
+    }
+
+    public static boolean setInputAssistant(String inputAssistant) {
+        if (inputAssistant == null || inputAssistant.isEmpty()) return false;
+        return sp.edit().putString(USER_NAME, inputAssistant).commit();
     }
 }

@@ -94,7 +94,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     @Override
     public void setInputAssistant() {
         final  String  CIGEN = "cigen", QIANZUI = "qianzui", HOUZUI = "houzui", DIPIN = "dipin";
-        String type = "";
+        String type = "dipin";
         switch (type) {
             case CIGEN:
                 mTvWordName.setText("--");
