@@ -111,11 +111,11 @@ public class SpUtil {
         return sp.edit().putString(USER_NAME, passWord).commit();
     }
 
-    public static String getInputAssistant() {
+    public static String getInputAssistantKey() {
         return sp.getString(INPUT_ASSISTANT, "");
     }
 
-    public static boolean setInputAssistant(String inputAssistant) {
+    public static boolean saveInputAssistantKey(String inputAssistant) {
         if (inputAssistant == null || inputAssistant.isEmpty()) return false;
         return sp.edit().putString(USER_NAME, inputAssistant).commit();
     }

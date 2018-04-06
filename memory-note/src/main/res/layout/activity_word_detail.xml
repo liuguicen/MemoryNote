@@ -50,6 +50,14 @@
             android:text="@string/word_meaning"
             app:layout_constraintTop_toBottomOf="@+id/et_word_detail_name" />
 
+        <TextView
+            style="@style/SyncBtn"
+            android:background="@mipmap/assistant"
+            android:id="@+id/btn_save_assistant"
+            app:layout_constraintStart_toEndOf="@id/word_detail_meaning_name"
+            app:layout_constraintTop_toBottomOf="@id/et_word_detail_name"
+            />
+
         <EditText
             android:id="@+id/et_word_detail_meaning"
             style="@style/WordDetailEditItem"

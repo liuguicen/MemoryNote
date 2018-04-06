@@ -89,6 +89,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         findViewById(R.id.btn_sync_similar).setOnClickListener(this);
         findViewById(R.id.btn_sync_group).setOnClickListener(this);
         findViewById(R.id.btn_sync_root_affix).setOnClickListener(this);
+        findViewById(R.id.btn_save_assistant).setOnClickListener(this);
     }
 
     @Override
@@ -147,7 +148,8 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
             case R.id.btn_sync_root_affix:
                 mPresenter.syncRootAffix();
                 break;
-
+            case R.id.btn_save_assistant:
+                mPresenter.saveAssistant();
         }
     }
 

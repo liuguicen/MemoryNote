@@ -10,8 +10,8 @@ import com.lgc.memorynote.base.UIUtil;
 import com.lgc.memorynote.data.AppConstant;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SearchUtil;
+import com.lgc.memorynote.data.SpUtil;
 import com.lgc.memorynote.data.Word;
-import com.lgc.memorynote.data.WordUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,13 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             }
             setLastRememberTime();
             setStrangeDegree(10);
-            mView.setInputAssistant();
+            String assistantKey =  SpUtil.getInputAssistantKey();
+            if (!assistantKey.trim().isEmpty()) {
+                mWord = SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), assistantKey);
+                if (mWord == null)
+                    mWord = new Word();
+                showData(true);
+            }
         } else {
             String wordName = intent.getStringExtra(WordDetailActivity.INTENT_EXTRA_WORD_NAME);
             mWord = SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), wordName);
@@ -261,6 +267,14 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         return  UIUtil.joinSimilar(inputChildWord, new ArrayList<>(searchWordList));
     }
 
+    @Override
+    public void saveAssistant() {
+        String inputName = mView.getInputWordName();
+        if (null == inputName || inputName.isEmpty()) {
+            SpUtil.saveInputAssistantKey("");
+        }
+        SpUtil.saveInputAssistantKey(mWord.getName());
+    }
 
     @Override
     public boolean addStrangeDegree() {
