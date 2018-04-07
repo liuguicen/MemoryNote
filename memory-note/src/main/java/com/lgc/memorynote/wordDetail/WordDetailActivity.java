@@ -149,7 +149,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
                 mPresenter.syncRootAffix();
                 break;
             case R.id.btn_save_assistant:
-                mPresenter.saveAssistant();
+                mPresenter.saveInputAssistant();
         }
     }
 
@@ -198,10 +198,12 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
             mBtnEdit.setBackgroundResource(R.drawable.btn_bg_finish);
             mBtnEdit.setText(getString(R.string.edit_save));
             mDeleteView.setVisibility(View.GONE);
+            Util.showKeyboard(mTvWordName, 300);
         } else {
             mBtnEdit.setBackgroundResource(R.drawable.btn_bg_edit);
             mBtnEdit.setText(getString(R.string.edit));
             mDeleteView.setVisibility(View.VISIBLE);
+            Util.hideKeyboard(mTvWordName);
         }
     }
 

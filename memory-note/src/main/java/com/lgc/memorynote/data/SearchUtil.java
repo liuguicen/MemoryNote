@@ -53,13 +53,17 @@ public class SearchUtil {
      * 各种类型的搜索，有点多
      *
      * @param search
-     * @param wordList
+     * @param wordList 不会改动此数组
      * @return
      */
-    public static List<Word> searchMultiAspects(String search, List<Word> wordList) throws Exception {
+    public static boolean searchMultiAspects(String search, List<Word> wordList, List<Word> searchedList) throws Exception {
         // 含有非单词字符，搜索词义
-        if (TextUtils.isEmpty(search)) return wordList;
-        List<Word> searchedList = new ArrayList<>();
+        if (searchedList == null) return true;
+        if (TextUtils.isEmpty(search)) {
+            searchedList.addAll(wordList);
+            return true;
+        }
+        boolean needSort = true;
 
         if (search.contains(Command.STRANGE_DEGREE)) {  // 按陌生度过滤
             String sd = search.substring(Command.STRANGE_DEGREE.length()).trim();
@@ -107,14 +111,14 @@ public class SearchUtil {
                     searchedList.add(word);
                 }
             }
-        } else if (search.startsWith(Command.TAG_START)) {
+        } else if (search.startsWith(Command.TAG_START)) { // 搜索Tag
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
                 if (word.hasTag(search)) {
                     searchedList.add(word);
                 }
             }
-        } else if (!Word.isLegalWordName(search)) {
+        } else if (!Word.isLegalWordName(search)) { // 非单词
             int equalEnd = 0;
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
@@ -131,6 +135,7 @@ public class SearchUtil {
             }
         } else {
             int equalNumber = 0;
+            int wordNumber = 0;
             int lastId = 0;
             boolean global = false;
             int globalId = search.indexOf(Command.GLOBAL);
@@ -157,10 +162,17 @@ public class SearchUtil {
                     } else {
                         searchedList.add(word);
                     }
+                    wordNumber++;
+                } else if (!global) {  // 默认情况下搜索单词其它项数据里包含关键字的，加在列表后面
+                    String allData = word.toString();
+                    if (allData.contains(search)) {
+                        searchedList.add(wordNumber, word);
+                    }
                 }
             }
+            needSort = false;
         }
-        return searchedList;
+        return needSort;
     }
 
     /**
@@ -258,6 +270,19 @@ public class SearchUtil {
                     resultSimilarMap.put(selfSimilar.getName(), selfSimilar);
                 }
                 return;
+            }
+        }
+        // 没有找到，考虑单词是否互为子单词
+        if (srcName.length() != matchWord.getName().length()
+                && srcName.contains(matchWord.getName()) || matchWord.getName().contains(srcName)) {
+            // do not contain the word self,  should add it
+            if (!resultSimilarMap.containsKey(matchWord.getName())
+                    && WordUtil.getWordType(matchWord) == Word.NORMAL) {
+                // convert word to similar word and use wordMeaning which be replace "\n" to " " to create anotation
+                Word.SimilarWord selfSimilar = new Word.SimilarWord();
+                selfSimilar.setName(matchWord.getName());
+                selfSimilar.setAnotation(matchWord.getInputMeaning().replace("\n", " "));
+                resultSimilarMap.put(selfSimilar.getName(), selfSimilar);
             }
         }
     }

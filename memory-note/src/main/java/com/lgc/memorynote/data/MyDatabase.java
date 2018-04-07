@@ -51,6 +51,7 @@ public class MyDatabase {
      */
     public void deleteWord(String word) throws IOException {
         String sql = "delete from "+DataBaseConstant.table_word + " where "+DataBaseConstant.word +" = ?";
+        Logcat.d(sql);
         db.execSQL(sql, new Object[]{word});
         Logcat.d(sql);
     }

@@ -219,6 +219,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
             recentCmdAdapter = new ArrayAdapter<String>(this
                     ,android.R.layout.simple_dropdown_item_1line, mGlobalData.getRecentCmd());
             mTvCommandFrame.setAdapter(recentCmdAdapter);
+            mTvCommandFrame.dismissDropDown();
         } catch (NumberFormatException e) {
             Toast.makeText(this, "输入数字格式错误", Toast.LENGTH_LONG).show();
         } catch (Exception e) {

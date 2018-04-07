@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Pair;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.lgc.memorynote.base.InputAnalyzerUtil;
@@ -17,6 +19,8 @@ import com.lgc.memorynote.data.Word;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by LiuGuicen on 2017/1/5 0005.
@@ -48,10 +52,8 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             setStrangeDegree(10);
             String assistantKey =  SpUtil.getInputAssistantKey();
             if (!assistantKey.trim().isEmpty()) {
-                mWord = SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), assistantKey);
-                if (mWord == null)
-                    mWord = new Word();
-                showData(false);
+                Word assistantWord = SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), assistantKey);
+                showData(assistantWord, false);
             }
 
             String recevName = intent.getStringExtra(WordDetailActivity.INTENT_EXTRA_ADD_NAME);
@@ -65,7 +67,8 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             if (mWord == null)
                 mWord = new Word();
             mView.switchEditStyle(false);
-            showData(false);
+            showData(mWord,
+                    false);
         }
     }
 
@@ -81,7 +84,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         if (!mIsInEdit) { // 编辑完成
             saveWordDate();
         }
-        showData(true);
+        showData(mWord, true);
         mView.switchEditStyle(mIsInEdit);
     }
 
@@ -152,6 +155,8 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                 mWord.setStrangeDegree(Word.DEGREE_SUFFIX);
             } else if (mWord.hasTag(Word.TAG_WEI)) {
                 mWord.setStrangeDegree(Word.DEGREE_WEI);
+            } else if (mWord.hasTag(Word.TAG_FEI)) {
+                mWord.setStrangeDegree(Word.DEGREE_FEI);
             }
         }
 
@@ -186,22 +191,22 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         }
     }
 
-    private void showData(boolean isSwitchEdit) {
+    private void showData(Word word, boolean isSwitchEdit) {
         if (mIsInEdit) {
-            mView.showInputMeaning(mWord.getInputMeaning());
-            mView.showInputSimilarWords(mWord.getInputSimilarWords());
-            mView.showInputRememberWay(mWord.getInputRememberWay());
-            mView.showInputWordGroup(mWord.getInputWordGroup());
+            mView.showInputMeaning(word.getInputMeaning());
+            mView.showInputSimilarWords(word.getInputSimilarWords());
+            mView.showInputRememberWay(word.getInputRememberWay());
+            mView.showInputWordGroup(word.getInputWordGroup());
         } else {
-            mView.showWordMeaning(mWord);
-            mView.showSimilarWords(mWord.getSimilarWordList());
-            mView.showInputRememberWay(mWord.getInputRememberWay());
-            mView.showWordGroupList(mWord.getGroupList());
+            mView.showWordMeaning(word);
+            mView.showSimilarWords(word.getSimilarWordList());
+            mView.showInputRememberWay(word.getInputRememberWay());
+            mView.showWordGroupList(word.getGroupList());
         }
         if (!isSwitchEdit) { // 切换编辑的过程中，这些视图的数据不用变
-            mView.showWordName(mWord.getName());
-            mView.showStrangeDegree(mWord.getStrangeDegree());
-            mView.showLastRememberTime(mWord.getLastRememberTime());
+            mView.showWordName(word.getName());
+            mView.showStrangeDegree(word.getStrangeDegree());
+            mView.showLastRememberTime(word.getLastRememberTime());
         }
     }
 
@@ -270,12 +275,13 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     }
 
     @Override
-    public void saveAssistant() {
+    public void saveInputAssistant() {
         String inputName = mView.getInputWordName();
         if (null == inputName || inputName.isEmpty()) {
             SpUtil.saveInputAssistantKey("");
+        } else {
+            SpUtil.saveInputAssistantKey(mWord.getName());
         }
-        SpUtil.saveInputAssistantKey(mWord.getName());
         Toast.makeText(mContext, "输入填写保存成功", Toast.LENGTH_LONG).show();
     }
 
@@ -323,4 +329,5 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     public boolean isRefreshList() {
         return isRefreshList;
     }
+
 }

@@ -153,10 +153,9 @@ public class Command {
      */
     public static List<Word> orderByCommand(String search, List<String> commandList, List<Word> wordList) throws Exception {
         List<Word> resultList = new ArrayList<>(wordList.size());
-        resultList.addAll(wordList);
 
         // 第一步，如果是搜索，搜索出满足条件的
-        resultList = SearchUtil.searchMultiAspects(search, resultList);
+        boolean needSort = SearchUtil.searchMultiAspects(search, wordList, resultList);
 
         // 第二步，进行过滤操作
         for (int i = commandList.size() - 1; i >= 0; i--) {
@@ -172,7 +171,7 @@ public class Command {
         }
 
         // 第三步，进行排序操作
-        if (commandList.size() > 0) {
+        if (needSort && commandList.size() > 0) {
             Collections.sort(resultList, SortUtil.getComparator(commandList));
         }
         return resultList;

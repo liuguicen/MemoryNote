@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.lgc.memorynote.data.Word;
@@ -21,6 +22,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created 0 Administrator on 2016/5/19.
@@ -67,6 +70,38 @@ public class Util {
             sb.append(wordMeaning.getMeaning()).append("  ");
         }
         return sb.toString();
+    }
+
+    public static void showKeyBoard(final View v) {
+        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.showSoftInput(v, InputMethodManager.SHOW_FORCED);
+        }
+    }
+
+    //显示虚拟键盘
+    public static void showKeyboard(final View v, long delay)
+    {
+        if (delay > 0) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                public void run() {
+                    showKeyBoard(v);
+                }
+            }, delay);
+        } else {
+            showKeyBoard(v);
+        }
+    }
+
+    //隐藏虚拟键盘
+    public static void hideKeyboard(View v)
+    {
+        InputMethodManager imm = ( InputMethodManager ) v.getContext( ).getSystemService( Context.INPUT_METHOD_SERVICE );
+        if ( imm.isActive( ) ) {
+            imm.hideSoftInputFromWindow( v.getApplicationWindowToken( ) , 0 );
+
+        }
     }
 
     /**

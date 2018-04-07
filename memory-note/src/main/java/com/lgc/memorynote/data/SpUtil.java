@@ -116,7 +116,7 @@ public class SpUtil {
     }
 
     public static boolean saveInputAssistantKey(String inputAssistant) {
-        if (inputAssistant == null || inputAssistant.isEmpty()) return false;
+        if (inputAssistant == null) return false;
         return sp.edit().putString(INPUT_ASSISTANT, inputAssistant).commit();
     }
 }

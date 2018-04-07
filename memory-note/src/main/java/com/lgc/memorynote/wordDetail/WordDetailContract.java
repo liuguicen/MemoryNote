@@ -97,6 +97,6 @@ public interface WordDetailContract {
 
         void setStrangeDegree(int i);
 
-        void saveAssistant();
+        void saveInputAssistant();
     }
 }

@@ -38,6 +38,7 @@ public class Word {
     public static final String TAG_SHENG = TAG_START + "生";
     public static final String TAG_DI = TAG_START + "低";
     public static final String TAG_WEI = TAG_START + "未";
+    public static final String TAG_FEI = TAG_START + "非";
 
 
     public static String TAG_ROOT      = TAG_START + "词根";
@@ -49,6 +50,8 @@ public class Word {
     public static final int DEGREE_PREFFIX = 5;
     public static final int DEGREE_SUFFIX = 5;
     public static final int DEGREE_WEI = 5;
+    public static final int DEGREE_FEI = 4;
+
 
     public String name;
     public List<WordMeaning> meaningList = new ArrayList<>();
