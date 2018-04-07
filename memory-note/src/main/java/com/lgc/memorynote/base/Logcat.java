@@ -20,19 +20,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 /**
- * 日志管理类
- *
- * @version 1.0
- * 新建类
- *
- * @version 1.1
- * 增加方法名，行号的打印
- *
- * @version 1.2
- * 增加不需要TAG的打印方法
- * @date 2016/8/11
- *
- * @author bin.xie
  */
 public final class Logcat {
 
