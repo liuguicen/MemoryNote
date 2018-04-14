@@ -64,7 +64,7 @@ public class SearchUtil {
      * @param wordList 不会改动此数组
      * @return
      */
-    public static boolean searchMultiAspects(String search, List<Word> wordList, List<Word> searchedList) throws Exception {
+    public static boolean searchMultiAspects(String search, List<Word> wordList, List<Word> searchedList) throws NumberFormatException{
         // 含有非单词字符，搜索词义
         if (searchedList == null) return true;
         if (TextUtils.isEmpty(search)) {
@@ -88,7 +88,7 @@ public class SearchUtil {
             }
 
             if (bigger == Integer.MAX_VALUE && smaller == Integer.MIN_VALUE) {
-                throw new Exception("比较格式错误");
+                throw new NumberFormatException("比较格式错误");
             }
 
             for (int i = wordList.size() - 1; i >= 0; i--) {

@@ -222,8 +222,6 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
             mTvCommandFrame.dismissDropDown();
         } catch (NumberFormatException e) {
             Toast.makeText(this, "输入数字格式错误", Toast.LENGTH_LONG).show();
-        } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

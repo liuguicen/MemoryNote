@@ -60,7 +60,7 @@ public class WordListPresenter implements WordListContract.Presenter {
      * 点击搜索，重新组织单词列表,搜索过程是种总的列表复制到新列表中，再对新列表进行排序，过滤
      */
     @Override
-    public void search() throws Exception {
+    public void search() throws NumberFormatException {
         String inputCmd = mView.getInputCmd();
         if (inputCmd != null) {
             inputCmd = inputCmd.trim();

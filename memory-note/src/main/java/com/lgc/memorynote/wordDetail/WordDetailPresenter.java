@@ -49,7 +49,9 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             String assistantKey =  SpUtil.getInputAssistantKey();
             if (!assistantKey.trim().isEmpty()) {
                 Word assistantWord = SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), assistantKey);
-                showData(assistantWord, false);
+                if (assistantWord != null) {
+                    showData(assistantWord, false);
+                }
             }
 
             String recevName = intent.getStringExtra(WordDetailActivity.INTENT_EXTRA_ADD_NAME);

@@ -151,7 +151,7 @@ public class Command {
      * @param commandList 必须是标准的命令才有效
      * @param search 用户输入的搜索命令
      */
-    public static List<Word> orderByCommand(String search, List<String> commandList, List<Word> wordList) throws Exception {
+    public static List<Word> orderByCommand(String search, List<String> commandList, List<Word> wordList) throws NumberFormatException{
         List<Word> resultList = new ArrayList<>(wordList.size());
 
         // 第一步，如果是搜索，搜索出满足条件的

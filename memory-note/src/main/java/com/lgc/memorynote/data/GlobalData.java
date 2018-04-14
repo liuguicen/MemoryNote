@@ -67,11 +67,11 @@ public class GlobalData {
                 }
 
 
-                 /** 千万小心
-                  * preProcess(word);
+                /** 千万小心
+                 * preProcess(word);
 
-                  convertWordFromat(word);
-                  * word数据结构变化的时候用， 把原版的Word拷一份出来了，命名为OldWord，去掉上面几行代码，
+                 convertWordFromat(word);
+                 * word数据结构变化的时候用， 把原版的Word拷一份出来了，命名为OldWord，去掉上面几行代码，
                  * 使用下面的代码，在oldWord2NewWord方法里面加上相关逻辑
                  *
                  *
@@ -211,6 +211,7 @@ public class GlobalData {
 
     /**
      * 可以控制是否上传到网络，{@link #updateWord(Word, boolean)}
+     *
      * @param word
      */
     public void updateWord(Word word) {
@@ -268,12 +269,28 @@ public class GlobalData {
         int id = recentCmdList.indexOf(cmd); // 先检查是否存在
         // Command.INPUT_COMMAND_LIST 在最前面
         if (id < 0) {
-            if (recentCmdList.size() > AppConstant.RECENT_CMD_NUMBER) {
+            if (recentCmdList.size() > AppConstant.RECENT_CMD_LIMIT) {
                 recentCmdList.remove(recentCmdList.size() - 1);
             }
-            recentCmdList.add(Command.INPUT_COMMAND_LIST.size() - 1, cmd);
-        } else if (id >= Command.INPUT_COMMAND_LIST.size() - 1) { // 放到最开始位置
-            recentCmdList.add(Command.INPUT_COMMAND_LIST.size() - 1, recentCmdList.remove(id));
+            addInputCmd(cmd);
+        } else if (!Command.INPUT_COMMAND_LIST.contains(cmd)) { // 放到最开始位置
+           recentCmdList.remove(id);
+           addInputCmd(cmd);
+        }
+    }
+
+    public static final int FRONT_CMD_NUMBER = 3;
+
+    private void addInputCmd(String cmd) {
+        // 加入最近输入的单词3个
+        int first = FRONT_CMD_NUMBER - 1;
+        if (recentCmdList.size() < FRONT_CMD_NUMBER) {
+            first = recentCmdList.size() - 1;
+        }
+        if (Command.INPUT_COMMAND_LIST.contains(recentCmdList.get(first))) { // 最近输入没满
+            recentCmdList.add(0, cmd);
+        } else {
+            recentCmdList.add(Command.INPUT_COMMAND_LIST.size() + FRONT_CMD_NUMBER, cmd);
         }
     }
 
