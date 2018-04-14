@@ -6,6 +6,7 @@ import android.util.Pair;
 
 import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.base.MemoryNoteApplication;
+import com.lgc.memorynote.data.AppConstant;
 
 import java.util.ArrayList;
 import java.util.HashSet;

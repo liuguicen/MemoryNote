@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Pair;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.lgc.memorynote.base.InputAnalyzerUtil;
@@ -19,8 +17,6 @@ import com.lgc.memorynote.data.Word;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by LiuGuicen on 2017/1/5 0005.
@@ -215,7 +211,8 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     public void syncSimilarWord() {
         String similar = syncChildWord(
                 mView.getInputSimilarWords(),
-                SearchUtil.searchAllSimilars(GlobalData.getInstance().getAllWord(), mWord.getName()));
+                SearchUtil.searchAllSimilars(GlobalData.getInstance().getAllWord()
+                        , mView.getInputWordName().trim()));
         mView.showInputSimilarWords(similar);
     }
 
@@ -223,7 +220,8 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     public void syncWordGroup() {
         String groupString = syncChildWord(
                 mView.getInputWordGroup(),
-                SearchUtil.searchAllGroups(GlobalData.getInstance().getAllWord(), mWord));
+                SearchUtil.searchAllGroups(GlobalData.getInstance().getAllWord(), mWord
+                        , mView.getInputWordName().trim()));
         mView.showInputWordGroup(groupString);
     }
 

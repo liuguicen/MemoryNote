@@ -2,9 +2,12 @@ package com.lgc.memorynote.data;
 
 import android.text.TextUtils;
 
+import com.lgc.memorynote.base.AlgorithmUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import static com.lgc.memorynote.base.AlgorithmUtil.StringAg;
 
 /************************************
  * 数据格式的定义：
@@ -78,29 +81,21 @@ public class Word {
     private String inputWordGroup;
 
     /**
-     * @return -1 no
-     *          0 contain
-     *          1 startWith
-     *          2 equal
+     * @return 返回包含程度 {@link AlgorithmUtil.StringAg#EQUAL_SIMILAR}等
      */
-    public int containMeaning(String search) {
+    public double containMeaning(String search) {
         List<Word.WordMeaning> meaningList = getMeaningList();
         if (meaningList == null) {
-            return -1;
+            return  StringAg.NOT_SIMILAR;
         }
 
+        double maxDegree = StringAg.NOT_SIMILAR;
         for (int j = 0; j < meaningList.size(); j++){
-            String meaning = meaningList.get(j).getMeaning();
-            if (meaning != null && meaning.contains(search)) {
-                if (meaning.equals(search)) {
-                    return 2;
-                } else if (meaning.startsWith(search)) {
-                    return 1;
-                }
-                return 0;
-            }
+            double degree = StringAg.stringSimilar(meaningList.get(j).getMeaning(), search);
+            if (degree ==  StringAg.EQUAL_SIMILAR) return degree;
+            maxDegree = Math.max(degree, maxDegree);
         }
-        return -1;
+        return maxDegree;
     }
 
     public boolean hasTag(String tag) {
@@ -270,6 +265,53 @@ public class Word {
         return this == obj || TextUtils.equals(this.name, ((Word) obj).name);
     }
 
+    /**
+     * 将该子字符串与单词所有内容进行比较，返回匹配度
+     *
+     * @param search
+     * @return {@link WordUtil}
+     */
+    public double matchDegree(String search) {
+        if (TextUtils.isEmpty(search)) return 0;
+
+        // 比较名称
+        double degree = StringAg.stringSimilar(name, search);
+        if (degree > StringAg.NOT_SIMILAR) {
+            return WordUtil.getHigherMatchDegree(WordUtil.MATCH_BASE_NAME, degree);
+        }
+
+        // 比较词义
+        degree = containMeaning(search);
+        if (degree > StringAg.NOT_SIMILAR) {
+            return WordUtil.getHigherMatchDegree(WordUtil.MATCH_BASE_MEANING, degree);
+        }
+
+        // 比较陌生度
+        degree = String.valueOf(strangeDegree).contains(search) ? 1 : StringAg.NOT_SIMILAR;
+        if (degree > StringAg.NOT_SIMILAR) {
+            return WordUtil.getHigherMatchDegree(WordUtil.MATCH_BASE_STRANGE, degree)  ;
+        }
+
+        // 相似
+        degree = (inputSimilarWords != null && inputSimilarWords.contains(search)) ? 1 : StringAg.NOT_SIMILAR;
+        if (degree > StringAg.NOT_SIMILAR) {
+            return WordUtil.getHigherMatchDegree(WordUtil.MATCH_BASE_SIMILAR, degree);
+        }
+
+        // 词组
+        degree = (inputWordGroup != null && inputWordGroup.contains(search)) ? 1 : StringAg.NOT_SIMILAR;
+        if (degree > StringAg.NOT_SIMILAR) {
+            return WordUtil.getHigherMatchDegree(WordUtil.MATCH_BASE_GROUP, degree);
+        }
+
+        // 其它
+        degree = toString().contains(search) ? 1 : StringAg.NOT_SIMILAR;
+        if (degree > StringAg.NOT_SIMILAR) {
+            return WordUtil.getHigherMatchDegree(WordUtil.MATCH_BASE_OTHER, degree);
+        }
+        return 0;
+    }
+
     public static int compareStrangeDegree(int s1, int s2) {
         return s2 - s1; // 大的在前面，倒序
     }
@@ -301,7 +343,6 @@ public class Word {
         if (w2 != null) l2 = w2.length();
         return l2 - l1;
     }
-
 
     public void setName(String word) {
         this.name = word;

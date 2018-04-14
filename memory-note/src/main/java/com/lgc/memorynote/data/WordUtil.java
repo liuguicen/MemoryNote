@@ -1,10 +1,5 @@
 package com.lgc.memorynote.data;
 
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * <pre>
  *      author : liuguicen
@@ -14,6 +9,14 @@ import java.util.List;
  */
 
 public class WordUtil {
+    public static final double MATCH_BASE_INTERVAL = 0.01; // 扩展插入其它比较项时只要不小于这个即可
+    public static final double MATCH_BASE_OTHER = 0.3;
+    public static final double MATCH_BASE_GROUP = 0.4;
+    public static final double MATCH_BASE_SIMILAR = 0.5;
+    public static final double MATCH_BASE_STRANGE = 0.6;
+    public static final double MATCH_BASE_MEANING = 0.7;
+    public static final double MATCH_BASE_NAME = 0.8;
+
 
     /**
      * @return {@link Word#NORMAL} 等
@@ -33,5 +36,9 @@ public class WordUtil {
             }
         }
         return Word.NORMAL;
+    }
+
+    public static double getHigherMatchDegree(double base, double degree) {
+        return base + MATCH_BASE_INTERVAL * degree;
     }
 }

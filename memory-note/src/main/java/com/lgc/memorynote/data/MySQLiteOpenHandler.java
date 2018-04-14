@@ -23,7 +23,7 @@ public class MySQLiteOpenHandler extends SQLiteOpenHelper {
                 + DataBaseConstant.word        +  " text primary key,"
                 + DataBaseConstant.data        +  " text"
                 + ")");
-//        db.execSQL("create table  IF NOT EXISTS prefer_share(title text primary key,time varchar(50))");别删，1.0版本的表,
+//        db.execSQL("create table  IF NOT_SIMILAR EXISTS prefer_share(title text primary key,time varchar(50))");别删，1.0版本的表,
     }
 
     @Override
