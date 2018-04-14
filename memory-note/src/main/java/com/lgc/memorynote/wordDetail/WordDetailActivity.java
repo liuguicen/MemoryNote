@@ -78,10 +78,10 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
         mTvWordName.setTag(mTvWordName.getBackground());
         mTvWordMeaning.setTag(mTvWordName.getBackground());
-        lastInputType = mTvWordMeaning.getInputType();
         mTvSimilarWord.setTag(mTvSimilarWord.getBackground());
         mTvRememberWay.setTag(mTvRememberWay.getBackground());
         mtvWordGroup.setTag(mtvWordGroup.getBackground());
+        lastInputType = mTvRememberWay.getInputType();
         mBtnEdit.setOnClickListener(this);
         mDeleteView.setOnClickListener(this);
         findViewById(R.id.add_strange_degree).setOnClickListener(this);

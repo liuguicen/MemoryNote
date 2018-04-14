@@ -113,14 +113,14 @@ public class GlobalData {
         updateWord(word, false);*/
     }
 
-    private void preProcess(Word word) {
+    private void preProcess(final Word word) {
         if (word.hasTag(Word.TAG_DI)) {
             word.setStrangeDegree(Word.DEGREE_DI);
         } else if (word.hasTag(Word.TAG_ROOT)) {
             word.setStrangeDegree(Word.DEGREE_ROOT);
         } else if (word.hasTag(Word.TAG_PREFFIX)) {
             word.setStrangeDegree(Word.DEGREE_PREFFIX);
-        } else if (word.hasTag(Word.TAG_SUFFIX)) {
+        } else if (word.hasTags(WordUtil.SUFFIX_LIST)) {
             word.setStrangeDegree(Word.DEGREE_SUFFIX);
         } else if (word.hasTag(Word.TAG_WEI)) {
             word.setStrangeDegree(Word.DEGREE_WEI);
@@ -287,11 +287,11 @@ public class GlobalData {
         if (recentCmdList.size() < FRONT_CMD_NUMBER) {
             first = recentCmdList.size() - 1;
         }
-        if (Command.INPUT_COMMAND_LIST.contains(recentCmdList.get(first))) { // 最近输入没满
-            recentCmdList.add(0, cmd);
-        } else {
-            recentCmdList.add(Command.INPUT_COMMAND_LIST.size() + FRONT_CMD_NUMBER, cmd);
+        if (!Command.INPUT_COMMAND_LIST.contains(recentCmdList.get(first))) { // 最近输入满
+            String old  = recentCmdList.remove(first);
+            recentCmdList.add(Command.INPUT_COMMAND_LIST.size() + first + 1, old);
         }
+        recentCmdList.add(0, cmd);
     }
 
     public void saveRecentCmd() {

@@ -32,7 +32,7 @@ public class ExampleUnitTest {
 
     public void testInputName() {
         String inputName = "sdfsdf-sdfs' bn/dfsd";
-        System.out.println(Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(inputName).find());
+        System.out.println(Pattern.compile(Word.NOT_NAME_PHRASE_REGEX).matcher(inputName).find());
     }
 
     private void testWordInput() {

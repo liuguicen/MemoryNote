@@ -2,26 +2,18 @@ package com.lgc.memorynote.data;
 
 import android.text.TextUtils;
 import android.util.Pair;
-import android.widget.TextView;
 
-import com.lgc.memorynote.base.AlgorithmUtil;
-import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.base.UIUtil;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.wordList.Command;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.Deflater;
 
 /**
  * <pre>
@@ -32,16 +24,16 @@ import java.util.zip.Deflater;
  */
 
 public class SearchUtil {
-    public static void grepNoTag(String tag, List<Word> wordList) {
+    public static void grepNoTag(String tag, List<WordWithComparator> wordList) {
         for (int i = wordList.size() - 1; i >= 0; i--) {
-            Word word = wordList.get(i);
+            IWord word = wordList.get(i);
             if (!word.hasTag(tag)) {
                 wordList.remove(i);
             }
         }
     }
 
-    public static void grepNotPhrase(List<Word> wordList) {
+    public static void grepNotPhrase(List<WordWithComparator> wordList) {
         for (int i = wordList.size() - 1; i >= 0; i--) {
             if (!wordList.get(i).getName().contains(" ")) {
                 wordList.remove(i);
@@ -49,9 +41,9 @@ public class SearchUtil {
         }
     }
 
-    public static void grepNotWord(List<Word> wordList) {
+    public static void grepNotWord(List<WordWithComparator> wordList) {
         for (int i = wordList.size() - 1; i >= 0; i--) {
-            if (wordList.get(i).getName().contains(" ")) {
+            if (!WordUtil.isWord(wordList.get(i).getName())) {
                 wordList.remove(i);
             }
         }
@@ -64,14 +56,15 @@ public class SearchUtil {
      * @param wordList 不会改动此数组
      * @return
      */
-    public static boolean searchMultiAspects(String search, List<Word> wordList, List<Word> searchedList) throws NumberFormatException{
+    public static boolean searchMultiAspects(String search, List<Word> wordList, List<WordWithComparator> searchedList) throws NumberFormatException{
         // 含有非单词字符，搜索词义
         if (searchedList == null) return true;
         if (TextUtils.isEmpty(search)) {
-            searchedList.addAll(wordList);
+            for (Word word : wordList) {
+                searchedList.add(new WordWithComparator(word));
+            }
             return true;
         }
-        boolean needResort = true;
 
         if (search.contains(Command.STRANGE_DEGREE)) {  // 按陌生度过滤
             String sd = search.substring(Command.STRANGE_DEGREE.length()).trim();
@@ -94,7 +87,10 @@ public class SearchUtil {
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
                 if (word.getStrangeDegree() > bigger && word.getStrangeDegree() < smaller) {
-                    searchedList.add(word);
+                    WordWithComparator wordWithComparator = new WordWithComparator(word);
+                    wordWithComparator.addComparator(word.getStrangeDegree() * -1); // 倒序
+
+                    searchedList.add(wordWithComparator);
                 }
             }
         } else if (search.startsWith(Command.REGEX_SERACH)) {  // 正则式搜索
@@ -116,26 +112,25 @@ public class SearchUtil {
                 else data = word.toString();
 
                 if (data != null && data.matches(regex)) {
-                    searchedList.add(word);
+                    searchedList.add(new WordWithComparator(word));
                 }
             }
         } else if (search.startsWith(Command.TAG_START)) { // 搜索Tag
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
                 if (word.hasTag(search)) {
-                    searchedList.add(word);
+                    searchedList.add(new WordWithComparator(word));
                 }
             }
         } else { // 搜索所有内容，按下面这个顺序依次搜索，并按搜索结果排序
-            AlgorithmUtil.KeyValueSorter<Double, Word> sorter = new AlgorithmUtil.KeyValueSorter<>();
             for (Word word : wordList) {
                 double matchDegree = word.matchDegree(search);
-                sorter.add(matchDegree, word);
+                WordWithComparator wordWithComparator = new WordWithComparator(word);
+                wordWithComparator.addComparator(matchDegree * -1); // 相似度高排前面，需要倒序
+                searchedList.add(wordWithComparator);
             }
-            sorter.sort(searchedList, true);
-            needResort = false;
         }
-        return needResort;
+        return true;
     }
 
     /**

@@ -13,6 +13,7 @@ import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SearchUtil;
 import com.lgc.memorynote.data.SpUtil;
 import com.lgc.memorynote.data.Word;
+import com.lgc.memorynote.data.WordUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,7 +127,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mView.showSaveFailed(AppConstant.WORD_IS_NULL);
             return;
         }
-//        if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(inputName).find()) {
+//        if (Pattern.compile(Word.NOT_NAME_PHRASE_REGEX).matcher(inputName).find()) {
 //            mView.showSaveFailed(AppConstant.WORD_FORMAT_ERROR);
 //            return;
 //        }
@@ -149,7 +150,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                 mWord.setStrangeDegree(Word.DEGREE_ROOT);
             } else if (mWord.hasTag(Word.TAG_PREFFIX)) {
                 mWord.setStrangeDegree(Word.DEGREE_PREFFIX);
-            } else if (mWord.hasTag(Word.TAG_SUFFIX)) {
+            } else if (mWord.hasTags(WordUtil.SUFFIX_LIST)) {
                 mWord.setStrangeDegree(Word.DEGREE_SUFFIX);
             } else if (mWord.hasTag(Word.TAG_WEI)) {
                 mWord.setStrangeDegree(Word.DEGREE_WEI);
@@ -176,7 +177,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mView.showInvalidName(AppConstant.WORD_IS_NULL);
             return;
         }
-//        if (Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(inputName).find()) {
+//        if (Pattern.compile(Word.NOT_NAME_PHRASE_REGEX).matcher(inputName).find()) {
 //            mView.showInvalidName(AppConstant.WORD_FORMAT_ERROR);
 //            return;
 //        }

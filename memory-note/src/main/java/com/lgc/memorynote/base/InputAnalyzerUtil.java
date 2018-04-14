@@ -1,6 +1,5 @@
 package com.lgc.memorynote.base;
 
-import com.lgc.memorynote.data.OldWord;
 import com.lgc.memorynote.data.Word;
 
 import java.util.ArrayList;
@@ -144,13 +143,13 @@ public class InputAnalyzerUtil {
         if(inputSimilarWord.isEmpty()) return IS_NULL;
         String[] similarWords = inputSimilarWord.split("\n");
         for (String oneWord : similarWords) {
-            //if (oneWord.matches(Word.NOT_NAME_FORMAT_REGEX)) {// 先不限制用户输入
+            //if (oneWord.matches(Word.NOT_NAME_PHRASE_REGEX)) {// 先不限制用户输入
             //
             //}
             oneWord = oneWord.trim();
             if (oneWord.isEmpty()) continue;
             Word.SimilarWord similarWord = new Word.SimilarWord();
-            Matcher matcher = Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(oneWord);
+            Matcher matcher = Pattern.compile(Word.NOT_NAME_PHRASE_REGEX).matcher(oneWord);
             int annoStart = -1;
             if (matcher.find())
                 annoStart = matcher.start();

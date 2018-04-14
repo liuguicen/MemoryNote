@@ -1,8 +1,12 @@
 package com.lgc.memorynote.wordList;
 
+import android.support.annotation.NonNull;
+
 import com.lgc.memorynote.R;
+import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.data.Word;
+import com.lgc.memorynote.data.WordWithComparator;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -24,6 +28,7 @@ public class SortUtil {
         return MemoryNoteApplication.appContext.getString(R.string.caommand_hint);
     }
 
+
     @Deprecated
     public static List<String> parseOrderCommand(String command) {
         if (command == null) return null;
@@ -38,14 +43,7 @@ public class SortUtil {
         return orderList;
     }
 
-    public static Comparator<Word> getComparator(List<String> commandList) {
-        if (commandList == null) {
-            commandList = new ArrayList<>();
-        }
-        return new WordComparator(commandList);
-    }
-
-    public static class WordComparator implements Comparator<Word> {
+    public static class WordComparator implements Comparator<WordWithComparator> {
         /**
          * 排序命令的执行顺序
          */
@@ -71,7 +69,13 @@ public class SortUtil {
             return -1;
         }
 
+        /**
+         * @param finalOrderList 通过这里面的数据指定word按哪些数据排序，并且按列表的顺序觉得优先级
+         */
         public WordComparator(List<String> finalOrderList) {
+            if (finalOrderList == null) {
+                new ArrayList<>();
+            }
             // 找出需要比较的顺序
             for (String order : finalOrderList) {
                 if (Command._stra.equals(order)) {
@@ -89,10 +93,14 @@ public class SortUtil {
         }
 
         @Override
-        public int compare(Word o1, Word o2) {
+        public int compare(WordWithComparator o1, WordWithComparator o2) {
             if (o1 == o2) return 0;
             if (o1 == null) return 1;
             if (o2 == null) return -1;
+            int selfRe = o1.compareTo(o2);
+            if (selfRe != 0) {
+                return selfRe;
+            }
 
             if (sortList.size() == 0) { // 默认的，按不熟悉度比较
                 return Word.compareStrangeDegree(o1.getStrangeDegree(), o2.getStrangeDegree());

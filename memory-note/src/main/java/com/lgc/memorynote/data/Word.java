@@ -3,6 +3,7 @@ package com.lgc.memorynote.data;
 import android.text.TextUtils;
 
 import com.lgc.memorynote.base.AlgorithmUtil;
+import com.lgc.memorynote.base.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,8 @@ import static com.lgc.memorynote.base.AlgorithmUtil.StringAg;
  * **********************************/
 public class Word {
 
-    public static String NOT_NAME_FORMAT_REGEX = "[^a-zA-z\\-' ]";
+    public static String NOT_NAME_PHRASE_REGEX = "[^a-zA-z\\-\\\\n/' ]";
+    public static String NOT_WORD_REGEX = "[^a-zA-z\\-']";
 
     public static final int NORMAL = 0;
     public static final int ROOT   = 1;
@@ -47,6 +49,12 @@ public class Word {
     public static String TAG_ROOT      = TAG_START + "词根";
     public static String TAG_PREFFIX   = TAG_START + "前缀";
     public static String TAG_SUFFIX    = TAG_START + "后缀";
+    public static String TAG_N_SUFFIX    = TAG_START + "名词后缀";
+    public static String TAG_V_SUFFIX    = TAG_START + "动词词后缀";
+    public static String TAG_ADJ_SUFFIX    = TAG_START + "形容词后缀";
+    public static String TAG_ADV_SUFFIX    = TAG_START + "副词后缀";
+
+
 
     public static final int DEGREE_DI = 7;
     public static final int DEGREE_ROOT = 5;
@@ -476,11 +484,6 @@ public class Word {
 
     public long getLastDownLoadTime() {
         return lastDownLoadTime;
-    }
-
-    public static boolean isLegalWordName(String name) {
-        if (name == null) return false;
-        return !Pattern.compile(Word.NOT_NAME_FORMAT_REGEX).matcher(name).find();
     }
 
     @Override

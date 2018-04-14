@@ -1,5 +1,9 @@
 package com.lgc.memorynote.data;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+
 /**
  * <pre>
  *      author : liuguicen
@@ -9,6 +13,11 @@ package com.lgc.memorynote.data;
  */
 
 public class WordUtil {
+    public static List<String> SUFFIX_LIST = new ArrayList<String>(){{
+        add(Word.TAG_SUFFIX); add(Word.TAG_N_SUFFIX);
+        add(Word.TAG_V_SUFFIX);add(Word.TAG_ADJ_SUFFIX);
+        add(Word.TAG_ADV_SUFFIX);}};
+
     public static final double MATCH_BASE_INTERVAL = 0.01; // 扩展插入其它比较项时只要不小于这个即可
     public static final double MATCH_BASE_OTHER = 0.3;
     public static final double MATCH_BASE_GROUP = 0.4;
@@ -18,11 +27,13 @@ public class WordUtil {
     public static final double MATCH_BASE_NAME = 0.8;
 
 
+
+
     /**
      * @return {@link Word#NORMAL} 等
      */
     public static int getWordType(Word word) {
-        if (!Word.isLegalWordName(word.getName()))
+        if (!isGeneralizedWord(word.getName()))
             return Word.OTHER;
         if (word.getTagList() != null) {
             for (String s : word.getTagList()) {
@@ -30,7 +41,7 @@ public class WordUtil {
                     return Word.ROOT;
                 } else if (Word.TAG_PREFFIX.equals(s)) {
                     return Word.PREFIX;
-                } else if (Word.TAG_SUFFIX.equals(s)) {
+                } else if (SUFFIX_LIST.contains(s)) {
                     return Word.SUFFIX;
                 }
             }
@@ -40,5 +51,18 @@ public class WordUtil {
 
     public static double getHigherMatchDegree(double base, double degree) {
         return base + MATCH_BASE_INTERVAL * degree;
+    }
+
+    public static boolean isWord(String name) {
+        if (name == null) return false;
+        return !Pattern.compile(Word.NOT_WORD_REGEX).matcher(name).find();
+    }
+
+    /**
+     * 广义的单词，包括单词，短语，词根词缀及其集合等
+     */
+    public static boolean isGeneralizedWord(String name) {
+        if (name == null) return false;
+        return !Pattern.compile(Word.NOT_NAME_PHRASE_REGEX).matcher(name).find();
     }
 }

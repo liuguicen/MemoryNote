@@ -2,9 +2,11 @@ package com.lgc.memorynote.wordList;
 
 import com.lgc.memorynote.data.SearchUtil;
 import com.lgc.memorynote.data.Word;
+import com.lgc.memorynote.data.WordWithComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -143,8 +145,10 @@ public class Command {
                    + "   " + RMB + " 记录当前的记忆位置\n"
                    + "   " + RST + " 恢复上次记忆位置\n"
                    + "   " + STRANGE_DEGREE  + "陌生度过滤， 比如" + STRANGE_DEGREE +">8" + "\n"
-                   + "   " + GLOBAL + "加载搜索命令后面，搜索单词所有数据"
+                   + "   " + GLOBAL + "加载搜索命令后面，搜索单词所有数据\n"
+                   + "   " + _sn_ui + "相似单词的数量\n"
                    + "   " + TAG_START + " 对单词添加标志，说明它的一些特性，比如词义怪，是个短语、词组等";
+
 
     /**
      * 排序，会生成一个新的列表，不改变原来的数据
@@ -152,9 +156,9 @@ public class Command {
      * @param search 用户输入的搜索命令
      */
     public static List<Word> orderByCommand(String search, List<String> commandList, List<Word> wordList) throws NumberFormatException{
-        List<Word> resultList = new ArrayList<>(wordList.size());
+        List<WordWithComparator> resultList = new ArrayList<>(wordList.size());
 
-        // 第一步，如果是搜索，搜索出满足条件的
+        // 第一步，如果是搜索，搜索出满足条件的, 并加上排序数据
         boolean needSort = SearchUtil.searchMultiAspects(search, wordList, resultList);
 
         // 第二步，进行过滤操作
@@ -167,13 +171,22 @@ public class Command {
             } else if (grep != null && grep.startsWith(Word.TAG_START)) {
                 SearchUtil.grepNoTag(grep, resultList);
             }
-
         }
 
         // 第三步，进行排序操作
-        if (needSort && commandList.size() > 0) {
-            Collections.sort(resultList, SortUtil.getComparator(commandList));
+        Comparator comparator = new SortUtil.WordComparator(commandList);
+        if (commandList.contains(Command._rev)) {
+            comparator = Collections.reverseOrder(comparator);
         }
-        return resultList;
+        if (needSort && commandList.size() > 0) {
+            Collections.sort(resultList, comparator);
+        }
+
+        // 第四步，返回结果
+        List<Word> returnList = new ArrayList<>();
+        for (WordWithComparator wordWithComparator : resultList) {
+            returnList.add(wordWithComparator.getWord());
+        }
+        return returnList;
     }
 }

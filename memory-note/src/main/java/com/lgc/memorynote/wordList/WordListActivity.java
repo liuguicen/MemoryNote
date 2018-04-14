@@ -30,6 +30,7 @@ import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.Word;
+import com.lgc.memorynote.data.WordUtil;
 import com.lgc.memorynote.user.setting.SettingActivity;
 import com.lgc.memorynote.wordDetail.WordDetailActivity;
 
@@ -140,7 +141,9 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                 Intent intent  = WordDetailActivity.getStartIntent(WordListActivity.this);
                 intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, true);
                 String inputName = mTvCommandFrame.getText().toString().trim();
-                if (Word.isLegalWordName(inputName) && mWordListAdapter.getItemCount() == 0) { // 单词合法，并且没有找到结果，自动添加
+                Word matchWord = mWordListAdapter.getItemDate(0);
+                if (WordUtil.isGeneralizedWord(inputName)
+                        &&(matchWord == null || !matchWord.name.equals(inputName))) { // 单词合法，并且没有找到结果，自动添加
                     intent.putExtra(WordDetailActivity.INTENT_EXTRA_ADD_NAME, inputName);
                 }
                 startActivity(intent);

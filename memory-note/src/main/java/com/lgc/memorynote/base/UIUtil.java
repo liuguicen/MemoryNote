@@ -124,7 +124,7 @@ public class UIUtil {
         String[] split = name.split("-");
         ArrayList<String> rootList = new ArrayList<>();
         for (String s : split) {
-            if (!s.trim().isEmpty()) {
+            if (!(s=s.trim()).isEmpty()) {
                 rootList.add(s);
             }
         }

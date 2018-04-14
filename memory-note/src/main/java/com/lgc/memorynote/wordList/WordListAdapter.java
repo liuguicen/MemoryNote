@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.lgc.memorynote.R;
 import com.lgc.memorynote.base.UIUtil;
 import com.lgc.memorynote.data.Word;
-import com.lgc.memorynote.data.WordUtil;
 
 import java.util.List;
 
@@ -73,6 +72,13 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void setWordList(List<Word> WordList) {
         this.mWordList = WordList;
         notifyDataSetChanged();
+    }
+
+    public Word getItemDate(int position) {
+        if (mWordList != null && position >= 0 && position < mWordList.size()) {
+            return mWordList.get(position);
+        }
+        return null;
     }
 
     @Override
