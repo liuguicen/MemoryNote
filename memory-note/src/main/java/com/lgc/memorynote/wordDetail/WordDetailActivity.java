@@ -388,8 +388,8 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     @Override
     public void onBackPressed() {
-        if (mPresenter.isInEdit()) {
-             mPresenter.switchEdit();
+        if (mPresenter.isInEdit() && !TextUtils.isEmpty(getInputWordName().trim())) {
+            mPresenter.switchEdit();
         } else {
             Intent resIntent = new Intent();
             resIntent.putExtra(WordListActivity.IS_REFRESH_LIST, mPresenter.isRefreshList());
