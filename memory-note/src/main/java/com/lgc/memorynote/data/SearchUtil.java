@@ -69,7 +69,7 @@ public class SearchUtil {
         if (search.contains(Command.STRANGE_DEGREE)) {  // 按陌生度过滤
             String sd = search.substring(Command.STRANGE_DEGREE.length()).trim();
             // 赋极值
-            int bigger = Integer.MIN_VALUE, smaller = Integer.MAX_VALUE;
+            int bigger = Integer.MIN_VALUE, smaller = Integer.MAX_VALUE, equalor = Integer.MAX_VALUE;
             Matcher bigMatcher = Pattern.compile(">[ ]*(\\d+)").matcher(sd);
             if (bigMatcher.find()) {
                 bigger = Integer.valueOf(bigMatcher.group(1));
@@ -81,15 +81,20 @@ public class SearchUtil {
             }
 
             if (bigger == Integer.MAX_VALUE && smaller == Integer.MIN_VALUE) {
-                throw new NumberFormatException("比较格式错误");
+                Matcher equalMatcher = Pattern.compile("\\d+").matcher(sd);
+                if (equalMatcher.find()) {
+                    equalor = Integer.valueOf(equalMatcher.group());
+                } else {
+                    throw new NumberFormatException("比较格式错误");
+                }
             }
 
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
-                if (word.getStrangeDegree() > bigger && word.getStrangeDegree() < smaller) {
+                int innerSd = word.getStrangeDegree();
+                if (equalor == innerSd || (innerSd > bigger && innerSd < smaller)) {
                     WordWithComparator wordWithComparator = new WordWithComparator(word);
-                    wordWithComparator.addComparator(word.getStrangeDegree() * -1); // 倒序
-
+                    wordWithComparator.addComparator(innerSd * -1); // 倒序
                     searchedList.add(wordWithComparator);
                 }
             }
