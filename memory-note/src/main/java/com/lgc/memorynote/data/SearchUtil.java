@@ -69,21 +69,21 @@ public class SearchUtil {
         if (search.contains(Command.STRANGE_DEGREE)) {  // 按陌生度过滤
             String sd = search.substring(Command.STRANGE_DEGREE.length()).trim();
             // 赋极值
-            int bigger = Integer.MIN_VALUE, smaller = Integer.MAX_VALUE, equalor = Integer.MAX_VALUE;
-            Matcher bigMatcher = Pattern.compile(">[ ]*(\\d+)").matcher(sd);
-            if (bigMatcher.find()) {
-                bigger = Integer.valueOf(bigMatcher.group(1));
-            }
-
-            Matcher smallMatcher = Pattern.compile("<[ ]*(\\d+)").matcher(sd);
+            int bigger = Integer.MIN_VALUE, smaller = Integer.MAX_VALUE, equal = Integer.MAX_VALUE;
+            Matcher smallMatcher = Pattern.compile(">[ ]*(\\d+)").matcher(sd);
             if (smallMatcher.find()) {
                 smaller = Integer.valueOf(smallMatcher.group(1));
             }
 
-            if (bigger == Integer.MAX_VALUE && smaller == Integer.MIN_VALUE) {
+            Matcher bigMatcher = Pattern.compile("<[ ]*(\\d+)").matcher(sd);
+            if (bigMatcher.find()) {
+                bigger = Integer.valueOf(bigMatcher.group(1));
+            }
+
+            if (bigger == Integer.MIN_VALUE && smaller == Integer.MAX_VALUE) {
                 Matcher equalMatcher = Pattern.compile("\\d+").matcher(sd);
                 if (equalMatcher.find()) {
-                    equalor = Integer.valueOf(equalMatcher.group());
+                    equal = Integer.valueOf(equalMatcher.group());
                 } else {
                     throw new NumberFormatException("比较格式错误");
                 }
@@ -92,7 +92,7 @@ public class SearchUtil {
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
                 int innerSd = word.getStrangeDegree();
-                if (equalor == innerSd || (innerSd > bigger && innerSd < smaller)) {
+                if (equal == innerSd || (innerSd < bigger && innerSd > smaller)) {
                     WordWithComparator wordWithComparator = new WordWithComparator(word);
                     wordWithComparator.addComparator(innerSd * -1); // 倒序
                     searchedList.add(wordWithComparator);

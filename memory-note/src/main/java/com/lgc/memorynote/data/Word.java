@@ -116,7 +116,7 @@ public class Word {
     public boolean hasTags(List<String> outTagList) {
         if (this.tagList != null && outTagList != null) {
             for (String outTag : outTagList) {
-                if(outTagList.contains(outTag)) {
+                if(tagList.contains(outTag)) {
                     return true;
                 }
             }
