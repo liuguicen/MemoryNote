@@ -45,6 +45,10 @@ public class WordListContract {
 
         void showWordNumber();
 
+        void showInputCmd(String inputCmd);
+
+        void onClickSearch();
+
         int getListPosition();
 
         void restorePosition(int position);

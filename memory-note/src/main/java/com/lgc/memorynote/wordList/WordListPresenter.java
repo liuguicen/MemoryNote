@@ -62,6 +62,7 @@ public class WordListPresenter implements WordListContract.Presenter {
     @Override
     public void search() throws NumberFormatException {
         String inputCmd = mView.getInputCmd();
+        GlobalData.getInstance().saveLastInputCmd(inputCmd);
         if (inputCmd != null) {
             inputCmd = inputCmd.trim();
         }
@@ -80,7 +81,7 @@ public class WordListPresenter implements WordListContract.Presenter {
             }
 
             if (inputCmd.startsWith(Command.RMB)) {
-                saveCurRememberPosition();
+                saveCurPositionLong(mView.getListPosition());
                 return;
             }
 
@@ -106,9 +107,10 @@ public class WordListPresenter implements WordListContract.Presenter {
         inputCmd = InputAnalyzerUtil.analyzeInputCommand(inputCmd, mInputCmdList);
         mCmdList.addAll(mInputCmdList); // analyze and add current input cmd list
 
+        GlobalData.getInstance().saveLastCmd(mCmdList);
 
         mCurShowWordList = Command.orderByCommand(inputCmd, mCmdList, mGlobalData.getAllWord());
-        setUICommand(mCmdList);
+        doUICommand(mCmdList); // 执行UI相关的命令
         GlobalData.getInstance().setCurWords(mCurShowWordList);
         mView.refreshWordList(mCurShowWordList);
 
@@ -117,8 +119,12 @@ public class WordListPresenter implements WordListContract.Presenter {
         }
     }
 
-    private void saveCurRememberPosition() {
-        boolean res = SpUtil.saveCurRememberPosition(mCmdList, mView.getListPosition());
+    /**
+     * 将当前命令以及位置记录下来，放到外存中，长期
+     * @param position
+     */
+    public void saveCurPositionLong(int position) {
+        boolean res = SpUtil.saveCurRememberPosition(mCmdList, position);
         if (res) {
             Toast.makeText(mContext, "保存记录位置成功", Toast.LENGTH_LONG).show();
         } else {
@@ -150,7 +156,7 @@ public class WordListPresenter implements WordListContract.Presenter {
         return mCmdList;
     }
 
-    public void setUICommand(List<String> UICommand) {
+    public void doUICommand(List<String> UICommand) {
         boolean isHideMeaning = false;
         boolean isHideWord = false;
         for (String s : UICommand) {
@@ -174,5 +180,12 @@ public class WordListPresenter implements WordListContract.Presenter {
             return false;
         }
         return true;
+    }
+
+    public void doLastCmd() {
+        mView.showInputCmd(GlobalData.getInstance().getLastInputCmd());
+        mCmdList = GlobalData.getInstance().getLastCmd();
+        mView.updateCommandText(Command.commandList, mCmdList);
+        mView.onClickSearch();
     }
 }

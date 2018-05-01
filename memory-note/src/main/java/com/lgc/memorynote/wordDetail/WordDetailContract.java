@@ -73,6 +73,8 @@ public interface WordDetailContract {
 
         void checkWordValidity();
 
+        boolean checkRepeat();
+
         /**
          * 同步相似单词，也就是获取其它单词中相似单词列表中包含这个单词的，将那个单词的列表同步的这上面来
          */
@@ -98,5 +100,7 @@ public interface WordDetailContract {
         void setStrangeDegree(int i);
 
         void saveInputAssistant();
+
+        void setClickName();
     }
 }

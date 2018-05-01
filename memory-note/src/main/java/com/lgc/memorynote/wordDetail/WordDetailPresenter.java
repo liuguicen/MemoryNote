@@ -30,6 +30,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     private Context mContext;
     private Word mWord;
     private boolean isRefreshList = false;
+    private boolean mIsClickName = false;
 
     WordDetailPresenter(WordDetailContract.View wordDetailView) {
         mView = wordDetailView;
@@ -69,6 +70,11 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             showData(mWord,
                     false);
         }
+    }
+
+    @Override
+    public void setClickName() {
+        mIsClickName = true;
     }
 
     @Override
@@ -188,6 +194,19 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                 return;
             }
         }
+    }
+
+    public boolean checkRepeat() {
+        if (mIsClickName) {
+            String inputName = mView.getInputWordName().trim();
+            if (mIsAdd || !inputName.equals(mWord.getName())) {  // 名字发生变动
+                if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), inputName) != null) {
+                    mView.showSaveFailed(AppConstant.REPETITIVE_WORD);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void showData(Word word, boolean isSwitchEdit) {

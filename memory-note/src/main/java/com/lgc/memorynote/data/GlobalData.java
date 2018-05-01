@@ -25,9 +25,20 @@ public class GlobalData {
     private static List<Word> mAllWords = new ArrayList<>();
     private static List<Word> mShowWords = new ArrayList<>();
 
-    private static List<String> recentCmdList;
+    /**
+     * 最近输入的命令，存下来
+     */
+    private static List<String> recentInputCmdList;
+
+    /**
+     * 最近的命令，只放到内存中
+     */
+    private static List<String> mRecentCmd;
+    private String mLastInputCmd;
+
     private User mUser;
     boolean mIsCheckedUser = false;
+
 
     // 静态内部类单例，比较好的用法
     public static final class H {
@@ -45,6 +56,7 @@ public class GlobalData {
         mUser = User.getInstance();
         mUser.setName(SpUtil.getUserName());
         mUser.setPassword(SpUtil.getUserPassword());
+        mRecentCmd = new ArrayList<>();
         Logcat.e(System.currentTimeMillis());
     }
 
@@ -258,23 +270,23 @@ public class GlobalData {
     }
 
     public List<String> getRecentCmd() {
-        if (recentCmdList == null) {
-            readRecentCmd();
+        if (recentInputCmdList == null) {
+            readRecentInputCmd();
         }
-        return recentCmdList;
+        return recentInputCmdList;
     }
 
     public void updateInputCmd(String cmd) {
         if (cmd.trim().isEmpty()) return;
-        int id = recentCmdList.indexOf(cmd); // 先检查是否存在
+        int id = recentInputCmdList.indexOf(cmd); // 先检查是否存在
         // Command.INPUT_COMMAND_LIST 在最前面
         if (id < 0) {
-            if (recentCmdList.size() > AppConstant.RECENT_CMD_LIMIT) {
-                recentCmdList.remove(recentCmdList.size() - 1);
+            if (recentInputCmdList.size() > AppConstant.RECENT_CMD_LIMIT) {
+                recentInputCmdList.remove(recentInputCmdList.size() - 1);
             }
             addInputCmd(cmd);
         } else if (!Command.INPUT_COMMAND_LIST.contains(cmd)) { // 放到最开始位置
-           recentCmdList.remove(id);
+           recentInputCmdList.remove(id);
            addInputCmd(cmd);
         }
     }
@@ -284,28 +296,44 @@ public class GlobalData {
     private void addInputCmd(String cmd) {
         // 加入最近输入的单词3个
         int first = FRONT_CMD_NUMBER - 1;
-        if (recentCmdList.size() < FRONT_CMD_NUMBER) {
-            first = recentCmdList.size() - 1;
+        if (recentInputCmdList.size() < FRONT_CMD_NUMBER) {
+            first = recentInputCmdList.size() - 1;
         }
-        if (!Command.INPUT_COMMAND_LIST.contains(recentCmdList.get(first))) { // 最近输入满
-            String old  = recentCmdList.remove(first);
-            recentCmdList.add(Command.INPUT_COMMAND_LIST.size() + first + 1, old);
+        if (!Command.INPUT_COMMAND_LIST.contains(recentInputCmdList.get(first))) { // 最近输入满
+            String old  = recentInputCmdList.remove(first);
+            recentInputCmdList.add(Command.INPUT_COMMAND_LIST.size() + first + 1, old);
         }
-        recentCmdList.add(0, cmd);
+        recentInputCmdList.add(0, cmd);
     }
 
-    public void saveRecentCmd() {
-        SpUtil.saveRecentCmd(recentCmdList);
+    public void saveRecentInputCmd() {
+        SpUtil.saveRecentCmd(recentInputCmdList);
     }
 
-    public void readRecentCmd() {
-        recentCmdList = SpUtil.getRecentCmdList();
+    public void readRecentInputCmd() {
+        recentInputCmdList = SpUtil.getRecentCmdList();
         // Command.INPUT_COMMAND_LIST 在最前面
         for (String oneCmd : Command.INPUT_COMMAND_LIST) {
-            if (!recentCmdList.contains(oneCmd)) {
-                recentCmdList.add(0, oneCmd);
+            if (!recentInputCmdList.contains(oneCmd)) {
+                recentInputCmdList.add(0, oneCmd);
             }
         }
+    }
+
+    public void saveLastCmd(List<String> lastCmd) {
+        mRecentCmd = lastCmd;
+    }
+
+    public List<String> getLastCmd() {
+        return new ArrayList<>(mRecentCmd); // 防止破坏
+    }
+
+    public void saveLastInputCmd(String lastInput) {
+        this.mLastInputCmd = lastInput;
+    }
+
+    public String getLastInputCmd() {
+        return mLastInputCmd;
     }
 
     public boolean isCheckedUser() {

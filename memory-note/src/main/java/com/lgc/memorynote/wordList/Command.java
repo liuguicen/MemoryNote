@@ -24,9 +24,9 @@ public class Command {
     public static final String _stra_ui  = "不熟";
     public static final int _stra_id  = 1;
     /** 按最后记忆时间 */
-    public static final String _last  = COMMAND_START + "last";
-    public static final String _last_ui  = "时间";
-    public static final int _last_id  = 2;
+    public static final String _time = COMMAND_START + "last";
+    public static final String _time_ui = "时间";
+    public static final int _time_id = 2;
     /** 按字典序 */
     public static final String _dict  = COMMAND_START + "dict";
     public static final String _dict_ui  = "字母";
@@ -82,18 +82,23 @@ public class Command {
     public static final String _hdw_ui = "藏词";
     public static final int _hdw_id    = 13;
 
+    /**  上一次的命令 **/
+    public static final String _lc = COMMAND_START + "lc";
+    public static final String _lc_ui = "上次";
+    public static final int _lc_id = 14;
+
 
     public static final List<String> commandList = new ArrayList<String>(){{
-            add(_stra);  add(_last);
+            add(_stra);  add(_time); add(_hdm);   add(_dict);
 
-            add(_hdm);   add(_hdw);   add(_sheng); add(_guai);
+            add(_sheng); add(_guai); add(_len);   add(_lc);
 
-            add(_dict);  add(_len);   add(_sn);    add(_rev);
+            add(_sn);    add(_rev);   add(_hdw);  add(_word);
 
-            add(_word);  add(_phr);   add(_sim);}};
+            add(_phr);   add(_sim);}};
 
     public static final Map<String, String> UICommandMap = new HashMap<String, String>(){{
-            put(_stra, _stra_ui);  put(_last, _last_ui);
+            put(_stra, _stra_ui);  put(_time, _time_ui);  put(_lc, _lc_ui);
 
             put(_hdw,  _hdw_ui);   put(_hdm, _hdm_ui);    put(_sheng, _sheng_ui);  put(_guai, _guai_ui);
 
@@ -151,7 +156,7 @@ public class Command {
 
 
     /**
-     * 排序，会生成一个新的列表，不改变原来的数据
+     * 主要包括排序和过滤，会生成一个新的列表，不改变原来的数据
      * @param commandList 必须是标准的命令才有效
      * @param search 用户输入的搜索命令
      */

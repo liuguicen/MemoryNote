@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,7 +26,7 @@ import com.lgc.memorynote.wordList.WordListActivity;
 
 import java.util.List;
 
-public class WordDetailActivity extends AppCompatActivity implements WordDetailContract.View{
+public class WordDetailActivity extends AppCompatActivity implements WordDetailContract.View, View.OnTouchListener {
 
     public static final String INTENT_EXTRA_WORD_NAME = "intent_extra_word_detail_word_name";
     public static final String INTENT_EXTRA_IS_ADD = "intent_extra_word_detail_is_add";
@@ -85,6 +86,8 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         lastInputType = mTvRememberWay.getInputType();
         mBtnEdit.setOnClickListener(this);
         mDeleteView.setOnClickListener(this);
+        mTvWordMeaning.setOnTouchListener(this);
+        mTvWordName.setOnTouchListener(this);
         findViewById(R.id.add_strange_degree).setOnClickListener(this);
         findViewById(R.id.reduce_strange_degree).setOnClickListener(this);
         findViewById(R.id.btn_sync_similar).setOnClickListener(this);
@@ -152,6 +155,19 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
             case R.id.btn_save_assistant:
                 mPresenter.saveInputAssistant();
         }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (v.getId()) {
+            case R.id.et_word_detail_name:
+                mPresenter.setClickName();
+                break;
+            case R.id.et_word_detail_meaning:
+                mPresenter.checkRepeat();
+                break;
+        }
+        return false;
     }
 
     /**

@@ -1,9 +1,6 @@
 package com.lgc.memorynote.wordList;
 
-import android.support.annotation.NonNull;
-
 import com.lgc.memorynote.R;
-import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.data.Word;
 import com.lgc.memorynote.data.WordWithComparator;
@@ -57,7 +54,7 @@ public class SortUtil {
         public int sortString2int(String sort) {
             if (Command._stra.equals(sort)) {
                 return _stra;
-            } else if (Command._last.equals(sort)) {
+            } else if (Command._time.equals(sort)) {
                 return _last;
             } else if (Command._sn.equals(sort)) {
                 return _sn;
@@ -80,7 +77,7 @@ public class SortUtil {
             for (String order : finalOrderList) {
                 if (Command._stra.equals(order)) {
                     sortList.add(_stra);
-                } else if (Command._last.equals(order)) {
+                } else if (Command._time.equals(order)) {
                     sortList.add(_last);
                 } else if (Command._sn.equals(order)) {
                     sortList.add(_sn);
