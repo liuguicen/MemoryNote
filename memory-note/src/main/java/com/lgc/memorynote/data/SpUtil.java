@@ -2,11 +2,8 @@ package com.lgc.memorynote.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Pair;
 
-import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.base.MemoryNoteApplication;
-import com.lgc.memorynote.data.AppConstant;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,6 +24,7 @@ public class SpUtil {
     private static final String USER_NAME = "user_name";
     private static final String USER_PASSWORD = "user_password";
     private static final String CMD_RECENT = "cmd_list";
+    private static final String LAST_REMEMBER_INPUT = "last_remember_input";
     private static final String LAST_REMEMBER_CMD = "last_remember_cmd";
     private static final String LAST_REMENBER_POSITION = "position";
     private static final String USER_SP_NAME = "user";
@@ -41,17 +39,19 @@ public class SpUtil {
      *
      * @return if remember success
      */
-    public static boolean saveCurRememberPosition(List<String> cmdList, int position) {
+    public static boolean saveSearchData(SearchData searchData) {
         SharedPreferences.Editor spEditor = sp.edit();
-        spEditor.putStringSet(LAST_REMEMBER_CMD, new HashSet<>(cmdList));
-        spEditor.putInt(LAST_REMENBER_POSITION, position);
+        spEditor.putString(LAST_REMEMBER_INPUT, searchData.inputCmd);
+        spEditor.putStringSet(LAST_REMEMBER_CMD, new HashSet<>(searchData.cmdList));
+        spEditor.putInt(LAST_REMENBER_POSITION, searchData.position);
         return spEditor.commit();
     }
 
-    public static Pair<ArrayList<String>, Integer> getLastRemberState() {
+    public static SearchData getLastSearchData() {
+        String inputCmd = sp.getString(LAST_REMEMBER_INPUT, "");
         Set<String> stringSet = sp.getStringSet(LAST_REMEMBER_CMD, new HashSet<String>());
         int position = sp.getInt(LAST_REMENBER_POSITION, -1);
-        return new Pair<>(new ArrayList<>(stringSet), position);
+        return new SearchData(inputCmd, new ArrayList<>(stringSet), position);
     }
 
     public static boolean saveUploadState(String msg) {

@@ -1,5 +1,7 @@
 package com.lgc.memorynote.base;
 
+import android.support.annotation.NonNull;
+
 import com.lgc.memorynote.data.Word;
 
 import java.util.ArrayList;
@@ -29,37 +31,6 @@ public class InputAnalyzerUtil {
             this.msg = msg;
         }
     }
-
-    /**
-     * analyze cmd, will change it and return it
-     * @param inputCmd
-     * @param commandList
-     * @return
-     */
-    public static String analyzeInputCommand(String inputCmd, List<String> commandList) {
-        if (inputCmd == null || commandList == null) return inputCmd;
-        inputCmd = inputCmd.trim();
-        if(inputCmd.isEmpty()) return inputCmd;
-
-        int tagEnd = 0;
-        if (inputCmd.startsWith(Word.TAG_START)) { // has tag cmd
-            Matcher tagMather = Pattern.compile("@.+?\\s").matcher(inputCmd);
-            while (tagMather.find()) {
-                tagEnd = tagMather.end();
-                String tag = tagMather.group().trim();
-                if (tag.length() <= Word.TAG_START.length()) continue;
-                commandList.add(tag);
-            }
-        }
-
-        // second handle the meaning, if the meaning is null, the tag is valid\
-        if (tagEnd >= 1) tagEnd--;
-        if (tagEnd >= inputCmd.length())
-            return "";
-        String search = inputCmd.substring(tagEnd, inputCmd.length()).trim();
-        return search;
-    }
-
 
     /**
      * 解析用户输入的单词的意思的数据

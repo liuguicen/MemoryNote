@@ -33,12 +33,12 @@ public class GlobalData {
     /**
      * 最近的命令，只放到内存中
      */
-    private static List<String> mRecentCmd;
-    private String mLastInputCmd;
+    private static List<SearchData> mRecentCmd;
+    public static int mCurCmdId = 0;
+    public static final int MAX_RECENT_CMD_SIZE = 5;
 
     private User mUser;
     boolean mIsCheckedUser = false;
-
 
     // 静态内部类单例，比较好的用法
     public static final class H {
@@ -56,7 +56,7 @@ public class GlobalData {
         mUser = User.getInstance();
         mUser.setName(SpUtil.getUserName());
         mUser.setPassword(SpUtil.getUserPassword());
-        mRecentCmd = new ArrayList<>();
+        mRecentCmd = new ArrayList<>(5);
         Logcat.e(System.currentTimeMillis());
     }
 
@@ -320,20 +320,35 @@ public class GlobalData {
         }
     }
 
-    public void saveLastCmd(List<String> lastCmd) {
-        mRecentCmd = lastCmd;
+    public void addLastSearchData(SearchData searchDate) {
+        mRecentCmd.add(searchDate);
+        if (mRecentCmd.size() > MAX_RECENT_CMD_SIZE) {
+            mRecentCmd.remove(0);
+        }
     }
 
-    public List<String> getLastCmd() {
-        return new ArrayList<>(mRecentCmd); // 防止破坏
+    public SearchData getPrevCmd() {
+        if (mCurCmdId < mRecentCmd.size() - 1) {
+            mCurCmdId++;
+            return mRecentCmd.get(mCurCmdId);
+        } else {
+            return mRecentCmd.get(mCurCmdId);
+        }
     }
 
-    public void saveLastInputCmd(String lastInput) {
-        this.mLastInputCmd = lastInput;
+    public void removeLastCmd() {
+        if (mRecentCmd.size() > 0) {
+            mRecentCmd.remove(0);
+        }
     }
 
-    public String getLastInputCmd() {
-        return mLastInputCmd;
+    public SearchData getNextCmd() {
+        if (mCurCmdId > 0) {
+            mCurCmdId--;
+            return mRecentCmd.get(mCurCmdId);
+        } else {
+            return mRecentCmd.get(0);
+        }
     }
 
     public boolean isCheckedUser() {

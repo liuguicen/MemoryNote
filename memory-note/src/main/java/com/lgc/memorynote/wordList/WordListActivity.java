@@ -157,7 +157,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                 } else {
                     mTvCommandList.setMaxLines(1);
                 }
-                updateCommandText(Command.commandList, mPresenter.getChoseCommand());
+                updateCommandText(Command.CLICKABLE_CMD_LIST, mPresenter.getChoseCommand());
                 mTvCommandList.setVisibility(View.GONE);
                 mTvCommandList.setVisibility(View.VISIBLE);
                 mTvCommandList.requestLayout();
@@ -280,7 +280,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         for (int i = 0; i < maxNumber; i++) {
             String one  = commandList.get(i);
             UICommandList.add(
-                    new Pair<>(Command.UICommandMap.get(one), one));
+                    new Pair<>(Command.UI_COMMAND_MAP.get(one), one));
         }
 
         // 构造出所有命令的字符串
@@ -399,9 +399,12 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         @Override
         public void onClick(View widget) {
             if (Command._lc.equals(mCommand)) {
-                mPresenter.doLastCmd();
+                mPresenter.doPrevCmd();
+            } else if (Command._rmb.equals(mCommand)) {
+                mPresenter.saveSearchData();
+            } else {
+                mPresenter.switchOneCommand(mCommand);
             }
-            mPresenter.switchOneCommand(mCommand);
         }
 
         @Override

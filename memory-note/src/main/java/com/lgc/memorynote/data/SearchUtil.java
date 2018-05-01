@@ -66,8 +66,8 @@ public class SearchUtil {
             return true;
         }
 
-        if (search.contains(Command.STRANGE_DEGREE)) {  // 按陌生度过滤
-            String sd = search.substring(Command.STRANGE_DEGREE.length()).trim();
+        if (search.contains(Command._strange_degree)) {  // 按陌生度过滤
+            String sd = search.substring(Command._strange_degree.length()).trim();
             // 赋极值
             int bigger = Integer.MIN_VALUE, smaller = Integer.MAX_VALUE, equal = Integer.MAX_VALUE;
             Matcher smallMatcher = Pattern.compile(">[ ]*(\\d+)").matcher(sd);
@@ -98,18 +98,18 @@ public class SearchUtil {
                     searchedList.add(wordWithComparator);
                 }
             }
-        } else if (search.startsWith(Command.REGEX_SERACH)) {  // 正则式搜索
-            int lastId = Command.REGEX_SERACH.length();
+        } else if (search.startsWith(Command._regex_search)) {  // 正则式搜索
+            int lastId = Command._regex_search.length();
 
             boolean global = false;
-            int globalId = search.indexOf(Command.GLOBAL);
+            int globalId = search.indexOf(Command._global);
             if (globalId >= lastId) {
                 global = true;
-                lastId = globalId + Command.GLOBAL.length();
+                lastId = globalId + Command._global.length();
             }
             if (globalId < 0) globalId = search.length();
 
-            String regex = search.substring(Command.REGEX_SERACH.length(), globalId).trim();
+            String regex = search.substring(Command._regex_search.length(), globalId).trim();
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
                 String data;

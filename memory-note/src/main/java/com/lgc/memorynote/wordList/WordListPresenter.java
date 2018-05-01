@@ -1,10 +1,9 @@
 package com.lgc.memorynote.wordList;
 
 import android.content.Context;
-import android.util.Pair;
 import android.widget.Toast;
 
-import com.lgc.memorynote.base.InputAnalyzerUtil;
+import com.lgc.memorynote.data.SearchData;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SpUtil;
 import com.lgc.memorynote.data.Word;
@@ -29,6 +28,7 @@ public class WordListPresenter implements WordListContract.Presenter {
     private List<String> mInputCmdList = new ArrayList<>();
     private List<Word> mCurShowWordList = new ArrayList<>();
     private final GlobalData mGlobalData;
+    private String mLastInputCmd;
 
     public WordListPresenter(WordListContract.View view) {
         mView = view;
@@ -41,8 +41,8 @@ public class WordListPresenter implements WordListContract.Presenter {
 
     @Override
     public void start() throws Exception {
-        mCurShowWordList = GlobalData.getInstance().getShowWords();
-        mView.updateCommandText(Command.commandList, mCmdList);
+        mCurShowWordList = mGlobalData.getShowWords();
+        mView.updateCommandText(Command.CLICKABLE_CMD_LIST, mCmdList);
         search();
     }
 
@@ -53,7 +53,7 @@ public class WordListPresenter implements WordListContract.Presenter {
         } else {
             mCmdList.remove(command);
         }
-        mView.updateCommandText(Command.commandList, mCmdList);
+        mView.updateCommandText(Command.CLICKABLE_CMD_LIST, mCmdList);
     }
 
     /**
@@ -61,57 +61,46 @@ public class WordListPresenter implements WordListContract.Presenter {
      */
     @Override
     public void search() throws NumberFormatException {
+        // 搜索之前，将上一次搜索的数据加进去
+        mGlobalData.addLastSearchData(
+                new SearchData(mLastInputCmd, mCmdList, mView.getListPosition()));
+
         String inputCmd = mView.getInputCmd();
-        GlobalData.getInstance().saveLastInputCmd(inputCmd);
-        if (inputCmd != null) {
-            inputCmd = inputCmd.trim();
-        }
+        inputCmd = inputCmd != null ? inputCmd.trim() : "";
+        recordInputCmd(inputCmd);
+
         int lastPosition = -1;
-        if (inputCmd != null) {
-            mGlobalData.updateInputCmd(inputCmd); // 记录更新
-            if (inputCmd.startsWith(Command.OPEN_SETTING)) {
-                mView.setSettingActivity();
-                mView.clearCommandEt();
-                return;
-            }
 
-            if (inputCmd.startsWith(Command.WORD_NUMBER)) {
-                mView.showWordNumber();
-                return;
-            }
+        // 第一步,输入框中的命令优先
+        if (inputCmd.startsWith(Command._restore)) { // 恢复，放在第一步
+            SearchData searchData = SpUtil.getLastSearchData();
 
-            if (inputCmd.startsWith(Command.RMB)) {
-                saveCurPositionLong(mView.getListPosition());
-                return;
-            }
+            // 相当于重新输入了命令
+            mView.showInputCmd(searchData.inputCmd);
+            inputCmd = searchData.inputCmd != null ? searchData.inputCmd.trim() : "";
+            recordInputCmd(inputCmd);
 
-            if (inputCmd.startsWith(Command.RST)) {
-                inputCmd = "";
+            mCmdList.clear();
+            mCmdList.addAll(searchData.cmdList);
+            mView.updateCommandText(Command.CLICKABLE_CMD_LIST, mCmdList);
 
-                // get saved date
-                Pair<ArrayList<String>, Integer> pair = SpUtil.getLastRemberState();
-
-                if (!pair.first.isEmpty() && pair.second >= 0) {
-                    lastPosition = pair.second;
-                    // remove all cur chosen and add all saved cmd
-                    mCmdList.clear();
-                    mCmdList.addAll(pair.first);
-                    mView.updateCommandText(Command.commandList, mCmdList);
-                }
-            }
+            lastPosition = searchData.position;
         }
 
-        mCmdList.removeAll(mInputCmdList);
-        mInputCmdList.clear(); //  clear last input cmd list first
+        if (inputCmd.startsWith(Command._open_setting)) {
+            mView.setSettingActivity();
+            mView.clearCommandEt();
+            return;
+        }
 
-        inputCmd = InputAnalyzerUtil.analyzeInputCommand(inputCmd, mInputCmdList);
-        mCmdList.addAll(mInputCmdList); // analyze and add current input cmd list
-
-        GlobalData.getInstance().saveLastCmd(mCmdList);
+        if (inputCmd.startsWith(Command._word_number)) {
+            mView.showWordNumber();
+            return;
+        }
 
         mCurShowWordList = Command.orderByCommand(inputCmd, mCmdList, mGlobalData.getAllWord());
         doUICommand(mCmdList); // 执行UI相关的命令
-        GlobalData.getInstance().setCurWords(mCurShowWordList);
+        mGlobalData.setCurWords(mCurShowWordList);
         mView.refreshWordList(mCurShowWordList);
 
         if (lastPosition >= 0) {
@@ -119,12 +108,17 @@ public class WordListPresenter implements WordListContract.Presenter {
         }
     }
 
+    private void recordInputCmd(String inputCmd) {
+        if (!inputCmd.isEmpty())
+            mGlobalData.updateInputCmd(inputCmd); // 记录更新
+        mLastInputCmd = inputCmd;
+    }
+
     /**
      * 将当前命令以及位置记录下来，放到外存中，长期
-     * @param position
      */
-    public void saveCurPositionLong(int position) {
-        boolean res = SpUtil.saveCurRememberPosition(mCmdList, position);
+    public void saveSearchData() {
+        boolean res = SpUtil.saveSearchData(new SearchData(mView.getInputCmd(), mCmdList, mView.getListPosition()));
         if (res) {
             Toast.makeText(mContext, "保存记录位置成功", Toast.LENGTH_LONG).show();
         } else {
@@ -141,7 +135,7 @@ public class WordListPresenter implements WordListContract.Presenter {
     public void addStrange(int position) {
         Word word = mCurShowWordList.get(position);
         word.setStrangeDegree(word.strangeDegree + 1);
-        GlobalData.getInstance().updateWord(word);
+        mGlobalData.updateWord(word);
     }
 
     @Override
@@ -182,10 +176,14 @@ public class WordListPresenter implements WordListContract.Presenter {
         return true;
     }
 
-    public void doLastCmd() {
-        mView.showInputCmd(GlobalData.getInstance().getLastInputCmd());
-        mCmdList = GlobalData.getInstance().getLastCmd();
-        mView.updateCommandText(Command.commandList, mCmdList);
+    public void doPrevCmd() {
+        SearchData searchData = mGlobalData.getPrevCmd();
+        mView.showInputCmd(searchData.inputCmd);
+        mCmdList = searchData.cmdList;
+        mView.updateCommandText(Command.CLICKABLE_CMD_LIST, mCmdList);
         mView.onClickSearch();
+
+//  搜索上次结果之后，不是主动的搜索，也会加入列表，这里将其删除，
+        mGlobalData.removeLastCmd();
     }
 }

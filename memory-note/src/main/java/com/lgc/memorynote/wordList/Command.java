@@ -7,14 +7,13 @@ import com.lgc.memorynote.data.WordWithComparator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * 小命令行系统中的命令
- * 目前的命令分两种，一种是搜索的，可以是单词，短语，汉语意思
- * 另一种是规定好的命令，以--开头，
+ * 小命令行系统中的命令，模仿成熟的命令行系统，
+ * 这里多了通过点击添加命令的功能，一般的命令行就是输入命令，点击的时候，点击一个就相当于输入了该命令
  */
 public class Command {
     /************************* 排序相关的命令***************************/
@@ -88,76 +87,77 @@ public class Command {
     public static final int _lc_id = 14;
 
 
-    public static final List<String> commandList = new ArrayList<String>(){{
-            add(_stra);  add(_time); add(_hdm);   add(_dict);
-
-            add(_sheng); add(_guai); add(_len);   add(_lc);
-
-            add(_sn);    add(_rev);   add(_hdw);  add(_word);
-
-            add(_phr);   add(_sim);}};
-
-    public static final Map<String, String> UICommandMap = new HashMap<String, String>(){{
-            put(_stra, _stra_ui);  put(_time, _time_ui);  put(_lc, _lc_ui);
-
-            put(_hdw,  _hdw_ui);   put(_hdm, _hdm_ui);    put(_sheng, _sheng_ui);  put(_guai, _guai_ui);
-
-            put(_dict, _dict_ui);  put(_len , _len_ui);   put(_sn, _sn_ui);        put(_rev, _rev_ui);
-
-            put(_word, _word_ui);  put(_phr,  _phr_ui);   put(_sim, _sim_ui);
-    }};
-
     /*******************输入的命令******************/
+    // 这里想法有些偏差，实际上输入的命令和点击的命令应该是同种类型的，只不过多了UI，不用特别分开，统一的才能一起处理，相互转化，反之则麻烦
     /** 进入设置 **/
-    public static final String OPEN_SETTING     = COMMAND_START + "setting";
+    public static final String _open_setting = COMMAND_START + "setting";
     public static final int OPEN_SETTING_ID     = 14;
 
     /** 显示单词数量 **/
-    public static final String WORD_NUMBER      = COMMAND_START + "number";
+    public static final String _word_number = COMMAND_START + "number";
     public static final int WORD_NUMBER_ID      = 15;
 
     /** 使用正则式搜索 **/
-    public static final String REGEX_SERACH     = COMMAND_START + "re";
+    public static final String _regex_search = COMMAND_START + "re";
     public static final int REGEX_SEARCH_ID     = 16;
 
     /** 记录当前记忆的位置 **/
-    public static final String RMB              = COMMAND_START + "rmb";
+    public static final String _rmb = COMMAND_START + "rmb";
+    public static final String _rmb_ui = "记录";
     public static final int RMB_ID              = 17;
 
     /** 恢复到上次记忆的位置 **/
-    public static final String RST              = COMMAND_START + "rst";
+    public static final String _restore = COMMAND_START + "rst";
     public static final int RST_ID              = 18;
 
     /** 陌生度 **/
-    public static final String STRANGE_DEGREE   = COMMAND_START + "sd";
+    public static final String _strange_degree = COMMAND_START + "sd";
     public static final int STRANGE_DEGREE_ID   = 19;
 
     /** 搜索所有数据 */
-    public static final String GLOBAL = "-g";
+    public static final String _global = "-g";
     public static final int GLOBAL_ID   = 20;
 
+    // 加入顺序就是显示顺序
+    public static final Map<String, String> UI_COMMAND_MAP = new LinkedHashMap<String, String>(){{
+        put(_stra, _stra_ui);    put(_time, _time_ui);   put(_hdm, _hdm_ui);     put(_dict, _dict_ui);
+
+        put(_sheng, _sheng_ui);  put(_guai, _guai_ui);   put(_len , _len_ui);    put(_lc, _lc_ui);
+
+        put(_sn, _sn_ui);        put(_rev, _rev_ui);     put(_rmb,  _rmb_ui);    put(_word, _word_ui);
+
+        put(_phr,  _phr_ui);     put(_sim, _sim_ui);
+    }};
+
+    // 要加到可点击列表中的
+    public static final List<String> CLICKABLE_CMD_LIST = new ArrayList<>();
+    static {
+        for (Map.Entry<String, String> entry : UI_COMMAND_MAP.entrySet()) {
+                CLICKABLE_CMD_LIST.add(entry.getKey());
+        }
+    }
 
     public static final List<String> INPUT_COMMAND_LIST = new ArrayList<String>(){{
-        add(REGEX_SERACH);  add(RMB);           add(RST);
-        add(OPEN_SETTING);  add(WORD_NUMBER);   add(STRANGE_DEGREE);
+        add(_regex_search);  add(_rmb);           add(_restore);
+        add(_open_setting);  add(_word_number);   add(_strange_degree);
     }};
 
     public static final String TAG_START = Word.TAG_START;
     public static final String commandGuide
-                   = "   " + OPEN_SETTING + " 进入设置界面\n"
-                   + "   " + WORD_NUMBER + " 当前列表单词数量\n"
-                   + "   " + REGEX_SERACH + " 正则式搜索，仅支持单词名称\n"
-                   + "   " + RMB + " 记录当前的记忆位置\n"
-                   + "   " + RST + " 恢复上次记忆位置\n"
-                   + "   " + STRANGE_DEGREE  + "陌生度过滤， 比如" + STRANGE_DEGREE +">8" + "\n"
-                   + "   " + GLOBAL + "加载搜索命令后面，搜索单词所有数据\n"
+                   = "   " + _open_setting + " 进入设置界面\n"
+                   + "   " + _word_number + " 当前列表单词数量\n"
+                   + "   " + _regex_search + " 正则式搜索，仅支持单词名称\n"
+                   + "   " + _rmb + " 记录当前的记忆位置\n"
+                   + "   " + _restore + " 恢复上次记忆位置\n"
+                   + "   " + _strange_degree + "陌生度过滤， 比如" + _strange_degree +">8" + "\n"
+                   + "   " + _global + "加载搜索命令后面，搜索单词所有数据\n"
                    + "   " + _sn_ui + "相似单词的数量\n"
                    + "   " + TAG_START + " 对单词添加标志，说明它的一些特性，比如词义怪，是个短语、词组等";
 
 
     /**
      * 主要包括排序和过滤，会生成一个新的列表，不改变原来的数据
-     * @param commandList 必须是标准的命令才有效
+     * @param commandList 必须是标准的命令才有效, 注意用过不会再用的命令，会从命令列表里面移除
      * @param search 用户输入的搜索命令
      */
     public static List<Word> orderByCommand(String search, List<String> commandList, List<Word> wordList) throws NumberFormatException{
@@ -171,17 +171,22 @@ public class Command {
             String grep = commandList.get(i);
             if (_phr.equals(grep)) {
                 SearchUtil.grepNotPhrase(resultList);
+                commandList.remove(i);
             } else if (_word.equals(grep)) {
                 SearchUtil.grepNotWord(resultList);
+                commandList.remove(i);
             } else if (grep != null && grep.startsWith(Word.TAG_START)) {
                 SearchUtil.grepNoTag(grep, resultList);
+                commandList.remove(i);
             }
         }
 
         // 第三步，进行排序操作
-        Comparator comparator = new SortUtil.WordComparator(commandList);
-        if (commandList.contains(Command._rev)) {
+        Comparator comparator = new SortUtil.WordComparator(commandList); // 注意用过不会再用的命令，会从命令列表里面移除
+        int id = commandList.indexOf(Command._rev);
+        if (id >= 0) {
             comparator = Collections.reverseOrder(comparator);
+            commandList.remove(id);
         }
         if (needSort && commandList.size() > 0) {
             Collections.sort(resultList, comparator);

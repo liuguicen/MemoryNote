@@ -74,17 +74,23 @@ public class SortUtil {
                 new ArrayList<>();
             }
             // 找出需要比较的顺序
-            for (String order : finalOrderList) {
+            for (int i = finalOrderList.size() - 1; i >= 0; i--) {
+                String order = finalOrderList.get(i);
                 if (Command._stra.equals(order)) {
                     sortList.add(_stra);
+                    finalOrderList.remove(i);
                 } else if (Command._time.equals(order)) {
                     sortList.add(_last);
+                    finalOrderList.remove(i);
                 } else if (Command._sn.equals(order)) {
                     sortList.add(_sn);
+                    finalOrderList.remove(i);
                 } else if (Command._dict.equals(order)) {
                     sortList.add(_dict);
+                    finalOrderList.remove(i);
                 } else if (Command._len.equals(order)) {
                     sortList.add(_len);
+                    finalOrderList.remove(i);
                 }
             }
         }

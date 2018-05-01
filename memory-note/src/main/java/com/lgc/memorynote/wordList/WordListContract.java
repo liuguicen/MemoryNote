@@ -79,5 +79,9 @@ public class WordListContract {
         List<String> getChoseCommand();
 
         boolean checkUser();
+
+        void doPrevCmd();
+
+        void saveSearchData();
     }
 }
