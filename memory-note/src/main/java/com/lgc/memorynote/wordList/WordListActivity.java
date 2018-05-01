@@ -37,7 +37,7 @@ import com.lgc.memorynote.wordDetail.WordDetailActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WordListActivity extends AppCompatActivity implements WordListContract.View{
+public class WordListActivity extends AppCompatActivity implements WordListContract.View {
 
     public static final int WORD_DETAIL_ACTIVITY_ONE = 1;
     public static final String IS_REFRESH_LIST = "is_research";
@@ -126,7 +126,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     }
 
     private void bindView() {
-        mTvCommandList = (TextView)findViewById(R.id.tv_command);
+        mTvCommandList = (TextView) findViewById(R.id.tv_command);
         mCommandInputEt = (AutoCompleteTextView) findViewById(R.id.et_command_frame);
         mWordListView = (RecyclerView) findViewById(R.id.lv_word_list);
     }
@@ -138,12 +138,12 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         findViewById(R.id.add_word).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent  = WordDetailActivity.getStartIntent(WordListActivity.this);
+                Intent intent = WordDetailActivity.getStartIntent(WordListActivity.this);
                 intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, true);
                 String inputName = mCommandInputEt.getText().toString().trim();
                 Word matchWord = mWordListAdapter.getItemDate(0);
                 if (WordUtil.isGeneralizedWord(inputName)
-                        &&(matchWord == null || !matchWord.name.equals(inputName))) { // 单词合法，并且没有找到结果，自动添加
+                        && (matchWord == null || !matchWord.name.equals(inputName))) { // 单词合法，并且没有找到结果，自动添加
                     intent.putExtra(WordDetailActivity.INTENT_EXTRA_ADD_NAME, inputName);
                 }
                 startActivity(intent);
@@ -167,17 +167,13 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         findViewById(R.id.btn_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!Util.RepetitiveEventFilter.isRepetitive(1000)) {
-                    onClickSearch();
-                    mIsNewClick = true;
-                } else {
-                    Logcat.d("repetitive click");
-                }
+                onClickSearch();
+                mIsNewClick = true;
             }
         });
 
         // about recyclerView
-        linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false);
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mWordListView.setLayoutManager(linearLayoutManager);
     }
 
@@ -185,6 +181,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         mCommandInputEt.setHint(SortUtil.getHingString());
         mCommandInputEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             boolean isRepeat = false;
+
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH ||
@@ -216,29 +213,23 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
         //创建一个ArrayAdapter，封装数组
         recentCmdAdapter = new ArrayAdapter<String>(this
-                ,android.R.layout.simple_dropdown_item_1line, mGlobalData.getRecentCmd());
+                , android.R.layout.simple_dropdown_item_1line, mGlobalData.getRecentCmd());
         mCommandInputEt.setAdapter(recentCmdAdapter);
         mCommandInputEt.setThreshold(0);
     }
 
     public void onClickSearch() {
-        onClickSearch(true);
-    }
-
-    public void onClickSearch(boolean recordData) {
         mIsNewClick = true;
-        try {
-            mPresenter.search(recordData);
-            recentCmdAdapter = new ArrayAdapter<String>(this
-                    ,android.R.layout.simple_dropdown_item_1line, mGlobalData.getRecentCmd());
-            mCommandInputEt.setAdapter(recentCmdAdapter);
-            mCommandInputEt.dismissDropDown();
-        } catch (NumberFormatException e) {
-            Toast.makeText(this, "输入数字格式错误", Toast.LENGTH_LONG).show();
-        } catch (Exception e) {}
+        mPresenter.search();
+        recentCmdAdapter = new ArrayAdapter<String>(this
+                , android.R.layout.simple_dropdown_item_1line, mGlobalData.getRecentCmd());
+        mCommandInputEt.setAdapter(recentCmdAdapter);
+        mCommandInputEt.dismissDropDown();
+        Util.hideKeyboard(mCommandInputEt);
     }
 
-    public @Nullable String getInputCmd() {
+    public @Nullable
+    String getInputCmd() {
         if (mCommandInputEt == null) return null;
         return mCommandInputEt.getText().toString();
     }
@@ -256,8 +247,8 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                 int position = itemHolder.getAdapterPosition();
                 switch (v.getId()) {
                     case R.id.lv_item_layout:
-                         startActivityWordDetail(mPresenter.getWordName(position));
-                         break;
+                        startActivityWordDetail(mPresenter.getWordName(position));
+                        break;
                     case R.id.lv_item_word_add_strange:
                         mPresenter.addStrange(position);
                         mWordListAdapter.notifyItemChanged(position);
@@ -269,11 +260,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                 }
             }
         });
-        try {
-            mPresenter.start();
-        } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+        mPresenter.start();
         mWordListView.setAdapter(mWordListAdapter);
         mWordListView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
     }
@@ -288,7 +275,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         }
 
         for (int i = 0; i < maxNumber; i++) {
-            String one  = commandList.get(i);
+            String one = commandList.get(i);
             UICommandList.add(
                     new Pair<>(Command.UI_COMMAND_MAP.get(one), one));
         }
@@ -298,7 +285,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         sb.append("  ");
         for (int i = 0; i < UICommandList.size(); i++) {
             sb.append(UICommandList.get(i).first);
-            if (i < UICommandList.size() -1) {
+            if (i < UICommandList.size() - 1) {
                 if (i % 4 == 3) {
                     sb.append("\n  ");
                 } else {
@@ -359,6 +346,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 
     /**
      * 进入界面，并且获取到图片信息之后开始显示
+     *
      * @param mCurShowWordList
      */
     @Override

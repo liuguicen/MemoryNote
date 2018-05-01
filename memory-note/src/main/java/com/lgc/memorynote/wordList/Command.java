@@ -23,7 +23,7 @@ public class Command {
     public static final String _stra_ui  = "不熟";
     public static final int _stra_id  = 1;
     /** 按最后记忆时间 */
-    public static final String _time = COMMAND_START + "last";
+    public static final String _time = COMMAND_START + "time";
     public static final String _time_ui = "时间";
     public static final int _time_id = 2;
     /** 按字典序 */

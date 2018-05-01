@@ -1,5 +1,6 @@
 package com.lgc.memorynote.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,11 +8,14 @@ import java.util.List;
  */
 public class SearchData {
     public String inputCmd;
-    public List<String> cmdList;
+    public List<String> cmdList = new ArrayList<>();
     public int position;
 
     public SearchData(String inputCmd, List<String> cmdList, int position) {
         this.inputCmd = inputCmd;
-        this.cmdList = cmdList;
+        this.cmdList.addAll(cmdList);
+    }
+
+    public SearchData() {
     }
 }

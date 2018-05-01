@@ -29,7 +29,11 @@ public class WordListPresenter implements WordListContract.Presenter {
     private List<String> mInputCmdList = new ArrayList<>();
     private List<Word> mCurShowWordList = new ArrayList<>();
     private final GlobalData mGlobalData;
-    private String mLastInputCmd;
+    private SearchData mLastSearchData;
+
+    // 搜索的一些配置项，搜索之前可能通过各个入口设置，搜索完成之后重置他们
+    private int mRestorePosition = -1;
+    private boolean mIsRecordSearchData = true;
 
     public WordListPresenter(WordListContract.View view) {
         mView = view;
@@ -41,7 +45,7 @@ public class WordListPresenter implements WordListContract.Presenter {
     }
 
     @Override
-    public void start() throws Exception {
+    public void start() {
         mCurShowWordList = mGlobalData.getShowWords();
         mView.updateCommandText(Command.CLICKABLE_CMD_LIST, mCmdList);
         search();
@@ -60,25 +64,21 @@ public class WordListPresenter implements WordListContract.Presenter {
     /**
      * 点击搜索，重新组织单词列表,搜索过程是种总的列表复制到新列表中，再对新列表进行排序，过滤
      */
-    public void search() throws Exception {
-        search(true);
-    }
-
     @Override
-    public void search(boolean recordSearchData) throws Exception {
+    public void search() {
         if (Util.RepetitiveEventFilter.isRepetitive(500)) // 过滤重复的
             return;
         // 搜索之前，将上一次搜索的数据加进去
-        if (recordSearchData) {
-            mGlobalData.addLastSearchData(
-                    new SearchData(mLastInputCmd, mCmdList, mView.getListPosition()));
+        if (mIsRecordSearchData && mLastSearchData != null) {
+            mLastSearchData.position = mView.getListPosition();
+            mGlobalData.addLastSearchData(mLastSearchData);
         }
+        mLastSearchData = new SearchData();
 
         String inputCmd = mView.getInputCmd();
         inputCmd = inputCmd != null ? inputCmd.trim() : "";
-        recordInputCmd(inputCmd);
+        recordInputCmd(mLastSearchData, inputCmd);
 
-        int lastPosition = -1;
 
         // 第一步,输入框中的命令优先
         if (inputCmd.startsWith(Command._restore)) { // 恢复，放在第一步
@@ -87,13 +87,13 @@ public class WordListPresenter implements WordListContract.Presenter {
             // 相当于重新输入了命令
             mView.showInputCmd(searchData.inputCmd);
             inputCmd = searchData.inputCmd != null ? searchData.inputCmd.trim() : "";
-            recordInputCmd(inputCmd);
+            recordInputCmd(mLastSearchData, inputCmd);
 
             mCmdList.clear();
             mCmdList.addAll(searchData.cmdList);
             mView.updateCommandText(Command.CLICKABLE_CMD_LIST, mCmdList);
 
-            lastPosition = searchData.position;
+            mRestorePosition = searchData.position;
         }
 
         if (inputCmd.startsWith(Command._open_setting)) {
@@ -107,23 +107,29 @@ public class WordListPresenter implements WordListContract.Presenter {
             return;
         }
 
+        mLastSearchData.cmdList.addAll(mCmdList);
         ArrayList<String> tempCmdList = new ArrayList<>(mCmdList);
         mCurShowWordList = Command.orderByCommand(inputCmd, tempCmdList, mGlobalData.getAllWord());
         doUICommand(tempCmdList); // 执行UI相关的命令
         mGlobalData.setCurWords(mCurShowWordList);
         mView.refreshWordList(mCurShowWordList);
 
-        if (lastPosition >= 0) {
-            mView.restorePosition(lastPosition);
+        if (mRestorePosition >= 0) {
+            mView.restorePosition(mRestorePosition);
         }
+        resetSearchConfig();
     }
 
-    private void recordInputCmd(String inputCmd) {
+    private void recordInputCmd(SearchData lastSearchData, String inputCmd) {
         if (!inputCmd.isEmpty())
             mGlobalData.updateInputCmd(inputCmd); // 记录更新
-        mLastInputCmd = inputCmd;
+        lastSearchData.inputCmd = inputCmd;
     }
 
+    private void resetSearchConfig() {
+        mRestorePosition = -1;
+        mIsRecordSearchData = true;
+    }
     /**
      * 将当前命令以及位置记录下来，放到外存中，长期
      */
@@ -189,8 +195,10 @@ public class WordListPresenter implements WordListContract.Presenter {
     public void doPrevCmd() {
         SearchData searchData = mGlobalData.getPrevSearch();
         mView.showInputCmd(searchData.inputCmd);
-        mCmdList = searchData.cmdList;
+        mCmdList.addAll(searchData.cmdList);
         mView.updateCommandText(Command.CLICKABLE_CMD_LIST, mCmdList);
-        mView.onClickSearch(false);
+        mRestorePosition = searchData.position;
+        mIsRecordSearchData = false;
+        mView.onClickSearch();
     }
 }

@@ -333,12 +333,13 @@ public class GlobalData {
             if (mRecentSearch.size() > 0) {
                 mCurSearch = mRecentSearch.get(mRecentSearch.size() - 1);
             }
-        }
-        int id = mRecentSearch.indexOf(mCurSearch);
-        if (id >= 1 && id < mRecentSearch.size()) {
-            mCurSearch = mRecentSearch.get(id-1);
-        } else if (mRecentSearch.size() > 0) {
-            mCurSearch = mRecentSearch.get(0);
+        } else {
+            int id = mRecentSearch.indexOf(mCurSearch);
+            if (id >= 1 && id < mRecentSearch.size()) {
+                mCurSearch = mRecentSearch.get(id - 1);
+            } else if (mRecentSearch.size() > 0) {
+                mCurSearch = mRecentSearch.get(0);
+            }
         }
         return mCurSearch;
     }
