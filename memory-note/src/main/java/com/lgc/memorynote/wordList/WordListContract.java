@@ -47,6 +47,8 @@ public class WordListContract {
 
         void showInputCmd(String inputCmd);
 
+        void onClickSearch(boolean recordSearchData);
+
         void onClickSearch();
 
         int getListPosition();
@@ -68,7 +70,7 @@ public class WordListContract {
         /**
          * 点击搜索，重新组织单词列表
          */
-        void search() throws Exception;
+        void search(boolean recordSearchData) throws Exception;
 
         String getWordName(int adapterPosition);
 

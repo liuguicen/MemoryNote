@@ -3,6 +3,7 @@ package com.lgc.memorynote.wordList;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.data.SearchData;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SpUtil;
@@ -59,11 +60,19 @@ public class WordListPresenter implements WordListContract.Presenter {
     /**
      * 点击搜索，重新组织单词列表,搜索过程是种总的列表复制到新列表中，再对新列表进行排序，过滤
      */
+    public void search() throws Exception {
+        search(true);
+    }
+
     @Override
-    public void search() throws NumberFormatException {
+    public void search(boolean recordSearchData) throws Exception {
+        if (Util.RepetitiveEventFilter.isRepetitive(500)) // 过滤重复的
+            return;
         // 搜索之前，将上一次搜索的数据加进去
-        mGlobalData.addLastSearchData(
-                new SearchData(mLastInputCmd, mCmdList, mView.getListPosition()));
+        if (recordSearchData) {
+            mGlobalData.addLastSearchData(
+                    new SearchData(mLastInputCmd, mCmdList, mView.getListPosition()));
+        }
 
         String inputCmd = mView.getInputCmd();
         inputCmd = inputCmd != null ? inputCmd.trim() : "";
@@ -98,8 +107,9 @@ public class WordListPresenter implements WordListContract.Presenter {
             return;
         }
 
-        mCurShowWordList = Command.orderByCommand(inputCmd, mCmdList, mGlobalData.getAllWord());
-        doUICommand(mCmdList); // 执行UI相关的命令
+        ArrayList<String> tempCmdList = new ArrayList<>(mCmdList);
+        mCurShowWordList = Command.orderByCommand(inputCmd, tempCmdList, mGlobalData.getAllWord());
+        doUICommand(tempCmdList); // 执行UI相关的命令
         mGlobalData.setCurWords(mCurShowWordList);
         mView.refreshWordList(mCurShowWordList);
 
@@ -177,13 +187,10 @@ public class WordListPresenter implements WordListContract.Presenter {
     }
 
     public void doPrevCmd() {
-        SearchData searchData = mGlobalData.getPrevCmd();
+        SearchData searchData = mGlobalData.getPrevSearch();
         mView.showInputCmd(searchData.inputCmd);
         mCmdList = searchData.cmdList;
         mView.updateCommandText(Command.CLICKABLE_CMD_LIST, mCmdList);
-        mView.onClickSearch();
-
-//  搜索上次结果之后，不是主动的搜索，也会加入列表，这里将其删除，
-        mGlobalData.removeLastCmd();
+        mView.onClickSearch(false);
     }
 }

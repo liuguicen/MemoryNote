@@ -188,7 +188,7 @@ public class Command {
             comparator = Collections.reverseOrder(comparator);
             commandList.remove(id);
         }
-        if (needSort && commandList.size() > 0) {
+        if (needSort) {
             Collections.sort(resultList, comparator);
         }
 

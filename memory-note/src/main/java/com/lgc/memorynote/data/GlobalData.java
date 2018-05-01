@@ -33,8 +33,8 @@ public class GlobalData {
     /**
      * 最近的命令，只放到内存中
      */
-    private static List<SearchData> mRecentCmd;
-    public static int mCurCmdId = 0;
+    private static List<SearchData> mRecentSearch;
+    public static SearchData mCurSearch;
     public static final int MAX_RECENT_CMD_SIZE = 5;
 
     private User mUser;
@@ -56,7 +56,7 @@ public class GlobalData {
         mUser = User.getInstance();
         mUser.setName(SpUtil.getUserName());
         mUser.setPassword(SpUtil.getUserPassword());
-        mRecentCmd = new ArrayList<>(5);
+        mRecentSearch = new ArrayList<>(5);
         Logcat.e(System.currentTimeMillis());
     }
 
@@ -321,34 +321,26 @@ public class GlobalData {
     }
 
     public void addLastSearchData(SearchData searchDate) {
-        mRecentCmd.add(searchDate);
-        if (mRecentCmd.size() > MAX_RECENT_CMD_SIZE) {
-            mRecentCmd.remove(0);
+        mRecentSearch.add(searchDate);
+        if (mRecentSearch.size() > MAX_RECENT_CMD_SIZE) {
+            mRecentSearch.remove(0);
         }
+        mCurSearch = null;
     }
 
-    public SearchData getPrevCmd() {
-        if (mCurCmdId < mRecentCmd.size() - 1) {
-            mCurCmdId++;
-            return mRecentCmd.get(mCurCmdId);
-        } else {
-            return mRecentCmd.get(mCurCmdId);
+    public SearchData getPrevSearch() {
+        if (mCurSearch == null) {
+            if (mRecentSearch.size() > 0) {
+                mCurSearch = mRecentSearch.get(mRecentSearch.size() - 1);
+            }
         }
-    }
-
-    public void removeLastCmd() {
-        if (mRecentCmd.size() > 0) {
-            mRecentCmd.remove(0);
+        int id = mRecentSearch.indexOf(mCurSearch);
+        if (id >= 1 && id < mRecentSearch.size()) {
+            mCurSearch = mRecentSearch.get(id-1);
+        } else if (mRecentSearch.size() > 0) {
+            mCurSearch = mRecentSearch.get(0);
         }
-    }
-
-    public SearchData getNextCmd() {
-        if (mCurCmdId > 0) {
-            mCurCmdId--;
-            return mRecentCmd.get(mCurCmdId);
-        } else {
-            return mRecentCmd.get(0);
-        }
+        return mCurSearch;
     }
 
     public boolean isCheckedUser() {

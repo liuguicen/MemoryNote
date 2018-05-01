@@ -184,12 +184,18 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     private void initTvInputCmd() {
         mCommandInputEt.setHint(SortUtil.getHingString());
         mCommandInputEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            boolean isRepeat = false;
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                         (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    onClickSearch();
-                    return true;
+                    if (!isRepeat) {
+                        onClickSearch();
+                        isRepeat = true;
+                        return true;
+                    } else {
+                        isRepeat = false;
+                    }
                 }
                 return false;
             }
@@ -216,16 +222,20 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     }
 
     public void onClickSearch() {
+        onClickSearch(true);
+    }
+
+    public void onClickSearch(boolean recordData) {
         mIsNewClick = true;
         try {
-            mPresenter.search();
+            mPresenter.search(recordData);
             recentCmdAdapter = new ArrayAdapter<String>(this
                     ,android.R.layout.simple_dropdown_item_1line, mGlobalData.getRecentCmd());
             mCommandInputEt.setAdapter(recentCmdAdapter);
             mCommandInputEt.dismissDropDown();
         } catch (NumberFormatException e) {
             Toast.makeText(this, "输入数字格式错误", Toast.LENGTH_LONG).show();
-        }
+        } catch (Exception e) {}
     }
 
     public @Nullable String getInputCmd() {
