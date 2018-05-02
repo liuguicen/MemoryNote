@@ -50,7 +50,7 @@ public class SpUtil {
     public static SearchData getLastSearchData() {
         String inputCmd = sp.getString(LAST_REMEMBER_INPUT, "");
         Set<String> stringSet = sp.getStringSet(LAST_REMEMBER_CMD, new HashSet<String>());
-        int position = sp.getInt(LAST_REMENBER_POSITION, -1);
+        int position = sp.getInt(LAST_REMENBER_POSITION, 0);
         return new SearchData(inputCmd, new ArrayList<>(stringSet), position);
     }
 

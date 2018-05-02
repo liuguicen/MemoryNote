@@ -180,7 +180,6 @@ public class WordListPresenter implements WordListContract.Presenter {
         mView.hideWord(isHideWord);
     }
 
-
     @Override
     public boolean checkUser() {
         if (mGlobalData.isCheckedUser()) // 每次应用启动只检查一次

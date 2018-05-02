@@ -138,7 +138,7 @@ public class Command {
     }
 
     public static final List<String> INPUT_COMMAND_LIST = new ArrayList<String>(){{
-        add(_regex_search);  add(_rmb);           add(_restore);
+        add(_regex_search);  add(_hdw);           add(_restore);
         add(_open_setting);  add(_word_number);   add(_strange_degree);
     }};
 
@@ -147,7 +147,7 @@ public class Command {
                    = "   " + _open_setting + " 进入设置界面\n"
                    + "   " + _word_number + " 当前列表单词数量\n"
                    + "   " + _regex_search + " 正则式搜索，仅支持单词名称\n"
-                   + "   " + _rmb + " 记录当前的记忆位置\n"
+                   + "   " + _hdw + " 隐藏单词\n"
                    + "   " + _restore + " 恢复上次记忆位置\n"
                    + "   " + _strange_degree + "陌生度过滤， 比如" + _strange_degree +">8" + "\n"
                    + "   " + _global + "加载搜索命令后面，搜索单词所有数据\n"

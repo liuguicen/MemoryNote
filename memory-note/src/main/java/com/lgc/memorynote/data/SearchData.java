@@ -14,6 +14,7 @@ public class SearchData {
     public SearchData(String inputCmd, List<String> cmdList, int position) {
         this.inputCmd = inputCmd;
         this.cmdList.addAll(cmdList);
+        this.position = position;
     }
 
     public SearchData() {
