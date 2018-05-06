@@ -53,6 +53,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                 Word assistantWord = SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), assistantKey);
                 if (assistantWord != null) {
                     showData(assistantWord, false);
+                    mView.showWordName("");
                 }
             }
 

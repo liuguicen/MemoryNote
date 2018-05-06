@@ -4,48 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <TextView
-        android:id="@+id/btn_upload_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_bg_edit"
-        android:gravity="center"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:layout_marginTop="20dp"
-        android:paddingStart="@dimen/normal_margin"
-        android:paddingEnd="@dimen/normal_margin"
-        android:textSize="@dimen/text_size_normal"
-        android:textColor="#ffffff"
-        android:text="@string/upload_date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_upload_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_small"
-        android:gravity="center"
-        android:layout_marginTop="@dimen/normal_margin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_upload_data" />
+
+
 
 
     <TextView
         style="@style/text_user_name_password"
         android:id="@+id/setting_user_name_name"
         android:text="用户名:"
-        app:layout_constraintTop_toBottomOf="@id/tv_upload_result"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
 
     <EditText
         android:id="@+id/setting_user_name_input"
         style="@style/setting_user_name_password_editable"
-        app:layout_constraintTop_toBottomOf="@+id/tv_upload_result"
+        app:layout_constraintTop_toBottomOf="@+id/setting_user_name_name"
         app:layout_constraintStart_toEndOf="@id/setting_user_name_name"
         />
 
@@ -88,7 +63,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_upload_result"
+        app:layout_constraintTop_toBottomOf="@+id/setting_user_name_name"
         app:layout_constraintBottom_toBottomOf="parent"
         android:textSize="25sp"/>
 </android.support.constraint.ConstraintLayout>

@@ -44,7 +44,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private int mUploadNumber = 0;
     private UpLoadTask mUpLoadTask;
     private GlobalData mGlobalData;
-    private TextView mTvUploadState;
     private EditText mEtUserName;
     private EditText mEtPassword;
     private User mUser;
@@ -61,14 +60,13 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         initUser();
 
         TextView tvAppGuide = ((TextView) findViewById(R.id.tv_app_guide));
-        mTvUploadState = ((TextView)findViewById(R.id.tv_upload_result));
+
         findViewById(R.id.setting_modify_name_password).setOnClickListener(this);
         findViewById(R.id.setting_verify_modify).setOnClickListener(this);
         String lastUpladMsg = SpUtil.getUploadState();
         if (lastUpladMsg.isEmpty()) {
             lastUpladMsg = "未上传过";
         }
-        mTvUploadState.setText(lastUpladMsg);
 
         tvAppGuide.setText("搜索框里面可以输入命令，以--开头就表示命令，支持的命令如下：\n" + Command.commandGuide);
         mProgressDialog = new ProgressDialog(this);
@@ -84,7 +82,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         });
 
         mCertainDialog = new CertainDialog(this);
-        findViewById(R.id.btn_upload_data).setOnClickListener(this);
+
         Logcat.e("Setting activitty init success");
     }
 
@@ -114,18 +112,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_upload_data:
-                if (NetWorkState.detectNetworkType() == -1) {
-                    Toast.makeText(this, "找不到网络，请稍后再试", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                mCertainDialog.showDialog("确认上传吗？", null, new CertainDialog.ActionListener() {
-                    @Override
-                    public void onSure() {
-                        uploadData();
-                    }
-                });
-                break;
+
             case R.id.setting_modify_name_password:
                 if (!mIsInEdit) {
                     mIsInEdit = true;
@@ -263,7 +250,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 longTimeMsg += "\n全部上传完成";
             }
             boolean res = SpUtil.saveUploadState(longTimeMsg);
-            mTvUploadState.setText(longTimeMsg);
 
             Toast.makeText(SettingActivity.this, msg, Toast.LENGTH_LONG).show();
             Logcat.d(msg);
