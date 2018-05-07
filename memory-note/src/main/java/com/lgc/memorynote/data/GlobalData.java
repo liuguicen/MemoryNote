@@ -279,41 +279,45 @@ public class GlobalData {
     public void updateInputCmd(String cmd) {
         if (cmd.trim().isEmpty()) return;
         int id = recentInputCmdList.indexOf(cmd); // 先检查是否存在
-        // Command.INPUT_COMMAND_LIST 在最前面
+        // Command.INPUT_COMMAND_HINT_LIST 在最前面
         if (id < 0) {
             if (recentInputCmdList.size() > AppConstant.RECENT_CMD_LIMIT) {
-                recentInputCmdList.remove(recentInputCmdList.size() - 1);
+                removeLastInputCmd(1);
             }
-            addInputCmd(cmd);
-        } else if (!Command.INPUT_COMMAND_LIST.contains(cmd)) { // 放到最开始位置
+        } else { // 放到最开始位置
            recentInputCmdList.remove(id);
-           addInputCmd(cmd);
+        }
+        recentInputCmdList.add(0, cmd);
+    }
+
+    private void removeLastInputCmd(int number) {
+        for (int i = recentInputCmdList.size() - 1; i >= 0 ; i--) {
+            if (!Command.INPUT_COMMAND_HINT_LIST.contains(recentInputCmdList.get(i))) {
+                if (number-- > 0) {
+                    recentInputCmdList.remove(i);
+                } else {
+                    break;
+                }
+            }
         }
     }
 
     public static final int FRONT_CMD_NUMBER = 3;
 
-    private void addInputCmd(String cmd) {
-        // 加入最近输入的单词3个
-        int first = FRONT_CMD_NUMBER - 1;
-        if (recentInputCmdList.size() < FRONT_CMD_NUMBER) {
-            first = recentInputCmdList.size() - 1;
-        }
-        if (!Command.INPUT_COMMAND_LIST.contains(recentInputCmdList.get(first))) { // 最近输入满
-            String old  = recentInputCmdList.remove(first);
-            recentInputCmdList.add(Command.INPUT_COMMAND_LIST.size() + first + 1, old);
-        }
-        recentInputCmdList.add(0, cmd);
-    }
-
     public void saveRecentInputCmd() {
+        if (recentInputCmdList.size() > AppConstant.RECENT_CMD_LIMIT) {
+            removeLastInputCmd(recentInputCmdList.size() - AppConstant.RECENT_CMD_LIMIT);
+        }
         SpUtil.saveRecentCmd(recentInputCmdList);
     }
 
     public void readRecentInputCmd() {
         recentInputCmdList = SpUtil.getRecentCmdList();
-        // Command.INPUT_COMMAND_LIST 在最前面
-        for (String oneCmd : Command.INPUT_COMMAND_LIST) {
+        if (recentInputCmdList.size() > AppConstant.RECENT_CMD_LIMIT) {
+            removeLastInputCmd(recentInputCmdList.size() - AppConstant.RECENT_CMD_LIMIT);
+        }
+        // Command.INPUT_COMMAND_HINT_LIST 在最前面
+        for (String oneCmd : Command.INPUT_COMMAND_HINT_LIST) {
             if (!recentInputCmdList.contains(oneCmd)) {
                 recentInputCmdList.add(0, oneCmd);
             }

@@ -8,6 +8,7 @@ import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.wordList.Command;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -125,6 +126,20 @@ public class SearchUtil {
                 Word word = wordList.get(i);
                 if (word.hasTag(search)) {
                     searchedList.add(new WordWithComparator(word));
+                }
+            }
+        } else if (search.startsWith(Command._time_to_now)) {
+            String sdays = search.substring(Command._strange_degree.length()).trim();
+            int days = Integer.valueOf(sdays);
+            long oneDayMil = 24 * 3600 * 1000;
+            long curDays = System.currentTimeMillis() / oneDayMil + 1;
+            long startTime = (curDays - days) * oneDayMil;
+            for (int i = wordList.size() - 1; i >= 0; i--) {
+                Word word = wordList.get(i);
+                if (word.getLastRememberTime() > startTime) {
+                    WordWithComparator wordWithComparator = new WordWithComparator(word);
+                    wordWithComparator.addComparator(word.getLastRememberTime());
+                    searchedList.add(wordWithComparator);
                 }
             }
         } else { // 搜索所有内容，按下面这个顺序依次搜索，并按搜索结果排序

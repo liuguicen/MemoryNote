@@ -1,6 +1,8 @@
 package com.lgc.memorynote.data;
 
 
+import com.lgc.memorynote.wordList.Command;
+
 public class AppConstant {
     /**
      * 单词输入格式错误
@@ -20,7 +22,7 @@ public class AppConstant {
     /**
      * 最近命令的数量
      */
-    public static final int RECENT_CMD_LIMIT = 16;
+    public static final int RECENT_CMD_LIMIT = Command.INPUT_COMMAND_HINT_LIST.size() + 6;
 
     /**
      * 最近命令的分隔符

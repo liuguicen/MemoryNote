@@ -59,15 +59,15 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     private void bindView() {
-        mTvWordName          = (EditText) findViewById(R.id.et_word_detail_name);
-        mTvWordMeaning       = (EditText) findViewById(R.id.et_word_detail_meaning);
-        mTvSimilarWord       = (EditText) findViewById(R.id.et_similar_word);
-        mtvWordGroup         = (EditText) findViewById(R.id.et_word_detail_group);
-        mTvRememberWay       = (EditText) findViewById(R.id.et_word_remember_way);
-        mTvStrangeDegree     = (TextView) findViewById(R.id.value_strange_degree);
-        mTvLastRememberTime  = (TextView) findViewById(R.id.last_remember_time);
-        mBtnEdit             = (TextView) findViewById(R.id.btn_word_detail_edit);
-        mDeleteView          = (TextView) findViewById(R.id.word_detail_delete);
+        mTvWordName = (EditText) findViewById(R.id.et_word_detail_name);
+        mTvWordMeaning = (EditText) findViewById(R.id.et_word_detail_meaning);
+        mTvSimilarWord = (EditText) findViewById(R.id.et_similar_word);
+        mtvWordGroup = (EditText) findViewById(R.id.et_word_detail_group);
+        mTvRememberWay = (EditText) findViewById(R.id.et_word_remember_way);
+        mTvStrangeDegree = (TextView) findViewById(R.id.value_strange_degree);
+        mTvLastRememberTime = (TextView) findViewById(R.id.last_remember_time);
+        mBtnEdit = (TextView) findViewById(R.id.btn_word_detail_edit);
+        mDeleteView = (TextView) findViewById(R.id.word_detail_delete);
     }
 
     private void initView() {
@@ -94,11 +94,12 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         findViewById(R.id.btn_sync_group).setOnClickListener(this);
         findViewById(R.id.btn_sync_root_affix).setOnClickListener(this);
         findViewById(R.id.btn_save_assistant).setOnClickListener(this);
+        findViewById(R.id.btn_word_detail_next).setOnClickListener(this);
     }
 
     @Override
     public void setInputAssistant() {
-        final  String  CIGEN = "cigen", QIANZUI = "qianzui", HOUZUI = "houzui", DIPIN = "dipin";
+        final String CIGEN = "cigen", QIANZUI = "qianzui", HOUZUI = "houzui", DIPIN = "dipin";
         String type = "dipin";
         switch (type) {
             case CIGEN:
@@ -122,7 +123,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
                 mPresenter.setStrangeDegree(7);
                 break;
         }
-        
+
     }
 
     @Override
@@ -154,7 +155,21 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
                 break;
             case R.id.btn_save_assistant:
                 mPresenter.saveInputAssistant();
+                break;
+            case R.id.btn_word_detail_next:
+                if (mPresenter.isInEdit() && !TextUtils.isEmpty(getInputWordName().trim())) {
+                    mPresenter.switchEdit();
+                }
+                startSelf();
+                this.finish();
+                break;
         }
+    }
+
+    private void startSelf() {
+        Intent intent = WordDetailActivity.getStartIntent(this);
+        intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, true);
+        startActivity(intent);
     }
 
     @Override
@@ -225,7 +240,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     private void switchTvEditStyle(TextView tv, boolean isInEdit) {
-        if(isInEdit) {
+        if (isInEdit) {
             tv.setInputType(lastInputType);
         } else {
             tv.setInputType(InputType.TYPE_NULL);
@@ -298,7 +313,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     @Override
     public void showInputRememberWay(String rememberWay) {
-        if (!mPresenter.isInEdit() && (rememberWay ==null || rememberWay.isEmpty())) {
+        if (!mPresenter.isInEdit() && (rememberWay == null || rememberWay.isEmpty())) {
             mTvRememberWay.setVisibility(View.GONE);
         } else {
             mTvRememberWay.setVisibility(View.VISIBLE);

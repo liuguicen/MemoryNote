@@ -1,214 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginEnd="4dp"
-    android:layout_marginStart="4dp">
-
-    <android.support.constraint.ConstraintLayout
+    android:layout_height="match_parent">
+    
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp">
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp">
 
-        <EditText
-            android:id="@+id/et_word_detail_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/please_input_word"
-            android:textColor="@color/color_word"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:layout_marginEnd="@dimen/normal_margin"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_word_detail_edit"
-            />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp">
 
-        <TextView
-            android:id="@+id/btn_word_detail_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_bg_edit"
-            android:gravity="center"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:paddingStart="@dimen/normal_margin"
-            android:paddingEnd="@dimen/normal_margin"
-            android:textSize="@dimen/text_size_normal"
-            android:textColor="@android:color/white"
-            android:text="@string/edit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/et_word_detail_name"
-            app:layout_constraintBottom_toBottomOf="@+id/et_word_detail_name"
-            />
+            <EditText
+                android:id="@+id/et_word_detail_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/normal_margin"
+                android:hint="@string/please_input_word"
+                android:textColor="@color/color_word"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/btn_word_detail_edit"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/word_detail_meaning_name"
-            style="@style/WordDetailItemName"
-            android:text="@string/word_meaning"
-            app:layout_constraintTop_toBottomOf="@+id/et_word_detail_name" />
+            <TextView
+                android:id="@+id/btn_word_detail_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_bg_edit"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingEnd="@dimen/normal_margin"
+                android:paddingStart="@dimen/normal_margin"
+                android:paddingTop="5dp"
+                android:text="@string/edit"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_normal"
+                app:layout_constraintBottom_toBottomOf="@+id/et_word_detail_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/et_word_detail_name" />
 
-        <TextView
-            style="@style/SyncBtn"
-            android:background="@mipmap/assistant"
-            android:id="@+id/btn_save_assistant"
-            app:layout_constraintStart_toEndOf="@id/word_detail_meaning_name"
-            app:layout_constraintTop_toBottomOf="@id/et_word_detail_name"
-            />
+            <TextView
+                android:id="@+id/word_detail_meaning_name"
+                style="@style/WordDetailItemName"
+                android:text="@string/word_meaning"
+                app:layout_constraintTop_toBottomOf="@+id/et_word_detail_name" />
 
-        <EditText
-            android:id="@+id/et_word_detail_meaning"
-            style="@style/WordDetailEditItem"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/word_detail_meaning_name" />
+            <TextView
+                android:id="@+id/btn_save_assistant"
+                style="@style/SyncBtn"
+                android:background="@mipmap/assistant"
+                app:layout_constraintStart_toEndOf="@id/word_detail_meaning_name"
+                app:layout_constraintTop_toBottomOf="@id/et_word_detail_name" />
 
-        <TextView
-            android:id="@+id/similar_form_word_name"
-            style="@style/WordDetailItemName"
-            android:text="@string/similar_form_word"
-            app:layout_constraintTop_toBottomOf="@+id/et_word_detail_meaning" />
-        <TextView
-            style="@style/SyncBtn"
-            android:id="@+id/btn_sync_similar"
-            app:layout_constraintStart_toEndOf="@id/similar_form_word_name"
-            app:layout_constraintTop_toBottomOf="@id/et_word_detail_meaning"
-            />
+            <EditText
+                android:id="@+id/et_word_detail_meaning"
+                style="@style/WordDetailEditItem"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/word_detail_meaning_name" />
 
-        <EditText
-            android:id="@+id/et_similar_word"
-            style="@style/WordDetailEditItem"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:imeOptions="normal"
-            android:maxLines="100000"
-            app:layout_constraintTop_toBottomOf="@+id/similar_form_word_name">
+            <TextView
+                android:id="@+id/similar_form_word_name"
+                style="@style/WordDetailItemName"
+                android:text="@string/similar_form_word"
+                app:layout_constraintTop_toBottomOf="@+id/et_word_detail_meaning" />
 
-        </EditText>
+            <TextView
+                android:id="@+id/btn_sync_similar"
+                style="@style/SyncBtn"
+                app:layout_constraintStart_toEndOf="@id/similar_form_word_name"
+                app:layout_constraintTop_toBottomOf="@id/et_word_detail_meaning" />
 
-        <TextView
-            style="@style/WordDetailItemName"
-            android:id="@+id/word_detail_group_name"
-            android:text="@string/word_group"
-            app:layout_constraintTop_toBottomOf="@+id/et_similar_word"
-            />
+            <EditText
+                android:id="@+id/et_similar_word"
+                style="@style/WordDetailEditItem"
+                android:imeOptions="normal"
+                android:maxLines="100000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/similar_form_word_name">
 
-        <Button
-            style="@style/SyncBtn"
-            android:id="@+id/btn_sync_group"
-            app:layout_constraintStart_toEndOf="@id/word_detail_group_name"
-            app:layout_constraintTop_toBottomOf="@+id/et_similar_word"
-            android:layout_marginStart="10dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            />
+            </EditText>
 
-        <EditText
-            style="@style/WordDetailEditItem"
-            android:id="@+id/et_word_detail_group"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:imeOptions="normal"
-            android:maxLines="100000"
-            app:layout_constraintTop_toBottomOf="@+id/word_detail_group_name"/>
+            <TextView
+                android:id="@+id/word_detail_group_name"
+                style="@style/WordDetailItemName"
+                android:text="@string/word_group"
+                app:layout_constraintTop_toBottomOf="@+id/et_similar_word" />
 
-        <TextView
-            android:id="@+id/word_remember_way_name"
-            style="@style/WordDetailItemName"
-            android:layout_marginTop="6dp"
-            android:text="@string/remember_way"
-            app:layout_constraintTop_toBottomOf="@+id/et_word_detail_group" />
+            <Button
+                android:id="@+id/btn_sync_group"
+                style="@style/SyncBtn"
+                android:layout_marginStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                app:layout_constraintStart_toEndOf="@id/word_detail_group_name"
+                app:layout_constraintTop_toBottomOf="@+id/et_similar_word" />
 
-        <Button
-            style="@style/SyncBtn"
-            android:id="@+id/btn_sync_root_affix"
-            app:layout_constraintStart_toEndOf="@id/word_remember_way_name"
-            app:layout_constraintTop_toBottomOf="@+id/et_word_detail_group"
-            android:layout_marginStart="10dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            />
+            <EditText
+                android:id="@+id/et_word_detail_group"
+                style="@style/WordDetailEditItem"
+                android:imeOptions="normal"
+                android:maxLines="100000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/word_detail_group_name" />
 
-        <EditText
-            android:id="@+id/et_word_remember_way"
-            style="@style/WordDetailEditItem"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:imeOptions="normal"
-            android:maxLines="100000"
-            app:layout_constraintTop_toBottomOf="@+id/word_remember_way_name"
-            />
+            <TextView
+                android:id="@+id/word_remember_way_name"
+                style="@style/WordDetailItemName"
+                android:layout_marginTop="6dp"
+                android:text="@string/remember_way"
+                app:layout_constraintTop_toBottomOf="@+id/et_word_detail_group" />
 
-        <TextView
-            android:id="@+id/strange_degree_name"
-            style="@style/WordDetailItemName"
-            android:text="@string/strange_degree"
-            app:layout_constraintBottom_toBottomOf="@+id/value_strange_degree"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/value_strange_degree" />
+            <Button
+                android:id="@+id/btn_sync_root_affix"
+                style="@style/SyncBtn"
+                android:layout_marginStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                app:layout_constraintStart_toEndOf="@id/word_remember_way_name"
+                app:layout_constraintTop_toBottomOf="@+id/et_word_detail_group" />
 
-        <TextView
-            android:id="@+id/reduce_strange_degree"
-            style="@style/StrangeDegreeItem"
-            android:layout_marginStart="40dp"
-            android:gravity="center"
-            android:minWidth="40dp"
-            android:text=" — "
-            app:layout_constraintStart_toEndOf="@+id/strange_degree_name"
-            app:layout_constraintTop_toTopOf="@id/value_strange_degree"
-            app:layout_constraintBottom_toBottomOf="@id/value_strange_degree"/>
+            <EditText
+                android:id="@+id/et_word_remember_way"
+                style="@style/WordDetailEditItem"
+                android:imeOptions="normal"
+                android:maxLines="100000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/word_remember_way_name" />
 
-        <TextView
-            android:id="@+id/value_strange_degree"
-            style="@style/StrangeDegreeItem"
-            android:text="0"
-            android:textColor="@color/color_strange"
-            app:layout_constraintStart_toEndOf="@+id/reduce_strange_degree"
-            app:layout_constraintTop_toBottomOf="@+id/et_word_remember_way" />
+            <TextView
+                android:id="@+id/strange_degree_name"
+                style="@style/WordDetailItemName"
+                android:text="@string/strange_degree"
+                app:layout_constraintBottom_toBottomOf="@+id/value_strange_degree"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/value_strange_degree" />
 
-        <TextView
-            android:id="@+id/add_strange_degree"
-            style="@style/StrangeDegreeItem"
-            android:text=" + "
-            android:paddingBottom="2dp"
-            android:textSize="@dimen/text_size_very_very_big"
-            app:layout_constraintStart_toEndOf="@+id/value_strange_degree"
-            app:layout_constraintTop_toTopOf="@id/value_strange_degree"
-            app:layout_constraintBottom_toBottomOf="@id/value_strange_degree"/>
+            <TextView
+                android:id="@+id/reduce_strange_degree"
+                style="@style/StrangeDegreeItem"
+                android:layout_marginStart="40dp"
+                android:gravity="center"
+                android:minWidth="40dp"
+                android:text=" — "
+                app:layout_constraintBottom_toBottomOf="@id/value_strange_degree"
+                app:layout_constraintStart_toEndOf="@+id/strange_degree_name"
+                app:layout_constraintTop_toTopOf="@id/value_strange_degree" />
 
-        <TextView
-            android:id="@+id/last_remember_time_name"
-            style="@style/WordDetailItemName"
-            android:gravity="center"
-            android:text="@string/last_remember_time"
-            app:layout_constraintTop_toBottomOf="@id/value_strange_degree" />
+            <TextView
+                android:id="@+id/value_strange_degree"
+                style="@style/StrangeDegreeItem"
+                android:text="0"
+                android:textColor="@color/color_strange"
+                app:layout_constraintStart_toEndOf="@+id/reduce_strange_degree"
+                app:layout_constraintTop_toBottomOf="@+id/et_word_remember_way" />
 
-        <TextView
-            android:id="@+id/last_remember_time"
-            android:layout_marginStart="@dimen/big_margin"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            app:layout_constraintTop_toTopOf="@+id/last_remember_time_name"
-            app:layout_constraintBottom_toBottomOf="@+id/last_remember_time_name"
-            app:layout_constraintStart_toEndOf="@+id/last_remember_time_name"/>
+            <TextView
+                android:id="@+id/add_strange_degree"
+                style="@style/StrangeDegreeItem"
+                android:paddingBottom="2dp"
+                android:text=" + "
+                android:textSize="@dimen/text_size_very_very_big"
+                app:layout_constraintBottom_toBottomOf="@id/value_strange_degree"
+                app:layout_constraintStart_toEndOf="@+id/value_strange_degree"
+                app:layout_constraintTop_toTopOf="@id/value_strange_degree" />
 
-        <TextView
-            android:id="@+id/word_detail_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_red"
-            android:text="@string/delete"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/big_margin"
-            android:paddingBottom="@dimen/small_margin"
-            android:paddingEnd="@dimen/small_margin"
-            android:paddingStart="@dimen/small_margin"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/last_remember_time" />
-    </android.support.constraint.ConstraintLayout>
-</ScrollView>
+            <TextView
+                android:id="@+id/last_remember_time_name"
+                style="@style/WordDetailItemName"
+                android:gravity="center"
+                android:text="@string/last_remember_time"
+                app:layout_constraintTop_toBottomOf="@id/value_strange_degree" />
+
+            <TextView
+                android:id="@+id/last_remember_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/big_margin"
+                app:layout_constraintBottom_toBottomOf="@+id/last_remember_time_name"
+                app:layout_constraintStart_toEndOf="@+id/last_remember_time_name"
+                app:layout_constraintTop_toTopOf="@+id/last_remember_time_name" />
+
+            <TextView
+                android:id="@+id/word_detail_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/big_margin"
+                android:gravity="center"
+                android:paddingBottom="@dimen/small_margin"
+                android:paddingEnd="@dimen/small_margin"
+                android:paddingStart="@dimen/small_margin"
+                android:text="@string/delete"
+                android:textColor="@color/color_red"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/last_remember_time" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/btn_word_detail_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_next"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingEnd="@dimen/normal_margin"
+        android:paddingStart="@dimen/normal_margin"
+        android:paddingTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="60dp"
+        android:text="@string/next"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</android.support.constraint.ConstraintLayout>

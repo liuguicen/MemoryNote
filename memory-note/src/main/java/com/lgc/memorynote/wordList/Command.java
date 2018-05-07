@@ -118,6 +118,9 @@ public class Command {
     public static final String _global = "-g";
     public static final int GLOBAL_ID   = 20;
 
+    /** 距今时间 **/
+    public static final String _time_to_now = COMMAND_START + "ttn";
+
     // 加入顺序就是显示顺序
     public static final Map<String, String> UI_COMMAND_MAP = new LinkedHashMap<String, String>(){{
         put(_stra, _stra_ui);    put(_time, _time_ui);   put(_hdm, _hdm_ui);     put(_dict, _dict_ui);
@@ -137,9 +140,10 @@ public class Command {
         }
     }
 
-    public static final List<String> INPUT_COMMAND_LIST = new ArrayList<String>(){{
+    public static final List<String> INPUT_COMMAND_HINT_LIST = new ArrayList<String>(){{
         add(_regex_search);  add(_hdw);           add(_restore);
         add(_open_setting);  add(_word_number);   add(_strange_degree);
+        add(_time_to_now);
     }};
 
     public static final String TAG_START = Word.TAG_START;

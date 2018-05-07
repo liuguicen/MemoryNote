@@ -26,4 +26,5 @@
     <string name="word_root">词根：</string>
     <string name="word_prefix">前缀：</string>
     <string name="word_suffix">后缀：</string>
+    <string name="next">下一个</string>
 </resources>
