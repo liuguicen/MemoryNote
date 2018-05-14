@@ -48,7 +48,7 @@ public class WordWithComparator implements Comparable, IWord {
             }
             return aLen - bLen;
         }
-        return -1;
+        return 0;
     }
 
     public Word getWord() {

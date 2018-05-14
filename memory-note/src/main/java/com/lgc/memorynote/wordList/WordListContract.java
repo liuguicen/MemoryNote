@@ -80,7 +80,9 @@ public class WordListContract {
 
         boolean checkUser();
 
-        void doPrevCmd();
+        boolean doPrevCmd();
+
+        void recordSearchState();
 
         void saveSearchData();
     }

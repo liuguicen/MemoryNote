@@ -49,6 +49,7 @@ public class WordListPresenter implements WordListContract.Presenter {
         mCurShowWordList = mGlobalData.getShowWords();
         mView.updateCommandText(Command.CLICKABLE_CMD_LIST, mCmdList);
         search();
+        doPrevCmd();
     }
 
     @Override
@@ -70,8 +71,7 @@ public class WordListPresenter implements WordListContract.Presenter {
             return;
         // 搜索之前，将上一次搜索的数据加进去
         if (mIsRecordSearchData && mLastSearchData != null) {
-            mLastSearchData.position = mView.getListPosition();
-            mGlobalData.addLastSearchData(mLastSearchData);
+            recordSearchState();
         }
         mLastSearchData = new SearchData();
 
@@ -191,13 +191,23 @@ public class WordListPresenter implements WordListContract.Presenter {
         return true;
     }
 
-    public void doPrevCmd() {
+    @Override
+    public void recordSearchState() {
+        mLastSearchData.position = mView.getListPosition();
+        mGlobalData.addLastSearchData(mLastSearchData);
+    }
+
+    public boolean doPrevCmd() {
         SearchData searchData = mGlobalData.getPrevSearch();
-        mView.showInputCmd(searchData.inputCmd);
-        mCmdList.addAll(searchData.cmdList);
-        mView.updateCommandText(Command.CLICKABLE_CMD_LIST, mCmdList);
-        mRestorePosition = searchData.position;
-        mIsRecordSearchData = false;
-        mView.onClickSearch();
+        if (searchData != null) {
+            mView.showInputCmd(searchData.inputCmd);
+            mCmdList.addAll(searchData.cmdList);
+            mView.updateCommandText(Command.CLICKABLE_CMD_LIST, mCmdList);
+            mRestorePosition = searchData.position;
+            mIsRecordSearchData = false;
+            mView.onClickSearch();
+            return  true;
+        }
+        return false;
     }
 }

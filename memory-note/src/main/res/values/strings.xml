@@ -11,6 +11,7 @@
     <string name="edit_save">保存</string>
     <string name="word_format_erorr">单词或短语格式错误，保存失败</string>
     <string name="word_repetitive">单词重复，保存失败"</string>
+    <string name="word_repetitive_can_not_save">单词重复，无法保存"</string>
     <string name="word_name_is_null">单词名为空，保存失败</string>
     <string name="word_invalid_format_erorr">单词或短语格式错误</string>
     <string name="word_invalid_repetitive">单词重复</string>

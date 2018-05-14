@@ -186,13 +186,14 @@ public class Command {
         }
 
         // 第三步，进行排序操作
-        Comparator comparator = new SortUtil.WordComparator(commandList); // 注意用过不会再用的命令，会从命令列表里面移除
-        int id = commandList.indexOf(Command._rev);
-        if (id >= 0) {
-            comparator = Collections.reverseOrder(comparator);
-            commandList.remove(id);
-        }
+
         if (needSort) {
+            Comparator<WordWithComparator> comparator = new SortUtil.WordComparator(commandList); // 注意用过不会再用的命令，会从命令列表里面移除
+            int id = commandList.indexOf(Command._rev);
+            if (id >= 0) {
+                comparator = Collections.reverseOrder(comparator);
+                commandList.remove(id);
+            }
             Collections.sort(resultList, comparator);
         }
 

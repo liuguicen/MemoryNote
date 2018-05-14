@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,27 +25,11 @@
                 android:textColor="@color/color_word"
                 android:textSize="25sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/btn_word_detail_edit"
+                app:layout_goneMarginEnd="70dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/btn_word_detail_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/btn_bg_edit"
-                android:gravity="center"
-                android:paddingBottom="5dp"
-                android:paddingEnd="@dimen/normal_margin"
-                android:paddingStart="@dimen/normal_margin"
-                android:paddingTop="5dp"
-                android:text="@string/edit"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_normal"
-                app:layout_constraintBottom_toBottomOf="@+id/et_word_detail_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/et_word_detail_name" />
 
             <TextView
                 android:id="@+id/word_detail_meaning_name"
@@ -211,6 +196,24 @@
     </ScrollView>
 
     <TextView
+        android:id="@+id/btn_word_detail_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg_edit"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:paddingBottom="5dp"
+        android:paddingEnd="@dimen/normal_margin"
+        android:paddingStart="@dimen/normal_margin"
+        android:paddingTop="5dp"
+        android:text="@string/edit"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/btn_word_detail_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -221,7 +224,7 @@
         android:paddingStart="@dimen/normal_margin"
         android:paddingTop="5dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="30dp"
         android:text="@string/next"
         android:textColor="@android:color/white"
         android:textSize="@dimen/text_size_normal"

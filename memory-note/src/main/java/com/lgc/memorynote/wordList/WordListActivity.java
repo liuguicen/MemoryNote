@@ -94,6 +94,12 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         super.onStop();
     }
 
+    @Override
+    protected void onDestroy() {
+        mPresenter.recordSearchState();
+        super.onDestroy();
+    }
+
     private void startActivityWordDetail(String wordName) {
         Intent intent = WordDetailActivity.getStartIntent(WordListActivity.this);
         intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, false);

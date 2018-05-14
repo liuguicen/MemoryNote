@@ -7,8 +7,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -55,8 +57,10 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         mPresenter = new WordDetailPresenter(this);
         bindView();
         initView();
+        initListener();
         mPresenter.initAndShowData(getIntent()); // 要在View初始化之后调用
     }
+
 
     private void bindView() {
         mTvWordName = (EditText) findViewById(R.id.et_word_detail_name);
@@ -86,8 +90,11 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         lastInputType = mTvRememberWay.getInputType();
         mBtnEdit.setOnClickListener(this);
         mDeleteView.setOnClickListener(this);
+
+        mTvWordName.setOnClickListener(this);
+        mTvWordMeaning.setOnClickListener(this);
         mTvWordMeaning.setOnTouchListener(this);
-        mTvWordName.setOnTouchListener(this);
+
         findViewById(R.id.add_strange_degree).setOnClickListener(this);
         findViewById(R.id.reduce_strange_degree).setOnClickListener(this);
         findViewById(R.id.btn_sync_similar).setOnClickListener(this);
@@ -95,6 +102,44 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         findViewById(R.id.btn_sync_root_affix).setOnClickListener(this);
         findViewById(R.id.btn_save_assistant).setOnClickListener(this);
         findViewById(R.id.btn_word_detail_next).setOnClickListener(this);
+    }
+
+
+    private void initListener() {
+        mTvWordName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mPresenter.setClickName();
+                mTvWordMeaning.setHint("");
+            }
+        });
+
+        mTvWordMeaning.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mPresenter.checkWordRepeat();
+            }
+        });
     }
 
     @Override
@@ -132,6 +177,9 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         if (Util.RepetitiveEventFilter.isRepetitive(500))
             return;
         switch (v.getId()) {
+            case R.id.et_word_detail_name:
+                mPresenter.setClickName();
+                break;
             case R.id.add_strange_degree:
                 mPresenter.addStrangeDegree();
                 break;
@@ -175,11 +223,8 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (v.getId()) {
-            case R.id.et_word_detail_name:
-                mPresenter.setClickName();
-                break;
             case R.id.et_word_detail_meaning:
-                mPresenter.checkRepeat();
+                mPresenter.checkWordRepeat();
                 break;
         }
         return false;
@@ -330,7 +375,6 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         }
     }
 
-
     @Override
     public void showInputWordGroup(String wordGroup) {
         mtvWordGroup.setVisibility(View.VISIBLE);
@@ -368,6 +412,10 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
                 break;
             case AppConstant.REPETITIVE_WORD:
                 msg = getString(R.string.word_repetitive);
+                break;
+            case AppConstant.REPETITIVE_WORD_CHECKED:
+                msg = getString(R.string.word_repetitive_can_not_save);
+                mTvWordMeaning.setHint(getString(R.string.word_repetitive_can_not_save));
                 break;
             case AppConstant.WORD_IS_NULL:
                 msg = getString(R.string.word_name_is_null);

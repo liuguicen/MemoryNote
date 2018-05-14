@@ -10,9 +10,14 @@ public class AppConstant {
     public static final int WORD_FORMAT_ERROR = 1;
 
     /**
-     * 单词重复
+     * 单词重复,保存失败
      */
     public static final int REPETITIVE_WORD   = 2;
+
+    /**
+     * 提前检测到单词重复
+     */
+    public static final int REPETITIVE_WORD_CHECKED   = 21;
 
     /**
      * 没有输入有效数据

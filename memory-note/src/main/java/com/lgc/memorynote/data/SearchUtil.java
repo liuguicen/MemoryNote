@@ -8,6 +8,7 @@ import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.wordList.Command;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -55,9 +56,10 @@ public class SearchUtil {
      *
      * @param search
      * @param wordList 不会改动此数组
+     * @param commandList
      * @return
      */
-    public static boolean searchMultiAspects(String search, List<Word> wordList, List<WordWithComparator> searchedList) throws NumberFormatException{
+    public static boolean searchMultiAspects(String search, List<Word> wordList, List<WordWithComparator> searchedList) throws NumberFormatException {
         // 含有非单词字符，搜索词义
         if (searchedList == null) return true;
         if (TextUtils.isEmpty(search)) {
@@ -129,7 +131,8 @@ public class SearchUtil {
                 }
             }
         } else if (search.startsWith(Command._time_to_now)) {
-            String sdays = search.substring(Command._strange_degree.length()).trim();
+            String sdays = search.substring(Command._time_to_now.length()).trim();
+            if (sdays.isEmpty()) sdays = "0";
             int days = Integer.valueOf(sdays);
             long oneDayMil = 24 * 3600 * 1000;
             long curDays = System.currentTimeMillis() / oneDayMil + 1;
@@ -137,9 +140,7 @@ public class SearchUtil {
             for (int i = wordList.size() - 1; i >= 0; i--) {
                 Word word = wordList.get(i);
                 if (word.getLastRememberTime() > startTime) {
-                    WordWithComparator wordWithComparator = new WordWithComparator(word);
-                    wordWithComparator.addComparator(word.getLastRememberTime());
-                    searchedList.add(wordWithComparator);
+                    searchedList.add(new WordWithComparator(word));
                 }
             }
         } else { // 搜索所有内容，按下面这个顺序依次搜索，并按搜索结果排序

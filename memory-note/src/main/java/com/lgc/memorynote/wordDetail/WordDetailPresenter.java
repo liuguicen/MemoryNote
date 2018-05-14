@@ -196,15 +196,16 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         }
     }
 
-    public boolean checkRepeat() {
+    public boolean checkWordRepeat() {
         if (mIsClickName) {
             String inputName = mView.getInputWordName().trim();
             if (mIsAdd || !inputName.equals(mWord.getName())) {  // 名字发生变动
                 if (SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), inputName) != null) {
-                    mView.showSaveFailed(AppConstant.REPETITIVE_WORD);
+                    mView.showSaveFailed(AppConstant.REPETITIVE_WORD_CHECKED);
                     return true;
                 }
             }
+            mIsClickName = false;
         }
         return false;
     }
