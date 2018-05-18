@@ -3,6 +3,7 @@ package com.lgc.memorynote.data;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import com.lgc.memorynote.base.AlgorithmUtil;
 import com.lgc.memorynote.base.UIUtil;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.wordList.Command;
@@ -56,7 +57,6 @@ public class SearchUtil {
      *
      * @param search
      * @param wordList 不会改动此数组
-     * @param commandList
      * @return
      */
     public static boolean searchMultiAspects(String search, List<Word> wordList, List<WordWithComparator> searchedList) throws NumberFormatException {
@@ -227,6 +227,30 @@ public class SearchUtil {
 
         resultGroupMap.remove(srcName);
         return Util.map2set(resultGroupMap);
+    }
+
+
+    public static Set<Word.SimilarWord> searchAllSynonym(List<Word> allWord, Word mWord, String wordName) {
+
+        Map<String, Word.SimilarWord> resultMap = new LinkedHashMap<>();
+        // 将原单词所有的意思单位加到列表中
+        List<String> srcMeanUnit = AlgorithmUtil.StringAg.splitChineseWord(mWord.getInputMeaning());
+
+        for (Word word : allWord) {
+            List<String> meanUnit = AlgorithmUtil.StringAg.splitChineseWord(word.getInputMeaning());
+            for (String unit : meanUnit) {
+                if (!unit.isEmpty() && !unit.startsWith(Word.TAG_START)) {
+                    if (srcMeanUnit.contains(unit)) {
+                        Word.SimilarWord selfSimilar = new Word.SimilarWord();
+                        selfSimilar.setName(word.getName());
+                        selfSimilar.setAnotation(word.getInputMeaning().replace("\n", " "));
+                        resultMap.put(word.getName(), selfSimilar);
+                    }
+                }
+            }
+        }
+        resultMap.remove(wordName);
+        return Util.map2set(resultMap);
     }
 
     private static void addSimilarList(String srcName, Map<String, Word.SimilarWord> resultSimilarMap,

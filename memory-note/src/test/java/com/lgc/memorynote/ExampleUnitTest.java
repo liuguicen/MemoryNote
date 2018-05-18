@@ -1,6 +1,7 @@
 package com.lgc.memorynote;
 
 import com.google.gson.Gson;
+import com.lgc.memorynote.base.AlgorithmUtil;
 import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.data.Word;
 
@@ -26,15 +27,27 @@ public class ExampleUnitTest {
 //        testAnalyzeSimilarWord();
 //        testInputWordTag();
 //        textInputNoTagMeaning();
-        textInputMeanings(new Word());
+//        textInputMeanings(new Word());
+//        ma();
 //        testInputName();
+        stringAgTest();
+    }
+
+    private void stringAgTest() {
+        List<String> strings = AlgorithmUtil.StringAg.splitChineseWord("我；宣布，中华 人民,共和国， 站起来了，从此，屹立于世界民族之林。" +
+                "\n毛泽东-1949年10月1日");
+        for (String string : strings) {
+            System.out.println(string);
+        }
     }
 
     public void testInputName() {
         String inputName = "sdfsdf-sdfs' bn/dfsd";
         System.out.println(Pattern.compile(Word.NOT_NAME_PHRASE_REGEX).matcher(inputName).find());
     }
-
+    public  void ma() {
+        System.out.println(("ad" + "\ndddd 中的等ddd " + " ddd").replaceAll("\\b" + "ddd" + "\\W", "aaa"));
+    }
     private void testWordInput() {
         Word word = new Word();
 

@@ -1,5 +1,8 @@
 package com.lgc.memorynote.base;
 
+import android.text.TextUtils;
+import android.view.TextureView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,6 +37,22 @@ public class AlgorithmUtil {
             if (src.startsWith(target)) return START_SIMILAR;
             if (src.contains(target)) return CONTAIN_SIMILAR;
             return NOT_SIMILAR;
+        }
+
+        /**
+         * 获取中文的词
+         * @return
+         */
+        public static List<String> splitChineseWord(String msg) {
+            List<String> chineseWordList = new ArrayList<>();
+            if (msg != null && !msg.isEmpty()) {
+                String[] split = msg.split("[ ,，；;.。、\\n]");
+                for (String s : split) {
+                    if(!s.isEmpty())
+                        chineseWordList.add(s);
+                }
+            }
+            return chineseWordList;
         }
     }
 

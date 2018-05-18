@@ -98,6 +98,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         String inputSimilars = mView.getInputSimilarWords().trim();
         String inputRememberWay = mView.getInputRememberWay().trim();
         String inputWordGroup = mView.getInputWordGroup().trim();
+        String inputSynonym = mView.getInputSynonym().trim();
 
         // 其他输入
         if (!TextUtils.equals(inputMeaings, mWord.getInputMeaning())) {
@@ -124,6 +125,13 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             List<Word.SimilarWord> groupList = new ArrayList<>();
             InputAnalyzerUtil.analyzeInputSimilarWords(inputWordGroup, groupList);
             mWord.setGroupList(groupList);
+        }
+
+        if (!TextUtils.equals(inputSynonym, mWord.getInputSynonym())) {
+            mWord.setInputSynonyms(inputSynonym);
+            List<Word.SimilarWord> synonymList = new ArrayList<>();
+            InputAnalyzerUtil.analyzeInputSimilarWords(inputSynonym, synonymList);
+            mWord.setSynonymList(synonymList);
         }
 
         // 名字相关
@@ -216,11 +224,13 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mView.showInputSimilarWords(word.getInputSimilarWords());
             mView.showInputRememberWay(word.getInputRememberWay());
             mView.showInputWordGroup(word.getInputWordGroup());
+            mView.showInputSynonym(word.getInputSynonym());
         } else {
             mView.showWordMeaning(word);
             mView.showSimilarWords(word.getSimilarWordList());
             mView.showInputRememberWay(word.getInputRememberWay());
             mView.showWordGroupList(word.getGroupList());
+            mView.showSynonymList(word.getSynonymList());
         }
         if (!isSwitchEdit) { // 切换编辑的过程中，这些视图的数据不用变
             mView.showWordName(word.getName());
@@ -246,6 +256,15 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                 SearchUtil.searchAllGroups(GlobalData.getInstance().getAllWord(), mWord
                         , mView.getInputWordName().trim()));
         mView.showInputWordGroup(groupString);
+    }
+
+    @Override
+    public void syncSynonyms() {
+        String synonymString = syncChildWord(
+                mView.getInputSynonym(),
+                SearchUtil.searchAllSynonym(GlobalData.getInstance().getAllWord(), mWord
+                        , mView.getInputWordName().trim()));
+        mView.showInputSynonym(synonymString);
     }
 
     @Override
@@ -277,7 +296,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                 if (oneWordByName != null) {
                     List<Word.WordMeaning> meaningList = oneWordByName.getMeaningList();
                     similarWord.setAnotation(UIUtil.meaningList2String(meaningList));
-                    inputChildWord = inputChildWord.replace(similarWord.getName(), similarWord.getName()
+                    inputChildWord = inputChildWord.replaceAll("\\b" +similarWord.getName() + "\\W", similarWord.getName()
                             + "  " + similarWord.getAnotation());
                     hasModify = true;
                 }

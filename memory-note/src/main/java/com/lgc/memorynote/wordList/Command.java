@@ -123,9 +123,9 @@ public class Command {
 
     // 加入顺序就是显示顺序
     public static final Map<String, String> UI_COMMAND_MAP = new LinkedHashMap<String, String>(){{
-        put(_stra, _stra_ui);    put(_time, _time_ui);   put(_hdm, _hdm_ui);     put(_dict, _dict_ui);
+        put(_stra, _stra_ui);    put(_time, _time_ui);   put(_lc, _lc_ui);       put(_dict, _dict_ui);
 
-        put(_sheng, _sheng_ui);  put(_guai, _guai_ui);   put(_len , _len_ui);    put(_lc, _lc_ui);
+        put(_sheng, _sheng_ui);  put(_guai, _guai_ui);   put(_len , _len_ui);    put(_hdm, _hdm_ui);
 
         put(_sn, _sn_ui);        put(_rev, _rev_ui);     put(_rmb,  _rmb_ui);    put(_word, _word_ui);
 

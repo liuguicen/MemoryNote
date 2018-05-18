@@ -64,7 +64,7 @@
                 app:layout_constraintTop_toBottomOf="@id/et_word_detail_meaning" />
 
             <EditText
-                android:id="@+id/et_similar_word"
+                android:id="@+id/et_word_detail_similar"
                 style="@style/WordDetailEditItem"
                 android:imeOptions="normal"
                 android:maxLines="100000"
@@ -78,7 +78,7 @@
                 android:id="@+id/word_detail_group_name"
                 style="@style/WordDetailItemName"
                 android:text="@string/word_group"
-                app:layout_constraintTop_toBottomOf="@+id/et_similar_word" />
+                app:layout_constraintTop_toBottomOf="@+id/et_word_detail_similar" />
 
             <Button
                 android:id="@+id/btn_sync_group"
@@ -87,7 +87,7 @@
                 android:paddingEnd="10dp"
                 android:paddingStart="10dp"
                 app:layout_constraintStart_toEndOf="@id/word_detail_group_name"
-                app:layout_constraintTop_toBottomOf="@+id/et_similar_word" />
+                app:layout_constraintTop_toBottomOf="@+id/et_word_detail_similar" />
 
             <EditText
                 android:id="@+id/et_word_detail_group"
@@ -99,11 +99,37 @@
                 app:layout_constraintTop_toBottomOf="@+id/word_detail_group_name" />
 
             <TextView
+                android:id="@+id/word_detail_synonym_name"
+                style="@style/WordDetailItemName"
+                android:text="@string/word_synonym"
+                app:layout_constraintTop_toBottomOf="@+id/et_word_detail_group" />
+
+            <Button
+                android:id="@+id/btn_sync_synonym"
+                style="@style/SyncBtn"
+                android:layout_marginStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                app:layout_constraintStart_toEndOf="@id/word_detail_synonym_name"
+                app:layout_constraintTop_toBottomOf="@+id/et_word_detail_group" />
+
+            <EditText
+                android:id="@+id/et_word_detail_synonym"
+                style="@style/WordDetailEditItem"
+                android:imeOptions="normal"
+                android:maxLines="100000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/word_detail_synonym_name" />
+
+            <TextView
                 android:id="@+id/word_remember_way_name"
                 style="@style/WordDetailItemName"
                 android:layout_marginTop="6dp"
                 android:text="@string/remember_way"
-                app:layout_constraintTop_toBottomOf="@+id/et_word_detail_group" />
+                app:layout_constraintTop_toBottomOf="@+id/et_word_detail_synonym" />
 
             <Button
                 android:id="@+id/btn_sync_root_affix"
@@ -112,7 +138,7 @@
                 android:paddingEnd="10dp"
                 android:paddingStart="10dp"
                 app:layout_constraintStart_toEndOf="@id/word_remember_way_name"
-                app:layout_constraintTop_toBottomOf="@+id/et_word_detail_group" />
+                app:layout_constraintTop_toBottomOf="@+id/et_word_detail_synonym" />
 
             <EditText
                 android:id="@+id/et_word_remember_way"

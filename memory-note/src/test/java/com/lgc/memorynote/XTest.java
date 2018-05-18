@@ -11,10 +11,8 @@ import java.util.List;
  * <pre>
  */
 
-public class Test {
-    public  void ma(ArrayList<Number> numbers) {
+public class XTest {
 
-    }
 
     public void mb() {
     }

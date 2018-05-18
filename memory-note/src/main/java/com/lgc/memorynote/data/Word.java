@@ -69,6 +69,7 @@ public class Word {
     public int strangeDegree = 0;
     public List<SimilarWord> similarWordList;
     public List<SimilarWord> groupList;
+    public List<SimilarWord> synonymList;
     public long lastRememberTime = 0;
 
     public List<String> tagList;
@@ -87,6 +88,7 @@ public class Word {
     public String inputSimilarWords;
     public String inputRememberWay;
     private String inputWordGroup;
+    public String inputSynonyms;
 
     /**
      * @return 返回包含程度 {@link AlgorithmUtil.StringAg#EQUAL_SIMILAR}等
@@ -122,6 +124,10 @@ public class Word {
             }
         }
         return false;
+    }
+
+    public void setInputSynonyms(String inputSynonym) {
+        this.inputSynonyms = inputSynonym;
     }
 
     /**
@@ -372,6 +378,10 @@ public class Word {
         this.similarWordList = similarWordList;
     }
 
+    public void setSynonymList(List<SimilarWord> synonymList) {
+        this.synonymList = synonymList;
+    }
+
     public void addMeaning(WordMeaning oneMeaning) {
         if (meaningList == null) {
             meaningList = new ArrayList<>();
@@ -455,10 +465,17 @@ public class Word {
         return inputSimilarWords;
     }
 
+    public String getInputSynonym() {
+        return inputSynonyms;
+    }
+
     public List<SimilarWord> getGroupList() {
         return groupList;
     }
 
+    public List<SimilarWord> getSynonymList() {
+        return synonymList;
+    }
     public void setGroupList(List<SimilarWord> groupList) {
         this.groupList = groupList;
     }

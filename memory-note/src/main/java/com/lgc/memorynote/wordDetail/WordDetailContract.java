@@ -32,6 +32,10 @@ public interface WordDetailContract {
 
         void showInputWordGroup(String wordGroup);
 
+        void showSynonymList(List<Word.SimilarWord> synonymList);
+
+        void showInputSynonym(String wordGroup);
+
         void showStrangeDegree(int strangeDegree);
 
         void showLastRememberTime(long lastRememberTime);
@@ -43,6 +47,7 @@ public interface WordDetailContract {
         String getInputSimilarWords();
         String getInputRememberWay();
         String getInputWordGroup();
+        String getInputSynonym();
 
         void showSaveFailed(int state);
 
@@ -54,7 +59,6 @@ public interface WordDetailContract {
 
         /** 新增某种类型的单词时辅助填写内容 **/
         void setInputAssistant();
-
     }
 
     interface Presenter extends BasePresenter {
@@ -81,6 +85,8 @@ public interface WordDetailContract {
         void syncSimilarWord();
 
         void syncWordGroup();
+
+        void syncSynonyms();
 
         void syncRootAffix();
 

@@ -42,6 +42,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     private TextView mTvLastRememberTime;
     private EditText mTvRememberWay;
     private EditText mtvWordGroup;
+    private EditText mtvSynonym;
 
     private TextView mBtnEdit;
     private CertainDialog mCertainDialog;
@@ -65,8 +66,9 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     private void bindView() {
         mTvWordName = (EditText) findViewById(R.id.et_word_detail_name);
         mTvWordMeaning = (EditText) findViewById(R.id.et_word_detail_meaning);
-        mTvSimilarWord = (EditText) findViewById(R.id.et_similar_word);
+        mTvSimilarWord = (EditText) findViewById(R.id.et_word_detail_similar);
         mtvWordGroup = (EditText) findViewById(R.id.et_word_detail_group);
+        mtvSynonym = (EditText) findViewById(R.id.et_word_detail_synonym);
         mTvRememberWay = (EditText) findViewById(R.id.et_word_remember_way);
         mTvStrangeDegree = (TextView) findViewById(R.id.value_strange_degree);
         mTvLastRememberTime = (TextView) findViewById(R.id.last_remember_time);
@@ -80,6 +82,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         mTvWordMeaning.setOnClickListener(this);
         mTvSimilarWord.setOnLongClickListener(this);
         mtvWordGroup.setOnLongClickListener(this);
+        mtvSynonym.setOnLongClickListener(this);
         mTvRememberWay.setOnLongClickListener(this);*/
 
         mTvWordName.setTag(mTvWordName.getBackground());
@@ -87,6 +90,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         mTvSimilarWord.setTag(mTvSimilarWord.getBackground());
         mTvRememberWay.setTag(mTvRememberWay.getBackground());
         mtvWordGroup.setTag(mtvWordGroup.getBackground());
+        mtvSynonym.setTag(mtvSynonym.getBackground());
         lastInputType = mTvRememberWay.getInputType();
         mBtnEdit.setOnClickListener(this);
         mDeleteView.setOnClickListener(this);
@@ -99,6 +103,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         findViewById(R.id.reduce_strange_degree).setOnClickListener(this);
         findViewById(R.id.btn_sync_similar).setOnClickListener(this);
         findViewById(R.id.btn_sync_group).setOnClickListener(this);
+        findViewById(R.id.btn_sync_synonym).setOnClickListener(this);
         findViewById(R.id.btn_sync_root_affix).setOnClickListener(this);
         findViewById(R.id.btn_save_assistant).setOnClickListener(this);
         findViewById(R.id.btn_word_detail_next).setOnClickListener(this);
@@ -198,6 +203,9 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
             case R.id.btn_sync_group:
                 mPresenter.syncWordGroup();
                 break;
+            case R.id.btn_sync_synonym:
+                mPresenter.syncSynonyms();
+                break;
             case R.id.btn_sync_root_affix:
                 mPresenter.syncRootAffix();
                 break;
@@ -241,7 +249,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         switch (v.getId()) {
             case R.id.et_word_detail_name:
             case R.id.et_word_detail_meaning:
-            case R.id.et_similar_word:
+            case R.id.et_word_detail_similar:
             case R.id.et_word_detail_group:
             case R.id.et_word_remember_way:
                 mPresenter.switchEdit();
@@ -271,6 +279,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         switchTvEditStyle(mTvSimilarWord, isInEdit);
         switchTvEditStyle(mTvRememberWay, isInEdit);
         switchTvEditStyle(mtvWordGroup, isInEdit);
+        switchTvEditStyle(mtvSynonym, isInEdit);
         if (isInEdit) {
             mBtnEdit.setBackgroundResource(R.drawable.btn_bg_finish);
             mBtnEdit.setText(getString(R.string.edit_save));
@@ -325,6 +334,11 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     @Override
+    public String getInputSynonym() {
+        return mtvSynonym.getText().toString();
+    }
+
+    @Override
     public void showWordName(String word) {
         mTvWordName.setText(word);
     }
@@ -376,10 +390,27 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     @Override
+    public void showSynonymList(List<Word.SimilarWord> synonymList) {
+        UIUtil.showSimilarWords(mtvSynonym, synonymList, "\n");
+        if (!mPresenter.isInEdit() && mtvSynonym.getText().toString().trim().isEmpty()) {
+            mtvSynonym.setVisibility(View.GONE);
+        } else {
+            mtvSynonym.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
     public void showInputWordGroup(String wordGroup) {
         mtvWordGroup.setVisibility(View.VISIBLE);
         mtvWordGroup.setText(wordGroup);
     }
+
+    @Override
+    public void showInputSynonym(String wordGroup) {
+        mtvSynonym.setVisibility(View.VISIBLE);
+        mtvSynonym.setText(wordGroup);
+    }
+
 
     @Override
     public void showStrangeDegree(int strangeDegree) {
