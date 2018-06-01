@@ -1,8 +1,12 @@
 package com.lgc.memorynote.base.log;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.lgc.memorynote.base.BaseApplication;
 import com.lgc.memorynote.base.FileTool;
+import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.user.UserExclusiveIdentify;
 
@@ -87,21 +91,24 @@ public class CrashLog extends BmobObject {
 
         File crashFile = new File(FILE_PATH);
         PrintWriter crashPw = null;
+        String commitResult = "";
         try {
             if (!crashFile.exists())
                 if (!FileTool.createNewFile(crashFile))
                     throw new IOException();
             crashPw = new PrintWriter(new FileOutputStream(crashFile));
             crashPw.write(sb.toString());
-            Log.e(TAG, "commit: 将Crash提交到本地成功");
+            commitResult += "commit: 将Crash提交到本地成功";
         } catch (Exception e) {
-            Log.e(TAG, "commit: 将Crash提交到本地失败");
+            commitResult +=  "  commit: 将Crash提交到本地失败";
             e.printStackTrace();
         } finally {
             if (crashPw != null)
                 crashPw.close();
-            Log.e(TAG, "commit: crash内容" + sb.toString());
+            commitResult += "  commit: crash内容" + sb.toString();
         }
+        Logcat.e(commitResult);
+        Toast.makeText(BaseApplication.appContext, commitResult, Toast.LENGTH_LONG).show();
     }
 
     public static boolean hasNew() {

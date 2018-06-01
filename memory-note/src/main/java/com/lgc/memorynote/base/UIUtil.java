@@ -172,6 +172,14 @@ public class UIUtil {
                 relatedSb.append(similarWord.getName()).append("  ");
             }
         }
+
+        List<Word.SimilarWord> synonymList = word.getSynonymList();
+        if (synonymList != null) {
+            for (Word.SimilarWord similarWord : synonymList) {
+                relatedSb.append(similarWord.getName()).append("  ");
+            }
+        }
+
         String related = relatedSb.toString().trim();
         if (related.isEmpty()) {
             tvRelated.setVisibility(View.GONE);

@@ -64,6 +64,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         bindView();
         intView();
         initData();
+        MemoryNoteApplication.startBackgroundService(this);
     }
 
     private void initApp() {

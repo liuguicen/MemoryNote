@@ -27,28 +27,6 @@ public class WordUtil {
     public static final double MATCH_BASE_NAME = 0.8;
 
 
-
-
-    /**
-     * @return {@link Word#NORMAL} 等
-     */
-    public static int getWordType(Word word) {
-        if (!isGeneralizedWord(word.getName()))
-            return Word.OTHER;
-        if (word.getTagList() != null) {
-            for (String s : word.getTagList()) {
-                if (Word.TAG_ROOT.equals(s)) {
-                    return Word.ROOT;
-                } else if (Word.TAG_PREFFIX.equals(s)) {
-                    return Word.PREFIX;
-                } else if (SUFFIX_LIST.contains(s)) {
-                    return Word.SUFFIX;
-                }
-            }
-        }
-        return Word.NORMAL;
-    }
-
     public static double getHigherMatchDegree(double base, double degree) {
         return base + MATCH_BASE_INTERVAL * degree;
     }

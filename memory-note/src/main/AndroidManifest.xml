@@ -51,6 +51,12 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="stateHidden">
         </activity>
+
+        <service android:name=".base.AppIntentService">
+            <intent-filter>
+                <action android:name="com.lgc.memorynote.base.AppIntentService" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

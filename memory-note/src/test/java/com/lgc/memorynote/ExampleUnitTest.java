@@ -34,11 +34,11 @@ public class ExampleUnitTest {
     }
 
     private void stringAgTest() {
-        List<String> strings = AlgorithmUtil.StringAg.splitChineseWord("我；宣布，中华 人民,共和国， 站起来了，从此，屹立于世界民族之林。" +
-                "\n毛泽东-1949年10月1日");
-        for (String string : strings) {
-            System.out.println(string);
-        }
+//        List<String> strings = AlgorithmUtil.StringAg.splitChineseWord("我；宣布，中华 人民,共和国， 站起来了，从此，屹立于世界民族之林。" +
+//                "\n毛泽东-1949年10月1日");
+//        for (String string : strings) {
+//            System.out.println(string);
+//        }
     }
 
     public void testInputName() {

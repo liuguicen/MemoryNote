@@ -1,6 +1,7 @@
 package com.lgc.memorynote.base;
 
 import android.app.Application;
+import android.content.Intent;
 import android.util.Log;
 
 /**

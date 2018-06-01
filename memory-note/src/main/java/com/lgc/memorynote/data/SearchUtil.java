@@ -9,8 +9,6 @@ import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.wordList.Command;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +36,8 @@ public class SearchUtil {
 
     public static void grepNotPhrase(List<WordWithComparator> wordList) {
         for (int i = wordList.size() - 1; i >= 0; i--) {
-            if (!wordList.get(i).getName().contains(" ")) {
+            Word word = wordList.get(i).getWord();
+            if (!word.getName().contains(" ") || word.getWordType() == Word.ROOT) {
                 wordList.remove(i);
             }
         }
@@ -198,11 +197,12 @@ public class SearchUtil {
     /**
      * 如果该单词的词组列表包含了这个单词，就将整个词组列表添加进来
      */
-    public static Set<Word.SimilarWord> searchAllGroups(List<Word> wordList, Word srcWord, String srcName) {
+    public static Set<Word.SimilarWord> searchAllGroups(List<Word> wordList,
+                                                        Word srcWord, String srcName) {
         Map<String, Word.SimilarWord> resultGroupMap = new LinkedHashMap<>();
 
         // 查找词根词缀的词组
-        int wordType = WordUtil.getWordType(srcWord);
+        int wordType = srcWord.getWordType();
         if (wordType == Word.ROOT || wordType == Word.PREFIX || wordType == Word.SUFFIX) {
             List<String> rootAffixList;
             rootAffixList = UIUtil.getRootAffixList(srcName);
@@ -230,26 +230,30 @@ public class SearchUtil {
     }
 
 
-    public static Set<Word.SimilarWord> searchAllSynonym(List<Word> allWord, Word mWord, String wordName) {
+    public static Set<Word.SimilarWord> searchAllSynonym(List<Word> allWord,
+                                                         Word mWord, String wordName) {
 
         Map<String, Word.SimilarWord> resultMap = new LinkedHashMap<>();
         // 将原单词所有的意思单位加到列表中
         List<String> srcMeanUnit = AlgorithmUtil.StringAg.splitChineseWord(mWord.getInputMeaning());
 
         for (Word word : allWord) {
-            List<String> meanUnit = AlgorithmUtil.StringAg.splitChineseWord(word.getInputMeaning());
-            for (String unit : meanUnit) {
-                if (!unit.isEmpty() && !unit.startsWith(Word.TAG_START)) {
-                    if (srcMeanUnit.contains(unit)) {
-                        Word.SimilarWord selfSimilar = new Word.SimilarWord();
-                        selfSimilar.setName(word.getName());
-                        selfSimilar.setAnotation(word.getInputMeaning().replace("\n", " "));
-                        resultMap.put(word.getName(), selfSimilar);
+            if (word.getWordType() == Word.PURE_WORD || word.getWordType() == Word.PHRASE) {
+                List<String> meanUnit = AlgorithmUtil.StringAg.splitChineseWord(word.getInputMeaning());
+                for (String unit : meanUnit) {
+                    if (!unit.isEmpty() && !unit.startsWith(Word.TAG_START)) {
+                        if (srcMeanUnit.contains(unit)) {
+                            Word.SimilarWord selfSimilar = new Word.SimilarWord();
+                            selfSimilar.setName(word.getName());
+                            selfSimilar.setAnotation(word.getInputMeaning().replace("\n", " "));
+                            resultMap.put(word.getName(), selfSimilar);
+                        }
                     }
                 }
             }
         }
-        resultMap.remove(wordName);
+
+        resultMap.remove(wordName); // 排除自身
         return Util.map2set(resultMap);
     }
 
@@ -257,6 +261,7 @@ public class SearchUtil {
                                        List<Word.SimilarWord> srcSimilarList, Word matchWord) {
         if (srcSimilarList == null) return;
 
+        int matchType = matchWord.getWordType();
         for (Word.SimilarWord similarWord : srcSimilarList) {
             // 如果该单词的相似单词列表包含了这个单词，就将整个相似列表添加进来
             if (TextUtils.equals(similarWord.getName(), srcName)) {
@@ -267,7 +272,7 @@ public class SearchUtil {
 
                 // do not contain the word self,  should add it
                 if (!resultSimilarMap.containsKey(matchWord.getName())
-                        && WordUtil.getWordType(matchWord) == Word.NORMAL) {
+                        && matchType == Word.PURE_WORD) {
                     // convert word to similar word and use wordMeaning which be replace "\n" to " " to create anotation
                     Word.SimilarWord selfSimilar = new Word.SimilarWord();
                     selfSimilar.setName(matchWord.getName());
@@ -277,12 +282,13 @@ public class SearchUtil {
                 return;
             }
         }
+
         // 没有找到，考虑单词是否互为子单词
-        if (srcName.length() != matchWord.getName().length() && WordUtil.getWordType(matchWord) == Word.NORMAL
+        if (srcName.length() != matchWord.getName().length() && matchType == Word.PURE_WORD
                 && srcName.contains(matchWord.getName()) || matchWord.getName().contains(srcName)) {
             // do not contain the word self,  should add it
             if (!resultSimilarMap.containsKey(matchWord.getName())
-                    && WordUtil.getWordType(matchWord) == Word.NORMAL) {
+                    && matchType == Word.PURE_WORD) {
                 // convert word to similar word and use wordMeaning which be replace "\n" to " " to create anotation
                 Word.SimilarWord selfSimilar = new Word.SimilarWord();
                 selfSimilar.setName(matchWord.getName());
@@ -292,11 +298,14 @@ public class SearchUtil {
         }
     }
 
+    /**
+     * key = Integer 用于区分词根，前缀，后缀三种类型
+     */
     public static ArrayList<Pair<Integer, String>> searchRootAffix(List<Word> allWord, String name) {
         ArrayList<Pair<Integer, String>> matchList = new ArrayList<>();
         if (allWord == null || name == null) return matchList;
         for (Word word : allWord) {
-            int wordType = WordUtil.getWordType(word);
+            int wordType = word.getWordType();
             if (wordType == Word.ROOT || wordType == Word.PREFIX || wordType == Word.SUFFIX) {
 
                 List<String> rootAffixList = UIUtil.getRootAffixList(word.getName());
@@ -304,8 +313,24 @@ public class SearchUtil {
                     if ((wordType == Word.ROOT && name.contains(oneRA))
                             || (wordType == Word.PREFIX && name.startsWith(oneRA))
                             || (wordType == Word.SUFFIX && name.endsWith(oneRA))) {
-                        String ram = oneRA + "  " + Util.convertToString(word.getMeaningList());
-                        matchList.add(new Pair<>(wordType, ram));
+                        // 去除重复的， 被包含或者包含，要长不要短
+                        boolean isAdd = true;
+                        for (int i = matchList.size() - 1; i >= 0; i--) {
+                            Pair<Integer, String> pair = matchList.get(i);
+                            String hadRA = pair.second.substring(0, pair.second.indexOf(" "));
+                            if (pair.first == wordType && hadRA.contains(oneRA)) {
+                                isAdd = false;
+                                break;
+                            }
+                            if (pair.first == wordType && oneRA.contains(hadRA)) {
+                                matchList.remove(i);
+                            }
+                        }
+
+                        if (isAdd) {
+                            String ram = oneRA + "  " + Util.convertToString(word.getMeaningList());
+                            matchList.add(new Pair<>(wordType, ram));
+                        }
                     }
                 }
             }

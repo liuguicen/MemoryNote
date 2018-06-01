@@ -32,11 +32,12 @@ public class Word {
     public static String NOT_NAME_PHRASE_REGEX = "[^a-zA-z\\-\\\\n/' ]";
     public static String NOT_WORD_REGEX = "[^a-zA-z\\-']";
 
-    public static final int NORMAL = 0;
+    public static final int PURE_WORD = 0;
     public static final int ROOT   = 1;
     public static final int PREFIX = 2;
     public static final int SUFFIX = 3;
-    public static final int OTHER  = 4;
+    public static final int PHRASE = 4;
+    public static final int OTHER  = 10;
 
     public static final String TAG_START = "@";
     public static final String TAG_GUAI = TAG_START + "怪";
@@ -502,6 +503,31 @@ public class Word {
     public long getLastDownLoadTime() {
         return lastDownLoadTime;
     }
+
+
+    /**
+     * @return {@link Word#PURE_WORD} 等
+     */
+    public int getWordType() {
+        if (!WordUtil.isGeneralizedWord(name))
+            return OTHER;
+        if (tagList != null) {
+            for (String s : tagList) {
+                if (TAG_ROOT.equals(s)) {
+                    return ROOT;
+                } else if (TAG_PREFFIX.equals(s)) {
+                    return PREFIX;
+                } else if (WordUtil.SUFFIX_LIST.contains(s)) {
+                    return SUFFIX;
+                }
+            }
+        }
+        if (name.contains(" ")) {
+            return PHRASE;
+        }
+        return PURE_WORD;
+    }
+
 
     @Override
     public String toString() {

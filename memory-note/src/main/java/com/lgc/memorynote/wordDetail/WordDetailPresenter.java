@@ -221,10 +221,10 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     private void showData(Word word, boolean isSwitchEdit) {
         if (mIsInEdit) {
             mView.showInputMeaning(word.getInputMeaning());
-            mView.showInputSimilarWords(word.getInputSimilarWords());
+            mView.showInputSimilarWords(word.getInputSimilarWords(), false);
             mView.showInputRememberWay(word.getInputRememberWay());
-            mView.showInputWordGroup(word.getInputWordGroup());
-            mView.showInputSynonym(word.getInputSynonym());
+            mView.showInputWordGroup(word.getInputWordGroup(), false);
+            mView.showInputSynonym(word.getInputSynonym(), false);
         } else {
             mView.showWordMeaning(word);
             mView.showSimilarWords(word.getSimilarWordList());
@@ -246,7 +246,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                 mView.getInputSimilarWords(),
                 SearchUtil.searchAllSimilars(GlobalData.getInstance().getAllWord()
                         , mView.getInputWordName().trim()));
-        mView.showInputSimilarWords(similar);
+        mView.showInputSimilarWords(similar, true);
     }
 
     @Override
@@ -255,7 +255,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                 mView.getInputWordGroup(),
                 SearchUtil.searchAllGroups(GlobalData.getInstance().getAllWord(), mWord
                         , mView.getInputWordName().trim()));
-        mView.showInputWordGroup(groupString);
+        mView.showInputWordGroup(groupString, true);
     }
 
     @Override
@@ -264,12 +264,13 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                 mView.getInputSynonym(),
                 SearchUtil.searchAllSynonym(GlobalData.getInstance().getAllWord(), mWord
                         , mView.getInputWordName().trim()));
-        mView.showInputSynonym(synonymString);
+        mView.showInputSynonym(synonymString, true);
     }
 
     @Override
     public void syncRootAffix() {
         // 查找词根词缀的词组
+        // key = Integer 用于区分词根，前缀，后缀三种类型
         ArrayList<Pair<Integer, String>> rootAffixList  = SearchUtil.searchRootAffix(
                 GlobalData.getInstance().getAllWord(), mWord.getName());
 
@@ -277,7 +278,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             switchEdit();
         }
         String rememberWay = UIUtil.joinRememberWay(mView.getInputRememberWay(), rootAffixList);
-        mView.showRememberWay(rememberWay);
+        mView.showRememberWay(rememberWay, true);
     }
 
     private String syncChildWord(String inputChildWord, Set<Word.SimilarWord> searchWordList) {
@@ -296,7 +297,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                 if (oneWordByName != null) {
                     List<Word.WordMeaning> meaningList = oneWordByName.getMeaningList();
                     similarWord.setAnotation(UIUtil.meaningList2String(meaningList));
-                    inputChildWord = inputChildWord.replaceAll("\\b" +similarWord.getName() + "\\W", similarWord.getName()
+                    inputChildWord = inputChildWord.replaceAll("\\b" + similarWord.getName() + "\\b", similarWord.getName()
                             + "  " + similarWord.getAnotation());
                     hasModify = true;
                 }

@@ -28,5 +28,5 @@
     <string name="word_prefix">前缀：</string>
     <string name="word_suffix">后缀：</string>
     <string name="next">下一个</string>
-    <string name="word_synonym">同义词</string>
+    <string name="word_synonym">近义词</string>
 </resources>

@@ -365,9 +365,13 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     @Override
-    public void showInputSimilarWords(String inputSimilarWords) {
+    public void showInputSimilarWords(String inputSimilarWords, boolean isSelect) {
         mTvSimilarWord.setVisibility(View.VISIBLE);
         mTvSimilarWord.setText(inputSimilarWords);
+        if (isSelect) {
+            mTvSimilarWord.requestFocus();
+            mTvSimilarWord.setSelection(0, inputSimilarWords.length());
+        }
     }
 
     @Override
@@ -382,7 +386,8 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
 
     public void showWordGroupList(List<Word.SimilarWord> groupList) {
         UIUtil.showSimilarWords(mtvWordGroup, groupList, "\n");
-        if (!mPresenter.isInEdit() && mtvWordGroup.getText().toString().trim().isEmpty()) {
+        String content = mtvWordGroup.getText().toString().trim();
+        if (!mPresenter.isInEdit() && content.isEmpty()) {
             mtvWordGroup.setVisibility(View.GONE);
         } else {
             mtvWordGroup.setVisibility(View.VISIBLE);
@@ -392,7 +397,8 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     @Override
     public void showSynonymList(List<Word.SimilarWord> synonymList) {
         UIUtil.showSimilarWords(mtvSynonym, synonymList, "\n");
-        if (!mPresenter.isInEdit() && mtvSynonym.getText().toString().trim().isEmpty()) {
+        String content = mtvSynonym.getText().toString().trim();
+        if (!mPresenter.isInEdit() && content.isEmpty()) {
             mtvSynonym.setVisibility(View.GONE);
         } else {
             mtvSynonym.setVisibility(View.VISIBLE);
@@ -400,15 +406,23 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     @Override
-    public void showInputWordGroup(String wordGroup) {
+    public void showInputWordGroup(String wordGroup, boolean isSelect) {
         mtvWordGroup.setVisibility(View.VISIBLE);
         mtvWordGroup.setText(wordGroup);
+        if (isSelect) {
+            mtvWordGroup.requestFocus();
+            mtvWordGroup.setSelection(0, wordGroup.length());
+        }
     }
 
     @Override
-    public void showInputSynonym(String wordGroup) {
+    public void showInputSynonym(String synonym, boolean isSelect) {
         mtvSynonym.setVisibility(View.VISIBLE);
-        mtvSynonym.setText(wordGroup);
+        mtvSynonym.setText(synonym);
+        if (isSelect) {
+            mtvSynonym.requestFocus();
+            mtvSynonym.setSelection(0, synonym.length());
+        }
     }
 
 
@@ -488,8 +502,12 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     @Override
-    public void showRememberWay(String rememberWay) {
+    public void showRememberWay(String rememberWay, boolean isSelect) {
         mTvRememberWay.setText(rememberWay);
+        if (isSelect) {
+            mTvRememberWay.requestFocus();
+           mTvRememberWay.setSelection(0, rememberWay.length());
+        }
     }
 
     public static Intent getStartIntent(Context context) {

@@ -24,17 +24,17 @@ public interface WordDetailContract {
 
         void showSimilarWords(List<Word.SimilarWord> similarWordList);
 
-        void showInputSimilarWords(String inputSimilarWords);
+        void showInputSimilarWords(String inputSimilarWords, boolean isSelect);
 
         void showInputRememberWay(String rememberWay);
 
         void showWordGroupList(List<Word.SimilarWord> groupList);
 
-        void showInputWordGroup(String wordGroup);
+        void showInputWordGroup(String wordGroup, boolean isSelect);
 
         void showSynonymList(List<Word.SimilarWord> synonymList);
 
-        void showInputSynonym(String wordGroup);
+        void showInputSynonym(String wordGroup, boolean isSelect);
 
         void showStrangeDegree(int strangeDegree);
 
@@ -55,7 +55,7 @@ public interface WordDetailContract {
 
         void showAnalyzeFailed(int resultCode);
 
-        void showRememberWay(String rememberWay);
+        void showRememberWay(String rememberWay, boolean isSelect);
 
         /** 新增某种类型的单词时辅助填写内容 **/
         void setInputAssistant();
