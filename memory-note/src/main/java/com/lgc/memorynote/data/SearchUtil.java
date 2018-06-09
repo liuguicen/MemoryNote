@@ -231,11 +231,10 @@ public class SearchUtil {
 
 
     public static Set<Word.SimilarWord> searchAllSynonym(List<Word> allWord,
-                                                         Word mWord, String wordName) {
+                                                         Word mWord, String wordName, List<String> srcMeanUnit) {
 
         Map<String, Word.SimilarWord> resultMap = new LinkedHashMap<>();
         // 将原单词所有的意思单位加到列表中
-        List<String> srcMeanUnit = AlgorithmUtil.StringAg.splitChineseWord(mWord.getInputMeaning());
 
         for (Word word : allWord) {
             if (word.getWordType() == Word.PURE_WORD || word.getWordType() == Word.PHRASE) {

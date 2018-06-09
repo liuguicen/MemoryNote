@@ -6,8 +6,10 @@ import android.text.TextUtils;
 import android.util.Pair;
 import android.widget.Toast;
 
+import com.lgc.memorynote.base.AlgorithmUtil;
 import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.base.UIUtil;
+import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.data.AppConstant;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SearchUtil;
@@ -260,10 +262,23 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
 
     @Override
     public void syncSynonyms() {
-        String synonymString = syncChildWord(
-                mView.getInputSynonym(),
-                SearchUtil.searchAllSynonym(GlobalData.getInstance().getAllWord(), mWord
-                        , mView.getInputWordName().trim()));
+        List<String> srcMeanUnit = AlgorithmUtil.StringAg.splitChineseWord(
+                mWord.getInputMeaning() + " " + mView.getInputSynonym());
+        for (int i = srcMeanUnit.size() - 1; i >= 0; i--) {
+            String s = srcMeanUnit.get(i);
+            if (s.startsWith("使")
+                    ||s.startsWith("把")
+                    ||s.startsWith("谐音")
+                    ||s.startsWith("源于")
+                    ||s.startsWith("给")) {
+                srcMeanUnit.remove(i);
+            }
+        }
+        Set<Word.SimilarWord> searchWordList = SearchUtil.searchAllSynonym(
+                GlobalData.getInstance().getAllWord(), mWord
+                ,mView.getInputWordName().trim(), srcMeanUnit);
+
+        String synonymString = syncChildWord(mView.getInputSynonym(), searchWordList);
         mView.showInputSynonym(synonymString, true);
     }
 

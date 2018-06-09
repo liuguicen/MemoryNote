@@ -72,6 +72,11 @@ public class Util {
         return sb.toString();
     }
 
+
+    public static void showInputMethod(final View v) {
+        showKeyBoard(v);
+    }
+
     public static void showKeyBoard(final View v) {
         InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {

@@ -371,6 +371,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         if (isSelect) {
             mTvSimilarWord.requestFocus();
             mTvSimilarWord.setSelection(0, inputSimilarWords.length());
+            Util.showKeyBoard(mTvSimilarWord);
         }
     }
 
@@ -412,6 +413,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         if (isSelect) {
             mtvWordGroup.requestFocus();
             mtvWordGroup.setSelection(0, wordGroup.length());
+            Util.showKeyBoard(mtvWordGroup);
         }
     }
 
@@ -422,6 +424,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         if (isSelect) {
             mtvSynonym.requestFocus();
             mtvSynonym.setSelection(0, synonym.length());
+            Util.showKeyBoard(mtvSynonym);
         }
     }
 
@@ -506,7 +509,8 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         mTvRememberWay.setText(rememberWay);
         if (isSelect) {
             mTvRememberWay.requestFocus();
-           mTvRememberWay.setSelection(0, rememberWay.length());
+            mTvRememberWay.setSelection(0, rememberWay.length());
+            Util.showKeyBoard(mTvRememberWay);
         }
     }
 

@@ -52,6 +52,7 @@ public class AlgorithmUtil {
             if (msg != null && !msg.isEmpty()) {
                 String[] split = msg.split("[ ,，；;.。、()=\\n]");
                 for (String s : split) {
+                    s=s.trim();
                     if (!s.isEmpty()) {
                         if (s.charAt(0) <= 126)
                             continue;
