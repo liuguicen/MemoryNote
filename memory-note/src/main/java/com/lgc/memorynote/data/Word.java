@@ -3,6 +3,7 @@ package com.lgc.memorynote.data;
 import android.text.TextUtils;
 
 import com.lgc.memorynote.base.AlgorithmUtil;
+import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.base.Util;
 
 import java.util.ArrayList;
@@ -494,6 +495,7 @@ public class Word {
 
     public void setLastUploadTime(long lastUploadTime) {
         this.lastUploadTime = lastUploadTime;
+        Logcat.d(name + "  更新上传时间完成= " + lastUploadTime);
     }
 
     public void setLastDownLoadTime(long lastDownLoadTime) {

@@ -121,6 +121,7 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 UIUtil.showMeaningString(itemHolder.tvMeaning, word.getInputMeaning(), " ;   ");
             } else {
                 itemHolder.tvMeaning.setText("_________");
+                itemHolder.tvRelated.setText("_________");
             }
         }
 

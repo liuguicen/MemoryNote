@@ -246,11 +246,11 @@ public class GlobalData {
                 });
             }
             MyDatabase.getInstance().insertWord(word.getName(), new Gson().toJson(word));
-            Logcat.e(word.getName() + "已更新");
+            Logcat.e(word.getName() + "数据库已更新");
             // 更新，内存中的已经更新了，不用在更新
         } catch (IOException e) {
             e.printStackTrace();
-            Logcat.d(word.getName() + "更新失败 \n" + e.getMessage());
+            Logcat.d(word.getName() + "数据库更新失败 \n" + e.getMessage());
         } finally {
             MyDatabase.getInstance().close();
         }

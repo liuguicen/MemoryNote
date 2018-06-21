@@ -199,9 +199,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 if (word.getLastModifyTime() < word.getLastUploadTime())
                 {
                     publishProgress(++mUploadNumber);
-                    Logcat.e("word " + i + " = "+ word.getName() + " had upload already");
+                    Logcat.d("word " + i + " = "+ word.getName() + " had upload already");
                     continue;
-                }
+
 
                 // 只有修改时间大于上传时间才上传，否则不上传
                 Logcat.e("start upload word " + i + " = "+ word.getName());
