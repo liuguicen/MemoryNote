@@ -20,6 +20,8 @@ public interface WordDetailContract {
 
         void showWordMeaning(Word  word);
 
+        void showIsCheckedMeaning(boolean checkedMeaning);
+
         void showInputMeaning(String inputMeaning);
 
         void showSimilarWords(List<Word.SimilarWord> similarWordList);
@@ -66,6 +68,8 @@ public interface WordDetailContract {
         boolean isInEdit();
 
         void switchEdit();
+
+        void setCheckMeaning();
 
         /**
          * 返回，增加或者删除是否超限

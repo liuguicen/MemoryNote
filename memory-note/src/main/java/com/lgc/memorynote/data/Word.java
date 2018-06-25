@@ -68,6 +68,7 @@ public class Word {
 
     public String name;
     public List<WordMeaning> meaningList = new ArrayList<>();
+    public boolean isCheckedMeaning = false;
     public int strangeDegree = 0;
     public List<SimilarWord> similarWordList;
     public List<SimilarWord> groupList;
@@ -393,6 +394,14 @@ public class Word {
 
     public void setInputMeaning(String inputMeaning) {
         this.inputMeaning = inputMeaning;
+    }
+
+    public boolean isCheckedMeaning() {
+        return isCheckedMeaning;
+    }
+
+    public void setCheckedMeaning(boolean checked) {
+        isCheckedMeaning = checked;
     }
 
 

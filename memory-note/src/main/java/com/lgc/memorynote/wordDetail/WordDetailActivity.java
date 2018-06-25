@@ -49,6 +49,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     private View mDeleteView;
     private int lastInputType;
     private boolean mWordNameChanged = false;
+    private View mTvCheckMeaning;
 
 
     @Override
@@ -66,6 +67,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     private void bindView() {
         mTvWordName = (EditText) findViewById(R.id.et_word_detail_name);
         mTvWordMeaning = (EditText) findViewById(R.id.et_word_detail_meaning);
+        mTvCheckMeaning = findViewById(R.id.btn_check_meaning);
         mTvSimilarWord = (EditText) findViewById(R.id.et_word_detail_similar);
         mtvWordGroup = (EditText) findViewById(R.id.et_word_detail_group);
         mtvSynonym = (EditText) findViewById(R.id.et_word_detail_synonym);
@@ -98,6 +100,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         mTvWordName.setOnClickListener(this);
         mTvWordMeaning.setOnClickListener(this);
         mTvWordMeaning.setOnTouchListener(this);
+        mTvCheckMeaning.setOnClickListener(this);
 
         findViewById(R.id.add_strange_degree).setOnClickListener(this);
         findViewById(R.id.reduce_strange_degree).setOnClickListener(this);
@@ -184,6 +187,9 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         switch (v.getId()) {
             case R.id.et_word_detail_name:
                 mPresenter.setClickName();
+                break;
+            case R.id.btn_check_meaning:
+                mPresenter.setCheckMeaning();
                 break;
             case R.id.add_strange_degree:
                 mPresenter.addStrangeDegree();
@@ -348,6 +354,14 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         UIUtil.showMeaningString(mTvWordMeaning, word.getInputMeaning());
     }
 
+    @Override
+    public void showIsCheckedMeaning(boolean checkedMeaning) {
+        if (checkedMeaning) {
+            mTvCheckMeaning.setBackgroundResource(R.mipmap.had_checked_meaning);
+        } else {
+            mTvCheckMeaning.setBackgroundResource(R.mipmap.check_meaning);
+        }
+    }
 
     @Override
     public void showInputMeaning(String inputMeaning) {

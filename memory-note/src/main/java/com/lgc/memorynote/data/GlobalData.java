@@ -79,9 +79,9 @@ public class GlobalData {
                 }
 
 
-                /** 千万小心
-                 * preProcess(word);
-
+                /** 千万小心 ！！
+                 *
+                 preProcess(word);
                  convertWordFromat(word);
                  * word数据结构变化的时候用， 把原版的Word拷一份出来了，命名为OldWord，去掉上面几行代码，
                  * 使用下面的代码，在oldWord2NewWord方法里面加上相关逻辑
@@ -125,8 +125,10 @@ public class GlobalData {
         updateWord(word, false);*/
     }
 
+    /** 千万小心 ！！
+     */
     private void preProcess(final Word word) {
-        if (word.hasTag(Word.TAG_DI)) {
+        /*if (word.hasTag(Word.TAG_DI)) {
             word.setStrangeDegree(Word.DEGREE_DI);
         } else if (word.hasTag(Word.TAG_ROOT)) {
             word.setStrangeDegree(Word.DEGREE_ROOT);
@@ -136,8 +138,12 @@ public class GlobalData {
             word.setStrangeDegree(Word.DEGREE_SUFFIX);
         } else if (word.hasTag(Word.TAG_WEI)) {
             word.setStrangeDegree(Word.DEGREE_WEI);
+        }*/
+      /*  String im = word.getInputMeaning();
+        if (im.contains("(查)")||im.contains("(已查") || im.contains("（查）")||im.contains("（已查）")) {
+            word.setCheckedMeaning(true);
         }
-        updateWord(word, false);
+        updateWord(word, false);*/
     }
 
 

@@ -9,7 +9,6 @@ import android.widget.Toast;
 import com.lgc.memorynote.base.AlgorithmUtil;
 import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.base.UIUtil;
-import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.data.AppConstant;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SearchUtil;
@@ -238,6 +237,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             mView.showWordName(word.getName());
             mView.showStrangeDegree(word.getStrangeDegree());
             mView.showLastRememberTime(word.getLastRememberTime());
+            mView.showIsCheckedMeaning(word.isCheckedMeaning());
         }
     }
 
@@ -258,6 +258,12 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                 SearchUtil.searchAllGroups(GlobalData.getInstance().getAllWord(), mWord
                         , mView.getInputWordName().trim()));
         mView.showInputWordGroup(groupString, true);
+    }
+
+    @Override
+    public void setCheckMeaning() {
+        mWord.setCheckedMeaning(!mWord.isCheckedMeaning);
+        mView.showIsCheckedMeaning(mWord.isCheckedMeaning);
     }
 
     @Override

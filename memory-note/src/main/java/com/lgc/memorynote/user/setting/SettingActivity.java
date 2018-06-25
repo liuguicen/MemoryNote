@@ -61,7 +61,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         initUser();
 
         TextView tvAppGuide = ((TextView) findViewById(R.id.tv_app_guide));
-        mTvUploadState = ((TextView)findViewById(R.id.tv_upload_result));
+        mTvUploadState = ((TextView) findViewById(R.id.tv_upload_result));
         findViewById(R.id.setting_modify_name_password).setOnClickListener(this);
         findViewById(R.id.setting_verify_modify).setOnClickListener(this);
         String lastUpladMsg = SpUtil.getUploadState();
@@ -95,9 +95,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         mEtUserName.setText(mUser.getName());
         mEtPassword.setText(mUser.getPassword());
     }
-
-
-
 
 
     private void cancelUploadData() {
@@ -158,7 +155,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void switchTvEditStyle(TextView tv, boolean isInEdit) {
-        if(isInEdit) {
+        if (isInEdit) {
             tv.setInputType(mLastInputType);
         } else {
             tv.setInputType(InputType.TYPE_NULL);
@@ -196,15 +193,15 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
                 final Word word = allWord.get(i);
 
-                if (word.getLastModifyTime() < word.getLastUploadTime())
-                {
+                if (word.getLastModifyTime() < word.getLastUploadTime()) {
                     publishProgress(++mUploadNumber);
-                    Logcat.d("word " + i + " = "+ word.getName() + " had upload already");
+                    Logcat.d("word " + i + " = " + word.getName() + " had upload already");
                     continue;
+                }
 
 
                 // 只有修改时间大于上传时间才上传，否则不上传
-                Logcat.e("start upload word " + i + " = "+ word.getName());
+                Logcat.e("start upload word " + i + " = " + word.getName());
                 final int finalI = i;
                 try {
                     Thread.sleep(NetWorkUtil.NET_INTERVAL_TIME);
@@ -217,7 +214,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                         word.setLastUploadTime(System.currentTimeMillis());
                         mGlobalData.updateWord(word, false);
                         publishProgress(++mUploadNumber);
-                        Logcat.e("upload word " + finalI + " = "+ word.getName() + " success");
+                        Logcat.e("upload word " + finalI + " = " + word.getName() + " success");
                     }
 
                     @Override
@@ -256,7 +253,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             String longTimeMsg = "上次上传时间：" + Util.long2DateDefult(System.currentTimeMillis());
             String msg = "数据上传完成";
             if (integer > 0) {
-                String tempS = "  " + integer +  "  个数据上传失败";
+                String tempS = "  " + integer + "  个数据上传失败";
                 msg += tempS;
                 longTimeMsg += "\n" + tempS;
             } else {
