@@ -181,6 +181,21 @@ public class GlobalData {
         return word;
     }
 
+
+    public void refreshByRemoteData(List<BmobWord> resultList) {
+        Gson gson = new Gson();
+        for (BmobWord bmobWord : resultList) {
+            Word remoteWord = gson.fromJson(bmobWord.getJsonData(), Word.class);
+            int localId = mAllWords.indexOf(remoteWord);
+            Word localWord = mAllWords.get(localId);
+            if (remoteWord.getLastModifyTime() > localWord.getLastModifyTime()) { // 远程的更新时间更长才更新
+                mAllWords.set(localId, remoteWord);
+                updateWord(remoteWord, false);
+            }
+        }
+    }
+
+
     public static GlobalData getInstance() {
         return H.instance;
     }
@@ -204,8 +219,9 @@ public class GlobalData {
     }
 
     public void addWord(final Word word) {
+        String jsonData = new Gson().toJson(word);
         try {
-            NetWorkUtil.saveWordService(new BmobWord(word), new NetWorkUtil.UploadListener() {
+            NetWorkUtil.saveWordService(new BmobWord(word, jsonData), new NetWorkUtil.UploadListener() {
                 @Override
                 public void uploadSuccess() {
                     word.setLastUploadTime(System.currentTimeMillis());
@@ -216,7 +232,7 @@ public class GlobalData {
 
                 }
             });
-            MyDatabase.getInstance().insertWord(word.getName(), new Gson().toJson(word));
+            MyDatabase.getInstance().insertWord(word.getName(), jsonData);
             mAllWords.add(word);
             mShowWords.add(word);
         } catch (IOException e) {
@@ -237,9 +253,10 @@ public class GlobalData {
     }
 
     public void updateWord(final Word word, boolean isUpload) {
+        String jsonData =  new Gson().toJson(word);
         try {
             if (isUpload) {
-                NetWorkUtil.upLoadWord(word, new NetWorkUtil.UploadListener() {
+                NetWorkUtil.upLoadWord(word, jsonData, new NetWorkUtil.UploadListener() {
                     @Override
                     public void uploadSuccess() {
                         word.setLastUploadTime(System.currentTimeMillis());
@@ -251,7 +268,7 @@ public class GlobalData {
                     }
                 });
             }
-            MyDatabase.getInstance().insertWord(word.getName(), new Gson().toJson(word));
+            MyDatabase.getInstance().insertWord(word.getName(), jsonData);
             Logcat.e(word.getName() + "数据库已更新");
             // 更新，内存中的已经更新了，不用在更新
         } catch (IOException e) {

@@ -1,94 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <TextView
-        android:id="@+id/btn_upload_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_bg_edit"
-        android:gravity="center"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:layout_marginTop="20dp"
-        android:paddingStart="@dimen/normal_margin"
-        android:paddingEnd="@dimen/normal_margin"
-        android:textSize="@dimen/text_size_normal"
-        android:textColor="#ffffff"
-        android:text="@string/upload_date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_upload_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_small"
-        android:gravity="center"
-        android:layout_marginTop="@dimen/normal_margin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_upload_data" />
-
-
-    <TextView
-        style="@style/text_user_name_password"
-        android:id="@+id/setting_user_name_name"
-        android:text="用户名:"
-        app:layout_constraintTop_toBottomOf="@id/tv_upload_result"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-    <EditText
-        android:id="@+id/setting_user_name_input"
-        style="@style/setting_user_name_password_editable"
-        app:layout_constraintTop_toBottomOf="@+id/tv_upload_result"
-        app:layout_constraintStart_toEndOf="@id/setting_user_name_name"
-        />
-
-    <TextView
-        android:id="@+id/setting_password_name"
-        style="@style/text_user_name_password"
-        android:layout_marginTop="@dimen/normal_margin"
-        android:text="密码："
-        app:layout_constraintTop_toBottomOf="@id/setting_user_name_name"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-    <EditText
-        android:id="@+id/setting_password_input"
-        style="@style/setting_user_name_password_editable"
-        app:layout_constraintTop_toBottomOf="@+id/setting_user_name_name"
-        app:layout_constraintStart_toEndOf="@id/setting_password_name"
-        />
-
-    <TextView
-        android:id="@+id/setting_modify_name_password"
-        app:layout_constraintTop_toBottomOf="@id/setting_password_input"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/setting_verify_modify"
-        style="@style/text_user_name_password"
-        android:text="修改" />
-
-    <TextView
-        android:id="@+id/setting_verify_modify"
-        style="@style/text_user_name_password"
-        app:layout_constraintTop_toBottomOf="@id/setting_password_input"
-        app:layout_constraintStart_toEndOf="@id/setting_modify_name_password"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="确认"
-        />
-
-    <TextView
-        android:id="@+id/tv_app_guide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_upload_result"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:textSize="25sp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/btn_upload_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/btn_bg_edit"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingEnd="@dimen/normal_margin"
+                android:paddingStart="@dimen/normal_margin"
+                android:paddingTop="5dp"
+                android:text="@string/upload_date"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/text_size_normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_upload_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal_margin"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_upload_data" />
+
+
+            <TextView
+                android:id="@+id/setting_user_name_name"
+                style="@style/text_user_name_password"
+                android:text="用户名:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_upload_result" />
+
+            <EditText
+                android:id="@+id/setting_user_name_input"
+                style="@style/setting_user_name_password_editable"
+                app:layout_constraintStart_toEndOf="@id/setting_user_name_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_upload_result" />
+
+            <TextView
+                android:id="@+id/setting_password_name"
+                style="@style/text_user_name_password"
+                android:layout_marginTop="@dimen/normal_margin"
+                android:text="密码："
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/setting_user_name_name" />
+
+            <EditText
+                android:id="@+id/setting_password_input"
+                style="@style/setting_user_name_password_editable"
+                app:layout_constraintStart_toEndOf="@id/setting_password_name"
+                app:layout_constraintTop_toBottomOf="@+id/setting_user_name_name" />
+
+            <TextView
+                android:id="@+id/setting_modify_name_password"
+                style="@style/text_user_name_password"
+                android:text="修改"
+                app:layout_constraintEnd_toStartOf="@+id/setting_verify_modify"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/setting_password_input" />
+
+            <TextView
+                android:id="@+id/setting_verify_modify"
+                style="@style/text_user_name_password"
+                android:text="确认"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/setting_modify_name_password"
+                app:layout_constraintTop_toBottomOf="@id/setting_password_input" />
+
+            <TextView
+                android:id="@+id/tv_app_guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_upload_result" />
+
+
+            <TextView
+                android:id="@+id/tv_download_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal_margin"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintTop_toBottomOf="@+id/tv_app_guide"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/btn_download_all"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/btn_bg_download"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingEnd="@dimen/normal_margin"
+                android:paddingStart="@dimen/normal_margin"
+                android:paddingTop="5dp"
+                android:text="@string/download_all"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/text_size_normal"
+                app:layout_constraintEnd_toStartOf="@id/btn_download_all"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_download_result"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/btn_download_continue"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/btn_bg_download"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingEnd="@dimen/normal_margin"
+                android:paddingStart="@dimen/normal_margin"
+                android:paddingTop="5dp"
+                android:text="@string/download_continue"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/text_size_normal"
+                app:layout_constraintStart_toEndOf="@id/btn_download_all"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_download_result"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>

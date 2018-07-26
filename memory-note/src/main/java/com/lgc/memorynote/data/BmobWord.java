@@ -26,9 +26,11 @@ public class BmobWord extends BmobObject {
     String jsonData;
     String userID;
 
-    public BmobWord(Word word) {
+    public BmobWord(Word word, String jsonData) {
         this.name = word.getName();
-        jsonData = new Gson().toJson(word);
+        if (jsonData == null)
+            this.jsonData = new Gson().toJson(word);
+        else this.jsonData = jsonData;
     }
 
     public void setName(String name) {

@@ -30,6 +30,7 @@ public class SpUtil {
     private static final String USER_SP_NAME = "user";
     private static final String UPLOAD_STATE = "upload state";
     private static final String RECENT_CMD = "recent_cmd";
+    private static final String Last_Word_Download_Position = "last_word_download_number";
     private static final String INPUT_ASSISTANT = "INPUT_ASSISTANT";
 
     private static SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences(USER_SP_NAME, Context.MODE_PRIVATE);
@@ -119,5 +120,13 @@ public class SpUtil {
     public static boolean saveInputAssistantKey(String inputAssistant) {
         if (inputAssistant == null) return false;
         return sp.edit().putString(INPUT_ASSISTANT, inputAssistant).commit();
+    }
+
+    public static boolean saveLastDownloadPosition(int downLoadPosition) {
+        return sp.edit().putInt(Last_Word_Download_Position, downLoadPosition).commit();
+    }
+
+    public static int getLastDownloadPosition() {
+        return sp.getInt(Last_Word_Download_Position, 0);
     }
 }

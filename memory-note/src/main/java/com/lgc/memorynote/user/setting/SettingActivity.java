@@ -8,26 +8,34 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.lgc.memorynote.R;
 import com.lgc.memorynote.base.CertainDialog;
 import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.base.network.NetWorkState;
 import com.lgc.memorynote.base.network.NetWorkUtil;
+import com.lgc.memorynote.data.BmobWord;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SpUtil;
 import com.lgc.memorynote.data.Word;
 import com.lgc.memorynote.user.User;
 import com.lgc.memorynote.wordList.Command;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.CountListener;
+import cn.bmob.v3.listener.SQLQueryListener;
 
 /**
  * <pre>
@@ -45,6 +53,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private UpLoadTask mUpLoadTask;
     private GlobalData mGlobalData;
     private TextView mTvUploadState;
+    private TextView tvLastDownloadPosition;
     private EditText mEtUserName;
     private EditText mEtPassword;
     private User mUser;
@@ -123,6 +132,30 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 });
                 break;
+            case R.id.btn_download_continue:
+                if (NetWorkState.detectNetworkType() == -1) {
+                    Toast.makeText(this, "找不到网络，请稍后再试", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                mCertainDialog.showDialog("确认下载吗？", null, new CertainDialog.ActionListener() {
+                    @Override
+                    public void onSure() {
+                        downloadDate();
+                    }
+                });
+                break;
+            case R.id.btn_download_all:
+                if (NetWorkState.detectNetworkType() == -1) {
+                    Toast.makeText(this, "找不到网络，请稍后再试", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                mCertainDialog.showDialog("确认下载吗？", null, new CertainDialog.ActionListener() {
+                    @Override
+                    public void onSure() {
+                        downloadAll();
+                    }
+                });
+                break;
             case R.id.setting_modify_name_password:
                 if (!mIsInEdit) {
                     mIsInEdit = true;
@@ -153,6 +186,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
+
 
     private void switchTvEditStyle(TextView tv, boolean isInEdit) {
         if (isInEdit) {
@@ -208,7 +242,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                NetWorkUtil.upLoadWord(word, new NetWorkUtil.UploadListener() {
+                NetWorkUtil.upLoadWord(word, null, new NetWorkUtil.UploadListener() {
                     @Override
                     public void uploadSuccess() {
                         word.setLastUploadTime(System.currentTimeMillis());
@@ -264,6 +298,84 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
             Toast.makeText(SettingActivity.this, msg, Toast.LENGTH_LONG).show();
             Logcat.d(msg);
+            mProgressDialog.dismiss();
+        }
+    }
+
+
+    private void downloadAll() {
+        SpUtil.saveLastDownloadPosition(0);
+        downloadDate();
+    }
+
+    private void downloadDate() {
+        // 首先获取单词数量
+        // 按单词名称排序，然后根据单词数量分页查询
+        // 每个单词下载之后，转回Java对象，
+        // 比较更新时间，如果>=更新时间晚，丢掉，重要!
+        // 如果是需要更新的单词，全局数据中， 数据库中的都更新掉
+
+        BmobQuery<BmobWord> query = new BmobQuery<>();
+        String sql = "select * " +
+                " from BmobWord";
+        query.setSQL(sql);
+        query.count(BmobWord.class, new CountListener() {
+            @Override
+            public void done(Integer wordCount, BmobException e) {
+                Downloader mDownLoader = new Downloader(wordCount);
+                mDownLoader.execute();
+            }
+        });
+    }
+
+    private class Downloader {
+        private int totalNumber = 0;
+        private final int DownLoadLimit = 500;
+        private int downLoadNumber;
+        int lastDownloadPosition;
+
+
+        Downloader(int totalNumber) {
+            this.totalNumber = totalNumber;
+        }
+
+        public void execute() {
+            lastDownloadPosition = SpUtil.getLastDownloadPosition();
+            downLoadNumber = totalNumber - lastDownloadPosition;
+            if (downLoadNumber > DownLoadLimit) {
+                downLoadNumber = DownLoadLimit;
+            }
+            mProgressDialog.setMax(downLoadNumber);
+            mProgressDialog.show();
+            mUploadNumber = 0;
+
+            // 分页下载
+            String sql = "select * " +
+                    " from BmobWord";
+            BmobQuery<BmobWord> query = new BmobQuery<>();
+            query.setSQL(sql);
+            query.setLimit(downLoadNumber);
+            query.setSkip(lastDownloadPosition);
+            query.doSQLQuery(new SQLQueryListener<BmobWord>() {
+                @Override
+                public void done(BmobQueryResult<BmobWord> result, BmobException e) {
+                    if (e != null || result == null) {
+                        Toast.makeText(SettingActivity.this, "本次下载失败", Toast.LENGTH_LONG).show();
+                        mProgressDialog.dismiss();
+                        return;
+                    }
+                    mProgressDialog.setProgress(downLoadNumber / 2);
+                    List<BmobWord> resultList = result.getResults();
+                    if (resultList == null)
+                        resultList = new ArrayList<>();
+                    mGlobalData.refreshByRemoteData(resultList);
+                    lastDownloadPosition += resultList.size();
+                    SpUtil.saveLastDownloadPosition(lastDownloadPosition);
+                }
+            });
+
+
+            mTvUploadState.setText("上次下载到:  " + lastDownloadPosition + "。  共  " + totalNumber + "  个");
             mProgressDialog.dismiss();
         }
     }

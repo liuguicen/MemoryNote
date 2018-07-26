@@ -119,13 +119,13 @@ class WordListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             itemHolder.tvMeaning.setVisibility(View.VISIBLE);
             if (!mIsHideMeaning) {
                 UIUtil.showMeaningString(itemHolder.tvMeaning, word.getInputMeaning(), " ;   ");
+                itemHolder.tvRelated.setVisibility(View.VISIBLE);
+                UIUtil.showRelated(itemHolder.tvRelated, word);
             } else {
                 itemHolder.tvMeaning.setText("_________");
-                itemHolder.tvRelated.setText("_________");
+                itemHolder.tvRelated.setVisibility(View.GONE);
             }
         }
-
-        UIUtil.showRelated(itemHolder.tvRelated, word);
     }
 
     @Override

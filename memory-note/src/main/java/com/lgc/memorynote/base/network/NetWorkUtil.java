@@ -137,9 +137,9 @@ public class NetWorkUtil {
         bmobWord.selfSave(uploadListener);
     }
 
-    public static void upLoadWord(final Word localWord, final UploadListener uploadListener) {
+    public static void upLoadWord(final Word localWord, String jsonData, final UploadListener uploadListener) {
         Util.RepetitiveEventFilter.isRepetitive(NET_INTERVAL_TIME); //
-        final BmobWord localBmobWord = new BmobWord(localWord);
+        final BmobWord localBmobWord = new BmobWord(localWord, jsonData);
         BmobQuery<BmobWord> query = new BmobQuery<>();
         query.addWhereEqualTo("name", localBmobWord.getName());
 
@@ -186,7 +186,7 @@ public class NetWorkUtil {
     }
 
     public static void deleteWord(final Word localWord, final UploadListener uploadListener) {
-        final BmobWord localBmobWord = new BmobWord(localWord);
+        final BmobWord localBmobWord = new BmobWord(localWord, null);
         BmobQuery<BmobWord> query = new BmobQuery<>();
         query.addWhereEqualTo("name", localBmobWord.getName());
 
