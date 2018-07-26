@@ -97,57 +97,37 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="25sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/setting_verify_modify"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_upload_result" />
+                app:layout_constraintStart_toStartOf="parent" />
 
 
             <TextView
                 android:id="@+id/tv_download_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/normal_margin"
+                android:layout_marginTop="@dimen/very_big_margin"
                 android:gravity="center"
                 android:textSize="@dimen/text_size_small"
+                android:text="未下载过"
                 app:layout_constraintTop_toBottomOf="@+id/tv_app_guide"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/btn_download_all"
-                android:layout_width="wrap_content"
-                android:layout_height="37dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/btn_bg_download"
-                android:gravity="center"
-                android:paddingBottom="5dp"
-                android:paddingEnd="@dimen/normal_margin"
-                android:paddingStart="@dimen/normal_margin"
-                android:paddingTop="5dp"
-                android:text="@string/download_all"
-                android:textColor="#ffffff"
-                android:textSize="@dimen/text_size_normal"
-                app:layout_constraintEnd_toStartOf="@id/btn_download_all"
+                android:id="@+id/btn_download_continue"
+                style="@style/DownloadBtn"
+                android:text="@string/download_continue"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_download_result"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintEnd_toStartOf="@id/btn_download_all"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_download_result" />
 
             <TextView
-                android:id="@+id/btn_download_continue"
-                android:layout_width="wrap_content"
-                android:layout_height="37dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/btn_bg_download"
-                android:gravity="center"
-                android:paddingBottom="5dp"
-                android:paddingEnd="@dimen/normal_margin"
-                android:paddingStart="@dimen/normal_margin"
-                android:paddingTop="5dp"
-                android:text="@string/download_continue"
-                android:textColor="#ffffff"
-                android:textSize="@dimen/text_size_normal"
-                app:layout_constraintStart_toEndOf="@id/btn_download_all"
+                style="@style/DownloadBtn"
+                android:id="@+id/btn_download_all"
+                android:text="@string/download_all"
+                app:layout_constraintStart_toEndOf="@id/btn_download_continue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_download_result"
                 app:layout_constraintBottom_toBottomOf="parent" />

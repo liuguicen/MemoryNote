@@ -187,9 +187,14 @@ public class GlobalData {
         for (BmobWord bmobWord : resultList) {
             Word remoteWord = gson.fromJson(bmobWord.getJsonData(), Word.class);
             int localId = mAllWords.indexOf(remoteWord);
-            Word localWord = mAllWords.get(localId);
-            if (remoteWord.getLastModifyTime() > localWord.getLastModifyTime()) { // 远程的更新时间更长才更新
-                mAllWords.set(localId, remoteWord);
+
+            if (localId < 0 || (localId >= 0 && remoteWord.getLastModifyTime()
+                    > mAllWords.get(localId).getLastModifyTime())) { // 远程的更新时间更长才更新
+                if (localId < 0) {
+                    mAllWords.add(remoteWord);
+                } else {
+                    mAllWords.set(localId, remoteWord);
+                }
                 updateWord(remoteWord, false);
             }
         }

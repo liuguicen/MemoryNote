@@ -35,6 +35,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.CountListener;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SQLQueryListener;
 
 /**
@@ -53,7 +54,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private UpLoadTask mUpLoadTask;
     private GlobalData mGlobalData;
     private TextView mTvUploadState;
-    private TextView tvLastDownloadPosition;
+    private TextView tvDownloadState;
     private EditText mEtUserName;
     private EditText mEtPassword;
     private User mUser;
@@ -71,8 +72,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
         TextView tvAppGuide = ((TextView) findViewById(R.id.tv_app_guide));
         mTvUploadState = ((TextView) findViewById(R.id.tv_upload_result));
+        tvDownloadState = ((TextView) findViewById(R.id.tv_download_result));
+        tvDownloadState.setText("上次下载到： " + SpUtil.getLastDownloadPosition());
         findViewById(R.id.setting_modify_name_password).setOnClickListener(this);
         findViewById(R.id.setting_verify_modify).setOnClickListener(this);
+        findViewById(R.id.btn_download_continue).setOnClickListener(this);
+        findViewById(R.id.btn_download_all).setOnClickListener(this);
         String lastUpladMsg = SpUtil.getUploadState();
         if (lastUpladMsg.isEmpty()) {
             lastUpladMsg = "未上传过";
@@ -350,33 +355,27 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             mUploadNumber = 0;
 
             // 分页下载
-            String sql = "select * " +
-                    " from BmobWord";
             BmobQuery<BmobWord> query = new BmobQuery<>();
-            query.setSQL(sql);
+            query.order("updatedAt");
+            query.setSkip(lastDownloadPosition - 10);
             query.setLimit(downLoadNumber);
-            query.setSkip(lastDownloadPosition);
-            query.doSQLQuery(new SQLQueryListener<BmobWord>() {
+            query.findObjects(new FindListener<BmobWord>() {
+
                 @Override
-                public void done(BmobQueryResult<BmobWord> result, BmobException e) {
-                    if (e != null || result == null) {
+                public void done(List<BmobWord> resultList, BmobException e) {
+                    if (e != null || resultList == null) {
                         Toast.makeText(SettingActivity.this, "本次下载失败", Toast.LENGTH_LONG).show();
                         mProgressDialog.dismiss();
                         return;
                     }
                     mProgressDialog.setProgress(downLoadNumber / 2);
-                    List<BmobWord> resultList = result.getResults();
-                    if (resultList == null)
-                        resultList = new ArrayList<>();
                     mGlobalData.refreshByRemoteData(resultList);
                     lastDownloadPosition += resultList.size();
                     SpUtil.saveLastDownloadPosition(lastDownloadPosition);
+                    tvDownloadState.setText("上次下载到:  " + lastDownloadPosition + "    共  " + totalNumber + "  个");
+                    mProgressDialog.dismiss();
                 }
             });
-
-
-            mTvUploadState.setText("上次下载到:  " + lastDownloadPosition + "。  共  " + totalNumber + "  个");
-            mProgressDialog.dismiss();
         }
     }
 }

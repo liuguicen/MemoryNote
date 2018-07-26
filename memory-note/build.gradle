@@ -6,11 +6,11 @@ android {
     /*bmob 兼容Android6.0系统所需，如果这句话报错，可在dependencies标签下使用compile 'cn.bmob.android:http-legacy:1.0'*/
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
-        applicationId "com.roadrover.tpms"
+        applicationId "com.lgc.memorynote"
         minSdkVersion 17
         targetSdkVersion 19
-        versionCode 101
-        versionName "1.0.1"
+        versionCode 102
+        versionName "1.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
