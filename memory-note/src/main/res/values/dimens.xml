@@ -2,12 +2,13 @@
 <resources>
     <dimen name="choose_pic_item_divider">1.5dp</dimen>
     <dimen name="strange_degree_item_margin">20dp</dimen>
-    <dimen name="text_size_very_very_big">45sp</dimen>
-    <dimen name="text_size_very_big">38sp</dimen>
-    <dimen name="text_size_big">30sp</dimen>
-    <dimen name="text_size_normal">22sp</dimen>
-    <dimen name="text_size_small">18sp</dimen>
-    <dimen name="text_size_very_small">18sp</dimen>
+    <dimen name="text_size_very_very_big">52sp</dimen>
+    <dimen name="text_size_very_big">44sp</dimen>
+    <dimen name="text_size_big">35sp</dimen>
+    <dimen name="text_size_normal">25sp</dimen>
+    <dimen name="text_size_small">21sp</dimen>
+    <dimen name="text_size_very_small">21sp</dimen>
+    <dimen name="text_size_very_very_small">15sp</dimen>
     <dimen name="very_big_margin">32dp</dimen>
     <dimen name="big_margin">16dp</dimen>
     <dimen name="normal_margin">8dp</dimen>

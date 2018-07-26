@@ -13,11 +13,13 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="layout_constraintStart_toStartOf">parent</item>
         <item name="android:layout_marginTop">12dp</item>
+        <item name="android:textSize">@dimen/text_size_very_very_small</item>
     </style>
 
     <style name="WordDetailEditItem">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:layout_marginTop">2dp</item>
     </style>
 
