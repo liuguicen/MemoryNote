@@ -36,6 +36,7 @@ public class GlobalData {
     private static List<SearchData> mRecentSearch;
     public static SearchData mCurSearch;
     public static final int MAX_RECENT_CMD_SIZE = 5;
+    private boolean mCloseUpload = false;
 
     private User mUser;
     boolean mIsCheckedUser = false;
@@ -122,7 +123,7 @@ public class GlobalData {
                 wordMeaning.setTagList(null);
             }
         }
-        updateWord(word, false);*/
+        updateWord2DB(word, false);*/
     }
 
     /** 千万小心 ！！
@@ -143,7 +144,7 @@ public class GlobalData {
         if (im.contains("(查)")||im.contains("(已查") || im.contains("（查）")||im.contains("（已查）")) {
             word.setCheckedMeaning(true);
         }
-        updateWord(word, false);*/
+        updateWord2DB(word, false);*/
     }
 
 
@@ -177,12 +178,13 @@ public class GlobalData {
         word.setLastRememberTime(oldWord.getLastRememberTime());
 
         // 刷新数据库
-        updateWord(word);
+        updateWord2DB(word, true);
         return word;
     }
 
 
     public void refreshByRemoteData(List<BmobWord> resultList) {
+        closeUpload();
         Gson gson = new Gson();
         for (BmobWord bmobWord : resultList) {
             Word remoteWord = gson.fromJson(bmobWord.getJsonData(), Word.class);
@@ -192,12 +194,34 @@ public class GlobalData {
                     > mAllWords.get(localId).getLastModifyTime())) { // 远程的更新时间更长才更新
                 if (localId < 0) {
                     mAllWords.add(remoteWord);
+                    addWord(remoteWord, false);
                 } else {
                     mAllWords.set(localId, remoteWord);
+                    updateWord2DB(remoteWord, false);
                 }
-                updateWord(remoteWord, false);
             }
         }
+        openUpload();
+    }
+
+    /**
+     * 从SD卡中导入数据
+     * @param wordList
+     */
+    public void importFromSd(List<Word> wordList) {
+        closeUpload();
+        for (Word sdWord : wordList) {
+            int localId = mAllWords.indexOf(sdWord);
+            if (localId < 0) {
+                addWord(sdWord, false);
+            } else {
+                if (sdWord.getLastModifyTime() > mAllWords.get(localId).getLastModifyTime()) {
+                    mAllWords.set(localId, sdWord); // 更新
+                    updateWord2DB(sdWord, false);
+                }
+            }
+        }
+        openUpload();
     }
 
 
@@ -219,24 +243,35 @@ public class GlobalData {
         return mShowWords;
     }
 
+    /**
+     * 特殊情形下关系上传的功能
+     */
+    public void closeUpload() {
+        mCloseUpload = true;
+    }
+
+    public void openUpload() { mCloseUpload = false; }
+
     public void setCurWords(List<Word> curWords) {
         mShowWords = curWords;
     }
 
-    public void addWord(final Word word) {
+    public void addWord(final Word word, boolean isUpload) {
         String jsonData = new Gson().toJson(word);
         try {
-            NetWorkUtil.saveWordService(new BmobWord(word, jsonData), new NetWorkUtil.UploadListener() {
-                @Override
-                public void uploadSuccess() {
-                    word.setLastUploadTime(System.currentTimeMillis());
-                }
+            if(isUpload && !mCloseUpload) {
+                NetWorkUtil.saveWordService(new BmobWord(word, jsonData), new NetWorkUtil.UploadListener() {
+                    @Override
+                    public void uploadSuccess() {
+                        word.setLastUploadTime(System.currentTimeMillis());
+                    }
 
-                @Override
-                public void uploadFailed(BmobException e) {
+                    @Override
+                    public void uploadFailed(BmobException e) {
 
-                }
-            });
+                    }
+                });
+            }
             MyDatabase.getInstance().insertWord(word.getName(), jsonData);
             mAllWords.add(word);
             mShowWords.add(word);
@@ -248,19 +283,19 @@ public class GlobalData {
         }
     }
 
+    public void updateWord2DB(final Word word, boolean isUpload) {
+        String jsonData =  new Gson().toJson(word);
+        updateWord2DB(word, jsonData, isUpload);
+    }
+
     /**
-     * 可以控制是否上传到网络，{@link #updateWord(Word, boolean)}
+     * 可以控制是否上传到网络，{@link #updateWord2DB(Word, boolean)}
      *
      * @param word
      */
-    public void updateWord(Word word) {
-        updateWord(word, true);
-    }
-
-    public void updateWord(final Word word, boolean isUpload) {
-        String jsonData =  new Gson().toJson(word);
+    public void updateWord2DB(final Word word, String jsonData, boolean isUpload) {
         try {
-            if (isUpload) {
+            if (isUpload && !mCloseUpload) {
                 NetWorkUtil.upLoadWord(word, jsonData, new NetWorkUtil.UploadListener() {
                     @Override
                     public void uploadSuccess() {
@@ -284,10 +319,12 @@ public class GlobalData {
         }
     }
 
-    public void deleteWord(Word word) {
+    public void deleteWord(Word word, boolean isUpload) {
         try {
             MyDatabase.getInstance().deleteWord(word.getName());
-            NetWorkUtil.deleteWord(word, null);
+            if (isUpload && !mCloseUpload) {
+                NetWorkUtil.deleteWord(word, null);
+            }
             mAllWords.remove(word);
             mShowWords.remove(word);
         } catch (IOException e) {

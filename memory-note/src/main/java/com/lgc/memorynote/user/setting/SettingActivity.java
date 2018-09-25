@@ -8,35 +8,32 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.lgc.memorynote.R;
+import com.lgc.memorynote.base.AppConfig;
 import com.lgc.memorynote.base.CertainDialog;
 import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.base.network.NetWorkState;
 import com.lgc.memorynote.base.network.NetWorkUtil;
 import com.lgc.memorynote.data.BmobWord;
+import com.lgc.memorynote.data.DataSync;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.data.SpUtil;
 import com.lgc.memorynote.data.Word;
 import com.lgc.memorynote.user.User;
 import com.lgc.memorynote.wordList.Command;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.SQLQueryListener;
 
 /**
  * <pre>
@@ -99,7 +96,13 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
         mCertainDialog = new CertainDialog(this);
         findViewById(R.id.btn_upload_data).setOnClickListener(this);
+        findViewById(R.id.btn_export_to_sd).setOnClickListener(this);
+        findViewById(R.id.btn_import_to_sd).setOnClickListener(this);
         Logcat.e("Setting activitty init success");
+//        test();
+    }
+
+    void test() {
     }
 
     private void initUser() {
@@ -189,6 +192,32 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 }
                 break;
+            case R.id.btn_export_to_sd:
+                mCertainDialog.showDialog("确认导出吗？", null, new CertainDialog.ActionListener() {
+                    @Override
+                    public void onSure() {
+                        DataSync.exportData2Sd(SettingActivity.this, AppConfig.exportDataName);
+                    }
+                });
+                break;
+            case R.id.btn_import_to_sd:
+                mCertainDialog.showDialog("导入将替换现有数据，现有数据将保存到SD卡中，确认导入吗？", null, new CertainDialog.ActionListener() {
+                    @Override
+                    public void onSure() {
+                        // 必须先备份
+                        DataSync.exportData2Sd(SettingActivity.this, AppConfig.exportDataName);
+                        Toast.makeText(SettingActivity.this, "数据已导出到SD卡备份", Toast.LENGTH_LONG).show();
+
+                        new CertainDialog(SettingActivity.this).showDialog("再次确认，是否导入？", null, new CertainDialog.ActionListener() {
+                            @Override
+                            public void onSure() {
+                                DataSync.importFromSD(SettingActivity.this,
+                                         "0worddata.txt");
+                            }
+                        });
+                    }
+                });
+
         }
     }
 
@@ -251,7 +280,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void uploadSuccess() {
                         word.setLastUploadTime(System.currentTimeMillis());
-                        mGlobalData.updateWord(word, false);
+                        mGlobalData.updateWord2DB(word, false);
                         publishProgress(++mUploadNumber);
                         Logcat.e("upload word " + finalI + " = " + word.getName() + " success");
                     }

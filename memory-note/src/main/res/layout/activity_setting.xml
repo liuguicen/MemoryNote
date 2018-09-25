@@ -8,11 +8,11 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp">
+        app:layout_constraintStart_toStartOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -96,11 +96,10 @@
                 android:id="@+id/tv_app_guide"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="25sp"
-                app:layout_constraintTop_toBottomOf="@+id/setting_verify_modify"
+                android:textSize="@dimen/text_size_small"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/setting_verify_modify" />
 
             <TextView
                 android:id="@+id/tv_download_result"
@@ -108,29 +107,49 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/very_big_margin"
                 android:gravity="center"
-                android:textSize="@dimen/text_size_small"
                 android:text="未下载过"
-                app:layout_constraintTop_toBottomOf="@+id/tv_app_guide"
+                android:textSize="@dimen/text_size_small"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_app_guide" />
 
             <TextView
                 android:id="@+id/btn_download_continue"
                 style="@style/DownloadBtn"
                 android:text="@string/download_continue"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_download_all"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_download_all"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_download_result" />
 
             <TextView
-                style="@style/DownloadBtn"
                 android:id="@+id/btn_download_all"
+                style="@style/DownloadBtn"
                 android:text="@string/download_all"
-                app:layout_constraintStart_toEndOf="@id/btn_download_continue"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_download_result"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintStart_toEndOf="@id/btn_download_continue"
+                app:layout_constraintTop_toBottomOf="@+id/tv_download_result" />
+
+            <TextView
+                android:id="@+id/btn_export_to_sd"
+                style="@style/DownloadBtn"
+                android:text="@string/export_data_sd"
+                android:background="@drawable/btn_bg_edit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_download_all"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_download_continue" />
+
+            <TextView
+                android:id="@+id/btn_import_to_sd"
+                style="@style/DownloadBtn"
+                android:background="@drawable/btn_bg_edit"
+                android:text="@string/import_data_sd"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_download_continue"
+                app:layout_constraintTop_toBottomOf="@+id/btn_download_all" />
 
         </android.support.constraint.ConstraintLayout>
 

@@ -23,7 +23,7 @@
                 android:layout_marginEnd="@dimen/normal_margin"
                 android:hint="@string/please_input_word"
                 android:textColor="@color/color_word"
-                android:textSize="29sp"
+                android:textSize="@dimen/text_size_big"
                 android:textStyle="bold"
                 app:layout_goneMarginEnd="70dp"
                 app:layout_constraintEnd_toEndOf="parent"

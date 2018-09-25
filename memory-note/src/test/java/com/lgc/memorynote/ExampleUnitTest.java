@@ -1,12 +1,16 @@
 package com.lgc.memorynote;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lgc.memorynote.base.AlgorithmUtil;
 import com.lgc.memorynote.base.InputAnalyzerUtil;
+import com.lgc.memorynote.base.Logcat;
 import com.lgc.memorynote.data.Word;
 
+import org.json.JSONArray;
 import org.junit.Test;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -30,7 +34,7 @@ public class ExampleUnitTest {
 //        textInputMeanings(new Word());
 //        ma();
 //        testInputName();
-        stringAgTest();
+        testAnalazeFromJson();
     }
 
     private void stringAgTest() {
@@ -101,9 +105,26 @@ public class ExampleUnitTest {
                 "[{\"ciXing\":\"v\",\"isGuai\":false,\"isSheng\":true,\"meaning\":\"相信，信任\"}," +
                 "{\"isGuai\":true, sdfs\"isSheng\":true,\"meaning\":\"赞颂，把...归功于\",\"ciXing\":\"v\"}," +
                 "{\"isGuai\":false,\"isSheng\":false,\"meaning\":\"信任，学分，声望\",\"ciXing\":\"n\"}]}\n";
+
+
         Word word1 = new Gson().fromJson(jasonWord, Word.class);
-        System.out.println(word1.getName() + "\n" + new Gson().toJson(word1.getMeaningList()) + "\n"
-                + word1.getStrangeDegree() + "\n" + word1.getLastRememberTime());
+        List<Word> src = new ArrayList<>();
+        src.add(word1);
+        src.add(word1);
+        src.add(word1);
+        Gson gson = new Gson();
+        String s = gson.toJson(src);
+        List<Word> wordList = new ArrayList<>();
+        try {
+            Type aClass = new TypeToken<ArrayList<Word>>() {
+            }.getType();
+            wordList = gson.fromJson(s, aClass);
+        }catch (Exception e) {
+            Logcat.e(e.getMessage());
+        }
+        for (Word word : wordList) {
+            System.out.println(word.getName());
+        }
     }
 
     void testInputWordTag() {
@@ -115,4 +136,5 @@ public class ExampleUnitTest {
             System.out.println(tagMather.group());
         }
     }
+
 }

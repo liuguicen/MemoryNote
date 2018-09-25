@@ -151,14 +151,14 @@ public class WordListPresenter implements WordListContract.Presenter {
     public void addStrange(int position) {
         Word word = mCurShowWordList.get(position);
         word.setStrangeDegree(word.strangeDegree + 1);
-        mGlobalData.updateWord(word);
+        mGlobalData.updateWord2DB(word, true);
     }
 
     @Override
     public void reduceStrange(int position) {
         Word word = mCurShowWordList.get(position);
         word.setStrangeDegree(word.strangeDegree - 1);
-        mGlobalData.updateWord(word);
+        mGlobalData.updateWord2DB(word, true);
     }
 
     @Override

@@ -103,4 +103,6 @@ public class AppConfig {
     public boolean hasSendDeviceInfos() {
         return sp.getBoolean("has_send_device", false);
     }
+
+    public static final String exportDataName = "MemoryData"; //数据导出文件名称
 }

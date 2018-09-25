@@ -1,6 +1,7 @@
 package com.lgc.memorynote.base;
 
 import android.content.Context;
+import android.os.Environment;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,5 +43,12 @@ public class FileTool {
         return context.getApplicationContext().getFilesDir().getAbsolutePath();
     }
 
+    /**
+     * 获取内置SD卡路径
+     * @return
+     */
+    public static String getInnerSDCardPath() {
+        return Environment.getExternalStorageDirectory().getPath();
+    }
 
 }

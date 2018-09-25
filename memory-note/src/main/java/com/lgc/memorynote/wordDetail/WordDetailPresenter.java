@@ -48,7 +48,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
                 switchEdit();
             }
             setLastRememberTime();
-            setStrangeDegree(10);
+            setStrangeDegree(15);
             String assistantKey =  SpUtil.getInputAssistantKey();
             if (!assistantKey.trim().isEmpty()) {
                 Word assistantWord = SearchUtil.getOneWordByName(GlobalData.getInstance().getAllWord(), assistantKey);
@@ -95,16 +95,16 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     }
 
     public void saveWordDate() {
-        String inputMeaings = mView.getInputWordMeaning().trim();
+        String inputMeanings = mView.getInputWordMeaning().trim();
         String inputSimilars = mView.getInputSimilarWords().trim();
         String inputRememberWay = mView.getInputRememberWay().trim();
         String inputWordGroup = mView.getInputWordGroup().trim();
         String inputSynonym = mView.getInputSynonym().trim();
 
         // 其他输入
-        if (!TextUtils.equals(inputMeaings, mWord.getInputMeaning())) {
-            mWord.setInputMeaning(inputMeaings);
-            int resultCode = InputAnalyzerUtil.analyzeInputMeaning(inputMeaings, mWord);
+        if (!TextUtils.equals(inputMeanings, mWord.getInputMeaning())) {
+            mWord.setInputMeaning(inputMeanings);
+            int resultCode = InputAnalyzerUtil.analyzeInputMeaning(inputMeanings, mWord);
             if (resultCode != InputAnalyzerUtil.SUCCESS) {
                 mView.showAnalyzeFailed(resultCode);
             }
@@ -154,7 +154,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
             }
             mIsAdd = true;
             if (!TextUtils.isEmpty(mWord.getName())) {
-                GlobalData.getInstance().deleteWord(mWord); // 删掉旧的word
+                GlobalData.getInstance().deleteWord(mWord, true); // 删掉旧的word
             }
         }
         if (mIsAdd) {
@@ -176,9 +176,9 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
 
         mWord.setLastModifyTime(System.currentTimeMillis());
         if (mIsAdd) {
-            GlobalData.getInstance().addWord(mWord);
+            GlobalData.getInstance().addWord(mWord, true);
         } else {
-            GlobalData.getInstance().updateWord(mWord);
+            GlobalData.getInstance().updateWord2DB(mWord, true);
         }
         mIsAdd = false; // 保存一次之后就不再是true了
     }
@@ -384,7 +384,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
 
     @Override
     public void deleteWord() {
-        GlobalData.getInstance().deleteWord(mWord);
+        GlobalData.getInstance().deleteWord(mWord, true);
     }
 
     @Override
