@@ -3,7 +3,7 @@ package com.lgc.memorynote.data;
 import android.text.TextUtils;
 
 import com.lgc.memorynote.base.AlgorithmUtil;
-import com.lgc.memorynote.base.utils.Logcat;
+import com.lgc.baselibrary.utils.Logcat;
 
 import java.util.ArrayList;
 import java.util.List;

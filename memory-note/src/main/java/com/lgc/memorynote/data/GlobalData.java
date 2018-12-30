@@ -1,7 +1,7 @@
 package com.lgc.memorynote.data;
 
 import com.google.gson.Gson;
-import com.lgc.memorynote.base.utils.Logcat;
+import com.lgc.baselibrary.utils.Logcat;
 import com.lgc.memorynote.base.network.NetWorkUtil;
 import com.lgc.memorynote.user.User;
 import com.lgc.memorynote.wordList.Command;

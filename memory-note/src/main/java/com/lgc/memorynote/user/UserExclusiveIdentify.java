@@ -7,7 +7,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
-import com.lgc.memorynote.base.BaseApplication;
+import com.lgc.baselibrary.baseComponent.BaseApplication;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

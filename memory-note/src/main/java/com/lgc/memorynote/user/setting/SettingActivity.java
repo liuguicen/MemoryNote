@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.lgc.memorynote.R;
 import com.lgc.memorynote.base.AppConfig;
 import com.lgc.memorynote.base.CertainDialog;
-import com.lgc.memorynote.base.utils.Logcat;
+import com.lgc.baselibrary.utils.Logcat;
 import com.lgc.memorynote.data.DataSync;
 import com.lgc.memorynote.data.GlobalData;
 import com.lgc.memorynote.user.User;

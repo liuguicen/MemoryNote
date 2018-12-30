@@ -3,7 +3,7 @@ package com.lgc.memorynote;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lgc.memorynote.base.InputAnalyzerUtil;
-import com.lgc.memorynote.base.utils.Logcat;
+import com.lgc.baselibrary.utils.Logcat;
 import com.lgc.memorynote.data.Word;
 
 import org.junit.Test;

@@ -24,7 +24,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import com.lgc.memorynote.R;
-import com.lgc.memorynote.base.utils.Logcat;
+import com.lgc.baselibrary.utils.Logcat;
 import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.data.GlobalData;

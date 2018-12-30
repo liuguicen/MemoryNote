@@ -1,6 +1,6 @@
 package com.lgc.memorynote.user.setting;
 
-import com.lgc.memorynote.base.BaseContract;
+import com.lgc.baselibrary.baseComponent.BaseContract;
 
 /**
  * <pre>

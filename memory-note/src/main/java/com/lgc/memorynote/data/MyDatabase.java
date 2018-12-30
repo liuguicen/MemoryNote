@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.lgc.memorynote.base.AppConfig;
-import com.lgc.memorynote.base.utils.Logcat;
+import com.lgc.baselibrary.utils.Logcat;
 import com.lgc.memorynote.base.MemoryNoteApplication;
 
 import java.io.IOException;

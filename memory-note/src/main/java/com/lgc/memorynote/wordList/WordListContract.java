@@ -1,8 +1,8 @@
 package com.lgc.memorynote.wordList;
 
 
-import com.lgc.memorynote.base.BaseContract;
-import com.lgc.memorynote.base.BaseView;
+import com.lgc.baselibrary.baseComponent.BaseContract;
+import com.lgc.baselibrary.baseComponent.BaseView;
 import com.lgc.memorynote.data.Word;
 
 import java.util.List;

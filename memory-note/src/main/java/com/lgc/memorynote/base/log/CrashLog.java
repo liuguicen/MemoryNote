@@ -3,9 +3,9 @@ package com.lgc.memorynote.base.log;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.lgc.memorynote.base.BaseApplication;
+import com.lgc.baselibrary.utils.Logcat;
+import com.lgc.baselibrary.baseComponent.BaseApplication;
 import com.lgc.memorynote.base.utils.FileUtil;
-import com.lgc.memorynote.base.utils.Logcat;
 import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.user.UserExclusiveIdentify;
 

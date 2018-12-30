@@ -5,7 +5,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lgc.memorynote.base.utils.FileUtil;
-import com.lgc.memorynote.base.utils.Logcat;
+import com.lgc.baselibrary.utils.Logcat;
 
 import java.io.BufferedReader;
 import java.io.File;

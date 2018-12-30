@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.util.Log;
 
 
-import com.lgc.memorynote.base.utils.Logcat;
+import com.lgc.baselibrary.baseComponent.BaseApplication;
+import com.lgc.baselibrary.utils.Logcat;
 import com.lgc.memorynote.data.GlobalData;
 
 import cn.bmob.v3.Bmob;
