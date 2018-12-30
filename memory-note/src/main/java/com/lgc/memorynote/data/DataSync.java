@@ -4,8 +4,8 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.lgc.memorynote.base.FileTool;
-import com.lgc.memorynote.base.Logcat;
+import com.lgc.memorynote.base.utils.FileUtil;
+import com.lgc.memorynote.base.utils.Logcat;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,7 +28,7 @@ import java.util.List;
 public class DataSync {
 
     public static void importFromSD(Context context, String importName) {
-        String importPath = FileTool.getInnerSDCardPath() + File.separator + importName;
+        String importPath = FileUtil.getInnerSDCardPath() + File.separator + importName;
         try {
             BufferedReader br = new BufferedReader(
                     new InputStreamReader(
@@ -56,7 +56,7 @@ public class DataSync {
         exportDataName = exportDataName + "_" + System.currentTimeMillis() + ".txt";
         List<Word> allWord = GlobalData.getInstance().getAllWord();
 
-        String outPath = FileTool.getInnerSDCardPath() + File.separator + exportDataName;
+        String outPath = FileUtil.getInnerSDCardPath() + File.separator + exportDataName;
         try {
             File dataFile = new File(outPath);
             if (dataFile.exists()) {

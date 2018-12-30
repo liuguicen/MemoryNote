@@ -22,10 +22,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lgc.memorynote.R;
-import com.lgc.memorynote.base.Logcat;
+import com.lgc.memorynote.base.utils.Logcat;
 import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.data.GlobalData;
@@ -60,7 +59,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         mPresenter = new WordListPresenter(this);
         initApp();
         setContentView(R.layout.activity_word_list);
-//        test();
+        test();
         bindView();
         intView();
         initData();

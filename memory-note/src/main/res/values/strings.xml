@@ -21,16 +21,33 @@
     <string name="certain_delete">确定删除吗</string>
     <string name="cetain_leave_in_edit">正在编辑单词，你确定离开吗？</string>
     <string name="word_group">词组</string>
-    <string name="upload_date">上传数据</string>
-    <string name="download_all">下载全部</string>
-    <string name="export_data_sd">导出到SD卡</string>
-    <string name="import_data_sd">从SD卡导入</string>
-    <string name="download_continue">继续下载</string>
-    <string name="refresh_date">更新数据</string>
-    <string name="upload_data">上传单词数据</string>
     <string name="word_root">词根：</string>
     <string name="word_prefix">前缀：</string>
     <string name="word_suffix">后缀：</string>
     <string name="next">下一个</string>
     <string name="word_synonym">近义词</string>
+
+    <!-- 设置界面   -->
+    <string name="upload_date">上传数据</string>
+    <string name="log_in">登陆</string>
+    <string name="login_already">已登录</string>
+    <string name="vip_service">vip服务</string>
+    <string name="open_vip">开通</string>
+    <string name="open_vip_already">已开通</string>
+    <string name="data">数据</string>
+    <!--开通VIP可享受以下服务：\n1、单词导出为Excel\n2免广告-->
+    <string name="vip_service_illustrate">开通VIP服务后可将享受单词导出为Excel以及免广告服务</string>
+    <string name="export_directly">直接导出</string>
+    <string name="export_txt">导出为文本</string>
+    <string name="export_excel">导出为Excel</string>
+    <string name="import_directly">直接导入</string>
+    <string name="import_txt">从文本导入</string>
+    <string name="import_excel">从Excel导入</string>
+    <string name="download_update">下载更新</string>
+    <string name="download_continue">继续下载</string>
+    <string name="refresh_date">更新数据</string>
+    <string name="upload_data">上传单词数据</string>
+    <string name="app_guide">App使用说明 V</string>
+    <string name="setting">设置</string>
+    <!-- 设置界面   -->
 </resources>

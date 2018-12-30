@@ -1,7 +1,7 @@
 package com.lgc.memorynote.wordList;
 
 
-import com.lgc.memorynote.base.BasePresenter;
+import com.lgc.memorynote.base.BaseContract;
 import com.lgc.memorynote.base.BaseView;
 import com.lgc.memorynote.data.Word;
 
@@ -58,7 +58,7 @@ public class WordListContract {
         String getInputCmd();
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends BaseContract.BasePresenter {
         /**
          *  选中或者去掉一个命令
          * @param command

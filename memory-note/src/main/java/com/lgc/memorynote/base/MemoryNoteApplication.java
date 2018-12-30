@@ -1,10 +1,11 @@
 package com.lgc.memorynote.base;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
 import android.util.Log;
 
+
+import com.lgc.memorynote.base.utils.Logcat;
 import com.lgc.memorynote.data.GlobalData;
 
 import cn.bmob.v3.Bmob;
@@ -24,7 +25,7 @@ public class MemoryNoteApplication extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         appContext = this;
-        Logcat.setTag("Memory Note");
+        Logcat.setTag("MemoryNote");
         Bmob.initialize(this, "63ab0dfdd965aa92efbfce03fd10d082");//再是网络初始化
         GlobalData.init();
     }

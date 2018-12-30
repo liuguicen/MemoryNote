@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-    package="com.lgc.memorynote">
+    package="com.lgc.memorynote"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- 往SDCard写入数据权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -22,6 +23,7 @@
     <!-- 获取wifi网络状态的信息 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <application
+        tools:replace="android:icon,android:theme,android:allowBackup,android:name"
         android:name=".base.MemoryNoteApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

@@ -5,19 +5,101 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/setting_top_bar"
+        style="@style/my_tool_bar"
+        android:layout_width="match_parent">
+
+        <ImageView
+            android:id="@+id/setting_return_btn"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_arrow_back_white"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="@string/setting"
+            android:textColor="@color/white"
+            android:textSize="23sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:layout_marginStart="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setting_top_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/log_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/btn_bg_edit"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingEnd="@dimen/normal_margin"
+                android:paddingStart="@dimen/normal_margin"
+                android:paddingTop="5dp"
+                android:text="@string/log_in"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/text_size_normal"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                android:id="@+id/login_info"
+                layout="@layout/layout_login_info"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginTop="@dimen/normal_margin"
+                android:gravity="center"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/log_in" />
+
+            <TextView
+                android:id="@+id/vip_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vip_service"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/login_info" />
+
+            <TextView
+                android:id="@+id/vip_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/login_info" />
+
+            <TextView
+                android:id="@+id/setting_data"
+                style="@style/WordDetailItemName"
+                android:text="@string/data"
+                app:layout_constraintTop_toBottomOf="@+id/vip_service" />
+
 
             <TextView
                 android:id="@+id/btn_upload_data"
@@ -33,124 +115,90 @@
                 android:text="@string/upload_date"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/text_size_normal"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/btn_download"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/setting_data" />
+
+
+            <TextView
+                android:id="@+id/btn_download"
+                style="@style/DownloadBtn"
+                android:text="@string/download_update"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="@id/btn_upload_data"
+                app:layout_constraintTop_toBottomOf="@id/setting_data" />
+
 
             <TextView
-                android:id="@+id/tv_upload_result"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/normal_margin"
-                android:gravity="center"
-                android:textSize="@dimen/text_size_small"
+                android:id="@+id/btn_export_directly"
+                style="@style/DownloadBtn"
+                android:background="@drawable/btn_bg_edit"
+                android:text="@string/export_directly"
+                app:layout_constraintEnd_toStartOf="@id/btn_import_directly"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_download" />
+
+            <TextView
+                android:id="@+id/btn_import_directly"
+                style="@style/DownloadBtn"
+                android:background="@drawable/btn_bg_edit"
+                android:text="@string/import_directly"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_upload_data" />
-
-
-            <TextView
-                android:id="@+id/setting_user_name_name"
-                style="@style/text_user_name_password"
-                android:text="用户名:"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_upload_result" />
-
-            <EditText
-                android:id="@+id/setting_user_name_input"
-                style="@style/setting_user_name_password_editable"
-                app:layout_constraintStart_toEndOf="@id/setting_user_name_name"
-                app:layout_constraintTop_toBottomOf="@+id/tv_upload_result" />
+                app:layout_constraintStart_toEndOf="@id/btn_export_directly"
+                app:layout_constraintTop_toBottomOf="@+id/btn_download" />
 
             <TextView
-                android:id="@+id/setting_password_name"
-                style="@style/text_user_name_password"
-                android:layout_marginTop="@dimen/normal_margin"
-                android:text="密码："
+                android:id="@+id/btn_export_to_txt"
+                style="@style/DownloadBtn"
+                android:background="@drawable/btn_bg_edit"
+                android:text="@string/export_txt"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/btn_import_directly"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/setting_user_name_name" />
-
-            <EditText
-                android:id="@+id/setting_password_input"
-                style="@style/setting_user_name_password_editable"
-                app:layout_constraintStart_toEndOf="@id/setting_password_name"
-                app:layout_constraintTop_toBottomOf="@+id/setting_user_name_name" />
+                app:layout_constraintTop_toBottomOf="@+id/btn_export_directly" />
 
             <TextView
-                android:id="@+id/setting_modify_name_password"
-                style="@style/text_user_name_password"
-                android:text="修改"
-                app:layout_constraintEnd_toStartOf="@+id/setting_verify_modify"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/setting_password_input" />
-
-            <TextView
-                android:id="@+id/setting_verify_modify"
-                style="@style/text_user_name_password"
-                android:text="确认"
+                android:id="@+id/btn_import_from_txt"
+                style="@style/DownloadBtn"
+                android:background="@drawable/btn_bg_edit"
+                android:text="@string/import_txt"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/setting_modify_name_password"
-                app:layout_constraintTop_toBottomOf="@id/setting_password_input" />
+                app:layout_constraintStart_toEndOf="@id/btn_export_directly"
+                app:layout_constraintTop_toBottomOf="@+id/btn_export_directly" />
+
+            <TextView
+                android:id="@+id/btn_export_to_excel"
+                style="@style/DownloadBtn"
+                android:background="@drawable/btn_bg_edit"
+                android:text="@string/export_excel"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/btn_import_directly"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_export_to_txt" />
+
+            <TextView
+                android:id="@+id/btn_import_from_excel"
+                style="@style/DownloadBtn"
+                android:background="@drawable/btn_bg_edit"
+                android:text="@string/import_excel"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_export_directly"
+                app:layout_constraintTop_toBottomOf="@+id/btn_export_to_txt" />
 
             <TextView
                 android:id="@+id/tv_app_guide"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/app_guide"
                 android:textSize="@dimen/text_size_small"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/setting_verify_modify" />
-
-            <TextView
-                android:id="@+id/tv_download_result"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/very_big_margin"
-                android:gravity="center"
-                android:text="未下载过"
-                android:textSize="@dimen/text_size_small"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_app_guide" />
-
-            <TextView
-                android:id="@+id/btn_download_continue"
-                style="@style/DownloadBtn"
-                android:text="@string/download_continue"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_download_all"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_download_result" />
-
-            <TextView
-                android:id="@+id/btn_download_all"
-                style="@style/DownloadBtn"
-                android:text="@string/download_all"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_download_continue"
-                app:layout_constraintTop_toBottomOf="@+id/tv_download_result" />
-
-            <TextView
-                android:id="@+id/btn_export_to_sd"
-                style="@style/DownloadBtn"
-                android:text="@string/export_data_sd"
-                android:background="@drawable/btn_bg_edit"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_download_all"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_download_continue" />
-
-            <TextView
-                android:id="@+id/btn_import_to_sd"
-                style="@style/DownloadBtn"
-                android:background="@drawable/btn_bg_edit"
-                android:text="@string/import_data_sd"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_download_continue"
-                app:layout_constraintTop_toBottomOf="@+id/btn_download_all" />
-
+                app:layout_constraintTop_toBottomOf="@id/btn_export_to_excel" />
         </android.support.constraint.ConstraintLayout>
 
     </ScrollView>

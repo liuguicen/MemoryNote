@@ -1,4 +1,4 @@
-package com.lgc.memorynote.base;
+package com.lgc.memorynote.base.utils;
 
 import android.content.Context;
 import android.os.Environment;
@@ -14,7 +14,7 @@ import java.io.IOException;
  * <pre>
  */
 
-public class FileTool {
+public class FileUtil {
     /**
      * 处理路径不存在的情况
      *

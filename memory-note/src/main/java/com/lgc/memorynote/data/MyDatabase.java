@@ -3,13 +3,11 @@ package com.lgc.memorynote.data;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Pair;
 
 import com.lgc.memorynote.base.AppConfig;
-import com.lgc.memorynote.base.Logcat;
+import com.lgc.memorynote.base.utils.Logcat;
 import com.lgc.memorynote.base.MemoryNoteApplication;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 

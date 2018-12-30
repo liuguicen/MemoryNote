@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.lgc.memorynote.base.Logcat;
+import com.lgc.memorynote.base.utils.Logcat;
 import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.base.Util;
 import com.lgc.memorynote.data.BmobWord;

@@ -2,7 +2,7 @@ package com.lgc.memorynote.wordDetail;
 
 import android.content.Intent;
 
-import com.lgc.memorynote.base.BasePresenter;
+import com.lgc.memorynote.base.BaseContract;
 import com.lgc.memorynote.base.BaseView;
 import com.lgc.memorynote.data.Word;
 
@@ -63,7 +63,7 @@ public interface WordDetailContract {
         void setInputAssistant();
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends BaseContract.BasePresenter {
 
         boolean isInEdit();
 

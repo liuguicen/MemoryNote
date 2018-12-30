@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.lgc.memorynote.base.Logcat;
+import com.lgc.memorynote.base.utils.Logcat;
 
 /**
  * Created by Administrator on 2016/6/17.

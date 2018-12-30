@@ -55,14 +55,6 @@ public class SpUtil {
         return new SearchData(inputCmd, new ArrayList<>(stringSet), position);
     }
 
-    public static boolean saveUploadState(String msg) {
-        return sp.edit().putString(UPLOAD_STATE, msg).commit();
-    }
-
-    public static String getUploadState() {
-        return sp.getString(UPLOAD_STATE, "");
-    }
-
     public static List<String> getRecentCmdList() {
         String recentS = sp.getString(CMD_RECENT, "");
         String[] split = recentS.split(Pattern.quote(AppConstant.RECENT_CMD_DIVIDER));

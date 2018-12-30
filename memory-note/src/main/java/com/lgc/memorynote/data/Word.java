@@ -3,12 +3,11 @@ package com.lgc.memorynote.data;
 import android.text.TextUtils;
 
 import com.lgc.memorynote.base.AlgorithmUtil;
-import com.lgc.memorynote.base.Logcat;
-import com.lgc.memorynote.base.Util;
+import com.lgc.memorynote.base.utils.Logcat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
+
 import static com.lgc.memorynote.base.AlgorithmUtil.StringAg;
 
 /************************************

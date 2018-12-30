@@ -1,12 +1,11 @@
 package com.lgc.memorynote.base.log;
 
-import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.lgc.memorynote.base.BaseApplication;
-import com.lgc.memorynote.base.FileTool;
-import com.lgc.memorynote.base.Logcat;
+import com.lgc.memorynote.base.utils.FileUtil;
+import com.lgc.memorynote.base.utils.Logcat;
 import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.user.UserExclusiveIdentify;
 
@@ -27,7 +26,7 @@ import cn.bmob.v3.listener.SaveListener;
  */
 public class CrashLog extends BmobObject {
     static final String TAG = "CrashLog";
-    private static final String PATH = FileTool.getApplicationDir(MemoryNoteApplication.appContext) + "/crashLog/";
+    private static final String PATH = FileUtil.getApplicationDir(MemoryNoteApplication.appContext) + "/crashLog/";
     private static final String NAME = "crash";
     private static final String SUFFIX = ".trace";
     private static final String FILE_PATH = PATH + NAME + SUFFIX;
@@ -94,7 +93,7 @@ public class CrashLog extends BmobObject {
         String commitResult = "";
         try {
             if (!crashFile.exists())
-                if (!FileTool.createNewFile(crashFile))
+                if (!FileUtil.createNewFile(crashFile))
                     throw new IOException();
             crashPw = new PrintWriter(new FileOutputStream(crashFile));
             crashPw.write(sb.toString());
