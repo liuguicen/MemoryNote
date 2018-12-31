@@ -5,7 +5,7 @@ import android.widget.Toast;
 
 import com.lgc.baselibrary.utils.Logcat;
 import com.lgc.baselibrary.baseComponent.BaseApplication;
-import com.lgc.memorynote.base.utils.FileUtil;
+import com.lgc.baselibrary.utils.FileUtil;
 import com.lgc.memorynote.base.MemoryNoteApplication;
 import com.lgc.memorynote.user.UserExclusiveIdentify;
 

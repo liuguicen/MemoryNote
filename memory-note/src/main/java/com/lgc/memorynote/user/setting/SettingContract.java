@@ -1,5 +1,7 @@
 package com.lgc.memorynote.user.setting;
 
+import android.net.Uri;
+
 import com.lgc.baselibrary.baseComponent.BaseContract;
 
 /**
@@ -11,14 +13,19 @@ import com.lgc.baselibrary.baseComponent.BaseContract;
  */
 
 public class SettingContract {
-    public interface Presenter{
+    public interface Presenter extends BaseContract.BasePresenter{
 
         void onClickAppGuide();
 
+        void importDataPrepare(Uri uri);
     }
 
     public interface View extends BaseContract.BaseView{
         void showAppGuide();
         void hideAppGuide();
+
+        void showToast(String string);
+
+        void showImportDialog(String importPath);
     }
 }

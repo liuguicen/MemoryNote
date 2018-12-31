@@ -4,8 +4,10 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.lgc.memorynote.base.utils.FileUtil;
+import com.lgc.baselibrary.utils.FileUtil;
 import com.lgc.baselibrary.utils.Logcat;
+import com.lgc.baselibrary.utils.TimeUtil;
+import com.lgc.memorynote.base.MemoryNoteApplication;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,8 +29,7 @@ import java.util.List;
 
 public class DataSync {
 
-    public static void importFromSD(Context context, String importName) {
-        String importPath = FileUtil.getInnerSDCardPath() + File.separator + importName;
+    public static void importFromSD(Context context, String importPath) {
         try {
             BufferedReader br = new BufferedReader(
                     new InputStreamReader(
@@ -52,12 +53,13 @@ public class DataSync {
     }
 
 
-    public static void exportData2Sd(Context context, String exportDataName) {
-        exportDataName = exportDataName + "_" + System.currentTimeMillis() + ".txt";
+    public static String exportData2Sd(Context context, String exportDataName) {
+        exportDataName = exportDataName + "_" + TimeUtil.curTimeToString() + ".txt";
         List<Word> allWord = GlobalData.getInstance().getAllWord();
 
-        String outPath = FileUtil.getInnerSDCardPath() + File.separator + exportDataName;
+        String outPath = MemoryNoteApplication.DEFAULT_FIL_PATH +  File.separator + exportDataName;
         try {
+            new File(MemoryNoteApplication.DEFAULT_FIL_PATH).mkdirs();
             File dataFile = new File(outPath);
             if (dataFile.exists()) {
                 if (!dataFile.delete()) {
@@ -79,8 +81,10 @@ public class DataSync {
             }
             ps.flush();
             Toast.makeText(context, "导出完成" + "路径 = " + outPath, Toast.LENGTH_LONG).show();
+            return outPath;
         } catch (IOException e) {
             Toast.makeText(context, "IO出错", Toast.LENGTH_LONG).show();
+            return null;
         }
 
     }

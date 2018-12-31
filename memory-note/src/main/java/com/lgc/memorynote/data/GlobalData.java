@@ -25,6 +25,8 @@ public class GlobalData {
     private static List<Word> mAllWords = new ArrayList<>();
     private static List<Word> mShowWords = new ArrayList<>();
 
+
+
     /**
      * 最近输入的命令，存下来
      */

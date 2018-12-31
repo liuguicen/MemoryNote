@@ -1,5 +1,20 @@
 package com.lgc.memorynote.user.setting;
 
+import android.content.Context;
+import android.net.Uri;
+import android.widget.Toast;
+
+import com.lgc.baselibrary.UIWidgets.CertainDialog;
+import com.lgc.baselibrary.utils.FileUtil;
+import com.lgc.baselibrary.utils.Logcat;
+import com.lgc.memorynote.R;
+import com.lgc.memorynote.base.AppConfig;
+import com.lgc.memorynote.data.DataSync;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.MissingFormatArgumentException;
+
 /**
  * <pre>
  *      author : liuguicen
@@ -11,9 +26,13 @@ package com.lgc.memorynote.user.setting;
 public class SettingPresenter implements SettingContract.Presenter {
     SettingContract.View mView;
     boolean isShowAppGuide = false;
+    Context mContext;
+//    public static final ArrayList<String> FILE_TYPES_SUPPORT = Arrays.asList("txt");
 
-    public SettingPresenter(SettingContract.View view) {
+
+    public SettingPresenter(Context context, SettingContract.View view) {
         mView = view;
+        mContext = context;
     }
 
     @Override
@@ -24,5 +43,34 @@ public class SettingPresenter implements SettingContract.Presenter {
         } else {
             mView.hideAppGuide();
         }
+    }
+
+    @Override
+    public void importDataPrepare(Uri uri) {
+        Logcat.d("File Uri: " + uri.toString());
+        final String importPath = FileUtil.parsePathFromUri(mContext, uri);
+        Logcat.d("File Path: " + importPath);
+        //首先，判断文件格式是否符合
+        if(importPath == null) {
+            mView.showToast(mContext.getString(R.string.file_path_error));
+            return;
+        }
+        else {
+            int id = importPath.lastIndexOf(".");
+            String fileType = "";
+            if (id != -1 ) {
+                fileType = importPath.substring(id, importPath.length());
+            }
+            if (!".txt".equalsIgnoreCase(fileType)) {
+                mView.showToast(mContext.getString(R.string.file_type_error));
+                return;
+            }
+        }
+        mView.showImportDialog(importPath);
+    }
+
+    @Override
+    public void start() throws Exception {
+
     }
 }

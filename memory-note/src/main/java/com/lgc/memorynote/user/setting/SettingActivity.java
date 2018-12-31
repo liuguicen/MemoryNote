@@ -1,15 +1,19 @@
 package com.lgc.memorynote.user.setting;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lgc.baselibrary.UIWidgets.NotifyDialog;
+import com.lgc.baselibrary.baseComponent.BaseActivity;
+import com.lgc.baselibrary.utils.FileUtil;
 import com.lgc.memorynote.R;
 import com.lgc.memorynote.base.AppConfig;
-import com.lgc.memorynote.base.CertainDialog;
+import com.lgc.baselibrary.UIWidgets.CertainDialog;
 import com.lgc.baselibrary.utils.Logcat;
 import com.lgc.memorynote.data.DataSync;
 import com.lgc.memorynote.data.GlobalData;
@@ -24,10 +28,12 @@ import com.lgc.memorynote.wordList.Command;
  * <pre>
  */
 
-public class SettingActivity extends AppCompatActivity implements SettingContract.View {
+public class SettingActivity extends BaseActivity implements SettingContract.View {
 
+    private static final int FILE_SELECT_CODE = 0;
     CertainDialog mCertainDialog;
-    private SettingPresenter mPresenter;
+    NotifyDialog mNotifyDialog;
+    private SettingContract.Presenter mPresenter;
     private int mUploadNumber = 0;
     private GlobalData mGlobalData;
     private TextView mTvExportDirectly;
@@ -46,7 +52,7 @@ public class SettingActivity extends AppCompatActivity implements SettingContrac
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        mPresenter = new SettingPresenter(this);
+        mPresenter = new SettingPresenter(this, this);
         mGlobalData = GlobalData.getInstance();
         mUser = mGlobalData.getUser();
 
@@ -64,6 +70,7 @@ public class SettingActivity extends AppCompatActivity implements SettingContrac
         mTvAppGuide.setOnClickListener(this);
 
         mCertainDialog = new CertainDialog(this);
+        mNotifyDialog = new NotifyDialog(this);
         findViewById(R.id.btn_upload_data).setOnClickListener(this);
         Logcat.e("Setting activitty init success");
 //        test();
@@ -85,36 +92,52 @@ public class SettingActivity extends AppCompatActivity implements SettingContrac
                 mCertainDialog.showDialog("确认导出吗？", null, new CertainDialog.ActionListener() {
                     @Override
                     public void onSure() {
-                        DataSync.exportData2Sd(SettingActivity.this, AppConfig.exportDataName);
+                        String resultPath = DataSync.exportData2Sd(
+                                SettingActivity.this, AppConfig.exportDataName);
+                        String resultMsg = "导出成功! 位置：\n" + resultPath;
+                        if (resultPath == null)
+                            resultMsg = "导出失败";
+                        mNotifyDialog.showDialog(null, resultMsg, null);
                     }
                 });
                 break;
             case R.id.btn_import_directly:
-                mCertainDialog.showDialog("导入将替换现有数据，现有数据将保存到SD卡中，确认导入吗？", null, new CertainDialog.ActionListener() {
-                    @Override
-                    public void onSure() {
-                        // 必须先备份
-                        DataSync.exportData2Sd(SettingActivity.this, AppConfig.exportDataName);
-                        Toast.makeText(SettingActivity.this, "数据已导出到SD卡备份", Toast.LENGTH_LONG).show();
-
-                        new CertainDialog(SettingActivity.this).showDialog("再次确认，是否导入？", null, new CertainDialog.ActionListener() {
-                            @Override
-                            public void onSure() {
-                                DataSync.importFromSD(SettingActivity.this,
-                                         "0worddata.txt");
-                            }
-                        });
-                    }
-                });
+                showFileChooser();
                 break;
             case R.id.tv_app_guide:
                 mPresenter.onClickAppGuide();
                 break;
-            case  R.id.setting_return_btn:
+            case R.id.setting_return_btn:
                 finish();
                 break;
 
         }
+    }
+
+    private void showFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        try {
+            startActivityForResult( Intent.createChooser(intent,
+                    getString(R.string.choose_file_to_import)), FILE_SELECT_CODE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            // Potentially direct the user to the Market with a Dialog
+             showToast(getString(R.string.fail_to_launch_file_manager));
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case FILE_SELECT_CODE:
+                if (resultCode == RESULT_OK) {
+                    mPresenter.importDataPrepare(data.getData());
+
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -125,5 +148,28 @@ public class SettingActivity extends AppCompatActivity implements SettingContrac
     @Override
     public void hideAppGuide() {
         mTvAppGuide.setText(R.string.app_guide);
+    }
+
+    @Override
+    public void showImportDialog(final String importPath) {
+        mCertainDialog.showDialog("导入将替换旧的数据，现有数据将保存到SD卡中，确认导入吗？", null, new CertainDialog.ActionListener() {
+            @Override
+            public void onSure() {
+                // 必须先备份
+                String resultPath = DataSync.exportData2Sd(SettingActivity.this, AppConfig.exportDataName);
+
+                String resultMsg = "导出成功! 位置：\n" + resultPath;
+                if (resultPath == null)
+                    resultMsg = "导出失败";
+                new CertainDialog(SettingActivity.this).showDialog(null,
+                        "当前数据" + resultMsg + "\n是否替换当前数据？", new CertainDialog.ActionListener() {
+                            @Override
+                            public void onSure() {
+                                DataSync.importFromSD(SettingActivity.this,
+                                        importPath);
+                            }
+                        });
+            }
+        });
     }
 }

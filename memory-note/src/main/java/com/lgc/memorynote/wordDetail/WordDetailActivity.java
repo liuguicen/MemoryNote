@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lgc.memorynote.R;
-import com.lgc.memorynote.base.CertainDialog;
+import com.lgc.baselibrary.UIWidgets.CertainDialog;
 import com.lgc.memorynote.base.InputAnalyzerUtil;
 import com.lgc.memorynote.base.UIUtil;
 import com.lgc.memorynote.base.Util;
