@@ -1,10 +1,10 @@
-package com.lgc.memorynote;
+package com.lgc.wordanalysis;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.lgc.memorynote.base.InputAnalyzerUtil;
+import com.lgc.wordanalysis.base.InputAnalyzerUtil;
 import com.lgc.baselibrary.utils.Logcat;
-import com.lgc.memorynote.data.Word;
+import com.lgc.wordanalysis.data.Word;
 
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.lgc.memorynote.data.Word.WordMeaning;
+import static com.lgc.wordanalysis.data.Word.WordMeaning;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

@@ -1,7 +1,4 @@
-package com.lgc.memorynote;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.lgc.wordanalysis;
 
 /**
  * <pre>

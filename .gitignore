@@ -5,6 +5,7 @@
 /.idea/libraries
 /build
 /captures
+/memory-note/MemoryNote-key.jks
 .idea
 gradle.properties
 gradle.bat
