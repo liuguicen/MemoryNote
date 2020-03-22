@@ -138,13 +138,13 @@ public class UIUtil {
             String pre = "";
             switch (pair.first) {
                 case Word.ROOT:
-                    pre = (String) MemoryNoteApplication.appContext.getText(R.string.word_root);
+                    pre = (String) WordAnalysisApplication.appContext.getText(R.string.word_root);
                     break;
                 case Word.PREFIX:
-                    pre = (String) MemoryNoteApplication.appContext.getText(R.string.word_prefix);
+                    pre = (String) WordAnalysisApplication.appContext.getText(R.string.word_prefix);
                     break;
                 case Word.SUFFIX:
-                    pre = (String) MemoryNoteApplication.appContext.getText(R.string.word_suffix);
+                    pre = (String) WordAnalysisApplication.appContext.getText(R.string.word_suffix);
                     break;
             }
 

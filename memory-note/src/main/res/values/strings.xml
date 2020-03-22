@@ -53,5 +53,7 @@
     <string name="fail_to_launch_file_manager">启动文件管理器失败</string>
     <string name="file_path_error">文件路径出错</string>
     <string name="file_type_error">所选文件格式错误</string>
+    <string name="word_lib">单词库</string>
+    <string name="start_import">开始导入</string>
     <!-- 设置界面   -->
 </resources>

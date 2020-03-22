@@ -14,14 +14,14 @@ import com.lgc.wordanalysis.data.GlobalData;
 import cn.bmob.v3.Bmob;
 
 /**
- * 在mainifest中使用android:name=".MemoryNoteApplication"，系统将会创建myapplication替代一般的application
+ * 在mainifest中使用android:name=".WordAnalysisApplication"，系统将会创建myapplication替代一般的application
  */
-public class MemoryNoteApplication extends BaseApplication {
-    final static String TAG = "MemoryNoteApplication";
+public class WordAnalysisApplication extends BaseApplication {
+    final static String TAG = "WordAnalysisApplication";
     public static String DEFAULT_FIL_PATH;
 
-    public MemoryNoteApplication() {
-        Log.e(TAG, "MemoryNoteApplication: 应用创建了");
+    public WordAnalysisApplication() {
+        Log.e(TAG, "WordAnalysisApplication: 应用创建了");
     }
 
     @Override
@@ -43,6 +43,7 @@ public class MemoryNoteApplication extends BaseApplication {
     public static void startBackgroundService(Activity activity) {
         Intent intent = new Intent("initDate");
         intent.setAction("com.lgc.memorynote.base.AppIntentService");
+        intent.setPackage(activity.getPackageName());
         activity.startService(intent);
     }
 }

@@ -95,7 +95,7 @@ public class GlobalData {
                  * 看效果加上这两行，不关掉应用可能会改到数据库
                  * mAllWords.add(word);
                  * mShowWords.add(word);
-                 * Toast.makeText(MemoryNoteApplication.appContext, "应用数据已更新完毕", Toast.LENGTH_LONG).show();
+                 * Toast.makeText(WordAnalysisApplication.appContext, "应用数据已更新完毕", Toast.LENGTH_LONG).show();
                  */
             }
         } catch (IOException e) {
@@ -275,7 +275,7 @@ public class GlobalData {
     }
 
     /**
-     * 特殊情形下关系上传的功能
+     * 特殊情形下关闭上传的功能
      */
     public void closeUpload() {
         mCloseUpload = true;

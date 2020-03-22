@@ -3,9 +3,15 @@ package com.lgc.wordanalysis.user.setting;
 import android.content.Context;
 import android.net.Uri;
 
-import com.lgc.baselibrary.utils.FileUtil;
 import com.lgc.baselibrary.utils.Logcat;
+import com.lgc.baselibrary.utils.SimpleObserver;
 import com.lgc.wordanalysis.R;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * <pre>
@@ -19,7 +25,7 @@ public class SettingPresenter implements SettingContract.Presenter {
     SettingContract.View mView;
     boolean isShowAppGuide = false;
     Context mContext;
-//    public static final ArrayList<String> FILE_TYPES_SUPPORT = Arrays.asList("txt");
+    //    public static final ArrayList<String> FILE_TYPES_SUPPORT = Arrays.asList("txt");
 
 
     public SettingPresenter(Context context, SettingContract.View view) {
@@ -40,25 +46,52 @@ public class SettingPresenter implements SettingContract.Presenter {
     @Override
     public void importDataPrepare(Uri uri) {
         Logcat.d("File Uri: " + uri.toString());
-        final String importPath = FileUtil.parsePathFromUri(mContext, uri);
-        Logcat.d("File Path: " + importPath);
-        //首先，判断文件格式是否符合
-        if(importPath == null) {
-            mView.showToast(mContext.getString(R.string.file_path_error));
-            return;
-        }
-        else {
-            int id = importPath.lastIndexOf(".");
-            String fileType = "";
-            if (id != -1 ) {
-                fileType = importPath.substring(id, importPath.length());
-            }
-            if (!".txt".equalsIgnoreCase(fileType)) {
-                mView.showToast(mContext.getString(R.string.file_type_error));
-                return;
-            }
-        }
-        mView.showImportDialog(importPath);
+        Observable
+                .create((ObservableOnSubscribe<String>) emitter -> {
+
+                        final String importPath = "/storage/emulated/0/tencent/QQfile_recv/MemoryData_20190903162616.txt";
+                        Logcat.d("File Path: " + importPath);
+                        //首先，判断文件格式是否符合
+                        if (importPath == null) {
+                            emitter.onError(
+                                    new Exception(
+                                            mContext.getString(R.string.file_path_error)));
+                            return;
+                        } else {
+                            int id = importPath.lastIndexOf(".");
+                            String fileType = "";
+                            if (id != -1) {
+                                fileType = importPath.substring(id, importPath.length());
+                            }
+                            if (!".txt".equalsIgnoreCase(fileType)) {
+                                emitter.onError(
+                                        new Exception(mContext.getString(R.string.file_type_error)));
+                                return;
+                            }
+                            emitter.onNext(importPath);
+                        }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new SimpleObserver<String>() {
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                throwable.printStackTrace();
+                            }
+
+                            @Override
+                            public void onNext(String importPath) {
+                                mView.showImportDialog(importPath, null);
+                            }
+                        });
+        // final String importPath = FileUtil.getFileFromUri(uri,mContext);
+
     }
 
     @Override

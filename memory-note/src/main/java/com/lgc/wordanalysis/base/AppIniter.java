@@ -15,7 +15,7 @@ import cn.bmob.v3.Bmob;
 public class AppIniter {
     public static void init() {
         permission();//首先得申请出所有权限
-        Bmob.initialize(MemoryNoteApplication.appContext, "3000c4af659e92854854c5b10f0824a2");//再是网络初始化
+        Bmob.initialize(WordAnalysisApplication.appContext, "3000c4af659e92854854c5b10f0824a2");//再是网络初始化
 
         startBackgroundService();
         Log.e("------------", "init: 应用初始化成功");
@@ -28,14 +28,14 @@ public class AppIniter {
     private static void startBackgroundService() {
         Intent intent = new Intent("initDate");
         intent.setAction("a.baozouptu.common.appInfo.AppIntentService");
-        MemoryNoteApplication.appContext.startService(intent);
+        WordAnalysisApplication.appContext.startService(intent);
     }
 
     private static void permission() {
         //权限请求
-        PackageManager pm = MemoryNoteApplication.appContext.getPackageManager();
+        PackageManager pm = WordAnalysisApplication.appContext.getPackageManager();
         boolean permission = (PackageManager.PERMISSION_GRANTED ==
-                pm.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, MemoryNoteApplication.appContext.getPackageName()));
+                pm.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, WordAnalysisApplication.appContext.getPackageName()));
         if (!permission) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             }

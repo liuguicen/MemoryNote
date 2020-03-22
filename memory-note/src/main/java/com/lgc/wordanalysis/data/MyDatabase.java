@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.lgc.wordanalysis.base.AppConfig;
 import com.lgc.baselibrary.utils.Logcat;
-import com.lgc.wordanalysis.base.MemoryNoteApplication;
+import com.lgc.wordanalysis.base.WordAnalysisApplication;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,7 +28,7 @@ public class MyDatabase {
 
     public static MyDatabase getInstance() {
         if (myDatabase == null || dbHelper == null || db == null)
-            myDatabase = new MyDatabase(MemoryNoteApplication.appContext);
+            myDatabase = new MyDatabase(WordAnalysisApplication.appContext);
         return myDatabase;
     }
 

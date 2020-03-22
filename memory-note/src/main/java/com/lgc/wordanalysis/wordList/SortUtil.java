@@ -1,7 +1,7 @@
 package com.lgc.wordanalysis.wordList;
 
 import com.lgc.wordanalysis.R;
-import com.lgc.wordanalysis.base.MemoryNoteApplication;
+import com.lgc.wordanalysis.base.WordAnalysisApplication;
 import com.lgc.wordanalysis.data.Word;
 import com.lgc.wordanalysis.data.WordWithComparator;
 
@@ -22,7 +22,7 @@ public class SortUtil {
     public static final String DEFAULT_SORT_COMMAND = Command._stra;
 
     public static String getHingString() {
-        return MemoryNoteApplication.appContext.getString(R.string.caommand_hint);
+        return WordAnalysisApplication.appContext.getString(R.string.caommand_hint);
     }
 
 

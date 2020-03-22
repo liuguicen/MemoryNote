@@ -3,19 +3,31 @@ package com.lgc.wordanalysis.user.setting;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lgc.baselibrary.UIWidgets.CertainDialog;
 import com.lgc.baselibrary.UIWidgets.NotifyDialog;
 import com.lgc.baselibrary.baseComponent.BaseActivity;
 import com.lgc.baselibrary.utils.Logcat;
+import com.lgc.baselibrary.utils.SimpleObserver;
 import com.lgc.wordanalysis.R;
 import com.lgc.wordanalysis.base.AppConfig;
 import com.lgc.wordanalysis.data.DataSync;
 import com.lgc.wordanalysis.data.GlobalData;
 import com.lgc.wordanalysis.user.User;
 import com.lgc.wordanalysis.wordList.Command;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * <pre>
@@ -44,6 +56,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
     private User mUser;
     private int mLastInputType;
     private boolean mIsInEdit;
+    private RecyclerView mLvWordLib;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +75,9 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
         findViewById(R.id.btn_export_to_excel).setOnClickListener(this);
         findViewById(R.id.btn_import_from_excel).setOnClickListener(this);
         findViewById(R.id.setting_return_btn).setOnClickListener(this);
+        findViewById(R.id.tv_word_lib).setOnClickListener(this);
 
+        mLvWordLib = findViewById(R.id.word_lib_lv);
         mTvAppGuide = findViewById(R.id.tv_app_guide);
         mTvAppGuide.setOnClickListener(this);
 
@@ -70,7 +85,30 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
         mNotifyDialog = new NotifyDialog(this);
         findViewById(R.id.btn_upload_data).setOnClickListener(this);
         Logcat.e("Setting activitty init success");
-//        test();
+
+        initWordLib();
+        //        test();
+    }
+
+    private void initWordLib() {
+        WordLibAdapter wordLibAdapter = new WordLibAdapter(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mLvWordLib.setLayoutManager(linearLayoutManager);
+        wordLibAdapter.setItemClickListener((v, viewHolder) -> {
+            try {
+                String[] nameList = new String[] {
+                        "高中词汇表-3500.csv",
+                        "考研词汇表-5500.csv"
+                };
+                InputStream importStream = getAssets().open(nameList[viewHolder.getAdapterPosition()]);
+                DataSync.importFromStandardCsv(SettingActivity.this,
+                        importStream);
+//                showImportDialog(null, wordlib);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        mLvWordLib.setAdapter(wordLibAdapter);
     }
 
     void test() {
@@ -129,11 +167,11 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
         intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         try {
-            startActivityForResult( Intent.createChooser(intent,
+            startActivityForResult(Intent.createChooser(intent,
                     getString(R.string.choose_file_to_import)), FILE_SELECT_CODE);
         } catch (android.content.ActivityNotFoundException ex) {
             // Potentially direct the user to the Market with a Dialog
-             showToast(getString(R.string.fail_to_launch_file_manager));
+            showToast(getString(R.string.fail_to_launch_file_manager));
         }
     }
 
@@ -143,7 +181,6 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
             case FILE_SELECT_CODE:
                 if (resultCode == RESULT_OK) {
                     mPresenter.importDataPrepare(data.getData());
-
                 }
                 break;
         }
@@ -161,7 +198,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
     }
 
     @Override
-    public void showImportDialog(final String importPath) {
+    public void showImportDialog(final String importPath, final InputStream importStream) {
         mCertainDialog.showDialog("导入将替换旧的数据，现有数据将保存到SD卡中，确认导入吗？", null, new CertainDialog.ActionListener() {
             @Override
             public void onSure() {
@@ -175,8 +212,36 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
                         "当前数据" + resultMsg + "\n是否替换当前数据？", new CertainDialog.ActionListener() {
                             @Override
                             public void onSure() {
-                                DataSync.importFromSD(SettingActivity.this,
-                                        importPath);
+                                Observable
+                                        .create((ObservableOnSubscribe<String>) emitter -> {
+                                            if (importPath != null) {
+                                                DataSync.importFromTxt(SettingActivity.this,
+                                                        importPath);
+                                            } else if (importStream != null) {
+                                                DataSync.importFromStandardCsv(SettingActivity.this,
+                                                        importStream);
+                                            }
+                                            emitter.onComplete();
+                                        })
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new SimpleObserver<String>() {
+
+                                            @Override
+                                            public void onComplete() {
+                                                Toast.makeText(SettingActivity.this, "导入完成", Toast.LENGTH_LONG).show();
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable throwable) {
+                                                throwable.printStackTrace();
+                                            }
+
+                                            @Override
+                                            public void onNext(String importPath) {
+
+                                            }
+                                        });
                             }
                         });
             }

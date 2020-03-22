@@ -1,17 +1,34 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 28
+    buildToolsVersion "29.0.1"
     /*bmob 兼容Android6.0系统所需，如果这句话报错，可在dependencies标签下使用compile 'cn.bmob.android:http-legacy:1.0'*/
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.lgc.wordanalysis"
         minSdkVersion 17
-        targetSdkVersion 27
-        versionCode 100
+        targetSdkVersion 28
+        versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        /**
+         * 只支持中文，减小包大小
+         */
+        resConfigs "zh"
+
+        ndk {
+//            // Specifies the ABI configurations of your native
+//            // libraries Gradle should build and package with your APK.
+            // 'armeabi' 这个新的NDK不支持了
+            // -mips / mips64 : 极少用于手机可以忽
+            // - x86 / x86_64: x86 架构的手机都会包含由 Intel 提供的称为 Houdini 的指令集动态转码工具，实现对 arm .so 的兼容，再考虑 x86 1% 以下的市场占有率，x86 相关的两个 .so 也是可以忽略的
+            // - armeabi: ARM v5 这是相当老旧的一个版本，缺少对浮点数计算的硬件支持，在需要大量计算时有性能瓶颈
+            // - armeabi-v7a: ARM v7 目前主流版本
+            // - arm64-v8a: 64位支持
+            abiFilters 'armeabi-v7a', 'x86' // 模拟器需要
+//            abiFilters 'armeabi-v7a'
+        }
     }
 
     signingConfigs {
@@ -45,27 +62,60 @@ android {
         exclude 'META-INF/maven/com.google.code.gson/gson/pom.xml'
         exclude 'META-INF/maven/com.google.code.gson/gson/pom.properties'
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 
 }
 
 dependencies {
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     androidTestImplementation 'junit:junit:4.12'
-    implementation 'com.android.support:recyclerview-v7:27.0.2'
-    implementation 'com.android.support:appcompat-v7:27.0.2'
-    //第三方的sdk
-    //bmob-sdk：Bmob的android sdk包，包含了Bmob的数据存储、文件等服务，以下是最新的bmob-sdk:
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+
+
+    // 友盟统计
+
     //3.5.0：请务必查看下面注释[1]
-    implementation 'cn.bmob.android:bmob-sdk:3.5.0'
+    implementation 'cn.bmob.android:bmob-sdk:3.7.0'
+
     //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
     implementation 'cn.bmob.android:http-legacy:1.0'
+
+    //    implementation 'com.umeng.umsdk:analytics:8.2.1'
+    //    implementation 'com.umeng.umsdk:common:2.2.1'
+    // 友盟统计，公测版才能识别Android 10，只能通过jar方式集成
+    implementation files('libs/umeng-analytics-8.2.1.jar')
+    implementation files('libs/umeng-common-2.2.1.jar')
+
+
+    // okhttp3 3.13.0之后不支持5.0以下的系统，目前不能使用
+    implementation 'com.squareup.okhttp3:okhttp:3.12.6'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.squareup.okio:okio:2.2.2'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
+
     androidTestImplementation 'junit:junit:4.12'
     //表格和Java对象相互转换的库
-    implementation 'com.github.alibaba:easyexcel:1.1.2-beat4'
+//    implementation 'com.github.alibaba:easyexcel:1.1.2-beat4'
 
-    implementation project(':baselibrary')
+    implementation project(path: ':baselibrary')
+}
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
 }

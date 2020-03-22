@@ -4,6 +4,8 @@ import android.net.Uri;
 
 import com.lgc.baselibrary.baseComponent.BaseContract;
 
+import java.io.InputStream;
+
 /**
  * <pre>
  *      author : liuguicen
@@ -26,6 +28,6 @@ public class SettingContract {
 
         void showToast(String string);
 
-        void showImportDialog(String importPath);
+        void showImportDialog(String importPath, final InputStream importStream);
     }
 }

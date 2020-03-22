@@ -4,8 +4,6 @@ import android.text.TextUtils;
 
 import com.lgc.wordanalysis.base.AlgorithmUtil;
 import com.lgc.baselibrary.utils.Logcat;
-import com.xuxueli.poi.excel.annotation.ExcelField;
-import com.xuxueli.poi.excel.annotation.ExcelSheet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +28,6 @@ import static com.lgc.wordanalysis.base.AlgorithmUtil.StringAg;
  * @guai @gsdf adj. adv. uauaua
  * **********************************/
 
-@ExcelSheet(name = "单词笔记")
 public class Word {
 
     public static String NOT_NAME_PHRASE_REGEX = "[^a-zA-z\\-\\\\n/' ]";
@@ -69,11 +66,9 @@ public class Word {
     public static final int DEGREE_FEI = 4;
 
 
-    @ExcelField(name = "名称")
     public String name;
     public List<WordMeaning> meaningList = new ArrayList<>();
     public boolean isCheckedMeaning = false;
-    @ExcelField(name = "陌生度")
     public int strangeDegree = 0;
     public List<SimilarWord> similarWordList;
     public List<SimilarWord> groupList;
@@ -92,15 +87,10 @@ public class Word {
     /**
      * 用户输入的原始数据，用户用户再次编辑时使用
      */
-    @ExcelField(name = "词意")
     public String inputMeaning;
-    @ExcelField(name = "相似词")
     public String inputSimilarWords;
-    @ExcelField(name = "记忆法")
     public String inputRememberWay;
-    @ExcelField(name = "词组")
     private String inputWordGroup;
-    @ExcelField(name = "同义词")
     public String inputSynonyms;
 
     /**

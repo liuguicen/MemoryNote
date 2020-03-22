@@ -4,12 +4,12 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.lgc.wordanalysis.base.MemoryNoteApplication;
+import com.lgc.wordanalysis.base.WordAnalysisApplication;
 
 public class NetWorkState {
 
     public static int detectNetworkType() {
-        return detectNetworkType(MemoryNoteApplication.appContext);
+        return detectNetworkType(WordAnalysisApplication.appContext);
     }
 
     /**

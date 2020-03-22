@@ -6,7 +6,7 @@ import android.widget.Toast;
 import com.lgc.baselibrary.utils.Logcat;
 import com.lgc.baselibrary.baseComponent.BaseApplication;
 import com.lgc.baselibrary.utils.FileUtil;
-import com.lgc.wordanalysis.base.MemoryNoteApplication;
+import com.lgc.wordanalysis.base.WordAnalysisApplication;
 import com.lgc.wordanalysis.user.UserExclusiveIdentify;
 
 import java.io.BufferedReader;
@@ -26,7 +26,7 @@ import cn.bmob.v3.listener.SaveListener;
  */
 public class CrashLog extends BmobObject {
     static final String TAG = "CrashLog";
-    private static final String PATH = FileUtil.getApplicationDir(MemoryNoteApplication.appContext) + "/crashLog/";
+    private static final String PATH = FileUtil.getApplicationDir(WordAnalysisApplication.appContext) + "/crashLog/";
     private static final String NAME = "crash";
     private static final String SUFFIX = ".trace";
     private static final String FILE_PATH = PATH + NAME + SUFFIX;

@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import com.lgc.wordanalysis.R;
 import com.lgc.baselibrary.utils.Logcat;
-import com.lgc.wordanalysis.base.MemoryNoteApplication;
+import com.lgc.wordanalysis.base.WordAnalysisApplication;
 import com.lgc.wordanalysis.base.Util;
 import com.lgc.wordanalysis.data.GlobalData;
 import com.lgc.wordanalysis.data.Word;
@@ -59,11 +59,11 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         mPresenter = new WordListPresenter(this);
         initApp();
         setContentView(R.layout.activity_word_list);
-//        test();
+        test();
         bindView();
         intView();
         initData();
-        MemoryNoteApplication.startBackgroundService(this);
+        WordAnalysisApplication.startBackgroundService(this);
     }
 
     private void initApp() {
@@ -429,7 +429,8 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     private static void startBackgroundService() {
         Intent intent = new Intent("initDate");
         intent.setAction("a.memorynote.common.appInfo.AppIntentService");
-        MemoryNoteApplication.appContext.startService(intent);
+        intent.setPackage(WordAnalysisApplication.appContext.getPackageName());
+        WordAnalysisApplication.appContext.startService(intent);
     }
 
 

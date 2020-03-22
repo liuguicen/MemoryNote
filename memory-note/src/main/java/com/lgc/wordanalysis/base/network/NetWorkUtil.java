@@ -7,10 +7,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.lgc.baselibrary.utils.Logcat;
-import com.lgc.wordanalysis.base.MemoryNoteApplication;
+import com.lgc.baselibrary.utils.SimpleObserver;
 import com.lgc.wordanalysis.base.Util;
+import com.lgc.wordanalysis.base.WordAnalysisApplication;
 import com.lgc.wordanalysis.data.BmobWord;
 import com.lgc.wordanalysis.data.Word;
+
+import org.reactivestreams.Subscriber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +23,10 @@ import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SQLQueryListener;
-import rx.Observable;
-import rx.Subscriber;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+
 
 /**
  * <pre>
@@ -77,22 +82,18 @@ public class NetWorkUtil {
 
     public static void refreshWordSketch() {
         Observable
-                .create(new Observable.OnSubscribe<List<Word>>() {
-
-                    @Override
-                    public void call(Subscriber<? super List<Word>> subscriber) {
-                        queryWordModifyInfo(subscriber);
-                    }
+                .create((ObservableOnSubscribe<List<Word>>) emitter -> {
+                    queryWordModifyInfo(emitter);
                 })
-                .subscribe(new Subscriber<List<Word>>() {
+                .subscribe(new SimpleObserver<List<Word>>() {
                     @Override
-                    public void onCompleted() {
+                    public void onComplete() {
 
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
-                        Toast.makeText(MemoryNoteApplication.appContext, "网络出错，不能获取贴图", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WordAnalysisApplication.appContext, "网络出错，不能获取贴图", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -111,7 +112,7 @@ public class NetWorkUtil {
     }
 
 
-    private static void queryWordModifyInfo(final Subscriber<? super List<Word>> subscriber) {
+    private static void queryWordModifyInfo(final ObservableEmitter<List<Word>> subscriber) {
         Log.e("---------", "queryAllExpressions: ");
         BmobQuery<Word> query = new BmobQuery<>();
         String sql = "select name, last uploadtime " +
@@ -214,8 +215,8 @@ public class NetWorkUtil {
     }
 
     public interface UploadListener {
-    void uploadSuccess();
+        void uploadSuccess();
 
-    void uploadFailed(BmobException e);
-}
+        void uploadFailed(BmobException e);
+    }
 }

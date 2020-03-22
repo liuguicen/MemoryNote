@@ -3,7 +3,7 @@ package com.lgc.wordanalysis.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.lgc.wordanalysis.base.MemoryNoteApplication;
+import com.lgc.wordanalysis.base.WordAnalysisApplication;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,7 +33,7 @@ public class SpUtil {
     private static final String Last_Word_Download_Position = "last_word_download_number";
     private static final String INPUT_ASSISTANT = "INPUT_ASSISTANT";
 
-    private static SharedPreferences sp = MemoryNoteApplication.appContext.getSharedPreferences(USER_SP_NAME, Context.MODE_PRIVATE);
+    private static SharedPreferences sp = WordAnalysisApplication.appContext.getSharedPreferences(USER_SP_NAME, Context.MODE_PRIVATE);
 
     /**
      * save last remember date, include the cmd list and the position of the word

@@ -1,3 +1,4 @@
-include ':memory-note', ':baselibrary'
+include ':memory-note'
 
+include ':baselibrary'
 project (':baselibrary').projectDir = new File('../BaseLibrary/baselibrary')
