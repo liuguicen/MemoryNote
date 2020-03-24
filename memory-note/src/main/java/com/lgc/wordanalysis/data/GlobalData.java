@@ -1,10 +1,12 @@
 package com.lgc.wordanalysis.data;
 
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lgc.baselibrary.UIWidgets.ProgressCallback;
 import com.lgc.baselibrary.utils.Logcat;
+import com.lgc.wordanalysis.base.Util;
 import com.lgc.wordanalysis.base.network.NetWorkUtil;
 import com.lgc.wordanalysis.user.User;
 import com.lgc.wordanalysis.wordList.Command;
@@ -214,13 +216,14 @@ public class GlobalData {
      *
      * @param jStringList 单词的jsonString列表
      */
-    public void importFromJStringList(List<String> jStringList, @Nullable ProgressCallback progressCallback) {
+    public void importFromJStringList(List<String> jStringList, @Nullable ProgressCallback progressCallback,
+                                      boolean isClearOld) {
         List<Word> wordList = new ArrayList<>();
         Gson gson = new Gson();
         for (String jString : jStringList) {
             wordList.add(gson.fromJson(jString, Word.class));
         }
-        importFromExternal(wordList, jStringList, progressCallback);
+        importFromExternal(wordList, jStringList, progressCallback, isClearOld);
     }
 
     /**
@@ -228,23 +231,36 @@ public class GlobalData {
      *
      * @param wordList 单词列表
      */
-    public void importFromWordList(List<Word> wordList, ProgressCallback progressCallback) {
+    public void importFromWordList(List<Word> wordList, ProgressCallback progressCallback, boolean isClearOld) {
         List<String> jStringList = new ArrayList<>();
         Gson gson = new Gson();
         for (Word word : wordList) {
             jStringList.add(gson.toJson(word));
         }
-        importFromExternal(wordList, jStringList, progressCallback);
+        importFromExternal(wordList, jStringList, progressCallback, isClearOld);
     }
 
     /**
      * 从外部导入数据
-     *
-     * @param wordList
+     *  @param wordList
      * @param jStringList json数据，一起导入，后面存入数据库
+     * @param isClearOld
      */
-    public void importFromExternal(List<Word> wordList, List<String> jStringList, @Nullable ProgressCallback progressCallback) {
+    public void importFromExternal(List<Word> wordList, List<String> jStringList,
+                                   @Nullable ProgressCallback progressCallback,
+                                   boolean isClearOld) {
         closeUpload();
+        if (isClearOld) {
+            try {
+                MyDatabase.getInstance().deleteAllWord();
+                mAllWords.clear();
+                mShowWords.clear();
+                Util.showToast("删除旧数据成功");
+            } catch (IOException e) {
+                e.printStackTrace();
+                Util.showToast("删除旧数据失败");
+            }
+        }
         for (int i = 0; i < wordList.size(); i++) {
             Word externalWord = wordList.get(i);
             String jString = jStringList.get(i);

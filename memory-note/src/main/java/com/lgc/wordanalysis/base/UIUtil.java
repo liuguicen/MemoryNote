@@ -163,14 +163,17 @@ public class UIUtil {
             for (Word.SimilarWord similarWord : similarWordList) {
                 relatedSb.append(similarWord.getName()).append("  ");
             }
-        }
-        if (similarWordList.size() > 0) {
-            relatedSb.append("\n");
+            if (similarWordList.size() > 0) {
+                relatedSb.append("\n");
+            }
         }
         List<Word.SimilarWord> groupList = word.getGroupList();
         if (groupList != null) {
             for (Word.SimilarWord similarWord : groupList) {
                 relatedSb.append(similarWord.getName()).append("  ");
+            }
+            if (groupList.size() > 0) {
+                relatedSb.append("\n");
             }
         }
 

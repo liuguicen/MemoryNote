@@ -104,6 +104,10 @@ public class Util {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 
+    public static void showToast(String msg) {
+        Toast.makeText(WordAnalysisApplication.appContext, msg, Toast.LENGTH_LONG).show();
+    }
+
 
     /**
      * �򻯴�����࣬

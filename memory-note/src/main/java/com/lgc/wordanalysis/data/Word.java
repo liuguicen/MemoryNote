@@ -1,5 +1,6 @@
 package com.lgc.wordanalysis.data;
 
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -516,6 +517,7 @@ public class Word {
         return meaningList;
     }
 
+    @Nullable
     public List<SimilarWord> getSimilarWordList() {
         return similarWordList;
     }

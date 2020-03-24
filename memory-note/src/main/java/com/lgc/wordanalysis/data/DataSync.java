@@ -56,7 +56,7 @@ public class DataSync {
             while ((line = br.readLine()) != null) {
                 jStringList.add(line);
             }
-            GlobalData.getInstance().importFromJStringList(jStringList, null);
+            GlobalData.getInstance().importFromJStringList(jStringList, null, false);
         } catch (IOException e) {
             e.printStackTrace();
             return -1;
@@ -120,13 +120,13 @@ public class DataSync {
                     Log.d("DataSync", word.toString());
                     word.setLastModifyTime(System.currentTimeMillis());
                 } catch (Exception e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
                 }
-                wordList.add(word);
 
+                wordList.add(word);
                 line = br.readLine();
             }
-            GlobalData.getInstance().importFromWordList(wordList, progressCallback);
+            GlobalData.getInstance().importFromWordList(wordList, progressCallback, true);
             Util.showToast(context, "单词导入完成");
         } catch (Exception e) {
             Toast.makeText(context, "导入出错" + e.getMessage(), Toast.LENGTH_LONG).show();

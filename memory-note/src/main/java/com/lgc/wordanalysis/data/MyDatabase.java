@@ -54,6 +54,15 @@ public class MyDatabase {
         Logcat.d(sql);
     }
 
+    /**
+     * 删除所有，谨慎使用
+     */
+    public void deleteAllWord() throws IOException {
+        String sql = "delete  from "+DataBaseConstant.table_word;
+        Logcat.d(sql);
+        db.execSQL(sql);
+        Logcat.d(sql);
+    }
 
     /**
      * 直接将所有的单词数据读到内存中
