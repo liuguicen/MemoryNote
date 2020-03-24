@@ -1,11 +1,16 @@
 package com.lgc.wordanalysis.data;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.lgc.wordanalysis.base.AlgorithmUtil;
 import com.lgc.baselibrary.utils.Logcat;
+import com.lgc.wordanalysis.base.WordDisplayAnalyzer;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.lgc.wordanalysis.base.AlgorithmUtil.StringAg;
@@ -30,15 +35,16 @@ import static com.lgc.wordanalysis.base.AlgorithmUtil.StringAg;
 
 public class Word {
 
+    public static final int DEFAULT_STRANGE_DEGREE = 0;
     public static String NOT_NAME_PHRASE_REGEX = "[^a-zA-z\\-\\\\n/' ]";
     public static String NOT_WORD_REGEX = "[^a-zA-z\\-']";
 
     public static final int PURE_WORD = 0;
-    public static final int ROOT   = 1;
+    public static final int ROOT = 1;
     public static final int PREFIX = 2;
     public static final int SUFFIX = 3;
     public static final int PHRASE = 4;
-    public static final int OTHER  = 10;
+    public static final int OTHER = 10;
 
     public static final String TAG_START = "@";
     public static final String TAG_GUAI = TAG_START + "怪";
@@ -48,14 +54,13 @@ public class Word {
     public static final String TAG_FEI = TAG_START + "非";
 
 
-    public static String TAG_ROOT      = TAG_START + "词根";
-    public static String TAG_PREFFIX   = TAG_START + "前缀";
-    public static String TAG_SUFFIX    = TAG_START + "后缀";
-    public static String TAG_N_SUFFIX    = TAG_START + "名词后缀";
-    public static String TAG_V_SUFFIX    = TAG_START + "动词词后缀";
-    public static String TAG_ADJ_SUFFIX    = TAG_START + "形容词后缀";
-    public static String TAG_ADV_SUFFIX    = TAG_START + "副词后缀";
-
+    public static String TAG_ROOT = TAG_START + "词根";
+    public static String TAG_PREFFIX = TAG_START + "前缀";
+    public static String TAG_SUFFIX = TAG_START + "后缀";
+    public static String TAG_N_SUFFIX = TAG_START + "名词后缀";
+    public static String TAG_V_SUFFIX = TAG_START + "动词词后缀";
+    public static String TAG_ADJ_SUFFIX = TAG_START + "形容词后缀";
+    public static String TAG_ADV_SUFFIX = TAG_START + "副词后缀";
 
 
     public static final int DEGREE_DI = 7;
@@ -77,20 +82,28 @@ public class Word {
 
     public List<String> tagList;
 
-    /** 上次修改时间 **/
+    /**
+     * 上次修改时间
+     **/
     public long lastModifyTime = 0;
-    /** 上次上传到服务器的时间, if last upload time is smaller than last modify time, should upload it**/
+    /**
+     * 上次上传到服务器的时间, if last upload time is smaller than last modify time, should upload it
+     **/
     public long lastUploadTime = 0;
-    /** 上次下载时间 **/
+    /**
+     * 上次下载时间
+     **/
     public long lastDownLoadTime = 0;
 
     /**
-     * 用户输入的原始数据，用户用户再次编辑时使用
+     * 用户输入的原始数据==显示数据，用户用户再次编辑时使用
+     * 要保证显示数据和内部数据的同步
+     * 应该叫displayedxxx更好，由于要和服务器、本地的Jason同步，不好改了
      */
     public String inputMeaning;
     public String inputSimilarWords;
     public String inputRememberWay;
-    private String inputWordGroup;
+    public String inputWordGroup;
     public String inputSynonyms;
 
     /**
@@ -99,13 +112,13 @@ public class Word {
     public double containMeaning(String search) {
         List<Word.WordMeaning> meaningList = getMeaningList();
         if (meaningList == null) {
-            return  StringAg.NOT_SIMILAR;
+            return StringAg.NOT_SIMILAR;
         }
 
         double maxDegree = StringAg.NOT_SIMILAR;
-        for (int j = 0; j < meaningList.size(); j++){
+        for (int j = 0; j < meaningList.size(); j++) {
             double degree = StringAg.stringSimilar(meaningList.get(j).getMeaning(), search);
-            if (degree ==  StringAg.EQUAL_SIMILAR) return degree;
+            if (degree == StringAg.EQUAL_SIMILAR) return degree;
             maxDegree = Math.max(degree, maxDegree);
         }
         return maxDegree;
@@ -121,7 +134,7 @@ public class Word {
     public boolean hasTags(List<String> outTagList) {
         if (this.tagList != null && outTagList != null) {
             for (String outTag : outTagList) {
-                if(tagList.contains(outTag)) {
+                if (tagList.contains(outTag)) {
                     return true;
                 }
             }
@@ -132,6 +145,41 @@ public class Word {
     public void setInputSynonyms(String inputSynonym) {
         this.inputSynonyms = inputSynonym;
     }
+
+    public void setSynonymByDisplay(String inputSynonym) {
+        this.inputSynonyms = inputSynonym;
+        List<Word.SimilarWord> synonymList = new ArrayList<>();
+        WordDisplayAnalyzer.analyzeInputSimilarWords(inputSynonym, synonymList);
+        this.synonymList = synonymList;
+    }
+
+    public void setStrangeDegreeByDisplay(String s) {
+        strangeDegree = Word.DEFAULT_STRANGE_DEGREE;
+        if (s == null || s.isEmpty()) return;
+        try {
+            strangeDegree = Integer.parseInt(s);
+        } catch (Exception e) {
+            Log.e("DataSync", "解析单词陌生度失败");
+        }
+    }
+
+    public void setLastRememberTimeByDisplay(String s) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分"); // 注意和获取格式一致
+        try {
+            lastRememberTime = sdf.parse(s).getTime();
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            lastRememberTime = 0;
+        }//毫秒
+    }
+
+    public String getLastRememberTimeDisplay() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分"); // 注意和设置时格式一致
+        Date date = new Date(lastRememberTime);
+        return sdf.format(date);
+    }
+
 
     /**
      *
@@ -199,7 +247,7 @@ public class Word {
             if (WordMeaning.CIXING_N.equals(ciXing)) return 1;
             if (WordMeaning.CIXING_V.equals(ciXing)) return 2;
             if (WordMeaning.CIXING_ADJ.equals(ciXing)) return 3;
-            if(WordMeaning.CIXING_ADV.equals(ciXing)) return 4;
+            if (WordMeaning.CIXING_ADV.equals(ciXing)) return 4;
             return 10000;
         }
 
@@ -216,13 +264,13 @@ public class Word {
                     | WordMeaning.CIXING_V.equals(ciXing)
                     | WordMeaning.CIXING_ADJ.equals(ciXing)
                     | WordMeaning.CIXING_ADV.equals(ciXing)) {
-                this.ciXing =ciXing;
+                this.ciXing = ciXing;
                 return true;
             }
             return false;
         }
 
-        public String  getCiXing() {
+        public String getCiXing() {
             return ciXing;
         }
 
@@ -306,7 +354,7 @@ public class Word {
         // 比较陌生度
         degree = String.valueOf(strangeDegree).contains(search) ? 1 : StringAg.NOT_SIMILAR;
         if (degree > StringAg.NOT_SIMILAR) {
-            return WordUtil.getHigherMatchDegree(WordUtil.MATCH_BASE_STRANGE, degree)  ;
+            return WordUtil.getHigherMatchDegree(WordUtil.MATCH_BASE_STRANGE, degree);
         }
 
         // 相似
@@ -355,7 +403,7 @@ public class Word {
     }
 
     public static int compareLength(String w1, String w2) {
-        int l1 =  0, l2 = 0;
+        int l1 = 0, l2 = 0;
         if (w1 != null) l1 = w1.length();
         if (w2 != null) l2 = w2.length();
         return l2 - l1;
@@ -487,6 +535,7 @@ public class Word {
     public List<SimilarWord> getSynonymList() {
         return synonymList;
     }
+
     public void setGroupList(List<SimilarWord> groupList) {
         this.groupList = groupList;
     }
@@ -494,6 +543,7 @@ public class Word {
     public void setLastModifyTime(long lastModifyTime) {
         this.lastModifyTime = lastModifyTime;
     }
+
     public long getLastModifyTime() {
         return lastModifyTime;
     }
@@ -515,6 +565,19 @@ public class Word {
         return lastDownLoadTime;
     }
 
+    public void setGroupByDisplay(String inputWordGroup) {
+        this.inputWordGroup = inputWordGroup;
+        List<Word.SimilarWord> groupList = new ArrayList<>();
+        WordDisplayAnalyzer.analyzeInputSimilarWords(inputWordGroup, groupList);
+        this.groupList = groupList;
+    }
+
+    public void setSimilarByDisplay(String inputSimilar) {
+        this.inputSimilarWords = inputSimilar;
+        List<Word.SimilarWord> similarList = new ArrayList<>();
+        WordDisplayAnalyzer.analyzeInputSimilarWords(inputSimilar, similarList);
+        this.similarWordList = similarList;
+    }
 
     /**
      * @return {@link Word#PURE_WORD} 等
@@ -543,7 +606,7 @@ public class Word {
     @Override
     public String toString() {
         // java 8 默认使用StringBuilder拼接字符串了，简化编码
-        return  name +
+        return name +
                 inputMeaning +
                 inputSimilarWords +
                 inputWordGroup +

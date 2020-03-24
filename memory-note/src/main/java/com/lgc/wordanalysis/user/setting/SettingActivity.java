@@ -16,8 +16,10 @@ import com.lgc.baselibrary.utils.Logcat;
 import com.lgc.baselibrary.utils.SimpleObserver;
 import com.lgc.wordanalysis.R;
 import com.lgc.wordanalysis.base.AppConfig;
+import com.lgc.wordanalysis.base.utils.FileEncodingUtil;
 import com.lgc.wordanalysis.data.DataSync;
 import com.lgc.wordanalysis.data.GlobalData;
+import com.lgc.wordanalysis.data.WordLibsUtil;
 import com.lgc.wordanalysis.user.User;
 import com.lgc.wordanalysis.wordList.Command;
 
@@ -95,20 +97,34 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mLvWordLib.setLayoutManager(linearLayoutManager);
         wordLibAdapter.setItemClickListener((v, viewHolder) -> {
-            try {
-                String[] nameList = new String[] {
-                        "高中词汇表-3500.csv",
-                        "考研词汇表-5500.csv"
-                };
-                InputStream importStream = getAssets().open(nameList[viewHolder.getAdapterPosition()]);
-                DataSync.importFromStandardCsv(SettingActivity.this,
-                        importStream);
-//                showImportDialog(null, wordlib);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            String assertName = WordLibsUtil.wordLibNameList[viewHolder.getAdapterPosition()];
+            importWordLibFromAssert(assertName);
+            showImportDialog(null, assertName);
         });
         mLvWordLib.setAdapter(wordLibAdapter);
+    }
+
+    private int importWordLibFromAssert(String assertName) {
+        InputStream importStream = null;
+        try {
+            importStream = getAssets().open(assertName);
+            String encodingWay = FileEncodingUtil.getCharSet(importStream);
+            importStream = getAssets().open(assertName);
+            DataSync.importFromStandardCsv(SettingActivity.this,
+                    importStream, encodingWay, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return -1;
+        } finally {
+            if (importStream != null) {
+                try {
+                    importStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return 0;
     }
 
     void test() {
@@ -127,7 +143,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
                 mCertainDialog.showDialog("确认导出吗？", null, new CertainDialog.ActionListener() {
                     @Override
                     public void onSure() {
-                        String resultPath = DataSync.exportData2Sd(
+                        String resultPath = DataSync.export2JsonTxt(
                                 SettingActivity.this, AppConfig.exportDataName);
                         String resultMsg = "导出成功! 位置：\n" + resultPath;
                         if (resultPath == null)
@@ -143,7 +159,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
                 mCertainDialog.showDialog("确认导出吗？", null, new CertainDialog.ActionListener() {
                     @Override
                     public void onSure() {
-                        String resultPath = DataSync.exportExcel2Sd(
+                        String resultPath = DataSync.exportAsCsv(
                                 SettingActivity.this, AppConfig.exportDataName);
                         String resultMsg = "导出成功! 位置：\n" + resultPath;
                         if (resultPath == null)
@@ -198,12 +214,12 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
     }
 
     @Override
-    public void showImportDialog(final String importPath, final InputStream importStream) {
+    public void showImportDialog(final String importPath, final String assertName) {
         mCertainDialog.showDialog("导入将替换旧的数据，现有数据将保存到SD卡中，确认导入吗？", null, new CertainDialog.ActionListener() {
             @Override
             public void onSure() {
                 // 必须先备份
-                String resultPath = DataSync.exportData2Sd(SettingActivity.this, AppConfig.exportDataName);
+                String resultPath = DataSync.export2JsonTxt(SettingActivity.this, AppConfig.exportDataName);
 
                 String resultMsg = "导出成功! 位置：\n" + resultPath;
                 if (resultPath == null)
@@ -214,14 +230,18 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
                             public void onSure() {
                                 Observable
                                         .create((ObservableOnSubscribe<String>) emitter -> {
+                                            int result = 0;
                                             if (importPath != null) {
-                                                DataSync.importFromTxt(SettingActivity.this,
+                                                result = DataSync.importFromTxt(SettingActivity.this,
                                                         importPath);
-                                            } else if (importStream != null) {
-                                                DataSync.importFromStandardCsv(SettingActivity.this,
-                                                        importStream);
+                                            } else if (assertName != null) {
+                                                result = importWordLibFromAssert(assertName);
                                             }
-                                            emitter.onComplete();
+                                            if (result > -1) {
+                                                emitter.onComplete();
+                                            } else {
+                                                emitter.onError(new Exception());
+                                            }
                                         })
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())

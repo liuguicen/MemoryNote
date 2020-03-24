@@ -1,6 +1,9 @@
 package com.lgc.wordanalysis.data;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.Gson;
+import com.lgc.baselibrary.UIWidgets.ProgressCallback;
 import com.lgc.baselibrary.utils.Logcat;
 import com.lgc.wordanalysis.base.network.NetWorkUtil;
 import com.lgc.wordanalysis.user.User;
@@ -24,7 +27,6 @@ public class GlobalData {
     // 涉及到数据同步的问题，比较麻烦，两个基本上在一起操作
     private static List<Word> mAllWords = new ArrayList<>();
     private static List<Word> mShowWords = new ArrayList<>();
-
 
 
     /**
@@ -128,7 +130,8 @@ public class GlobalData {
         updateWord2DB(word, false);*/
     }
 
-    /** 千万小心 ！！
+    /**
+     * 千万小心 ！！
      */
     private void preProcess(final Word word) {
         /*if (word.hasTag(Word.TAG_DI)) {
@@ -208,48 +211,55 @@ public class GlobalData {
 
     /**
      * 从jsonString列表中导入数据
+     *
      * @param jStringList 单词的jsonString列表
      */
-    public void importFromJStringList(List<String> jStringList) {
+    public void importFromJStringList(List<String> jStringList, @Nullable ProgressCallback progressCallback) {
         List<Word> wordList = new ArrayList<>();
         Gson gson = new Gson();
         for (String jString : jStringList) {
             wordList.add(gson.fromJson(jString, Word.class));
         }
-        importFromExternal(wordList, jStringList);
+        importFromExternal(wordList, jStringList, progressCallback);
     }
 
     /**
      * 从WordList导入数据
+     *
      * @param wordList 单词列表
      */
-    public void importFromWordList(List<Word> wordList) {
+    public void importFromWordList(List<Word> wordList, ProgressCallback progressCallback) {
         List<String> jStringList = new ArrayList<>();
         Gson gson = new Gson();
         for (Word word : wordList) {
             jStringList.add(gson.toJson(word));
         }
-        importFromExternal(wordList, jStringList);
+        importFromExternal(wordList, jStringList, progressCallback);
     }
 
     /**
      * 从外部导入数据
+     *
      * @param wordList
+     * @param jStringList json数据，一起导入，后面存入数据库
      */
-    public void importFromExternal(List<Word> wordList, List<String> jStringList) {
+    public void importFromExternal(List<Word> wordList, List<String> jStringList, @Nullable ProgressCallback progressCallback) {
         closeUpload();
         for (int i = 0; i < wordList.size(); i++) {
             Word externalWord = wordList.get(i);
             String jString = jStringList.get(i);
 
             int localId = mAllWords.indexOf(externalWord);
-            if (localId < 0) {
-                addWord(externalWord, jString,false);
-            } else {
+            if (localId < 0) { // 如果这个单词不存在
+                addWord(externalWord, jString, false);
+            } else {  // 如果这个单词已经存在
                 if (externalWord.getLastModifyTime() > mAllWords.get(localId).getLastModifyTime()) {
                     mAllWords.set(localId, externalWord); // 更新
                     updateWord2DB(externalWord, jString, false);
                 }
+            }
+            if (progressCallback != null && i % 10 == 0) {
+                progressCallback.progress(i * 1f / wordList.size());
             }
         }
         openUpload();
@@ -281,7 +291,9 @@ public class GlobalData {
         mCloseUpload = true;
     }
 
-    public void openUpload() { mCloseUpload = false; }
+    public void openUpload() {
+        mCloseUpload = false;
+    }
 
     public void setCurWords(List<Word> curWords) {
         mShowWords = curWords;
@@ -294,7 +306,7 @@ public class GlobalData {
 
     public void addWord(final Word word, final String jsonData, boolean isUpload) {
         try {
-            if(isUpload && !mCloseUpload) {
+            if (isUpload && !mCloseUpload) {
                 NetWorkUtil.saveWordService(new BmobWord(word, jsonData), new NetWorkUtil.UploadListener() {
                     @Override
                     public void uploadSuccess() {
@@ -320,7 +332,7 @@ public class GlobalData {
 
 
     public void updateWord2DB(final Word word, boolean isUpload) {
-        String jsonData =  new Gson().toJson(word);
+        String jsonData = new Gson().toJson(word);
         updateWord2DB(word, jsonData, isUpload);
     }
 
@@ -386,13 +398,13 @@ public class GlobalData {
                 removeLastInputCmd(1);
             }
         } else { // 放到最开始位置
-           recentInputCmdList.remove(id);
+            recentInputCmdList.remove(id);
         }
         recentInputCmdList.add(0, cmd);
     }
 
     private void removeLastInputCmd(int number) {
-        for (int i = recentInputCmdList.size() - 1; i >= 0 ; i--) {
+        for (int i = recentInputCmdList.size() - 1; i >= 0; i--) {
             if (!Command.INPUT_COMMAND_HINT_LIST.contains(recentInputCmdList.get(i))) {
                 if (number-- > 0) {
                     recentInputCmdList.remove(i);

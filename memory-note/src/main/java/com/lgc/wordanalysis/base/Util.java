@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.lgc.baselibrary.baseComponent.BaseApplication;
 import com.lgc.wordanalysis.data.Word;
 
 import java.text.SimpleDateFormat;
@@ -98,6 +99,11 @@ public class Util {
 
         }
     }
+
+    public static void showToast(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+    }
+
 
     /**
      * �򻯴�����࣬
@@ -206,12 +212,6 @@ public class Util {
      */
    public static String long2Date(String dateFormat, Long millSec) {
        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-       Date date = new Date(millSec);
-       return sdf.format(date);
-   }
-
-   public static String long2DateDefult(long millSec) {
-       SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分");
        Date date = new Date(millSec);
        return sdf.format(date);
    }

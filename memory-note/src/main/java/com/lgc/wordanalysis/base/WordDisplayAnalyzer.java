@@ -10,9 +10,9 @@ import java.util.regex.Pattern;
 import static com.lgc.wordanalysis.data.Word.WordMeaning;
 
 /**
- * 单词数据的解析器
+ * 将单词数据从显示形式转换成内部形式的解析器
  */
-public class InputAnalyzerUtil {
+public class WordDisplayAnalyzer {
     /**
      * 解析成功
      */
@@ -36,10 +36,10 @@ public class InputAnalyzerUtil {
      * @return 解析结果状态码
      */
     public static int analyzeInputMeaning(String originalMeaning, Word word) {
-        if (originalMeaning == null || word == null) return InputAnalyzerUtil.IS_NULL;
+        if (originalMeaning == null || word == null) return WordDisplayAnalyzer.IS_NULL;
         originalMeaning = originalMeaning.trim();
         if (originalMeaning.isEmpty()) return IS_NULL;
-        int resultCode = InputAnalyzerUtil.SUCCESS;
+        int resultCode = WordDisplayAnalyzer.SUCCESS;
 
         /**
          * one line one meaning
@@ -76,7 +76,7 @@ public class InputAnalyzerUtil {
         word.setMeaningList(meaningList);
 
         if (word.getMeaningList() == null || word.getMeaningList().size() == 0) { // 没有获取到有效的词义，不设置数据
-            resultCode = InputAnalyzerUtil.NO_VALID_MEANING;
+            resultCode = WordDisplayAnalyzer.NO_VALID_MEANING;
         }
         return resultCode;
     }
@@ -105,6 +105,7 @@ public class InputAnalyzerUtil {
 
     /**
      * 解析用户输入的相似单词
+     * @param similarWordList 解析好的相似单词存入此列表中
      */
     public static int analyzeInputSimilarWords(String inputSimilarWord, List<Word.SimilarWord> similarWordList) {
         if (inputSimilarWord == null || similarWordList == null) return IS_NULL;

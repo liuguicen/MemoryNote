@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.lgc.wordanalysis.R;
 import com.lgc.baselibrary.UIWidgets.CertainDialog;
-import com.lgc.wordanalysis.base.InputAnalyzerUtil;
+import com.lgc.wordanalysis.base.WordDisplayAnalyzer;
 import com.lgc.wordanalysis.base.UIUtil;
 import com.lgc.wordanalysis.base.Util;
 import com.lgc.wordanalysis.data.AppConstant;
@@ -449,8 +449,8 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     }
 
     @Override
-    public void showLastRememberTime(long lastRememberTime) {
-        mTvLastRememberTime.setText(Util.long2DateDefult(lastRememberTime));
+    public void showLastRememberTime(String lastRememberTime) {
+        mTvLastRememberTime.setText(lastRememberTime);
     }
 
     @Override
@@ -507,12 +507,12 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
     public void showAnalyzeFailed(int resultCode) {
         String msg = null;
         switch (resultCode) {
-            case InputAnalyzerUtil.NO_VALID_MEANING:
+            case WordDisplayAnalyzer.NO_VALID_MEANING:
                 msg = "输入的词义无效";
                 break;
-            case InputAnalyzerUtil.IS_NULL:
+            case WordDisplayAnalyzer.IS_NULL:
                 return;
-            case InputAnalyzerUtil.TAG_FORMAT_ERROR:
+            case WordDisplayAnalyzer.TAG_FORMAT_ERROR:
                 return;
         }
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();

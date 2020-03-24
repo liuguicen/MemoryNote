@@ -7,7 +7,7 @@ import android.util.Pair;
 import android.widget.Toast;
 
 import com.lgc.wordanalysis.base.AlgorithmUtil;
-import com.lgc.wordanalysis.base.InputAnalyzerUtil;
+import com.lgc.wordanalysis.base.WordDisplayAnalyzer;
 import com.lgc.wordanalysis.base.UIUtil;
 import com.lgc.wordanalysis.data.AppConstant;
 import com.lgc.wordanalysis.data.GlobalData;
@@ -16,7 +16,9 @@ import com.lgc.wordanalysis.data.SpUtil;
 import com.lgc.wordanalysis.data.Word;
 import com.lgc.wordanalysis.data.WordUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -104,17 +106,14 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         // 其他输入
         if (!TextUtils.equals(inputMeanings, mWord.getInputMeaning())) {
             mWord.setInputMeaning(inputMeanings);
-            int resultCode = InputAnalyzerUtil.analyzeInputMeaning(inputMeanings, mWord);
-            if (resultCode != InputAnalyzerUtil.SUCCESS) {
+            int resultCode = WordDisplayAnalyzer.analyzeInputMeaning(inputMeanings, mWord);
+            if (resultCode != WordDisplayAnalyzer.SUCCESS) {
                 mView.showAnalyzeFailed(resultCode);
             }
         }
 
         if (!TextUtils.equals(inputSimilars, mWord.getInputSimilarWords())) {
-            mWord.setInputSimilarWords(inputSimilars);
-            List<Word.SimilarWord> similarList = new ArrayList<>();
-            InputAnalyzerUtil.analyzeInputSimilarWords(inputSimilars, similarList);
-            mWord.setSimilarWordList(similarList);
+            mWord.setSimilarByDisplay(inputSimilars);
         }
 
         if (!TextUtils.equals(inputRememberWay, mWord.getInputRememberWay())) {
@@ -122,17 +121,11 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         }
 
         if (!TextUtils.equals(inputWordGroup, mWord.getInputWordGroup())) {
-            mWord.setInputWordGroup(inputWordGroup);
-            List<Word.SimilarWord> groupList = new ArrayList<>();
-            InputAnalyzerUtil.analyzeInputSimilarWords(inputWordGroup, groupList);
-            mWord.setGroupList(groupList);
+            mWord.setGroupByDisplay(inputWordGroup);
         }
 
         if (!TextUtils.equals(inputSynonym, mWord.getInputSynonym())) {
-            mWord.setInputSynonyms(inputSynonym);
-            List<Word.SimilarWord> synonymList = new ArrayList<>();
-            InputAnalyzerUtil.analyzeInputSimilarWords(inputSynonym, synonymList);
-            mWord.setSynonymList(synonymList);
+            mWord.setSynonymByDisplay(inputSynonym);
         }
 
         // 名字相关
@@ -236,11 +229,10 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
         if (!isSwitchEdit) { // 切换编辑的过程中，这些视图的数据不用变
             mView.showWordName(word.getName());
             mView.showStrangeDegree(word.getStrangeDegree());
-            mView.showLastRememberTime(word.getLastRememberTime());
+            mView.showLastRememberTime(word.getLastRememberTimeDisplay());
             mView.showIsCheckedMeaning(word.isCheckedMeaning());
         }
     }
-
 
     @Override
     public void syncSimilarWord() {
@@ -306,7 +298,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
 
         // 解析出已经存在的
         List<Word.SimilarWord> exitSimilar = new ArrayList<>();
-        InputAnalyzerUtil.analyzeInputSimilarWords(inputChildWord, exitSimilar);
+        WordDisplayAnalyzer.analyzeInputSimilarWords(inputChildWord, exitSimilar);
 
         boolean hasModify = false;
         // the exit word which don't input meaning, search meaning in global list, add meaning to it
@@ -369,7 +361,7 @@ public class WordDetailPresenter implements WordDetailContract.Presenter {
     @Override
     public void setLastRememberTime() {
         mWord.setLastRememberTime(System.currentTimeMillis());
-        mView.showLastRememberTime(mWord.getLastRememberTime());
+        mView.showLastRememberTime(mWord.getLastRememberTimeDisplay());
     }
 
     @Override

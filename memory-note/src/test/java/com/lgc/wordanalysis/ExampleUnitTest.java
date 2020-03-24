@@ -2,7 +2,7 @@ package com.lgc.wordanalysis;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.lgc.wordanalysis.base.InputAnalyzerUtil;
+import com.lgc.wordanalysis.base.WordDisplayAnalyzer;
 import com.lgc.baselibrary.utils.Logcat;
 import com.lgc.wordanalysis.data.Word;
 
@@ -64,7 +64,7 @@ public class ExampleUnitTest {
                 "   n.信任，学分，声望\n\n"
                 + "adj.国会的，议会的\n\n"
                 + "@guai @gsdf   adv. √▆▃♠▆";
-        InputAnalyzerUtil.analyzeInputMeaning(input, word);
+        WordDisplayAnalyzer.analyzeInputMeaning(input, word);
         word.setInputMeaning(input);
         System.out.println(new Gson().toJson(word));
     }
@@ -73,14 +73,14 @@ public class ExampleUnitTest {
         String input = "sdfsd word id good // 哄哄的东方盛世房东发的" +
                 "hahaha// 双方双方双方爽肤水";
         List<Word.SimilarWord> similarList = new ArrayList<>();
-        InputAnalyzerUtil.analyzeInputSimilarWords(input, similarList);
+        WordDisplayAnalyzer.analyzeInputSimilarWords(input, similarList);
         System.out.println(similarList);
         word.setSimilarWordList(similarList);
     }
 
     private void textInputNoTagMeaning() {
         WordMeaning wordMeaning = new WordMeaning();
-        InputAnalyzerUtil.analysisNoTagMeaning(wordMeaning, "n .   中国,rt, 日本 ");
+        WordDisplayAnalyzer.analysisNoTagMeaning(wordMeaning, "n .   中国,rt, 日本 ");
         System.out.println(new Gson().toJson(wordMeaning));
     }
 
@@ -89,7 +89,7 @@ public class ExampleUnitTest {
                 "hahaha v&n 双方双方双方爽肤水\n" +
                 "third meaning adj.第三个";
         List<Word.SimilarWord> similarWorList = new ArrayList<>();
-        InputAnalyzerUtil.analyzeInputSimilarWords(similarWord, similarWorList);
+        WordDisplayAnalyzer.analyzeInputSimilarWords(similarWord, similarWorList);
         Word word = new Word();
         word.setInputSimilarWords(similarWord);
         word.setSimilarWordList(similarWorList);

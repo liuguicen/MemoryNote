@@ -104,5 +104,5 @@ public class AppConfig {
         return sp.getBoolean("has_send_device", false);
     }
 
-    public static final String exportDataName = "MemoryData"; //数据导出文件名称
+    public static final String exportDataName = "单词笔记"; //数据导出文件名称
 }

@@ -10,19 +10,17 @@ import android.widget.TextView;
 
 import com.lgc.baselibrary.utils.RecyclerViewItemClickListener;
 import com.lgc.wordanalysis.R;
+import com.lgc.wordanalysis.data.WordLibsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class WordLibAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    List<String> wordLibList = new ArrayList<>();
     private final Context mContext;
     RecyclerViewItemClickListener itemClickListener;
 
     public WordLibAdapter(Context context) {
         mContext = context;
-        wordLibList.add("高中词汇");
-        wordLibList.add("考研词汇");
     }
 
     public void setItemClickListener(RecyclerViewItemClickListener itemClickListener) {
@@ -32,7 +30,7 @@ public class WordLibAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View  layout = LayoutInflater.from(mContext).inflate(R.layout.item_word_lib_list, viewGroup, false);
+        View layout = LayoutInflater.from(mContext).inflate(R.layout.item_word_lib_list, viewGroup, false);
         ItemHolder itemHolder = new ItemHolder(layout);
         View importBtn = layout.findViewById(R.id.tv_word_lib_item_import);
         importBtn.setOnClickListener(v -> {
@@ -45,16 +43,19 @@ public class WordLibAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        ((ItemHolder) viewHolder).name.setText(wordLibList.get(position));
+        String fileName = WordLibsUtil.wordLibNameList[position];
+        String name = fileName.substring(0, fileName.lastIndexOf('.'));
+        ((ItemHolder) viewHolder).name.setText(name);
     }
 
     @Override
     public int getItemCount() {
-        return wordLibList.size();
+        return WordLibsUtil.wordLibNameList.length;
     }
 
     private class ItemHolder extends RecyclerView.ViewHolder {
         TextView name;
+
         ItemHolder(View layout) {
             super(layout);
             name = layout.findViewById(R.id.tv_word_lib_item_name);

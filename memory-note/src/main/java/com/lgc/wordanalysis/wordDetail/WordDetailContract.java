@@ -40,7 +40,7 @@ public interface WordDetailContract {
 
         void showStrangeDegree(int strangeDegree);
 
-        void showLastRememberTime(long lastRememberTime);
+        void showLastRememberTime(String lastRememberTime);
 
         void switchEditStyle(boolean mIsInEdit);
 
