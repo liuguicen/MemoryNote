@@ -87,7 +87,7 @@ public class SettingPresenter implements SettingContract.Presenter {
 
                             @Override
                             public void onNext(String importPath) {
-                                mView.showImportDialog(importPath, null);
+                                mView.importWord_firstStep(importPath, null);
                             }
                         });
         // final String importPath = FileUtil.getFileFromUri(uri,mContext);

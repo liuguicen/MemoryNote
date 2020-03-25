@@ -26,6 +26,6 @@ public class SettingContract {
 
         void showToast(String string);
 
-        void showImportDialog(String importPath, final String importStream);
+        void importWord_firstStep(String importPath, final String importStream);
     }
 }

@@ -1,7 +1,7 @@
 package com.lgc.wordanalysis.data;
 
 import android.support.annotation.Nullable;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.lgc.baselibrary.UIWidgets.ProgressCallback;
@@ -223,7 +223,7 @@ public class GlobalData {
         for (String jString : jStringList) {
             wordList.add(gson.fromJson(jString, Word.class));
         }
-        importFromExternal(wordList, jStringList, progressCallback, isClearOld);
+        importFromExternal(wordList, jStringList, progressCallback, isClearOld, false);
     }
 
     /**
@@ -231,35 +231,46 @@ public class GlobalData {
      *
      * @param wordList 单词列表
      */
-    public void importFromWordList(List<Word> wordList, ProgressCallback progressCallback, boolean isClearOld) {
+    public void importFromWordList(List<Word> wordList, ProgressCallback progressCallback,
+                                   boolean isClearOld, boolean isReplaceOld) {
         List<String> jStringList = new ArrayList<>();
         Gson gson = new Gson();
         for (Word word : wordList) {
             jStringList.add(gson.toJson(word));
         }
-        importFromExternal(wordList, jStringList, progressCallback, isClearOld);
+        importFromExternal(wordList, jStringList, progressCallback,
+                isClearOld, isReplaceOld);
     }
 
     /**
      * 从外部导入数据
-     *  @param wordList
+     *
+     * @param wordList
      * @param jStringList json数据，一起导入，后面存入数据库
-     * @param isClearOld
      */
     public void importFromExternal(List<Word> wordList, List<String> jStringList,
                                    @Nullable ProgressCallback progressCallback,
-                                   boolean isClearOld) {
+                                   boolean isDeleteOld, boolean isReplaceOld) {
         closeUpload();
-        if (isClearOld) {
+        if (isDeleteOld) {
             try {
                 MyDatabase.getInstance().deleteAllWord();
                 mAllWords.clear();
                 mShowWords.clear();
-                Util.showToast("删除旧数据成功");
-            } catch (IOException e) {
+                Log.d("GlobalData", "删除旧数据成功");
+                if (progressCallback != null) {
+                    progressCallback.msg("删除旧数据成功", true);
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
-                Util.showToast("删除旧数据失败");
+                Log.d("GlobalData", "删除旧数据失败");
+                if (progressCallback != null) {
+                    progressCallback.msg("删除旧数据失败 ", true);
+                }
             }
+        }
+        if (progressCallback != null) {
+            progressCallback.msg("开始导入", true);
         }
         for (int i = 0; i < wordList.size(); i++) {
             Word externalWord = wordList.get(i);
@@ -268,14 +279,15 @@ public class GlobalData {
             int localId = mAllWords.indexOf(externalWord);
             if (localId < 0) { // 如果这个单词不存在
                 addWord(externalWord, jString, false);
-            } else {  // 如果这个单词已经存在
+            } else if (isReplaceOld) {  // 如果这个单词已经存在,要求替换
                 if (externalWord.getLastModifyTime() > mAllWords.get(localId).getLastModifyTime()) {
                     mAllWords.set(localId, externalWord); // 更新
                     updateWord2DB(externalWord, jString, false);
                 }
             }
-            if (progressCallback != null && i % 10 == 0) {
-                progressCallback.progress(i * 1f / wordList.size());
+            if (progressCallback != null && i % 1000 == 999) {
+//                progressCallback.msg("已导入 " + i * 1f / wordList.size() + "%", true);
+                Log.d("GlobalData", "导入单词" + i + "个");
             }
         }
         openUpload();

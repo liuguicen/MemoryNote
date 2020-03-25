@@ -1,7 +1,9 @@
 package com.lgc.wordanalysis.wordList;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 
 import com.lgc.wordanalysis.R;
 import com.lgc.baselibrary.utils.Logcat;
+import com.lgc.wordanalysis.base.SpConstant;
 import com.lgc.wordanalysis.base.WordAnalysisApplication;
 import com.lgc.wordanalysis.base.Util;
 import com.lgc.wordanalysis.data.GlobalData;
@@ -59,10 +62,16 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         mPresenter = new WordListPresenter(this);
         initApp();
         setContentView(R.layout.activity_word_list);
-        test();
+//        test();
         bindView();
         intView();
         initData();
+        SharedPreferences sharedPreferences = getSharedPreferences(SpConstant.app_use_sp, Context.MODE_PRIVATE);
+        if (!sharedPreferences.getBoolean(SpConstant.has_imported, false)) {
+            Util.showToast("请导入您需要的单词！");
+            sharedPreferences.edit().putBoolean(SpConstant.has_imported, true).apply();
+            startSetting(SettingActivity.ACTION_FIRST_IMPORT);
+        }
         WordAnalysisApplication.startBackgroundService(this);
     }
 
@@ -124,11 +133,15 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
 //        intent.putExtra(WordDetailActivity.INTENT_EXTRA_IS_ADD, true);
 //        startActivity(intent);
         Logcat.d("start setting activity");
-        startSetting();
+        startSetting(null);
     }
 
-    private void startSetting() {
-        startActivity(new Intent(this, SettingActivity.class));
+    private void startSetting(@Nullable String action) {
+        Intent intent = new Intent(this, SettingActivity.class);
+        if (action != null) {
+            intent.setAction(action);
+        }
+        startActivity(intent);
     }
 
     private void bindView() {

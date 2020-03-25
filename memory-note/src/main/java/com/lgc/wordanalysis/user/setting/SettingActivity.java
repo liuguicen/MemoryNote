@@ -1,26 +1,34 @@
 package com.lgc.wordanalysis.user.setting;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lgc.baselibrary.UIWidgets.CertainDialog;
 import com.lgc.baselibrary.UIWidgets.NotifyDialog;
+import com.lgc.baselibrary.UIWidgets.ProgressCallback;
 import com.lgc.baselibrary.baseComponent.BaseActivity;
 import com.lgc.baselibrary.utils.Logcat;
 import com.lgc.baselibrary.utils.SimpleObserver;
 import com.lgc.wordanalysis.R;
 import com.lgc.wordanalysis.base.AppConfig;
+import com.lgc.wordanalysis.base.Util;
 import com.lgc.wordanalysis.base.utils.FileEncodingUtil;
 import com.lgc.wordanalysis.data.DataSync;
 import com.lgc.wordanalysis.data.GlobalData;
 import com.lgc.wordanalysis.data.WordLibsUtil;
 import com.lgc.wordanalysis.user.User;
+import com.lgc.wordanalysis.wordDetail.WordDetailActivity;
 import com.lgc.wordanalysis.wordList.Command;
 
 import java.io.IOException;
@@ -40,6 +48,8 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class SettingActivity extends BaseActivity implements SettingContract.View {
+    public static final boolean isTest = true;
+    public static final String ACTION_FIRST_IMPORT = "first_import";
 
     private static final int FILE_SELECT_CODE = 0;
     CertainDialog mCertainDialog;
@@ -59,6 +69,12 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
     private int mLastInputType;
     private boolean mIsInEdit;
     private RecyclerView mLvWordLib;
+    private ProgressCallback normalProgressCallback;
+    /**
+     * 导入单词弹出的最后一个弹窗
+     */
+    private AlertDialog importLastDialog;
+    private boolean isImporting = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,30 +104,56 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
         findViewById(R.id.btn_upload_data).setOnClickListener(this);
         Logcat.e("Setting activitty init success");
 
+        normalProgressCallback = new ProgressCallback() {
+            @Override
+            public void progress(float percentage) {
+
+            }
+
+            @Override
+            public void msg(String msg) {
+                runOnUiThread(() -> Util.showToast(msg));
+            }
+
+
+            @Override
+            public void msg(String msg, boolean isShort) {
+                runOnUiThread(() -> Toast.makeText(SettingActivity.this, msg, Toast.LENGTH_SHORT).show());
+            }
+        };
+
         initWordLib();
         //        test();
     }
 
     private void initWordLib() {
+        if (ACTION_FIRST_IMPORT.equals(getIntent().getAction())) {
+            new CertainDialog(this).showDialog(null, "请导入您学习的单词！",
+                    () -> {
+                    });
+        }
+
         WordLibAdapter wordLibAdapter = new WordLibAdapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mLvWordLib.setLayoutManager(linearLayoutManager);
         wordLibAdapter.setItemClickListener((v, viewHolder) -> {
             String assertName = WordLibsUtil.wordLibNameList[viewHolder.getAdapterPosition()];
-            importWordLibFromAssert(assertName);
-            showImportDialog(null, assertName);
+            importWord_secondStep(null, assertName, "");
+//            importWord_firstStep(null, assertName);
         });
         mLvWordLib.setAdapter(wordLibAdapter);
     }
 
-    private int importWordLibFromAssert(String assertName) {
+    private int importWordLibFromAssert(String assertName, boolean isDelete, boolean isReplace) {
         InputStream importStream = null;
         try {
             importStream = getAssets().open(assertName);
             String encodingWay = FileEncodingUtil.getCharSet(importStream);
             importStream = getAssets().open(assertName);
             DataSync.importFromStandardCsv(SettingActivity.this,
-                    importStream, encodingWay, null);
+                    importStream, encodingWay, isDelete, isReplace,
+                    normalProgressCallback);
+
         } catch (IOException e) {
             e.printStackTrace();
             return -1;
@@ -160,7 +202,8 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
                     @Override
                     public void onSure() {
                         String resultPath = DataSync.exportAsCsv(
-                                SettingActivity.this, AppConfig.exportDataName);
+                                SettingActivity.this, AppConfig.exportDataName,
+                                normalProgressCallback);
                         String resultMsg = "导出成功! 位置：\n" + resultPath;
                         if (resultPath == null)
                             resultMsg = "导出失败";
@@ -172,9 +215,22 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
                 mPresenter.onClickAppGuide();
                 break;
             case R.id.setting_return_btn:
-                finish();
+                returnBackFinish();
                 break;
 
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!isImporting) {
+            super.onBackPressed();
+        }
+    }
+
+    private void returnBackFinish() {
+        if (!isImporting) {
+            finish();
         }
     }
 
@@ -213,58 +269,151 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
         mTvAppGuide.setText(R.string.app_guide);
     }
 
+    /**
+     * 导入单词第一步，备份原有单词
+     */
     @Override
-    public void showImportDialog(final String importPath, final String assertName) {
-        mCertainDialog.showDialog("导入将替换旧的数据，现有数据将保存到SD卡中，确认导入吗？", null, new CertainDialog.ActionListener() {
+    public void importWord_firstStep(final String importPath, final String assertName) {
+        mCertainDialog.showDialog("导入将替换旧的数据，现有数据将保存到手机中，确认导入吗？", null, new CertainDialog.ActionListener() {
             @Override
             public void onSure() {
                 // 必须先备份
-                String resultPath = DataSync.export2JsonTxt(SettingActivity.this, AppConfig.exportDataName);
 
-                String resultMsg = "导出成功! 位置：\n" + resultPath;
-                if (resultPath == null)
-                    resultMsg = "导出失败";
-                new CertainDialog(SettingActivity.this).showDialog(null,
-                        "当前数据" + resultMsg + "\n是否替换当前数据？", new CertainDialog.ActionListener() {
+                Util.showToast("开始导出");
+                Observable
+                        .create((ObservableOnSubscribe<String>) emitter -> {
+                            ld("开始备份旧数据");
+                            String resultPath = DataSync.export2JsonTxt(
+                                    SettingActivity.this, AppConfig.exportDataName);
+//
+//                            String resultPath = "";
+                            emitter.onNext(resultPath);
+                        })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(new SimpleObserver<String>() {
                             @Override
-                            public void onSure() {
-                                Observable
-                                        .create((ObservableOnSubscribe<String>) emitter -> {
-                                            int result = 0;
-                                            if (importPath != null) {
-                                                result = DataSync.importFromTxt(SettingActivity.this,
-                                                        importPath);
-                                            } else if (assertName != null) {
-                                                result = importWordLibFromAssert(assertName);
-                                            }
-                                            if (result > -1) {
-                                                emitter.onComplete();
-                                            } else {
-                                                emitter.onError(new Exception());
-                                            }
-                                        })
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(new SimpleObserver<String>() {
+                            public void onNext(String resultPath) {
 
-                                            @Override
-                                            public void onComplete() {
-                                                Toast.makeText(SettingActivity.this, "导入完成", Toast.LENGTH_LONG).show();
-                                            }
-
-                                            @Override
-                                            public void onError(Throwable throwable) {
-                                                throwable.printStackTrace();
-                                            }
-
-                                            @Override
-                                            public void onNext(String importPath) {
-
-                                            }
-                                        });
+                                Toast.makeText(SettingActivity.this, "导出完成! 路径 = "
+                                        + resultPath, Toast.LENGTH_LONG).show();
+                                String resultMsg = "现有单词导出成功! 位置：\n" + resultPath;
+                                if (resultPath == null)
+                                    resultMsg = "导出失败";
+                                importWord_secondStep(importPath, assertName, resultMsg);
                             }
                         });
+
+
             }
         });
+    }
+
+    /**
+     * 导入单词第二步， 显示导入选项对话框
+     *
+     * @param importPath
+     * @param assertName
+     * @param resultMsg
+     */
+    private void importWord_secondStep(String importPath, String assertName, String resultMsg) {
+        ld("显示导入选项弹窗");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_import_choosing, null);
+        View cancleView = view.findViewById(R.id.tv_save_set_cancel);
+        View sureView = view.findViewById(R.id.tv_save_set_sure);
+        TextView titleTv = view.findViewById(R.id.import_choosing_title);
+        titleTv.setText(resultMsg + "\n导入新单词");
+        View deleteOldLayout = view.findViewById(R.id.import_item_delete_old);
+        View replaceOldLayout = view.findViewById(R.id.import_item_replace_old);
+
+        TextView doName = deleteOldLayout.findViewById(R.id.importChoseItemName);
+        doName.setText("是否删除原有数据");
+        TextView roName = replaceOldLayout.findViewById(R.id.importChoseItemName);
+        roName.setText("替换原有数据");
+        CheckBox deleteCheckBox = deleteOldLayout.findViewById(R.id.importItemCheckView);
+        deleteOldLayout.setOnClickListener(v -> {
+            deleteCheckBox.setChecked(!deleteCheckBox.isChecked());
+        });
+        CheckBox replaceCheckBox = replaceOldLayout.findViewById(R.id.importItemCheckView);
+        replaceOldLayout.setOnClickListener(v -> {
+            replaceCheckBox.setChecked(!replaceCheckBox.isChecked());
+        });
+
+
+        importLastDialog = builder.setView(view)
+                .create();
+
+        importLastDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        cancleView.setOnClickListener(v -> importLastDialog.dismiss());
+
+        sureView.setOnClickListener(v -> {
+            if (isImporting) {
+                return;
+            }
+            TextView contentTv = view.findViewById(R.id.import_choosing_content);
+            contentTv.setVisibility(View.VISIBLE);
+            contentTv.setText("单词导入中，请勿返回或关闭应用！");
+
+            cancleView.setVisibility(View.GONE);
+            sureView.setVisibility(View.GONE);
+            replaceOldLayout.setVisibility(View.GONE);
+            deleteOldLayout.setVisibility(View.GONE);
+            isImporting = true;
+            importWord_thirdStep(importPath, assertName, deleteCheckBox.isChecked(), replaceCheckBox.isChecked());
+        });
+        importLastDialog.show();
+    }
+
+    /**
+     * 导入单词第三步，导入
+     */
+    private void importWord_thirdStep(String importPath, String assertName, boolean isDelete, boolean isReplace) {
+        Observable
+                .create((ObservableOnSubscribe<String>) emitter -> {
+                    ld("开始导入新数据");
+                    int result = 0;
+                    if (importPath != null) {
+                        result = DataSync.importFromTxt(SettingActivity.this,
+                                importPath, isDelete, isReplace,
+                                normalProgressCallback);
+
+                    } else if (assertName != null) {
+                        result = importWordLibFromAssert(assertName, isDelete, isReplace);
+                    }
+                    if (result > -1) {
+                        emitter.onComplete();
+                    } else {
+                        emitter.onError(new Exception());
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SimpleObserver<String>() {
+
+                    @Override
+                    public void onComplete() {
+                        importLastDialog.dismiss();
+                        isImporting = false;
+                        returnBackFinish();
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(String msg) {
+
+                    }
+                });
+    }
+
+    private void ld(Object msg) {
+        if (msg != null) {
+            Log.d("SettingActivity", msg.toString());
+        }
     }
 }

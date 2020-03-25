@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lgc.baselibrary.UIWidgets.ProgressCallback;
@@ -41,14 +40,15 @@ import okhttp3.internal.Internal;
 public class DataSync {
     public static final boolean isTest = true;
 
-    public static int importFromTxt(Context context, String importPath) {
+    public static int importFromTxt(Context context, String importPath, boolean isDelete,
+                                    boolean isReplace, ProgressCallback progressCallback) {
         BufferedReader br = null;
         try {
             br = new BufferedReader(
                     new InputStreamReader(
                             new FileInputStream(new File(importPath)), "UTF-8")
             );
-            // Toast.makeText(context, "开始导入", Toast.LENGTH_SHORT).show();
+            progressCallback.msg("开始导入");
             Logcat.e("开始导入");
             String line;
             List<String> jStringList = new ArrayList<>();
@@ -59,8 +59,8 @@ public class DataSync {
             GlobalData.getInstance().importFromJStringList(jStringList, null, false);
         } catch (IOException e) {
             e.printStackTrace();
+            progressCallback.msg("文件读写出错");
             return -1;
-            // Toast.makeText(context, "IO出错", Toast.LENGTH_LONG).show();
         } finally {
             if (br != null) {
                 try {
@@ -91,11 +91,15 @@ public class DataSync {
      * 目前来看用程序应对没想到好的方式
      */
     public static void importFromStandardCsv(Context context, InputStream importStream, String
-            encodingWay, ProgressCallback progressCallback) {
+            encodingWay, boolean isDelete, boolean isReplace,
+                                             ProgressCallback progressCallback) {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(importStream, encodingWay));
             List<Word> wordList = new ArrayList<>();
             String line = br.readLine();
+            if (line != null) { // 第一行为title, 跳过
+                line = br.readLine();
+            }
             int i = 1;
             while (line != null) {
                 Log.d("DataSync", (i++) + line);
@@ -126,10 +130,10 @@ public class DataSync {
                 wordList.add(word);
                 line = br.readLine();
             }
-            GlobalData.getInstance().importFromWordList(wordList, progressCallback, true);
-            Util.showToast(context, "单词导入完成");
+            GlobalData.getInstance().importFromWordList(wordList, progressCallback, isDelete, false);
+            progressCallback.msg("单词导入完成");
         } catch (Exception e) {
-            Toast.makeText(context, "导入出错" + e.getMessage(), Toast.LENGTH_LONG).show();
+            progressCallback.msg("导入出错" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -139,7 +143,7 @@ public class DataSync {
      * 导出格式-列名称
      * 单词名  单词意思  单词陌生度   近似词列表  词组  近义词   记忆方法  上次记忆时间
      */
-    public static String exportAsCsv(Context context, String exportDataName) {
+    public static String exportAsCsv(Context context, String exportDataName, ProgressCallback progressCallback) {
         exportDataName = exportDataName + "_" + TimeUtil.curTimeToString() + ".csv";
         String outPath = WordAnalysisApplication.DEFAULT_FIL_PATH + File.separator + exportDataName;
 
@@ -159,18 +163,17 @@ public class DataSync {
 
             FileOutputStream fo = new FileOutputStream(new File(outPath));
             OutputStreamWriter ps = new OutputStreamWriter(fo, "UTF-8");
-            Toast.makeText(context, "开始导出", Toast.LENGTH_SHORT).show();
+            progressCallback.msg("开始导出");
 
             writeWordCsvTitle(ps);
             for (Word word : allWord) {
                 writeOneWordAsCsvLine(word, ps);
             }
             ps.flush();
-
-            Toast.makeText(context, "导出完成" + "路径 = " + outPath, Toast.LENGTH_LONG).show();
+            progressCallback.msg("导出完成" + "路径 = " + outPath);
             return outPath;
         } catch (IOException e) {
-            Toast.makeText(context, "IO出错", Toast.LENGTH_LONG).show();
+            progressCallback.msg("IO出错");
             return null;
         }
     }
@@ -238,23 +241,20 @@ public class DataSync {
 
             FileOutputStream fo = new FileOutputStream(new File(outPath));
             OutputStreamWriter ps = new OutputStreamWriter(fo, "UTF-8");
-            Toast.makeText(context, "开始导出", Toast.LENGTH_SHORT).show();
             Gson gson = new Gson();
             for (Word word : allWord) {
                 String data = gson.toJson(word);
                 ps.write(data + "\n");
             }
             ps.flush();
-            Toast.makeText(context, "导出完成" + "路径 = " + outPath, Toast.LENGTH_LONG).show();
             return outPath;
         } catch (IOException e) {
-            Toast.makeText(context, "IO出错", Toast.LENGTH_LONG).show();
             return null;
         }
 
     }
 
-    public static String exportExcel2Sd(Context context, String exportDataName) {
+    public static String exportExcel2Sd(Context context, String exportDataName, ProgressCallback progressCallback) {
         exportDataName = exportDataName + "_" + TimeUtil.curTimeToString() + ".txt";
         List<Word> allWord = GlobalData.getInstance().getAllWord();
 
@@ -273,17 +273,17 @@ public class DataSync {
             }
             //FileOutputStream fo = new FileOutputStream(new File(outPath));
             // OutputStreamWriter ps = new OutputStreamWriter(fo, "UTF-8");
-            Toast.makeText(context, "开始导出", Toast.LENGTH_SHORT).show();
+            progressCallback.msg("开始导出");
             //Gson gson = new Gson();
             //for (Word word : allWord) {
             //    String data = gson.toJson(word);
             //    ps.write(data + "\n");
             // }
             // ps.flush();
-            Toast.makeText(context, "导出完成" + "路径 = " + outPath, Toast.LENGTH_LONG).show();
+            progressCallback.msg("导出完成" + "路径 = " + outPath);
             return outPath;
         } catch (IOException e) {
-            Toast.makeText(context, "IO出错", Toast.LENGTH_LONG).show();
+            progressCallback.msg("IO出错");
             return null;
         }
     }
