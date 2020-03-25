@@ -1,72 +1,4 @@
-<resources>
-    <string name="app_name">单词笔记</string>
-    <string name="please_input_word">请输入单词</string>
-    <string name="word_meaning">词义</string>
-    <string name="similar_form_word">近似词</string>
-    <string name="remember_way">记忆法</string>
-    <string name="word_root_affix">词根词缀</string>
-    <string name="strange_degree">不熟悉度</string>
-    <string name="last_remember_time">上次记忆时间</string>
-    <string name="edit">编辑</string>
-    <string name="edit_save">保存</string>
-    <string name="word_format_erorr">单词或短语格式错误，保存失败</string>
-    <string name="word_repetitive">单词重复，保存失败"</string>
-    <string name="word_repetitive_can_not_save">单词重复，无法保存"</string>
-    <string name="word_name_is_null">单词名为空，保存失败</string>
-    <string name="word_invalid_format_erorr">单词或短语格式错误</string>
-    <string name="word_invalid_repetitive">单词重复</string>
-    <string name="word_invalid_name_is_null">单词名为空</string>
-    <string name="caommand_hint">搜索</string>
-    <string name="delete">删除</string>
-    <string name="certain_delete">确定删除吗</string>
-    <string name="cetain_leave_in_edit">正在编辑单词，你确定离开吗？</string>
-    <string name="word_group">词组</string>
-    <string name="word_root">词根：</string>
-    <string name="word_prefix">前缀：</string>
-    <string name="word_suffix">后缀：</string>
-    <string name="next">下一个</string>
-    <string name="word_synonym">近义词</string>
-
-    <!-- 设置界面   -->
-    <string name="upload_date">上传数据</string>
-    <string name="log_in">登陆</string>
-    <string name="login_already">已登录</string>
-    <string name="vip_service">vip服务</string>
-    <string name="open_vip">开通</string>
-    <string name="open_vip_already">已开通</string>
-    <string name="data">数据</string>
-    <!--开通VIP可享受以下服务：\n1、单词导出为Excel\n2免广告-->
-    <string name="vip_service_illustrate">开通VIP服务后可将享受单词导出为Excel以及免广告服务</string>
-    <string name="export_directly">直接导出</string>
-    <string name="export_txt">导出为文本</string>
-    <string name="export_csv">导出为表格</string>
-    <string name="import_directly">直接导入</string>
-    <string name="import_txt">从文本导入</string>
-    <string name="import_excel">从csv表格导入</string>
-    <string name="download_update">下载更新</string>
-    <string name="download_continue">继续下载</string>
-    <string name="refresh_date">更新数据</string>
-    <string name="upload_data">上传单词数据</string>
-    <string name="app_guide">App使用说明 V</string>
-    <string name="setting">设置</string>
-    <string name="choose_file_to_import">选择导入的文件</string>
-    <string name="fail_to_launch_file_manager">启动文件管理器失败</string>
-    <string name="file_path_error">文件路径出错</string>
-    <string name="file_type_error">所选文件格式错误</string>
-    <string name="word_lib">单词库</string>
-    <string name="start_import">开始导入</string>
-    <string name="delete_old_word">删除已有单词数据</string>
-    <string name="confirm">确认</string>
-    <string name="cancel">取消</string>
-    <string name="permission">权限</string>
-    <string name="app_should_permission_notice">应用需要权限才能运行</string>
-    <string name="apply_success">申请成功！</string>
-
-    <string name="setting_permission_guide">\n请在"应用设置-权限"中，允许权限</string>
-    <string name="go_to_permit">去允许</string>
-
-
-    <string name="user_agreement_content">"
+  <string name="user_agreement_content">"
        欢迎光临单词笔记APP（以下统称称本app），请您仔细阅读以下条款，如果您对本协议的任何条款表示异议，您可以选择不使用本app；进入本app则意味着您将同意遵守本协议下全部规定，并完全服从于app开发者的统一管理。 
 
 第一章 总则
@@ -265,5 +197,3 @@ a) 单词笔记帐号均有安全保护功能，请妥善保管您的用户名�
 
 b) 在使用单词笔记网络服务进行网上交易时，您不可避免的要向交易对方或潜在的交易对方披露自己的个人信息，如联络方式或者邮政地址。请您妥善保护自己的个人信息，仅在必要的情 形下向他人提供。如您发现自己的个人信息泄密，尤其是单词笔记用户名及密码发生泄露， 请您立即联络单词笔记客服，以便单词笔记采取相应措施。"
     </string>
-    <!-- 设置界面   -->
-</resources>

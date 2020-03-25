@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_gravity="center"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/service_and_privacy_title"
+        style="@style/OpenVipPrivilegesTv"
+        android:text="服务协议和隐私政策"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sap_explain_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/service_and_privacy_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="请您务必谨慎阅读和充分理解《用户协议》和《隐私政策》各个条款，包括但不限于为了向您提供我们需要收集您的设备信息，操作日志等个人信息"
+        app:layout_constraintTop_toBottomOf="@id/service_and_privacy_title" />
+
+    <TextView
+        android:id="@+id/service_and_privacy_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/service_and_privacy_btn_layout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="sssssssss"
+        app:layout_constraintTop_toBottomOf="@+id/sap_explain_tv" />
+
+    <LinearLayout
+        android:id="@+id/service_and_privacy_btn_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/import_item_list_layout">
+
+        <TextView
+            android:id="@+id/service_and_privacy_cancel"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/background_round_corner_grey"
+            android:gravity="center"
+            android:minHeight="45dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="暂不使用"
+            android:textColor="#fff"
+            android:textSize="12pt" />
+
+        <TextView
+            android:id="@+id/service_and_privacy_agree"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/background_round_warm_red"
+            android:gravity="center"
+            android:minHeight="45dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="同意"
+            android:textSize="12pt" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

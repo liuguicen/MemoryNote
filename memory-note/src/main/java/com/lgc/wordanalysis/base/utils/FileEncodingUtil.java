@@ -1,10 +1,7 @@
 package com.lgc.wordanalysis.base.utils;
 
-import android.renderscript.ScriptGroup;
-import android.widget.Toast;
-
 import com.lgc.baselibrary.baseComponent.BaseApplication;
-import com.lgc.wordanalysis.base.Util;
+import com.lgc.baselibrary.utils.Util;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -25,7 +22,7 @@ public class FileEncodingUtil {
             charset = getCharSet(inputStream);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            Util.showToast(BaseApplication.getAppContext(), "无法解析文件编码");
+            com.lgc.baselibrary.utils.Util.showToast(BaseApplication.getAppContext(), "无法解析文件编码");
         } finally {
             if (inputStream != null) {
                 try {

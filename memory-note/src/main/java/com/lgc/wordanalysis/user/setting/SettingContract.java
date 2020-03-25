@@ -2,6 +2,7 @@ package com.lgc.wordanalysis.user.setting;
 
 import android.net.Uri;
 
+import com.lgc.baselibrary.UIWidgets.ProgressCallback;
 import com.lgc.baselibrary.baseComponent.BaseContract;
 
 /**
@@ -17,7 +18,7 @@ public class SettingContract {
 
         void onClickAppGuide();
 
-        void importDataPrepare(Uri uri);
+        void analyzeImportPath(Uri uri, String needSuffix);
     }
 
     public interface View extends BaseContract.BaseView{
@@ -26,6 +27,8 @@ public class SettingContract {
 
         void showToast(String string);
 
-        void importWord_firstStep(String importPath, final String importStream);
+        void importWord_firstStep(String importPath, final String importStream, ProgressCallback progressCallBack);
+
+        ProgressCallback getProgressCallBack();
     }
 }

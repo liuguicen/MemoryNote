@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
+import com.lgc.baselibrary.baseComponent.BaseApplication;
 import com.lgc.wordanalysis.R;
 
 /**
@@ -45,7 +46,7 @@ public class AppConfig {
     public final static int DATABASE_VERSION_3 = 3;
     public final static int CUR_DATABASE_VERSION = DATABASE_VERSION_1;
 
-    private SharedPreferences sp;
+    private static SharedPreferences sp = BaseApplication.appContext.getSharedPreferences("appConfig", Context.MODE_PRIVATE);
 
     public static int getDatabaseVersion() {
         return CUR_DATABASE_VERSION;
@@ -56,7 +57,22 @@ public class AppConfig {
     }
 
     public AppConfig(Context appContext) {
-        sp = appContext.getSharedPreferences("appConfig", Context.MODE_PRIVATE);
+    }
+
+    public static boolean hasReadPrivacyStatement() {
+        return sp.getBoolean(SpConstant.has_agree_sap, false);
+    }
+
+    public static void putAgreeSAP(boolean b) {
+        sp.edit().putBoolean(SpConstant.has_agree_sap, b).apply();
+    }
+
+    public static boolean hasLookHelp() {
+        return  sp.getBoolean(SpConstant.has_look_help, false);
+    }
+
+    public static void putLookHelp(boolean hasLooked) {
+        sp.edit().putBoolean(SpConstant.has_look_help, hasLooked).apply();
     }
 
     public int readAppVersion() {

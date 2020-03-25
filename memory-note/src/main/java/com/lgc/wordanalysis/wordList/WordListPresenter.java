@@ -107,6 +107,10 @@ public class WordListPresenter implements WordListContract.Presenter {
             return;
         }
 
+        if (inputCmd.startsWith(Command._help)) {
+            mView.startHelp();
+        }
+
         mLastSearchData.cmdList.addAll(mCmdList);
         ArrayList<String> tempCmdList = new ArrayList<>(mCmdList);
         mCurShowWordList = Command.orderByCommand(inputCmd, tempCmdList, mGlobalData.getAllWord());

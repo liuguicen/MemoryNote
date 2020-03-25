@@ -2,9 +2,14 @@ package com.lgc.wordanalysis.user.setting;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.lgc.baselibrary.utils.FileTool;
+import com.lgc.baselibrary.utils.FileUtil;
 import com.lgc.baselibrary.utils.Logcat;
 import com.lgc.baselibrary.utils.SimpleObserver;
+import com.lgc.baselibrary.utils.Util;
 import com.lgc.wordanalysis.R;
 
 import io.reactivex.Observable;
@@ -43,53 +48,57 @@ public class SettingPresenter implements SettingContract.Presenter {
         }
     }
 
+    /**
+     *
+     */
     @Override
-    public void importDataPrepare(Uri uri) {
+    public void analyzeImportPath(Uri uri, String needSuffix) {
         Logcat.d("File Uri: " + uri.toString());
         Observable
                 .create((ObservableOnSubscribe<String>) emitter -> {
+                    final String importPath = FileTool.getImagePathFromUri(mContext, uri);
+//                    importPath = "/storage/emulated/0/单词笔记/MemoryData_2020-03-23_02-27-14.txt";
+                    Log.d("SettingPresenter", "导入路径为: " + importPath);
+                    //首先，判断文件格式是否符合
+                    if (importPath == null) {
+                        emitter.onError(
+                                new Exception(
+                                        mContext.getString(R.string.file_path_error)));
+                        return;
+                    } else {
+                        int id = importPath.lastIndexOf(".");
 
-                        final String importPath = "/storage/emulated/0/tencent/QQfile_recv/MemoryData_20190903162616.txt";
-                        Logcat.d("File Path: " + importPath);
-                        //首先，判断文件格式是否符合
-                        if (importPath == null) {
-                            emitter.onError(
-                                    new Exception(
-                                            mContext.getString(R.string.file_path_error)));
-                            return;
-                        } else {
-                            int id = importPath.lastIndexOf(".");
-                            String fileType = "";
-                            if (id != -1) {
-                                fileType = importPath.substring(id, importPath.length());
-                            }
-                            if (!".txt".equalsIgnoreCase(fileType)) {
-                                emitter.onError(
-                                        new Exception(mContext.getString(R.string.file_type_error)));
-                                return;
-                            }
-                            emitter.onNext(importPath);
+                        String surffix = "";
+                        if (id != -1 && id < importPath.length() - 1) {
+                            surffix = importPath.substring(id + 1);
                         }
+                        if (!needSuffix.equalsIgnoreCase(surffix)) {
+                            emitter.onError(
+                                    new Exception(mContext.getString(R.string.file_type_error)));
+                            return;
+                        }
+                        emitter.onNext(importPath);
+                    }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new SimpleObserver<String>() {
 
-                            @Override
-                            public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                            }
+                    }
 
-                            @Override
-                            public void onError(Throwable throwable) {
-                                throwable.printStackTrace();
-                            }
+                    @Override
+                    public void onError(Throwable throwable) {
+                        Util.showToast(throwable.getMessage());
+                    }
 
-                            @Override
-                            public void onNext(String importPath) {
-                                mView.importWord_firstStep(importPath, null);
-                            }
-                        });
+                    @Override
+                    public void onNext(String importPath) {
+                        mView.importWord_firstStep(importPath, null, mView.getProgressCallBack());
+                    }
+                });
         // final String importPath = FileUtil.getFileFromUri(uri,mContext);
 
     }

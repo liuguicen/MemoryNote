@@ -56,6 +56,8 @@ public class WordListContract {
         void clearCommandEt();
 
         String getInputCmd();
+
+        void startHelp();
     }
 
     interface Presenter extends BaseContract.BasePresenter {

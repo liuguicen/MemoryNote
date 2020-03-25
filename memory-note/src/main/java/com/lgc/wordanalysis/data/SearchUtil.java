@@ -190,7 +190,7 @@ public class SearchUtil {
         }
 
         resultSimilarMap.remove(name);
-        return Util.map2set(resultSimilarMap);
+        return com.lgc.baselibrary.utils.Util.map2set(resultSimilarMap);
     }
 
 
@@ -226,7 +226,7 @@ public class SearchUtil {
         }
 
         resultGroupMap.remove(srcName);
-        return Util.map2set(resultGroupMap);
+        return com.lgc.baselibrary.utils.Util.map2set(resultGroupMap);
     }
 
 
@@ -253,7 +253,7 @@ public class SearchUtil {
         }
 
         resultMap.remove(wordName); // 排除自身
-        return Util.map2set(resultMap);
+        return com.lgc.baselibrary.utils.Util.map2set(resultMap);
     }
 
     private static void addSimilarList(String srcName, Map<String, Word.SimilarWord> resultSimilarMap,

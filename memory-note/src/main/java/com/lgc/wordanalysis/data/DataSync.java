@@ -38,7 +38,7 @@ import okhttp3.internal.Internal;
  */
 
 public class DataSync {
-    public static final boolean isTest = true;
+    public static final boolean isTest = false;
 
     public static int importFromTxt(Context context, String importPath, boolean isDelete,
                                     boolean isReplace, ProgressCallback progressCallback) {
@@ -48,18 +48,22 @@ public class DataSync {
                     new InputStreamReader(
                             new FileInputStream(new File(importPath)), "UTF-8")
             );
-            progressCallback.msg("开始导入");
-            Logcat.e("开始导入");
+
+            if (progressCallback != null)
+                progressCallback.msg("开始导入");
+            ld("开始导入");
             String line;
             List<String> jStringList = new ArrayList<>();
 
             while ((line = br.readLine()) != null) {
                 jStringList.add(line);
             }
-            GlobalData.getInstance().importFromJStringList(jStringList, null, false);
+            GlobalData.getInstance().importFromJStringList(jStringList, null, true);
         } catch (IOException e) {
             e.printStackTrace();
-            progressCallback.msg("文件读写出错");
+
+            if (progressCallback != null)
+                progressCallback.msg("文件读写出错");
             return -1;
         } finally {
             if (br != null) {
@@ -130,10 +134,14 @@ public class DataSync {
                 wordList.add(word);
                 line = br.readLine();
             }
-            GlobalData.getInstance().importFromWordList(wordList, progressCallback, isDelete, false);
-            progressCallback.msg("单词导入完成");
+            GlobalData.getInstance().importFromWordList(wordList, progressCallback, isDelete, isReplace);
+
+            if (progressCallback != null)
+                progressCallback.msg("单词导入完成");
         } catch (Exception e) {
-            progressCallback.msg("导入出错" + e.getMessage());
+
+            if (progressCallback != null)
+                progressCallback.msg("导入出错" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -146,7 +154,6 @@ public class DataSync {
     public static String exportAsCsv(Context context, String exportDataName, ProgressCallback progressCallback) {
         exportDataName = exportDataName + "_" + TimeUtil.curTimeToString() + ".csv";
         String outPath = WordAnalysisApplication.DEFAULT_FIL_PATH + File.separator + exportDataName;
-
         List<Word> allWord = GlobalData.getInstance().getAllWord();
         try {
             new File(WordAnalysisApplication.DEFAULT_FIL_PATH).mkdirs();
@@ -163,17 +170,18 @@ public class DataSync {
 
             FileOutputStream fo = new FileOutputStream(new File(outPath));
             OutputStreamWriter ps = new OutputStreamWriter(fo, "UTF-8");
-            progressCallback.msg("开始导出");
 
             writeWordCsvTitle(ps);
             for (Word word : allWord) {
                 writeOneWordAsCsvLine(word, ps);
             }
             ps.flush();
-            progressCallback.msg("导出完成" + "路径 = " + outPath);
+            if (progressCallback != null)
+                progressCallback.msg("导出完成" + "路径 = " + outPath);
             return outPath;
         } catch (IOException e) {
-            progressCallback.msg("IO出错");
+            if (progressCallback != null)
+                progressCallback.msg("IO出错");
             return null;
         }
     }
@@ -273,17 +281,23 @@ public class DataSync {
             }
             //FileOutputStream fo = new FileOutputStream(new File(outPath));
             // OutputStreamWriter ps = new OutputStreamWriter(fo, "UTF-8");
-            progressCallback.msg("开始导出");
+
+            if (progressCallback != null)
+                progressCallback.msg("开始导出");
             //Gson gson = new Gson();
             //for (Word word : allWord) {
             //    String data = gson.toJson(word);
             //    ps.write(data + "\n");
             // }
             // ps.flush();
-            progressCallback.msg("导出完成" + "路径 = " + outPath);
+
+            if (progressCallback != null)
+                progressCallback.msg("导出完成" + "路径 = " + outPath);
             return outPath;
         } catch (IOException e) {
-            progressCallback.msg("IO出错");
+
+            if (progressCallback != null)
+                progressCallback.msg("IO出错");
             return null;
         }
     }

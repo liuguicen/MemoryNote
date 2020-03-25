@@ -1,9 +1,7 @@
 package com.lgc.wordanalysis.wordList;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,14 +23,16 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
+import com.lgc.baselibrary.UIWidgets.CertainDialog;
+import com.lgc.baselibrary.utils.Util;
 import com.lgc.wordanalysis.R;
 import com.lgc.baselibrary.utils.Logcat;
-import com.lgc.wordanalysis.base.SpConstant;
+import com.lgc.wordanalysis.base.AppConfig;
 import com.lgc.wordanalysis.base.WordAnalysisApplication;
-import com.lgc.wordanalysis.base.Util;
 import com.lgc.wordanalysis.data.GlobalData;
 import com.lgc.wordanalysis.data.Word;
 import com.lgc.wordanalysis.data.WordUtil;
+import com.lgc.wordanalysis.user.HelpActivity;
 import com.lgc.wordanalysis.user.setting.SettingActivity;
 import com.lgc.wordanalysis.wordDetail.WordDetailActivity;
 
@@ -62,17 +62,24 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         mPresenter = new WordListPresenter(this);
         initApp();
         setContentView(R.layout.activity_word_list);
-//        test();
+        test();
         bindView();
         intView();
         initData();
-        SharedPreferences sharedPreferences = getSharedPreferences(SpConstant.app_use_sp, Context.MODE_PRIVATE);
-        if (!sharedPreferences.getBoolean(SpConstant.has_imported, false)) {
-            Util.showToast("请导入您需要的单词！");
-            sharedPreferences.edit().putBoolean(SpConstant.has_imported, true).apply();
-            startSetting(SettingActivity.ACTION_FIRST_IMPORT);
-        }
+        dealFirstEnter();
         WordAnalysisApplication.startBackgroundService(this);
+    }
+
+    private void dealFirstEnter() {
+        if (!AppConfig.hasLookHelp()) {
+            new CertainDialog(this).showDialog(null, "您第一次使用，是否打开使用教程？", new CertainDialog.ActionListener() {
+                @Override
+                public void onSure() {
+                    startActivity(new Intent(WordListActivity.this, HelpActivity.class));
+                    AppConfig.putLookHelp(true);
+                }
+            });
+        }
     }
 
     private void initApp() {
@@ -466,5 +473,10 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
                 requestPermissions(mPermissionList, 100);
             }
         }
+    }
+
+    @Override
+    public void startHelp() {
+        startActivity(new Intent(this, HelpActivity.class));
     }
 }

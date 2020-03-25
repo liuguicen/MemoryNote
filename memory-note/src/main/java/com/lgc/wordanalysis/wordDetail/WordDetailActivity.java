@@ -290,12 +290,12 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
             mBtnEdit.setBackgroundResource(R.drawable.btn_bg_finish);
             mBtnEdit.setText(getString(R.string.edit_save));
             mDeleteView.setVisibility(View.GONE);
-            Util.showKeyboard(mTvWordName, 300);
+            com.lgc.baselibrary.utils.Util.showKeyboard(mTvWordName, 300);
         } else {
             mBtnEdit.setBackgroundResource(R.drawable.btn_bg_edit);
             mBtnEdit.setText(getString(R.string.edit));
             mDeleteView.setVisibility(View.VISIBLE);
-            Util.hideKeyboard(mTvWordName);
+            com.lgc.baselibrary.utils.Util.hideKeyboard(mTvWordName);
         }
     }
 
@@ -385,7 +385,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         if (isSelect) {
             mTvSimilarWord.requestFocus();
             mTvSimilarWord.setSelection(0, inputSimilarWords.length());
-            Util.showKeyBoard(mTvSimilarWord);
+            com.lgc.baselibrary.utils.Util.showKeyBoard(mTvSimilarWord);
         }
     }
 
@@ -427,7 +427,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         if (isSelect) {
             mtvWordGroup.requestFocus();
             mtvWordGroup.setSelection(0, wordGroup.length());
-            Util.showKeyBoard(mtvWordGroup);
+            com.lgc.baselibrary.utils.Util.showKeyBoard(mtvWordGroup);
         }
     }
 
@@ -438,7 +438,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         if (isSelect) {
             mtvSynonym.requestFocus();
             mtvSynonym.setSelection(0, synonym.length());
-            Util.showKeyBoard(mtvSynonym);
+            com.lgc.baselibrary.utils.Util.showKeyBoard(mtvSynonym);
         }
     }
 
@@ -524,7 +524,7 @@ public class WordDetailActivity extends AppCompatActivity implements WordDetailC
         if (isSelect) {
             mTvRememberWay.requestFocus();
             mTvRememberWay.setSelection(0, rememberWay.length());
-            Util.showKeyBoard(mTvRememberWay);
+            com.lgc.baselibrary.utils.Util.showKeyBoard(mTvRememberWay);
         }
     }
 

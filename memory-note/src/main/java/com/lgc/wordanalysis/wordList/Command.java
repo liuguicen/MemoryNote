@@ -93,6 +93,11 @@ public class Command {
     public static final String _open_setting = COMMAND_START + "setting";
     public static final int OPEN_SETTING_ID     = 14;
 
+    /**
+     * 打开帮助
+     */
+    public static final String _help =  COMMAND_START + "help";
+
     /** 显示单词数量 **/
     public static final String _word_number = COMMAND_START + "number";
     public static final int WORD_NUMBER_ID      = 15;
@@ -141,9 +146,9 @@ public class Command {
     }
 
     public static final List<String> INPUT_COMMAND_HINT_LIST = new ArrayList<String>(){{
-        add(_regex_search);  add(_hdw);           add(_restore);
-        add(_open_setting);  add(_word_number);   add(_strange_degree);
-        add(_time_to_now);
+        add(_regex_search);    add(_hdw);           add(_restore);
+        add(_open_setting);    add(_help);          add(_word_number);
+        add(_strange_degree);  add(_time_to_now);
     }};
 
     public static final String TAG_START = Word.TAG_START;

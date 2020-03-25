@@ -64,51 +64,6 @@ public class Util {
     }
 
 
-    public static void showInputMethod(final View v) {
-        showKeyBoard(v);
-    }
-
-    public static void showKeyBoard(final View v) {
-        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.showSoftInput(v, InputMethodManager.SHOW_FORCED);
-        }
-    }
-
-    //显示虚拟键盘
-    public static void showKeyboard(final View v, long delay)
-    {
-        if (delay > 0) {
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                public void run() {
-                    showKeyBoard(v);
-                }
-            }, delay);
-        } else {
-            showKeyBoard(v);
-        }
-    }
-
-    //隐藏虚拟键盘
-    public static void hideKeyboard(View v)
-    {
-        InputMethodManager imm = ( InputMethodManager ) v.getContext( ).getSystemService( Context.INPUT_METHOD_SERVICE );
-        if ( imm.isActive( ) ) {
-            imm.hideSoftInputFromWindow( v.getApplicationWindowToken( ) , 0 );
-
-        }
-    }
-
-    public static void showToast(Context context, String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-    }
-
-    public static void showToast(String msg) {
-        Toast.makeText(WordAnalysisApplication.appContext, msg, Toast.LENGTH_LONG).show();
-    }
-
-
     /**
      * �򻯴�����࣬
      * ���ǹ��������ӡ����
@@ -144,10 +99,6 @@ public class Util {
         }
     }
 
-    public static void T(Context context, Object s) {
-        Toast.makeText(context, s.toString(), Toast.LENGTH_LONG).show();
-    }
-
     /**
      * Created by Administrator on 2016/5/8.
      */
@@ -175,14 +126,6 @@ public class Util {
         }
     }
 
-    public static void getMesureWH(View v, int[] WH) {
-        int width = View.MeasureSpec.makeMeasureSpec((1 << 30) - 1, View.MeasureSpec.AT_MOST);
-        int height = View.MeasureSpec.makeMeasureSpec((1 << 30) - 1, View.MeasureSpec.AT_MOST);
-        v.measure(width, height);
-        WH[0] = v.getMeasuredWidth();
-        WH[1] = v.getMeasuredHeight();
-    }
-
     /**
      * 获取两点间的位置
      *
@@ -197,36 +140,11 @@ public class Util {
         return (float) Math.sqrt(dx * dx + dy * dy);
     }
 
-    public static int getColor(Context context, @ColorRes int id) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            return context.getResources().getColor(id, null);
-        return context.getResources().getColor(id);
-    }
-
     public static Drawable getStateDrawable(Drawable src, ColorStateList colors, PorterDuff.Mode mode) {
         Drawable drawable = DrawableCompat.wrap(src);
         DrawableCompat.setTintList(drawable, colors);
         DrawableCompat.setTintMode(drawable, mode);
         return drawable;
-    }
-
-    /**
-     * 把long 转换成 日期 再转换成String类型
-     * transferLongToDate("yyyy-MM-dd HH:mm:ss",1245678944);
-     */
-   public static String long2Date(String dateFormat, Long millSec) {
-       SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-       Date date = new Date(millSec);
-       return sdf.format(date);
-   }
-
-    // 获取Map中的Value的Set
-    public static <T> Set<T> map2set(Map<?, T> map) {
-        Set<T> set = new LinkedHashSet<>();
-        for (Map.Entry<?, T> entry : map.entrySet()) {
-            set.add(entry.getValue());
-        }
-        return set;
     }
 
     /**

@@ -254,6 +254,7 @@ public class GlobalData {
         closeUpload();
         if (isDeleteOld) {
             try {
+                Log.d("GlobalData", "开始删除旧数据");
                 MyDatabase.getInstance().deleteAllWord();
                 mAllWords.clear();
                 mShowWords.clear();

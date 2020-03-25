@@ -8,15 +8,16 @@
     <TextView
         android:id="@+id/import_choosing_title"
         style="@style/OpenVipPrivilegesTv"
+        android:text="单词导入"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
     <TextView
         android:id="@+id/import_choosing_content"
         style="@style/OpenVipPrivilegesTv"
+        android:textSize="@dimen/text_size_very_small"
         app:layout_constraintTop_toBottomOf="@+id/import_choosing_title"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:visibility="gone"/>
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <LinearLayout
         android:id="@+id/import_item_list_layout"

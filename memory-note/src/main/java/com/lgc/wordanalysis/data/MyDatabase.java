@@ -19,6 +19,7 @@ public class MyDatabase {
     private static MyDatabase myDatabase;
     private static MySQLiteOpenHandler dbHelper;
     private static SQLiteDatabase db;
+    public static final boolean isTest = false;
 
 
     private MyDatabase(Context context) {
@@ -38,9 +39,10 @@ public class MyDatabase {
      * 这样就不需要update了
      */
     public void insertWord(String word, String data) throws IOException {
-        String sql = "replace into "+DataBaseConstant.table_word + "("+DataBaseConstant.word +","+DataBaseConstant.data +") values(?,?) ";
+        String sql = "replace into " + DataBaseConstant.table_word + "(" + DataBaseConstant.word + "," + DataBaseConstant.data + ") values(?,?) ";
         db.execSQL(sql, new Object[]{word, data});
-        Logcat.d(sql);
+        if (isTest)
+            Logcat.d(sql);
     }
 
     /**
@@ -48,20 +50,20 @@ public class MyDatabase {
      * usedpic(path text primary key,time varchar(20))
      */
     public void deleteWord(String word) throws IOException {
-        String sql = "delete from "+DataBaseConstant.table_word + " where "+DataBaseConstant.word +" = ?";
+        String sql = "delete from " + DataBaseConstant.table_word + " where " + DataBaseConstant.word + " = ?";
         Logcat.d(sql);
         db.execSQL(sql, new Object[]{word});
-        Logcat.d(sql);
+        if (isTest) Logcat.d(sql);
     }
 
     /**
      * 删除所有，谨慎使用
      */
     public void deleteAllWord() throws IOException {
-        String sql = "delete  from "+DataBaseConstant.table_word;
+        String sql = "delete  from " + DataBaseConstant.table_word;
         Logcat.d(sql);
         db.execSQL(sql);
-        Logcat.d(sql);
+        if (isTest) Logcat.d(sql);
     }
 
     /**
