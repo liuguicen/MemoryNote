@@ -58,7 +58,7 @@ public class DataSync {
             while ((line = br.readLine()) != null) {
                 jStringList.add(line);
             }
-            GlobalData.getInstance().importFromJStringList(jStringList, null, true);
+            GlobalData.getInstance().importFromJStringList(jStringList, null, isDelete, isReplace);
         } catch (IOException e) {
             e.printStackTrace();
 

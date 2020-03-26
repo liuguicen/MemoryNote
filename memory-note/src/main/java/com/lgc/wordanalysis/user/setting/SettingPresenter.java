@@ -56,7 +56,8 @@ public class SettingPresenter implements SettingContract.Presenter {
         Logcat.d("File Uri: " + uri.toString());
         Observable
                 .create((ObservableOnSubscribe<String>) emitter -> {
-                    final String importPath = FileTool.getImagePathFromUri(mContext, uri);
+//                    final String importPath = FileTool.getImagePathFromUri(mContext, uri);
+                    final String importPath = FileUtil.getFileFromUri(mContext, uri);
 //                    importPath = "/storage/emulated/0/单词笔记/MemoryData_2020-03-23_02-27-14.txt";
                     Log.d("SettingPresenter", "导入路径为: " + importPath);
                     //首先，判断文件格式是否符合

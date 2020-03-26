@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class WordLibsUtil {
 
 
-    public static final boolean isTest = true;
+    public static final boolean isTest = false;
     /**
      * 目前是各个词汇表在Asset下面的文件名，两者必须保持一致
      * 更好的，直接从Assert下面获取文件名

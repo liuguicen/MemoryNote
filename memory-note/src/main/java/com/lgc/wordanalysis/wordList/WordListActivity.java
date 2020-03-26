@@ -1,11 +1,13 @@
 package com.lgc.wordanalysis.wordList;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -435,9 +437,9 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         public void updateDrawState(TextPaint ds) {
             ds.setUnderlineText(false); //去掉下划线
             if (mIsChosen) {
-                ds.setColor(getColor(R.color.command_chosen));
+                ds.setColor(Util.getColor(R.color.command_chosen));
             } else {
-                ds.setColor(getColor(R.color.command_not_choosed));
+                ds.setColor(Util.getColor(R.color.command_not_choosed));
             }
         }
     }

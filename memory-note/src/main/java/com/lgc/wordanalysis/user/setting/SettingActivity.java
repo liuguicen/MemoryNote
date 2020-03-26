@@ -52,7 +52,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class SettingActivity extends BaseActivity implements SettingContract.View {
-    public static final boolean isTest = true;
+    public static final boolean isTest = false;
     public static final String ACTION_FIRST_ENTER = "first_enter";
 
     public static final int FILE_SELECT_CODE_JSON = 0;

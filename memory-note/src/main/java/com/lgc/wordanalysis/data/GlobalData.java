@@ -215,15 +215,16 @@ public class GlobalData {
      * 从jsonString列表中导入数据
      *
      * @param jStringList 单词的jsonString列表
+     * @param isDelete
      */
     public void importFromJStringList(List<String> jStringList, @Nullable ProgressCallback progressCallback,
-                                      boolean isClearOld) {
+                                      boolean isDelete, boolean isReplace) {
         List<Word> wordList = new ArrayList<>();
         Gson gson = new Gson();
         for (String jString : jStringList) {
             wordList.add(gson.fromJson(jString, Word.class));
         }
-        importFromExternal(wordList, jStringList, progressCallback, isClearOld, false);
+        importFromExternal(wordList, jStringList, progressCallback, isDelete, isReplace);
     }
 
     /**
@@ -238,8 +239,7 @@ public class GlobalData {
         for (Word word : wordList) {
             jStringList.add(gson.toJson(word));
         }
-        importFromExternal(wordList, jStringList, progressCallback,
-                isClearOld, isReplaceOld);
+        importFromExternal(wordList, jStringList, progressCallback, isClearOld, isReplaceOld);
     }
 
     /**
@@ -287,7 +287,7 @@ public class GlobalData {
                 }
             }
             if (progressCallback != null && i % 1000 == 999) {
-//                progressCallback.msg("已导入 " + i * 1f / wordList.size() + "%", true);
+                progressCallback.msg("已导入 " + i * 1f / wordList.size() + "%", true);
                 Log.d("GlobalData", "导入单词" + i + "个");
             }
         }
