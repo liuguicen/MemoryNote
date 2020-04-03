@@ -6,8 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +37,8 @@ import com.lgc.wordanalysis.data.CSVUtil;
 import com.lgc.wordanalysis.data.DataSync;
 import com.lgc.wordanalysis.data.GlobalData;
 import com.lgc.wordanalysis.data.WordLibsUtil;
+import com.lgc.wordanalysis.launch.LaunchActivity;
+import com.lgc.wordanalysis.user.AppAgreementActivity;
 import com.lgc.wordanalysis.user.User;
 import com.lgc.wordanalysis.wordList.Command;
 import com.lgc.wordanalysis.wordList.WordListActivity;
@@ -132,6 +141,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
         };
 
         initWordLib();
+        initAppAgreementBtn();
         //        test();
     }
 
@@ -478,6 +488,58 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
                     }
                 });
     }
+
+
+    private void initAppAgreementBtn() {
+        String text = "《用户协议》和《隐私政策》";
+        SpannableString spannableString = new SpannableString(text);
+
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingActivity.this, AppAgreementActivity.class);
+                intent.setAction(AppAgreementActivity.INTENT_ACTION_USER_AGREEMENT);
+                startActivity(intent);
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                ds.setColor(ContextCompat.getColor(SettingActivity.this, R.color.colorPrimary));//设置颜色
+                ds.setUnderlineText(false); // SettingActivity
+            }
+        };
+        int start = text.indexOf('用'), end = text.indexOf('议') + 1;
+        spannableString.setSpan(clickableSpan, start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimary));
+        spannableString.setSpan(colorSpan, start, end, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        ClickableSpan clickableSpan2 = new ClickableSpan() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingActivity.this, AppAgreementActivity.class);
+                intent.setAction(AppAgreementActivity.INTENT_ACTION_PRIVACY_POLICY);
+                startActivity(intent);
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                ds.setColor(ContextCompat.getColor(SettingActivity.this, R.color.colorPrimary));//设置颜色
+                ds.setUnderlineText(false); // 去掉下划线
+            }
+
+        };
+        start = text.indexOf('隐');
+        end = text.indexOf("策") + 1;
+        spannableString.setSpan(clickableSpan2, start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+
+        ForegroundColorSpan colorSpan2 = new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimary));
+        spannableString.setSpan(colorSpan2, start, end, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        TextView tvAppAgreement = findViewById(R.id.to_privacy);
+        tvAppAgreement.setText(spannableString);
+        tvAppAgreement.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
 
     @Override
     public ProgressCallback getProgressCallBack() {

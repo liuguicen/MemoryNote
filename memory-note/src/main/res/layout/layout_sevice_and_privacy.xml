@@ -42,8 +42,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/import_item_list_layout">
+        app:layout_constraintRight_toRightOf="parent" >
 
         <TextView
             android:id="@+id/service_and_privacy_cancel"

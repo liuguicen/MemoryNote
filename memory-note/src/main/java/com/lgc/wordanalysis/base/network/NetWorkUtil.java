@@ -1,3 +1,4 @@
+/*
 package com.lgc.wordanalysis.base.network;
 
 import android.app.Activity;
@@ -28,20 +29,24 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 
 
+*/
 /**
  * <pre>
  *      author : liuguicen
  *      time : 2018/02/18
  *      version : 1.0
  * <pre>
- */
+ *//*
+
 
 public class NetWorkUtil {
     public static final long NET_INTERVAL_TIME = 200;
 
-    /**
+    */
+/**
      * update all word form service
-     */
+     *//*
+
     private void updateAllWord(final Activity activity, List<Word> wordsList) {
         int state = NetWorkState.detectNetworkType();
         String notice = "注意服务器与本地出现冲突的单词，本地数据将丢失，可以先上传再更新";
@@ -77,7 +82,7 @@ public class NetWorkUtil {
     }
 
     private void realDownloadAllWord() {
-        refreshWordSketch();
+//        refreshWordSketch();
     }
 
     public static void refreshWordSketch() {
@@ -113,32 +118,33 @@ public class NetWorkUtil {
 
 
     private static void queryWordModifyInfo(final ObservableEmitter<List<Word>> subscriber) {
-        Log.e("---------", "queryAllExpressions: ");
-        BmobQuery<Word> query = new BmobQuery<>();
-        String sql = "select name, last uploadtime " +
-                " from word" +
-                " order by name";
-        query.setSQL(sql);
-        query.doSQLQuery(
-                new SQLQueryListener<Word>() {
-                    @Override
-                    public void done(BmobQueryResult<Word> result, BmobException e) {
-                        if (e != null || result == null) {
-                            subscriber.onError(e);
-                        }
-                        List<Word> resultList = result.getResults();
-                        if (resultList == null)
-                            resultList = new ArrayList<>();
-                        subscriber.onNext(resultList);
-                    }
-                });
+//        Log.e("---------", "queryAllExpressions: ");
+//        BmobQuery<Word> query = new BmobQuery<>();
+//        String sql = "select name, last uploadtime " +
+//                " from word" +
+//                " order by name";
+//        query.setSQL(sql);
+//        query.doSQLQuery(
+//                new SQLQueryListener<Word>() {
+//                    @Override
+//                    public void done(BmobQueryResult<Word> result, BmobException e) {
+//                        if (e != null || result == null) {
+//                            subscriber.onError(e);
+//                        }
+//                        List<Word> resultList = result.getResults();
+//                        if (resultList == null)
+//                            resultList = new ArrayList<>();
+//                        subscriber.onNext(resultList);
+//                    }
+//                });
     }
 
     public static void saveWordService(BmobWord bmobWord, final UploadListener uploadListener) {
-        bmobWord.selfSave(uploadListener);
+//        bmobWord.selfSave(uploadListener);
     }
 
-    public static void upLoadWord(final Word localWord, String jsonData, final UploadListener uploadListener) {
+    */
+/*public static void upLoadWord(final Word localWord, String jsonData, final UploadListener uploadListener) {
         Util.RepetitiveEventFilter.isRepetitive(NET_INTERVAL_TIME); //
         final BmobWord localBmobWord = new BmobWord(localWord, jsonData);
         BmobQuery<BmobWord> query = new BmobQuery<>();
@@ -185,6 +191,7 @@ public class NetWorkUtil {
                 });
 
     }
+*//*
 
     public static void deleteWord(final Word localWord, final UploadListener uploadListener) {
         final BmobWord localBmobWord = new BmobWord(localWord, null);
@@ -220,3 +227,4 @@ public class NetWorkUtil {
         void uploadFailed(BmobException e);
     }
 }
+*/

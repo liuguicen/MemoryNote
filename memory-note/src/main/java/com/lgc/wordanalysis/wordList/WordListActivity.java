@@ -64,7 +64,7 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
         mPresenter = new WordListPresenter(this);
         initApp();
         setContentView(R.layout.activity_word_list);
-        test();
+//        test();
         bindView();
         intView();
         initData();

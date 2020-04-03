@@ -4,8 +4,8 @@
     <dimen name="strange_degree_item_margin">20dp</dimen>
     <dimen name="text_size_very_very_big">42sp</dimen>
     <dimen name="text_size_very_big">37sp</dimen>
-    <dimen name="text_size_big">27sp</dimen>
-    <dimen name="text_size_middle">25sp</dimen>
+    <dimen name="text_size_big_x">27sp</dimen>
+    <dimen name="text_size_big">25sp</dimen>
     <dimen name="text_size_normal">22sp</dimen>
     <dimen name="text_size_small">19sp</dimen>
     <dimen name="text_size_very_small">16sp</dimen>

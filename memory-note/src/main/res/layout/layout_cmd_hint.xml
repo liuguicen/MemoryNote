@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="@dimen/text_size_big"
+        android:textSize="@dimen/text_size_big_x"
         app:layout_goneMarginTop="@dimen/very_small_margin"
         android:layout_marginTop="@dimen/very_small_margin"/>
 </android.support.constraint.ConstraintLayout>

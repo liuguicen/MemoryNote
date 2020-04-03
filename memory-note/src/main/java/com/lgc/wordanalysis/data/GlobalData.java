@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import com.lgc.baselibrary.UIWidgets.ProgressCallback;
 import com.lgc.baselibrary.utils.Logcat;
 import com.lgc.wordanalysis.base.Util;
-import com.lgc.wordanalysis.base.network.NetWorkUtil;
+//import com.lgc.wordanalysis.base.network.NetWorkUtil;
 import com.lgc.wordanalysis.user.User;
 import com.lgc.wordanalysis.wordList.Command;
 
@@ -190,26 +190,26 @@ public class GlobalData {
     }
 
 
-    public void refreshByRemoteData(List<BmobWord> resultList) {
-        closeUpload();
-        Gson gson = new Gson();
-        for (BmobWord bmobWord : resultList) {
-            Word remoteWord = gson.fromJson(bmobWord.getJsonData(), Word.class);
-            int localId = mAllWords.indexOf(remoteWord);
-
-            if (localId < 0 || (localId >= 0 && remoteWord.getLastModifyTime()
-                    > mAllWords.get(localId).getLastModifyTime())) { // 远程的更新时间更长才更新
-                if (localId < 0) {
-                    mAllWords.add(remoteWord);
-                    addWord(remoteWord, false);
-                } else {
-                    mAllWords.set(localId, remoteWord);
-                    updateWord2DB(remoteWord, false);
-                }
-            }
-        }
-        openUpload();
-    }
+//    public void refreshByRemoteData(List<BmobWord> resultList) {
+//        closeUpload();
+//        Gson gson = new Gson();
+//        for (BmobWord bmobWord : resultList) {
+//            Word remoteWord = gson.fromJson(bmobWord.getJsonData(), Word.class);
+//            int localId = mAllWords.indexOf(remoteWord);
+//
+//            if (localId < 0 || (localId >= 0 && remoteWord.getLastModifyTime()
+//                    > mAllWords.get(localId).getLastModifyTime())) { // 远程的更新时间更长才更新
+//                if (localId < 0) {
+//                    mAllWords.add(remoteWord);
+//                    addWord(remoteWord, false);
+//                } else {
+//                    mAllWords.set(localId, remoteWord);
+//                    updateWord2DB(remoteWord, false);
+//                }
+//            }
+//        }
+//        openUpload();
+//    }
 
     /**
      * 从jsonString列表中导入数据
@@ -336,17 +336,17 @@ public class GlobalData {
     public void addWord(final Word word, final String jsonData, boolean isUpload) {
         try {
             if (isUpload && !mCloseUpload) {
-                NetWorkUtil.saveWordService(new BmobWord(word, jsonData), new NetWorkUtil.UploadListener() {
-                    @Override
-                    public void uploadSuccess() {
-                        word.setLastUploadTime(System.currentTimeMillis());
-                    }
-
-                    @Override
-                    public void uploadFailed(BmobException e) {
-
-                    }
-                });
+//                NetWorkUtil.saveWordService(new BmobWord(word, jsonData), new NetWorkUtil.UploadListener() {
+//                    @Override
+//                    public void uploadSuccess() {
+//                        word.setLastUploadTime(System.currentTimeMillis());
+//                    }
+//
+//                    @Override
+//                    public void uploadFailed(BmobException e) {
+//
+//                    }
+//                });
             }
             MyDatabase.getInstance().insertWord(word.getName(), jsonData);
             mAllWords.add(word);
@@ -373,17 +373,17 @@ public class GlobalData {
     public void updateWord2DB(final Word word, String jsonData, boolean isUpload) {
         try {
             if (isUpload && !mCloseUpload) {
-                NetWorkUtil.upLoadWord(word, jsonData, new NetWorkUtil.UploadListener() {
-                    @Override
-                    public void uploadSuccess() {
-                        word.setLastUploadTime(System.currentTimeMillis());
-                    }
-
-                    @Override
-                    public void uploadFailed(BmobException e) {
-
-                    }
-                });
+//                NetWorkUtil.upLoadWord(word, jsonData, new NetWorkUtil.UploadListener() {
+//                    @Override
+//                    public void uploadSuccess() {
+//                        word.setLastUploadTime(System.currentTimeMillis());
+//                    }
+//
+//                    @Override
+//                    public void uploadFailed(BmobException e) {
+//
+//                    }
+//                });
             }
             MyDatabase.getInstance().insertWord(word.getName(), jsonData);
             Logcat.e(word.getName() + "数据库已更新");
@@ -400,7 +400,7 @@ public class GlobalData {
         try {
             MyDatabase.getInstance().deleteWord(word.getName());
             if (isUpload && !mCloseUpload) {
-                NetWorkUtil.deleteWord(word, null);
+//                NetWorkUtil.deleteWord(word, null);
             }
             mAllWords.remove(word);
             mShowWords.remove(word);

@@ -1,0 +1,113 @@
+-ignorewarnings
+
+-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod
+
+# keep BmobSDK
+-dontwarn cn.bmob.v3.**
+-keep class cn.bmob.v3.** {*;}
+
+# 确保JavaBean不被混淆-否则gson将无法将数据解析成具体对象
+-keep class * extends cn.bmob.v3.BmobObject {
+    *;
+}
+
+# keep BmobPush
+
+# keep okhttp3、okio
+-dontwarn okhttp3.**
+-keep class okhttp3.** { *;}
+-keep interface okhttp3.** { *; }
+-dontwarn okio.**
+
+# keep rx
+-dontwarn sun.misc.**
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+ long producerIndex;
+ long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+ rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+ rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
+
+# 如果你需要兼容6.0系统，请不要混淆org.apache.http.legacy.jar
+-dontwarn android.net.compatibility.**
+-dontwarn android.net.http.**
+-dontwarn com.android.internal.http.multipart.**
+-dontwarn org.apache.commons.**
+-dontwarn org.apache.http.**
+-keep class android.net.compatibility.**{*;}
+-keep class android.net.http.**{*;}
+-keep class com.android.internal.http.multipart.**{*;}
+-keep class org.apache.commons.**{*;}
+-keep class org.apache.http.**{*;}
+
+#glide需要的
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+# for DexGuard only
+-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+
+#腾讯广点通
+-keep class com.qq.e.** {
+    public protected *;
+}
+-keep class android.support.v4.**{
+    public *;
+}
+-keep class android.support.v7.**{
+    public *;
+}
+-keep class MTT.ThirdAppInfoNew {
+    *;
+}
+-keep class com.tencent.** {
+    *;
+}
+-keep class com.tencent.smtt.** { *; }
+-dontwarn dalvik.**
+-dontwarn com.tencent.smtt.**
+
+#微信开放平台的
+-keep class com.tencent.mm.opensdk.** {
+    *;
+}
+
+-keep class com.tencent.wxop.** {
+    *;
+}
+
+-keep class com.tencent.mm.sdk.** {
+    *;
+}
+
+#腾讯qq的OpenSDK的jar包的，jar包应该没被混淆，加上更好
+-keep class com.tencent.open.TDialog$*
+-keep class com.tencent.open.TDialog$* {*;}
+-keep class com.tencent.open.PKDialog
+-keep class com.tencent.open.PKDialog {*;}
+-keep class com.tencent.open.PKDialog$*
+-keep class com.tencent.open.PKDialog$* {*;}
+
+#头条穿山甲
+-keep class com.bytedance.sdk.openadsdk.** { *; }
+-keep public interface com.bytedance.sdk.openadsdk.downloadnew.** {*;}
+-keep class com.ss.sys.ces.* {*;}
+
+#eventBus的，使用了注解形式，必须声明，不然方法混了之后找不到
+-keepattributes *Annotation*
+-keepclassmembers class * {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}

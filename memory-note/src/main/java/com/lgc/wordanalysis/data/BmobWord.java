@@ -1,26 +1,31 @@
+/*
 package com.lgc.wordanalysis.data;
 
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.lgc.wordanalysis.base.network.NetWorkUtil;
+//import com.lgc.wordanalysis.base.network.NetWorkUtil;
 
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
+*/
 /**
  * <pre>
  *      author : liuguicen
  *      time : 2018/02/19
  *      version : 1.0
  * <pre>
- */
+ *//*
 
+
+*/
 /**
  * 这个是一种装饰器模式，用在还是很贴切的，所以也是很好用的
- */
+ *//*
+
 public class BmobWord extends BmobObject {
     String name;
     String jsonData;
@@ -111,3 +116,4 @@ public class BmobWord extends BmobObject {
 
     }
 }
+*/

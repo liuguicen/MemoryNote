@@ -26,8 +26,8 @@ android {
             // - armeabi: ARM v5 这是相当老旧的一个版本，缺少对浮点数计算的硬件支持，在需要大量计算时有性能瓶颈
             // - armeabi-v7a: ARM v7 目前主流版本
             // - arm64-v8a: 64位支持
-            abiFilters 'armeabi-v7a', 'x86' // 模拟器需要
-//            abiFilters 'armeabi-v7a'
+//            abiFilters 'armeabi-v7a', 'x86' // 模拟器需要
+            abiFilters 'armeabi-v7a'
         }
     }
 
@@ -35,7 +35,7 @@ android {
         release {
             storeFile file("MemoryNote-key.jks")
             storePassword "111111"
-            keyAlias "MemoryNote"
+            keyAlias "MemoryNote-key"
             keyPassword "111111"
         }
     }
@@ -43,8 +43,11 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-//            minifyEnabled true
+            debuggable false  //true代表开启  false 关闭 用于release版安装包出错，看Log调试的
+            minifyEnabled true //开启代码混淆
+            shrinkResources true //  去除无用资源
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
         }
         debug {  // 添加debug模式的签名调用
             signingConfig signingConfigs.release
