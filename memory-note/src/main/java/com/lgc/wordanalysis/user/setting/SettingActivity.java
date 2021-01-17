@@ -5,10 +5,12 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextPaint;
@@ -37,8 +39,8 @@ import com.lgc.wordanalysis.data.CSVUtil;
 import com.lgc.wordanalysis.data.DataSync;
 import com.lgc.wordanalysis.data.GlobalData;
 import com.lgc.wordanalysis.data.WordLibsUtil;
-import com.lgc.wordanalysis.launch.LaunchActivity;
 import com.lgc.wordanalysis.user.AppAgreementActivity;
+import com.lgc.wordanalysis.user.FeedBackActivity;
 import com.lgc.wordanalysis.user.User;
 import com.lgc.wordanalysis.wordList.Command;
 import com.lgc.wordanalysis.wordList.WordListActivity;
@@ -112,6 +114,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
         findViewById(R.id.btn_import_from_csv).setOnClickListener(this);
         findViewById(R.id.setting_return_btn).setOnClickListener(this);
         findViewById(R.id.tv_word_lib).setOnClickListener(this);
+        findViewById(R.id.btn_to_feed_back).setOnClickListener(this);
 
         mLvWordLib = findViewById(R.id.word_lib_lv);
         mTvAppGuide = findViewById(R.id.tv_app_guide);
@@ -274,6 +277,9 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
                 break;
             case R.id.setting_return_btn:
                 returnBackFinish();
+                break;
+            case R.id.btn_to_feed_back:
+                startActivity(new Intent(this, FeedBackActivity.class));
                 break;
 
         }

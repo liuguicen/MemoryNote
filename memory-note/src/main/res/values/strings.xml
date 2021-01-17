@@ -62,6 +62,17 @@
     <string name="app_should_permission_notice">应用需要权限才能运行</string>
     <string name="apply_success">申请成功！</string>
 
+    <string name="feedback_method">联系方式:</string>
+    <string name="feedback_contact">选填(QQ、微信、手机号码、邮箱)，便于我们联系您解决，我们将会抽取部分用户进行有奖调查</string>
+    <string name="feedback_comment">有什么不爽或建议尽管吐槽吧，我们会努力改进的。</string>
+    <string name="feedback_commit">提交反馈</string>
+    <string name="feedback_title">意见反馈</string>
+    <string name="feedback_des">问题描述:</string>
+    <string name="feedback_has_commit">反馈已提交</string>
+    <string name="commit_success_thanks">提交成功，感谢您的反馈!</string>
+    <string name="record_success_thanks">记录成功，感谢您的反馈!</string>
+    <string name="network_error_try_latter">网络或服务器出错，请稍后再试！</string>
+
     <string name="setting_permission_guide">\n请在"应用设置-权限"中，允许权限</string>
     <string name="go_to_permit">去允许</string>
 

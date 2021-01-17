@@ -1,19 +1,16 @@
 package com.lgc.wordanalysis.data;
 
 import android.content.Context;
-import android.os.strictmode.WebViewMethodCalledOnWrongThreadViolation;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.lgc.baselibrary.UIWidgets.ProgressCallback;
-import com.lgc.baselibrary.utils.Logcat;
 import com.lgc.baselibrary.utils.TimeUtil;
-import com.lgc.wordanalysis.base.Util;
 import com.lgc.wordanalysis.base.WordAnalysisApplication;
-import com.lgc.wordanalysis.base.WordDisplayAnalyzer;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,8 +23,6 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import okhttp3.internal.Internal;
 
 /**
  * <pre>

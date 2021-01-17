@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/setting_top_bar"
         style="@style/my_tool_bar"
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toEndOf="@+id/setting_return_btn"
             app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <ScrollView
@@ -47,7 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/setting_top_bar"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp">
@@ -205,7 +205,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_export_to_excel" />
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_marginTop="16dp"
                 android:id="@+id/word_lib_lv"
                 android:layout_width="match_parent"
@@ -220,14 +220,25 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/app_guide"
                 android:textSize="@dimen/text_size_small"
+                style="@style/DownloadBtn"
+                android:background="@drawable/btn_bg_edit"
                 app:layout_constraintBottom_toTopOf="@id/to_privacy"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/word_lib_lv" />
 
             <TextView
+                android:id="@+id/btn_to_feed_back"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="8dp"
+                style="@style/DownloadBtn"
+                android:background="@drawable/btn_bg_edit"
+                android:text="@string/feedback_title"
+                app:layout_constraintTop_toBottomOf="@+id/tv_app_guide" />
+
+            <TextView
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_app_guide"
+                app:layout_constraintTop_toBottomOf="@id/btn_to_feed_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:id="@+id/to_privacy"
                 android:layout_width="wrap_content"
@@ -237,7 +248,7 @@
                 android:layout_height="wrap_content"
                 tools:text="sssssssss"/>
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

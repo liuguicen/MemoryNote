@@ -1,8 +1,9 @@
 package com.lgc.wordanalysis.data;
 
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import com.lgc.wordanalysis.base.AlgorithmUtil;
 import com.lgc.baselibrary.utils.Logcat;

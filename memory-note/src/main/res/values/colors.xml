@@ -13,7 +13,8 @@
     <color name="color_edit">#FF7E7E89</color>
     <color name="gray_light">#ffaaaaaa</color>
     <color name="gray">#9e9e9e</color>
-
+    <color name="blue">#5677fc</color>
+    <color name="text_deep_black">#ff242328</color>
 
 
 </resources>

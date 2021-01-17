@@ -15,12 +15,14 @@ buildscript {
 //        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
         // 友盟统计
         maven { url 'https://dl.bintray.com/umsdk/release' }
+        //Bmob的maven仓库地址--必填
+        maven {url 'https://dl.bintray.com/chaozhouzhang/maven' }
 
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.1'
+        classpath 'com.android.tools.build:gradle:4.1.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -29,19 +31,21 @@ buildscript {
 
 allprojects {
     repositories {
-//        maven { // 网慢，下不了，阿里云镜像，要去掉C:\Users\***\.gradle 下面的 gradle.properties文件中，去掉代理的那几行内容
-//            url 'http://maven.aliyun.com/nexus/content/groups/public/'
-//        }
-//        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
-//        maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
-//        maven { url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
-        // 友盟统计
-        maven { url 'https://dl.bintray.com/umsdk/release' }
-        // bmob
-        maven { url "https://raw.github.com/bmob/bmob-android-sdk/master" }
+        maven { // 网慢，下不了，阿里云镜像，要去掉C:\Users\***\.gradle 下面的 gradle.properties文件中，去掉代理的那几行内容
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
 
         google()
         jcenter()
+        // 友盟统计
+        maven { url 'https://dl.bintray.com/umsdk/release' }
+        //Bmob的maven仓库地址--必填
+        maven {url 'https://dl.bintray.com/chaozhouzhang/maven' }
+        // RangeSeekBar需要的
+        maven { url 'https://jitpack.io' }
     }
 }
 
