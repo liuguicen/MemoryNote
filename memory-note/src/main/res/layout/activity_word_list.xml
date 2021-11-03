@@ -9,6 +9,17 @@
     android:layout_marginTop="4dp"
     tools:layout_editor_absoluteY="4dp">
 
+    <Button
+        android:id="@+id/to_setting"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/ic_baseline_settings_applications_24"
+        android:gravity="center_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <AutoCompleteTextView
         android:id="@+id/et_command_frame"
         android:layout_width="0dp"
@@ -17,7 +28,7 @@
         android:textSize="@dimen/text_size_big_x"
         app:layout_constraintBottom_toBottomOf="@+id/add_word"
         app:layout_constraintEnd_toStartOf="@+id/btn_search"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/to_setting"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button

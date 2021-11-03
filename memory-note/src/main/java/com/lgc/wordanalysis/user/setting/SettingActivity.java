@@ -41,6 +41,7 @@ import com.lgc.wordanalysis.data.GlobalData;
 import com.lgc.wordanalysis.data.WordLibsUtil;
 import com.lgc.wordanalysis.user.AppAgreementActivity;
 import com.lgc.wordanalysis.user.FeedBackActivity;
+import com.lgc.wordanalysis.user.HelpActivity;
 import com.lgc.wordanalysis.user.User;
 import com.lgc.wordanalysis.wordList.Command;
 import com.lgc.wordanalysis.wordList.WordListActivity;
@@ -48,6 +49,7 @@ import com.lgc.wordanalysis.wordList.WordListActivity;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
@@ -115,9 +117,10 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
         findViewById(R.id.setting_return_btn).setOnClickListener(this);
         findViewById(R.id.tv_word_lib).setOnClickListener(this);
         findViewById(R.id.btn_to_feed_back).setOnClickListener(this);
+        findViewById(R.id.tv_app_guide).setOnClickListener(this);
 
         mLvWordLib = findViewById(R.id.word_lib_lv);
-        mTvAppGuide = findViewById(R.id.tv_app_guide);
+        mTvAppGuide = findViewById(R.id.tv_app_help);
         mTvAppGuide.setOnClickListener(this);
 
         mCertainDialog = new CertainDialog(this);
@@ -272,7 +275,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
                         "请确保您是csv文件，并且列的顺序按照如下形式排列\n" + CSVUtil.ROW_ORDER + "\n否则无法导入成功\n 更多请参考帮助文档",
                         () -> showFileChooser(FILE_SELECT_CODE_CSV));
                 break;
-            case R.id.tv_app_guide:
+            case R.id.tv_app_help:
                 mPresenter.onClickAppGuide();
                 break;
             case R.id.setting_return_btn:
@@ -280,6 +283,9 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
                 break;
             case R.id.btn_to_feed_back:
                 startActivity(new Intent(this, FeedBackActivity.class));
+                break;
+            case R.id.tv_app_guide:
+                startActivity(new Intent(SettingActivity.this, HelpActivity.class));
                 break;
 
         }

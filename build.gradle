@@ -1,54 +1,138 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext.kotlin_version = '1.5.31'
     repositories {
-//        maven {
-//            // 网慢，下不了，阿里云镜像，需要的操作，详见 https://blog.csdn.net/qq_33404903/article/details/84618408
-//            // (1) 并点击 设置—>Android Studio，勾选 Enable embedded Maven repository
-//            // (2) Settings -> Appearance&Behavior -> System Settings -> HTTP Proxy  中选中了 No Proxy
-//            // (3) 找到项目根目录下的 gradle.properties 文件，打开查看该文件中是否有关于 proxy 设置（代理的地址和端口）的相关语句，删除这些内容
-//            // (4) 要去掉C:\Users\***\.gradle 下面的 gradle.properties文件中，去掉代理的那几行内容,与 proxy 设置相关的语句
-//            url 'http://maven.aliyun.com/nexus/content/groups/public/'
-//
-//        }
-//        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
-        // 友盟统计
-        maven { url 'https://dl.bintray.com/umsdk/release' }
-        //Bmob的maven仓库地址--必填
-        maven {url 'https://dl.bintray.com/chaozhouzhang/maven' }
+        // 网慢，下不了，阿里云镜像，需要的操作，详见 https://blog.csdn.net/qq_33404903/article/details/84618408
+        // (1) 并点击 设置—>Android Studio，勾选 Enable embedded Maven repository
+        // (2) Settings -> Appearance&Behavior -> System Settings -> HTTP Proxy  中选中了 No Proxy
+        // (3) 找到项目根目录下的 gradle.properties 文件，打开查看该文件中是否有关于 proxy 设置（代理的地址和端口）的相关语句，删除这些内容
+        // (4) 要去掉C:\Users\***\.gradle 下面的 gradle.properties文件中，去掉代理的那几行内容,与 proxy 设置相关的语句
+        maven {
+            allowInsecureProtocol = true  // gradle 7.x 新版本gradle要求，信任镜像
+            url 'https://maven.aliyun.com/repository/central'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/google'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/gradle-plugin'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/spring'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/spring-plugin'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/grails-core'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/apache-snapshots'
+        }
 
-        jcenter()
+        // 友盟统计
+        maven { url 'https://repo1.maven.org/maven2/' }
+
+        //Bmob的maven仓库地址--必填
+        maven { url 'https://dl.bintray.com/chaozhouzhang/maven' }
+        // RangeSeekBar需要的
+        maven { url 'https://jitpack.io' }
+
+        // 华为推送
+        maven { url 'https://developer.huawei.com/repo/' }
+        // 其它推送
+        maven { url 'https://repo1.maven.org/maven2/' }
+
         google()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
-
+        classpath 'com.android.tools.build:gradle:7.0.2'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.library.tangxiaolv:dexknife-plus:1.0.4' // 解决4.x以下多dex问题的
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+        classpath 'com.huawei.agconnect:agcp:1.4.2.300'
     }
 }
 
 allprojects {
     repositories {
-        maven { // 网慢，下不了，阿里云镜像，要去掉C:\Users\***\.gradle 下面的 gradle.properties文件中，去掉代理的那几行内容
-            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        // 网慢，下不了，阿里云镜像，需要的操作，详见 https://blog.csdn.net/qq_33404903/article/details/84618408
+        // (1) 并点击 设置—>Android Studio，勾选 Enable embedded Maven repository
+        // (2) Settings -> Appearance&Behavior -> System Settings -> HTTP Proxy  中选中了 No Proxy
+        // (3) 找到项目根目录下的 gradle.properties 文件，打开查看该文件中是否有关于 proxy 设置（代理的地址和端口）的相关语句，删除这些内容
+        // (4) 要去掉C:\Users\***\.gradle 下面的 gradle.properties文件中，去掉代理的那几行内容,与 proxy 设置相关的语句
+        maven {
+            allowInsecureProtocol = true  // gradle 7.x 新版本gradle要求，信任镜像
+            url 'https://maven.aliyun.com/repository/central'
         }
-        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
-        maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
-        maven { url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
+        maven {
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/google'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/gradle-plugin'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/spring'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/spring-plugin'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/grails-core'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/apache-snapshots'
+        }
 
-        google()
-        jcenter()
         // 友盟统计
-        maven { url 'https://dl.bintray.com/umsdk/release' }
+        maven { url 'https://repo1.maven.org/maven2/' }
+
         //Bmob的maven仓库地址--必填
-        maven {url 'https://dl.bintray.com/chaozhouzhang/maven' }
+        maven { url 'https://dl.bintray.com/chaozhouzhang/maven' }
         // RangeSeekBar需要的
         maven { url 'https://jitpack.io' }
-    }
-}
 
+        // 华为推送
+        maven { url 'https://developer.huawei.com/repo/' }
+        // 其它推送
+        maven { url 'https://repo1.maven.org/maven2/' }
+
+        google()
+        mavenCentral()
+    }
+//    gradle.projectsEvaluated {
+//        tasks.withType(JavaCompile) {
+//            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+//        }
+//    }
+}
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
 }

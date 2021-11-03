@@ -218,13 +218,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:text="使用教程"
+                android:textSize="@dimen/text_size_small"
+                style="@style/DownloadBtn"
+                android:background="@drawable/btn_bg_edit"
+                app:layout_constraintBottom_toTopOf="@id/tv_app_help"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/word_lib_lv" />
+
+            <TextView
+                android:id="@+id/tv_app_help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="@string/app_guide"
                 android:textSize="@dimen/text_size_small"
                 style="@style/DownloadBtn"
                 android:background="@drawable/btn_bg_edit"
                 app:layout_constraintBottom_toTopOf="@id/to_privacy"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/word_lib_lv" />
+                app:layout_constraintTop_toBottomOf="@id/tv_app_guide" />
 
             <TextView
                 android:id="@+id/btn_to_feed_back"
@@ -233,7 +246,7 @@
                 style="@style/DownloadBtn"
                 android:background="@drawable/btn_bg_edit"
                 android:text="@string/feedback_title"
-                app:layout_constraintTop_toBottomOf="@+id/tv_app_guide" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_app_help" />
 
             <TextView
                 app:layout_constraintLeft_toLeftOf="parent"

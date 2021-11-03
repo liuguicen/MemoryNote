@@ -199,6 +199,9 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
             }
         });
 
+        findViewById(R.id.to_setting).setOnClickListener(v->{
+            setSettingActivity();
+        });
         // about recyclerView
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mWordListView.setLayoutManager(linearLayoutManager);
